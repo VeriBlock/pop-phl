@@ -16,6 +16,12 @@ information or see https://opensource.org/licenses/MIT.
 
 Placeholders Core contains Patent Pending technology.
 
+
+PoP Process
+-----------
+Placeholders coin implements Proof of Proof consensus protocol to guard against 51% attacks. For more information please visit:
+https://www.github.com/VeriBlock/vbk-ri-btc
+
 Development Process
 -------------------
 

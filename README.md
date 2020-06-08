@@ -1,5 +1,9 @@
-Placeholder Core integration/staging tree
+Placeholder PoP integration/staging tree
 =====================================
+
+NOTICE:
+-------
+This is work-in-progress working non-working alpha - DO NOT USE on mainnet!!!
 
 https://www.placeh.io
  

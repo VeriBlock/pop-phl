@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2015-2016 The Bitcoin Core developers
-# Copyright (c) 2017-2018 The Placeholder Core developers
+# Copyright (c) 2015-2019 The Placeholders Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test placehd with different proxy configuration.
@@ -32,7 +31,7 @@ import socket
 import os
 
 from test_framework.socks5 import Socks5Configuration, Socks5Command, Socks5Server, AddressType
-from test_framework.test_framework import PlacehTestFramework
+from test_framework.test_framework import PlaceholdersTestFramework
 from test_framework.util import (
     PORT_MIN,
     PORT_RANGE,
@@ -42,9 +41,10 @@ from test_framework.netutil import test_ipv6_local
 
 RANGE_BEGIN = PORT_MIN + 2 * PORT_RANGE  # Start after p2p and rpc ports
 
-class ProxyTest(PlacehTestFramework):
+class ProxyTest(PlaceholdersTestFramework):
     def set_test_params(self):
         self.num_nodes = 4
+        self.setup_clean_chain = True
 
     def setup_nodes(self):
         self.have_ipv6 = test_ipv6_local()
@@ -80,9 +80,9 @@ class ProxyTest(PlacehTestFramework):
         # Note: proxies are not used to connect to local nodes
         # this is because the proxy to use is based on CService.GetNetwork(), which return NET_UNROUTABLE for localhost
         args = [
-            ['-listen', '-proxy=%s:%i' % (self.conf1.addr),'-proxyrandomize=1'], 
-            ['-listen', '-proxy=%s:%i' % (self.conf1.addr),'-onion=%s:%i' % (self.conf2.addr),'-proxyrandomize=0'], 
-            ['-listen', '-proxy=%s:%i' % (self.conf2.addr),'-proxyrandomize=1'], 
+            ['-listen', '-proxy=%s:%i' % (self.conf1.addr),'-proxyrandomize=1'],
+            ['-listen', '-proxy=%s:%i' % (self.conf1.addr),'-onion=%s:%i' % (self.conf2.addr),'-proxyrandomize=0'],
+            ['-listen', '-proxy=%s:%i' % (self.conf2.addr),'-proxyrandomize=1'],
             []
             ]
         if self.have_ipv6:
@@ -95,7 +95,7 @@ class ProxyTest(PlacehTestFramework):
         # Test: outgoing IPv4 connection through node
         node.addnode("15.61.23.23:1234", "onetry")
         cmd = proxies[0].queue.get()
-        assert(isinstance(cmd, Socks5Command))
+        assert isinstance(cmd, Socks5Command)
         # Note: placehd's SOCKS5 implementation only sends atyp DOMAINNAME, even if connecting directly to IPv4/IPv6
         assert_equal(cmd.atyp, AddressType.DOMAINNAME)
         assert_equal(cmd.addr, b"15.61.23.23")
@@ -109,7 +109,7 @@ class ProxyTest(PlacehTestFramework):
             # Test: outgoing IPv6 connection through node
             node.addnode("[1233:3432:2434:2343:3234:2345:6546:4534]:5443", "onetry")
             cmd = proxies[1].queue.get()
-            assert(isinstance(cmd, Socks5Command))
+            assert isinstance(cmd, Socks5Command)
             # Note: placehd's SOCKS5 implementation only sends atyp DOMAINNAME, even if connecting directly to IPv4/IPv6
             assert_equal(cmd.atyp, AddressType.DOMAINNAME)
             assert_equal(cmd.addr, b"1233:3432:2434:2343:3234:2345:6546:4534")
@@ -121,11 +121,11 @@ class ProxyTest(PlacehTestFramework):
 
         if test_onion:
             # Test: outgoing onion connection through node
-            node.addnode("bitcoinostk4e4re.onion:8333", "onetry")
+            node.addnode("placehostk4e4re.onion:8333", "onetry")
             cmd = proxies[2].queue.get()
-            assert(isinstance(cmd, Socks5Command))
+            assert isinstance(cmd, Socks5Command)
             assert_equal(cmd.atyp, AddressType.DOMAINNAME)
-            assert_equal(cmd.addr, b"bitcoinostk4e4re.onion")
+            assert_equal(cmd.addr, b"placehostk4e4re.onion")
             assert_equal(cmd.port, 8333)
             if not auth:
                 assert_equal(cmd.username, None)
@@ -133,12 +133,12 @@ class ProxyTest(PlacehTestFramework):
             rv.append(cmd)
 
         # Test: outgoing DNS name connection through node
-        node.addnode("node.noumenon:8767", "onetry")
+        node.addnode("node.noumenon:8333", "onetry")
         cmd = proxies[3].queue.get()
-        assert(isinstance(cmd, Socks5Command))
+        assert isinstance(cmd, Socks5Command)
         assert_equal(cmd.atyp, AddressType.DOMAINNAME)
         assert_equal(cmd.addr, b"node.noumenon")
-        assert_equal(cmd.port, 8767)
+        assert_equal(cmd.port, 8333)
         if not auth:
             assert_equal(cmd.username, None)
             assert_equal(cmd.password, None)
@@ -147,7 +147,6 @@ class ProxyTest(PlacehTestFramework):
         return rv
 
     def run_test(self):
-
         # basic -proxy
         self.node_test(self.nodes[0], [self.serv1, self.serv1, self.serv1, self.serv1], False)
 
@@ -184,7 +183,7 @@ class ProxyTest(PlacehTestFramework):
         assert_equal(n1['onion']['proxy'], '%s:%i' % (self.conf2.addr))
         assert_equal(n1['onion']['proxy_randomize_credentials'], False)
         assert_equal(n1['onion']['reachable'], True)
-        
+
         n2 = networks_dict(self.nodes[2].getnetworkinfo())
         for net in ['ipv4','ipv6','onion']:
             assert_equal(n2[net]['proxy'], '%s:%i' % (self.conf2.addr))
@@ -200,4 +199,3 @@ class ProxyTest(PlacehTestFramework):
 
 if __name__ == '__main__':
     ProxyTest().main()
-

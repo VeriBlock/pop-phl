@@ -1,71 +1,64 @@
-// Copyright (c) 2011-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Placeholder Core developers
+// Copyright (c) 2011-2019 The Placeholders Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #ifndef PLACEH_WALLET_COINCONTROL_H
 #define PLACEH_WALLET_COINCONTROL_H
 
-#include "policy/feerate.h"
-#include "policy/fees.h"
-#include "primitives/transaction.h"
-#include "wallet/wallet.h"
+#include <optional.h>
+#include <outputtype.h>
+#include <policy/feerate.h>
+#include <policy/fees.h>
+#include <primitives/transaction.h>
+#include <script/standard.h>
 
-#include <boost/optional.hpp>
+const int DEFAULT_MIN_DEPTH = 0;
+const int DEFAULT_MAX_DEPTH = 9999999;
+
+//! Default for -avoidpartialspends
+static constexpr bool DEFAULT_AVOIDPARTIALSPENDS = false;
 
 /** Coin Control Features. */
 class CCoinControl
 {
 public:
+    //! Custom change destination, if not set an address is generated
     CTxDestination destChange;
+    //! Override the default change type if set, ignored if destChange is set
+    Optional<OutputType> m_change_type;
     //! If false, allows unselected inputs, but requires all selected inputs be used
     bool fAllowOtherInputs;
-    //! Includes watch only addresses which match the ISMINE_WATCH_SOLVABLE criteria
+    //! Includes watch only addresses which are solvable
     bool fAllowWatchOnly;
     //! Override automatic min/max checks on fee, m_feerate must be set if true
     bool fOverrideFeeRate;
-    //! Override the default payTxFee if set
-    boost::optional<CFeeRate> m_feerate;
+    //! Override the wallet's m_pay_tx_fee if set
+    Optional<CFeeRate> m_feerate;
     //! Override the default confirmation target if set
-    boost::optional<unsigned int> m_confirm_target;
-    //! Signal BIP-125 replace by fee.
-    bool signalRbf;
+    Optional<unsigned int> m_confirm_target;
+    //! Override the wallet's m_signal_rbf if set
+    Optional<bool> m_signal_bip125_rbf;
+    //! Avoid partial use of funds sent to a given address
+    bool m_avoid_partial_spends;
+    //! Forbids inclusion of dirty (previously used) addresses
+    bool m_avoid_address_reuse;
     //! Fee estimation mode to control arguments to estimateSmartFee
     FeeEstimateMode m_fee_mode;
-
-    /** PHL START */
-    //! Name of the asset that is selected, used when sending assets with coincontrol
-    std::string strAssetSelected;
-    /** PHL END */
+    //! Minimum chain depth value for coin availability
+    int m_min_depth = DEFAULT_MIN_DEPTH;
+    //! Maximum chain depth value for coin availability
+    int m_max_depth = DEFAULT_MAX_DEPTH;
 
     CCoinControl()
     {
         SetNull();
     }
 
-    void SetNull()
-    {
-        destChange = CNoDestination();
-        fAllowOtherInputs = false;
-        fAllowWatchOnly = false;
-        setSelected.clear();
-        m_feerate.reset();
-        fOverrideFeeRate = false;
-        m_confirm_target.reset();
-        signalRbf = fWalletRbf;
-        m_fee_mode = FeeEstimateMode::UNSET;
-        strAssetSelected = "";
-        setAssetsSelected.clear();
-    }
+    void SetNull();
 
     bool HasSelected() const
     {
         return (setSelected.size() > 0);
-    }
-
-    bool HasAssetSelected() const
-    {
-        return (setAssetsSelected.size() > 0);
     }
 
     bool IsSelected(const COutPoint& output) const
@@ -73,41 +66,19 @@ public:
         return (setSelected.count(output) > 0);
     }
 
-    bool IsAssetSelected(const COutPoint& output) const
-    {
-        return (setAssetsSelected.count(output) > 0);
-    }
-
     void Select(const COutPoint& output)
     {
         setSelected.insert(output);
     }
 
-    void SelectAsset(const COutPoint& output)
-    {
-        setAssetsSelected.insert(output);
-    }
-
-
     void UnSelect(const COutPoint& output)
     {
         setSelected.erase(output);
-        if (!setSelected.size())
-            strAssetSelected = "";
-    }
-
-    void UnSelectAsset(const COutPoint& output)
-    {
-        setAssetsSelected.erase(output);
-        if (!setSelected.size())
-            strAssetSelected = "";
     }
 
     void UnSelectAll()
     {
         setSelected.clear();
-        strAssetSelected = "";
-        setAssetsSelected.clear();
     }
 
     void ListSelected(std::vector<COutPoint>& vOutpoints) const
@@ -115,14 +86,8 @@ public:
         vOutpoints.assign(setSelected.begin(), setSelected.end());
     }
 
-    void ListSelectedAssets(std::vector<COutPoint>& vOutpoints) const
-    {
-        vOutpoints.assign(setAssetsSelected.begin(), setAssetsSelected.end());
-    }
-
 private:
     std::set<COutPoint> setSelected;
-    std::set<COutPoint> setAssetsSelected;
 };
 
 #endif // PLACEH_WALLET_COINCONTROL_H

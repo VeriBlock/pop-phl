@@ -1,16 +1,13 @@
-// Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The Bitcoin Core developers
-// Copyright (c) 2017 The Raven Core developers
-// Copyright (c) 2018 The Placeholder Core developers
+// Copyright (c) 2015-2018 The Placeholders Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #ifndef PLACEH_CORE_MEMUSAGE_H
 #define PLACEH_CORE_MEMUSAGE_H
 
-#include "primitives/transaction.h"
-#include "primitives/block.h"
-#include "memusage.h"
+#include <primitives/transaction.h>
+#include <primitives/block.h>
+#include <memusage.h>
 
 static inline size_t RecursiveDynamicUsage(const CScript& script) {
     return memusage::DynamicUsage(script);

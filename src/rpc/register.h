@@ -1,10 +1,9 @@
-// Copyright (c) 2009-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Placeholder Core developers
+// Copyright (c) 2009-2018 The Placeholders Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_RPCREGISTER_H
-#define PLACEH_RPCREGISTER_H
+#ifndef PLACEH_RPC_REGISTER_H
+#define PLACEH_RPC_REGISTER_H
 
 /** These are in one header file to avoid creating tons of single-function
  * headers for everything under src/rpc/ */
@@ -20,8 +19,6 @@ void RegisterMiscRPCCommands(CRPCTable &tableRPC);
 void RegisterMiningRPCCommands(CRPCTable &tableRPC);
 /** Register raw transaction RPC commands */
 void RegisterRawTransactionRPCCommands(CRPCTable &tableRPC);
-/** Register asset RPC commands */
-void RegisterAssetRPCCommands(CRPCTable &tableRPC);
 
 static inline void RegisterAllCoreRPCCommands(CRPCTable &t)
 {
@@ -30,7 +27,6 @@ static inline void RegisterAllCoreRPCCommands(CRPCTable &t)
     RegisterMiscRPCCommands(t);
     RegisterMiningRPCCommands(t);
     RegisterRawTransactionRPCCommands(t);
-    RegisterAssetRPCCommands(t);
 }
 
-#endif
+#endif // PLACEH_RPC_REGISTER_H

@@ -1,7 +1,4 @@
-// Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The Bitcoin Core developers
-// Copyright (c) 2017 The Raven Core developers
-// Copyright (c) 2018 The Placeholder Core developers
+// Copyright (c) 2012-2018 The Placeholders Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -73,7 +70,7 @@ public:
         // since it is a constant time operation in C++11. For more details, see
         // https://stackoverflow.com/questions/765148/how-to-remove-constness-of-const-iterator
         iterator itTarget = map.erase(itIn, itIn);
-        
+
         if (itTarget == map.end())
             return;
         std::pair<rmap_iterator, rmap_iterator> itPair = rmap.equal_range(itTarget->second);

@@ -16,13 +16,6 @@ information or see https://opensource.org/licenses/MIT.
 
 Placeholders Core contains Patent Pending technology.
 
-
-PoP Process
------------
-This variant of PHL is experimental and not yet fully implemented. Do not send coins to this wallet.
-Placeholders coin implements Proof of Proof consensus protocol to guard against 51% attacks. For more information please visit:
-https://www.github.com/VeriBlock/vbk-ri-btc
-
 Development Process
 -------------------
 

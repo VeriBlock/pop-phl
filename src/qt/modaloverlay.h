@@ -1,5 +1,4 @@
-// Copyright (c) 2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Placeholder Core developers
+// Copyright (c) 2016-2019 The Placeholders Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -7,6 +6,7 @@
 #define PLACEH_QT_MODALOVERLAY_H
 
 #include <QDateTime>
+#include <QPropertyAnimation>
 #include <QWidget>
 
 //! The required delta of headers to the estimated number of available headers until we show the IBD progress
@@ -22,7 +22,7 @@ class ModalOverlay : public QWidget
     Q_OBJECT
 
 public:
-    explicit ModalOverlay(QWidget *parent);
+    explicit ModalOverlay(bool enable_wallet, QWidget *parent);
     ~ModalOverlay();
 
 public Q_SLOTS:
@@ -36,8 +36,8 @@ public Q_SLOTS:
     bool isLayerVisible() const { return layerIsVisible; }
 
 protected:
-    bool eventFilter(QObject * obj, QEvent * ev);
-    bool event(QEvent* ev);
+    bool eventFilter(QObject * obj, QEvent * ev) override;
+    bool event(QEvent* ev) override;
 
 private:
     Ui::ModalOverlay *ui;
@@ -46,6 +46,8 @@ private:
     QVector<QPair<qint64, double> > blockProcessTime;
     bool layerIsVisible;
     bool userClosed;
+    QPropertyAnimation m_animation;
+    void UpdateHeaderSyncLabel();
 };
 
 #endif // PLACEH_QT_MODALOVERLAY_H

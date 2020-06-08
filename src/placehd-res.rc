@@ -16,8 +16,8 @@ BEGIN
     BEGIN
         BLOCK "040904E4" // U.S. English - multilingual (hex)
         BEGIN
-            VALUE "CompanyName",        "Placeh"
-            VALUE "FileDescription",    "placehd (Placeh node with a JSON-RPC server)"
+            VALUE "CompanyName",        "Placeholders"
+            VALUE "FileDescription",    "placehd (Placeholders node with a JSON-RPC server)"
             VALUE "FileVersion",        VER_FILEVERSION_STR
             VALUE "InternalName",       "placehd"
             VALUE "LegalCopyright",     COPYRIGHT_STR

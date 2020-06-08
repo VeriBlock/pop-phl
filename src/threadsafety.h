@@ -1,18 +1,18 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The Bitcoin Core developers
-// Copyright (c) 2017 The Raven Core developers
-// Copyright (c) 2018 The Placeholder Core developers
+// Copyright (c) 2009-2019 The Placeholders Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #ifndef PLACEH_THREADSAFETY_H
 #define PLACEH_THREADSAFETY_H
 
+#include <mutex>
+
 #ifdef __clang__
 // TL;DR Add GUARDED_BY(mutex) to member variables. The others are
 // rarely necessary. Ex: int nFoo GUARDED_BY(cs_foo);
 //
-// See http://clang.llvm.org/docs/LanguageExtensions.html#threadsafety
+// See https://clang.llvm.org/docs/ThreadSafetyAnalysis.html
 // for documentation.  The clang compiler can do advanced static analysis
 // of locking when given the -Wthread-safety option.
 #define LOCKABLE __attribute__((lockable))
@@ -33,6 +33,7 @@
 #define EXCLUSIVE_LOCKS_REQUIRED(...) __attribute__((exclusive_locks_required(__VA_ARGS__)))
 #define SHARED_LOCKS_REQUIRED(...) __attribute__((shared_locks_required(__VA_ARGS__)))
 #define NO_THREAD_SAFETY_ANALYSIS __attribute__((no_thread_safety_analysis))
+#define ASSERT_EXCLUSIVE_LOCK(...) __attribute((assert_exclusive_lock(__VA_ARGS__)))
 #else
 #define LOCKABLE
 #define SCOPED_LOCKABLE
@@ -52,6 +53,22 @@
 #define EXCLUSIVE_LOCKS_REQUIRED(...)
 #define SHARED_LOCKS_REQUIRED(...)
 #define NO_THREAD_SAFETY_ANALYSIS
+#define ASSERT_EXCLUSIVE_LOCK(...)
 #endif // __GNUC__
+
+// StdMutex provides an annotated version of std::mutex for us,
+// and should only be used when sync.h Mutex/LOCK/etc are not usable.
+class LOCKABLE StdMutex : public std::mutex
+{
+};
+
+// StdLockGuard provides an annotated version of std::lock_guard for us,
+// and should only be used when sync.h Mutex/LOCK/etc are not usable.
+class SCOPED_LOCKABLE StdLockGuard : public std::lock_guard<StdMutex>
+{
+public:
+    explicit StdLockGuard(StdMutex& cs) EXCLUSIVE_LOCK_FUNCTION(cs) : std::lock_guard<StdMutex>(cs) {}
+    ~StdLockGuard() UNLOCK_FUNCTION() {}
+};
 
 #endif // PLACEH_THREADSAFETY_H

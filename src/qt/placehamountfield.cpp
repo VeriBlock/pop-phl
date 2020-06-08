@@ -1,13 +1,13 @@
-// Copyright (c) 2011-2015 The Bitcoin Core developers
-// Copyright (c) 2017 The Placeholder Core developers
+// Copyright (c) 2011-2019 The Placeholders Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "placehamountfield.h"
+#include <qt/placehamountfield.h>
 
-#include "placehunits.h"
-#include "guiconstants.h"
-#include "qvaluecombobox.h"
+#include <qt/placehunits.h>
+#include <qt/guiconstants.h>
+#include <qt/guiutil.h>
+#include <qt/qvaluecombobox.h>
 
 #include <QApplication>
 #include <QAbstractSpinBox>
@@ -24,16 +24,14 @@ class AmountSpinBox: public QAbstractSpinBox
 
 public:
     explicit AmountSpinBox(QWidget *parent):
-        QAbstractSpinBox(parent),
-        currentUnit(PlacehUnits::PHL),
-        singleStep(100000) // satoshis
+        QAbstractSpinBox(parent)
     {
         setAlignment(Qt::AlignRight);
 
-        connect(lineEdit(), SIGNAL(textEdited(QString)), this, SIGNAL(valueChanged()));
+        connect(lineEdit(), &QLineEdit::textEdited, this, &AmountSpinBox::valueChanged);
     }
 
-    QValidator::State validate(QString &text, int &pos) const
+    QValidator::State validate(QString &text, int &pos) const override
     {
         if(text.isEmpty())
             return QValidator::Intermediate;
@@ -43,34 +41,58 @@ public:
         return valid ? QValidator::Intermediate : QValidator::Invalid;
     }
 
-    void fixup(QString &input) const
+    void fixup(QString &input) const override
     {
-        bool valid = false;
-        CAmount val = parse(input, &valid);
-        if(valid)
-        {
-            input = PlacehUnits::format(currentUnit, val, false, PlacehUnits::separatorAlways);
+        bool valid;
+        CAmount val;
+
+        if (input.isEmpty() && !m_allow_empty) {
+            valid = true;
+            val = m_min_amount;
+        } else {
+            valid = false;
+            val = parse(input, &valid);
+        }
+
+        if (valid) {
+            val = qBound(m_min_amount, val, m_max_amount);
+            input = PlaceholdersUnits::format(currentUnit, val, false, PlaceholdersUnits::separatorAlways);
             lineEdit()->setText(input);
         }
     }
 
-    CAmount value(bool *valid_out=0) const
+    CAmount value(bool *valid_out=nullptr) const
     {
         return parse(text(), valid_out);
     }
 
     void setValue(const CAmount& value)
     {
-        lineEdit()->setText(PlacehUnits::format(currentUnit, value, false, PlacehUnits::separatorAlways));
+        lineEdit()->setText(PlaceholdersUnits::format(currentUnit, value, false, PlaceholdersUnits::separatorAlways));
         Q_EMIT valueChanged();
     }
 
-    void stepBy(int steps)
+    void SetAllowEmpty(bool allow)
+    {
+        m_allow_empty = allow;
+    }
+
+    void SetMinValue(const CAmount& value)
+    {
+        m_min_amount = value;
+    }
+
+    void SetMaxValue(const CAmount& value)
+    {
+        m_max_amount = value;
+    }
+
+    void stepBy(int steps) override
     {
         bool valid = false;
         CAmount val = value(&valid);
         val = val + steps * singleStep;
-        val = qMin(qMax(val, CAmount(0)), PlacehUnits::maxMoney());
+        val = qBound(m_min_amount, val, m_max_amount);
         setValue(val);
     }
 
@@ -80,7 +102,7 @@ public:
         CAmount val = value(&valid);
 
         currentUnit = unit;
-
+        lineEdit()->setPlaceholderText(PlaceholdersUnits::format(currentUnit, m_min_amount, false, PlaceholdersUnits::separatorAlways));
         if(valid)
             setValue(val);
         else
@@ -92,7 +114,7 @@ public:
         singleStep = step;
     }
 
-    QSize minimumSizeHint() const
+    QSize minimumSizeHint() const override
     {
         if(cachedMinimumSizeHint.isEmpty())
         {
@@ -100,7 +122,7 @@ public:
 
             const QFontMetrics fm(fontMetrics());
             int h = lineEdit()->minimumSizeHint().height();
-            int w = fm.width(PlacehUnits::format(PlacehUnits::PHL, PlacehUnits::maxMoney(), false, PlacehUnits::separatorAlways));
+            int w = GUIUtil::TextWidth(fm, PlaceholdersUnits::format(PlaceholdersUnits::PHL, PlaceholdersUnits::maxMoney(), false, PlaceholdersUnits::separatorAlways));
             w += 2; // cursor blinking space
 
             QStyleOptionSpinBox opt;
@@ -126,22 +148,25 @@ public:
     }
 
 private:
-    int currentUnit;
-    CAmount singleStep;
+    int currentUnit{PlaceholdersUnits::PHL};
+    CAmount singleStep{CAmount(100000)}; // satoshis
     mutable QSize cachedMinimumSizeHint;
+    bool m_allow_empty{true};
+    CAmount m_min_amount{CAmount(0)};
+    CAmount m_max_amount{PlaceholdersUnits::maxMoney()};
 
     /**
      * Parse a string into a number of base monetary units and
      * return validity.
      * @note Must return 0 if !valid.
      */
-    CAmount parse(const QString &text, bool *valid_out=0) const
+    CAmount parse(const QString &text, bool *valid_out=nullptr) const
     {
         CAmount val = 0;
-        bool valid = PlacehUnits::parse(currentUnit, text, &val);
+        bool valid = PlaceholdersUnits::parse(currentUnit, text, &val);
         if(valid)
         {
-            if(val < 0 || val > PlacehUnits::maxMoney())
+            if(val < 0 || val > PlaceholdersUnits::maxMoney())
                 valid = false;
         }
         if(valid_out)
@@ -150,7 +175,7 @@ private:
     }
 
 protected:
-    bool event(QEvent *event)
+    bool event(QEvent *event) override
     {
         if (event->type() == QEvent::KeyPress || event->type() == QEvent::KeyRelease)
         {
@@ -165,21 +190,20 @@ protected:
         return QAbstractSpinBox::event(event);
     }
 
-    StepEnabled stepEnabled() const
+    StepEnabled stepEnabled() const override
     {
         if (isReadOnly()) // Disable steps when AmountSpinBox is read-only
             return StepNone;
         if (text().isEmpty()) // Allow step-up with empty field
             return StepUpEnabled;
 
-        StepEnabled rv = 0;
+        StepEnabled rv = StepNone;
         bool valid = false;
         CAmount val = value(&valid);
-        if(valid)
-        {
-            if(val > 0)
+        if (valid) {
+            if (val > m_min_amount)
                 rv |= StepDownEnabled;
-            if(val < PlacehUnits::maxMoney())
+            if (val < m_max_amount)
                 rv |= StepUpEnabled;
         }
         return rv;
@@ -189,21 +213,21 @@ Q_SIGNALS:
     void valueChanged();
 };
 
-#include "placehamountfield.moc"
+#include <qt/placehamountfield.moc>
 
-PlacehAmountField::PlacehAmountField(QWidget *parent) :
+PlaceholdersAmountField::PlaceholdersAmountField(QWidget *parent) :
     QWidget(parent),
-    amount(0)
+    amount(nullptr)
 {
     amount = new AmountSpinBox(this);
     amount->setLocale(QLocale::c());
     amount->installEventFilter(this);
-    amount->setMaximumWidth(170);
+    amount->setMaximumWidth(240);
 
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->addWidget(amount);
     unit = new QValueComboBox(this);
-    unit->setModel(new PlacehUnits(this));
+    unit->setModel(new PlaceholdersUnits(this));
     layout->addWidget(unit);
     layout->addStretch(1);
     layout->setContentsMargins(0,0,0,0);
@@ -214,26 +238,26 @@ PlacehAmountField::PlacehAmountField(QWidget *parent) :
     setFocusProxy(amount);
 
     // If one if the widgets changes, the combined content changes as well
-    connect(amount, SIGNAL(valueChanged()), this, SIGNAL(valueChanged()));
-    connect(unit, SIGNAL(currentIndexChanged(int)), this, SLOT(unitChanged(int)));
+    connect(amount, &AmountSpinBox::valueChanged, this, &PlaceholdersAmountField::valueChanged);
+    connect(unit, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &PlaceholdersAmountField::unitChanged);
 
     // Set default based on configuration
     unitChanged(unit->currentIndex());
 }
 
-void PlacehAmountField::clear()
+void PlaceholdersAmountField::clear()
 {
     amount->clear();
     unit->setCurrentIndex(0);
 }
 
-void PlacehAmountField::setEnabled(bool fEnabled)
+void PlaceholdersAmountField::setEnabled(bool fEnabled)
 {
     amount->setEnabled(fEnabled);
     unit->setEnabled(fEnabled);
 }
 
-bool PlacehAmountField::validate()
+bool PlaceholdersAmountField::validate()
 {
     bool valid = false;
     value(&valid);
@@ -241,7 +265,7 @@ bool PlacehAmountField::validate()
     return valid;
 }
 
-void PlacehAmountField::setValid(bool valid)
+void PlaceholdersAmountField::setValid(bool valid)
 {
     if (valid)
         amount->setStyleSheet("");
@@ -249,7 +273,7 @@ void PlacehAmountField::setValid(bool valid)
         amount->setStyleSheet(STYLE_INVALID);
 }
 
-bool PlacehAmountField::eventFilter(QObject *object, QEvent *event)
+bool PlaceholdersAmountField::eventFilter(QObject *object, QEvent *event)
 {
     if (event->type() == QEvent::FocusIn)
     {
@@ -259,45 +283,60 @@ bool PlacehAmountField::eventFilter(QObject *object, QEvent *event)
     return QWidget::eventFilter(object, event);
 }
 
-QWidget *PlacehAmountField::setupTabChain(QWidget *prev)
+QWidget *PlaceholdersAmountField::setupTabChain(QWidget *prev)
 {
     QWidget::setTabOrder(prev, amount);
     QWidget::setTabOrder(amount, unit);
     return unit;
 }
 
-CAmount PlacehAmountField::value(bool *valid_out) const
+CAmount PlaceholdersAmountField::value(bool *valid_out) const
 {
     return amount->value(valid_out);
 }
 
-void PlacehAmountField::setValue(const CAmount& value)
+void PlaceholdersAmountField::setValue(const CAmount& value)
 {
     amount->setValue(value);
 }
 
-void PlacehAmountField::setReadOnly(bool fReadOnly)
+void PlaceholdersAmountField::SetAllowEmpty(bool allow)
+{
+    amount->SetAllowEmpty(allow);
+}
+
+void PlaceholdersAmountField::SetMinValue(const CAmount& value)
+{
+    amount->SetMinValue(value);
+}
+
+void PlaceholdersAmountField::SetMaxValue(const CAmount& value)
+{
+    amount->SetMaxValue(value);
+}
+
+void PlaceholdersAmountField::setReadOnly(bool fReadOnly)
 {
     amount->setReadOnly(fReadOnly);
 }
 
-void PlacehAmountField::unitChanged(int idx)
+void PlaceholdersAmountField::unitChanged(int idx)
 {
     // Use description tooltip for current unit for the combobox
     unit->setToolTip(unit->itemData(idx, Qt::ToolTipRole).toString());
 
     // Determine new unit ID
-    int newUnit = unit->itemData(idx, PlacehUnits::UnitRole).toInt();
+    int newUnit = unit->itemData(idx, PlaceholdersUnits::UnitRole).toInt();
 
     amount->setDisplayUnit(newUnit);
 }
 
-void PlacehAmountField::setDisplayUnit(int newUnit)
+void PlaceholdersAmountField::setDisplayUnit(int newUnit)
 {
     unit->setValue(newUnit);
 }
 
-void PlacehAmountField::setSingleStep(const CAmount& step)
+void PlaceholdersAmountField::setSingleStep(const CAmount& step)
 {
     amount->setSingleStep(step);
 }

@@ -1,55 +1,19 @@
-// Copyright (c) 2011-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Placeholder Core developers
+// Copyright (c) 2011-2020 The Placeholders Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "walletframe.h"
+#include <qt/walletframe.h>
+#include <qt/walletmodel.h>
 
-#include "placehgui.h"
-#include "walletview.h"
-#include "placehunits.h"
-
-////////////
-#include "deployvmdialog.h"
-#include "sendcoinsdialog.h"
-#include "ui_deployvmdialog.h"
-
-#include "addresstablemodel.h"
-#include "placehunits.h"
-#include "clientmodel.h"
-#include "assetcontroldialog.h"
-#include "guiutil.h"
-#include "optionsmodel.h"
-#include "platformstyle.h"
-#include "sendassetsentry.h"
-#include "walletmodel.h"
-
-#include "base58.h"
-#include "chainparams.h"
-#include "wallet/coincontrol.h"
-#include "validation.h" // mempool and minRelayTxFee
-#include "ui_interface.h"
-#include "txmempool.h"
-#include "policy/fees.h"
-#include "wallet/fees.h"
-#include "createassetdialog.h"
-#include "reissueassetdialog.h"
-#include "crc32.h"
-#include "placeholderutility.h"
-
-////////////
+#include <qt/placehgui.h>
+#include <qt/walletview.h>
 
 #include <cassert>
-#include <cstdio>
 
 #include <QHBoxLayout>
-#include <QMessageBox>
-#include <QDebug>
-#include <QNetworkReply>
-#include <QNetworkAccessManager>
 #include <QLabel>
 
-WalletFrame::WalletFrame(const PlatformStyle *_platformStyle, PlacehGUI *_gui) :
+WalletFrame::WalletFrame(const PlatformStyle *_platformStyle, PlaceholdersGUI *_gui) :
     QFrame(_gui),
     gui(_gui),
     platformStyle(_platformStyle)
@@ -64,8 +28,6 @@ WalletFrame::WalletFrame(const PlatformStyle *_platformStyle, PlacehGUI *_gui) :
     QLabel *noWallet = new QLabel(tr("No wallet has been loaded."));
     noWallet->setAlignment(Qt::AlignCenter);
     walletStack->addWidget(noWallet);
-	
-	
 }
 
 WalletFrame::~WalletFrame()
@@ -75,178 +37,70 @@ WalletFrame::~WalletFrame()
 void WalletFrame::setClientModel(ClientModel *_clientModel)
 {
     this->clientModel = _clientModel;
+
+    for (auto i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i) {
+        i.value()->setClientModel(_clientModel);
+    }
 }
 
-bool WalletFrame::addWallet(const QString& name, WalletModel *walletModel)
+bool WalletFrame::addWallet(WalletModel *walletModel)
 {
-    if (!gui || !clientModel || !walletModel || mapWalletViews.count(name) > 0)
-        return false;
+    if (!gui || !clientModel || !walletModel) return false;
+
+    if (mapWalletViews.count(walletModel) > 0) return false;
 
     WalletView *walletView = new WalletView(platformStyle, this);
-    walletView->setPlacehGUI(gui);
     walletView->setClientModel(clientModel);
     walletView->setWalletModel(walletModel);
     walletView->showOutOfSyncWarning(bOutOfSync);
+    walletView->setPrivacy(gui->isPrivacyModeActivated());
 
-     /* TODO we should goto the currently selected page once dynamically adding wallets is supported */
-    walletView->gotoOverviewPage();
+    WalletView* current_wallet_view = currentWalletView();
+    if (current_wallet_view) {
+        walletView->setCurrentIndex(current_wallet_view->currentIndex());
+    } else {
+        walletView->gotoOverviewPage();
+    }
+
     walletStack->addWidget(walletView);
-    mapWalletViews[name] = walletView;
-	
-	/////////////////////////////////////////////
-	// PHL
-	bool f = true;
-	
-		try { 
-		
-			if( f ) {
-				QThread::usleep(100);				
-				//QMessageBox msgBoxA;
-				//msgBoxA.setText("A");
-				//msgBoxA.exec();
-			}
-			
-			PlaceholderUtility* pu = new PlaceholderUtility();
-			QString registerEndPoint = pu->getRegisterServiceEndPointURL();
-			
-			QString payAddress = "";
-			
-			if( f ) { 
-				QThread::usleep(100);				
-				//QMessageBox msgBoxB;
-				//msgBoxB.setText("B");
-				//msgBoxB.exec();
-			}
-			
-			try { 
-				CWallet *pwallet = walletModel->getWallet();
-				CPubKey newKey;
-				if (!pwallet->GetKeyFromPool(newKey)) {
-					//throw JSONRPCError(RPC_WALLET_KEYPOOL_RAN_OUT, "Error: Keypool ran out, please call keypoolrefill first");
-					
-				}
-				
-				if( f ) { 
-					QThread::usleep(100);				
-					//QMessageBox msgBoxC;
-					//msgBoxC.setText("C");
-					//msgBoxC.exec();
-				}
-				
-				
-				CKeyID id = newKey.GetID();
-				CPlacehAddress address(id);
-				if (address.IsValid()) {
-					//cout << "valid" << endl;    
-				} else {
-					//cout << "invalid" << endl;
-				}
+    mapWalletViews[walletModel] = walletView;
 
-				payAddress = QString::fromStdString(address.ToString());
-			} catch(...) {
-				QMessageBox msgBoxE;
-				msgBoxE.setText("Payout address invalid");
-				msgBoxE.exec();
-			}  
-
-
-			if( f ) { 
-				QThread::usleep(100);				
-				//QMessageBox msgBoxD;
-				//msgBoxD.setText("D");
-				//msgBoxD.exec();
-			}
-
-			QString id (pu->getMacAddress());
-			
-			registerEndPoint = registerEndPoint + "?machineUID=" + id + "&state=STARTUP&address=" + payAddress + "&userID=" + pu->getUserID();
-			QUrl url(registerEndPoint);
-			QNetworkRequest request;
-			request.setUrl(url);
-			
-			QNetworkAccessManager networkManager;
-
-			QNetworkReply* currentReply = networkManager.get(request);
-			
-			/*
-			connect(currentReply, SIGNAL(&QNetworkReply::finished), [=]() {
-
-				if(currentReply->error() == QNetworkReply::NoError)
-				{
-					currentReply->readAll();
-					// do something with the data...
-					//QMessageBox msgBoxE;
-					//msgBoxE.setText("Registration completed");
-					//msgBoxE.exec();
-				}
-				else // handle error
-				{
-					QMessageBox msgBoxE;
-					msgBoxE.setText(currentReply->errorString());
-					msgBoxE.exec();
-				  //qDebug(currentReply->errorString());
-				}
-			});
-			*/
-			//connect(networkManager, SIGNAL(finished(currentReply)), this, SLOT(replyFinished(currentReply)));
-
-			QEventLoop loop;
-			connect(currentReply, SIGNAL(finished()), &loop, SLOT(quit()));
-			loop.exec();
-
-			currentReply->readAll();
-			currentReply->deleteLater();
-			
-			if( f ) { 
-				QThread::usleep(300);				
-				//QMessageBox msgBoxE;
-				//msgBoxE.setText("E");
-				//msgBoxE.exec();
-			}
-		
-		} catch(...) { 
-			QMessageBox msgBoxError;
-			msgBoxError.setText("Unable to register with placeholder endpoint url");
-			msgBoxError.exec();
-		} 
-	
-	
-	// PHL
-	/////////////////////////////////////////////
-
-    // Ensure a walletView is able to show the main window
-    connect(walletView, SIGNAL(showNormalIfMinimized()), gui, SLOT(showNormalIfMinimized()));
-
-    connect(walletView, SIGNAL(outOfSyncWarningClicked()), this, SLOT(outOfSyncWarningClicked()));
+    connect(walletView, &WalletView::outOfSyncWarningClicked, this, &WalletFrame::outOfSyncWarningClicked);
+    connect(walletView, &WalletView::transactionClicked, gui, &PlaceholdersGUI::gotoHistoryPage);
+    connect(walletView, &WalletView::coinsSent, gui, &PlaceholdersGUI::gotoHistoryPage);
+    connect(walletView, &WalletView::message, [this](const QString& title, const QString& message, unsigned int style) {
+        gui->message(title, message, style);
+    });
+    connect(walletView, &WalletView::encryptionStatusChanged, gui, &PlaceholdersGUI::updateWalletStatus);
+    connect(walletView, &WalletView::incomingTransaction, gui, &PlaceholdersGUI::incomingTransaction);
+    connect(walletView, &WalletView::hdEnabledStatusChanged, gui, &PlaceholdersGUI::updateWalletStatus);
+    connect(gui, &PlaceholdersGUI::setPrivacy, walletView, &WalletView::setPrivacy);
 
     return true;
 }
 
-bool WalletFrame::setCurrentWallet(const QString& name)
+void WalletFrame::setCurrentWallet(WalletModel* wallet_model)
 {
-    if (mapWalletViews.count(name) == 0)
-        return false;
+    if (mapWalletViews.count(wallet_model) == 0) return;
 
-    WalletView *walletView = mapWalletViews.value(name);
+    WalletView *walletView = mapWalletViews.value(wallet_model);
     walletStack->setCurrentWidget(walletView);
     assert(walletView);
     walletView->updateEncryptionStatus();
-    return true;
 }
 
-bool WalletFrame::removeWallet(const QString &name)
+void WalletFrame::removeWallet(WalletModel* wallet_model)
 {
-    if (mapWalletViews.count(name) == 0)
-        return false;
+    if (mapWalletViews.count(wallet_model) == 0) return;
 
-    WalletView *walletView = mapWalletViews.take(name);
+    WalletView *walletView = mapWalletViews.take(wallet_model);
     walletStack->removeWidget(walletView);
-    return true;
+    delete walletView;
 }
 
 void WalletFrame::removeAllWallets()
 {
-    QMap<QString, WalletView*>::const_iterator i;
+    QMap<WalletModel*, WalletView*>::const_iterator i;
     for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
         walletStack->removeWidget(i.value());
     mapWalletViews.clear();
@@ -264,35 +118,35 @@ bool WalletFrame::handlePaymentRequest(const SendCoinsRecipient &recipient)
 void WalletFrame::showOutOfSyncWarning(bool fShow)
 {
     bOutOfSync = fShow;
-    QMap<QString, WalletView*>::const_iterator i;
+    QMap<WalletModel*, WalletView*>::const_iterator i;
     for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
         i.value()->showOutOfSyncWarning(fShow);
 }
 
 void WalletFrame::gotoOverviewPage()
 {
-    QMap<QString, WalletView*>::const_iterator i;
+    QMap<WalletModel*, WalletView*>::const_iterator i;
     for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
         i.value()->gotoOverviewPage();
 }
 
 void WalletFrame::gotoHistoryPage()
 {
-    QMap<QString, WalletView*>::const_iterator i;
+    QMap<WalletModel*, WalletView*>::const_iterator i;
     for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
         i.value()->gotoHistoryPage();
 }
 
 void WalletFrame::gotoReceiveCoinsPage()
 {
-    QMap<QString, WalletView*>::const_iterator i;
+    QMap<WalletModel*, WalletView*>::const_iterator i;
     for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
         i.value()->gotoReceiveCoinsPage();
 }
 
 void WalletFrame::gotoSendCoinsPage(QString addr)
 {
-    QMap<QString, WalletView*>::const_iterator i;
+    QMap<WalletModel*, WalletView*>::const_iterator i;
     for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
         i.value()->gotoSendCoinsPage(addr);
 }
@@ -309,6 +163,14 @@ void WalletFrame::gotoVerifyMessageTab(QString addr)
     WalletView *walletView = currentWalletView();
     if (walletView)
         walletView->gotoVerifyMessageTab(addr);
+}
+
+void WalletFrame::gotoLoadPSBT()
+{
+    WalletView *walletView = currentWalletView();
+    if (walletView) {
+        walletView->gotoLoadPSBT();
+    }
 }
 
 void WalletFrame::encryptWallet(bool status)
@@ -353,50 +215,18 @@ void WalletFrame::usedReceivingAddresses()
         walletView->usedReceivingAddresses();
 }
 
-WalletView *WalletFrame::currentWalletView()
+WalletView* WalletFrame::currentWalletView() const
 {
     return qobject_cast<WalletView*>(walletStack->currentWidget());
+}
+
+WalletModel* WalletFrame::currentWalletModel() const
+{
+    WalletView* wallet_view = currentWalletView();
+    return wallet_view ? wallet_view->getWalletModel() : nullptr;
 }
 
 void WalletFrame::outOfSyncWarningClicked()
 {
     Q_EMIT requestedSyncWarningInfo();
-}
-
-/** PHL START */
-void WalletFrame::gotoAssetsPage()
-{
-    QMap<QString, WalletView*>::const_iterator i;
-    for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
-        i.value()->gotoAssetsPage();
-}
-
-/** PHL START */
-void WalletFrame::gotoRepositoryPage()
-{
-    QMap<QString, WalletView*>::const_iterator i;
-    for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
-        i.value()->gotoRepositoryPage();
-}
-
-/** PHL START */
-void WalletFrame::gotoProvideResourcesPage()
-{
-    QMap<QString, WalletView*>::const_iterator i;
-    for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
-        i.value()->gotoProvideResourcesPage();
-}
-
-void WalletFrame::gotoDeployVMPage()
-{
-    QMap<QString, WalletView*>::const_iterator i;
-    for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
-        i.value()->gotoDeployVMPage();
-}
-
-void WalletFrame::displayAssetInfo()
-{
-    QMap<QString, WalletView*>::const_iterator i;
-    for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
-        i.value()->displayAssetInfo();
 }

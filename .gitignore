@@ -1,18 +1,18 @@
-buildspecs
-Jenkinsfile
 *.tar.gz
 
 *.exe
+*.pdb
 src/placeh
 src/placehd
 src/placeh-cli
+src/placeh-gui
+src/placeh-node
 src/placeh-tx
+src/placeh-wallet
+src/test/fuzz
+!src/test/fuzz/*.*
 src/test/test_placeh
-src/test/test_placeh_fuzzy
-src/test/test_placeh_hash
 src/qt/test/test_placeh-qt
-.vscode
-output.txt
 
 # autoreconf
 Makefile.in
@@ -31,6 +31,7 @@ build-aux/m4/ltversion.m4
 build-aux/missing
 build-aux/compile
 build-aux/test-driver
+config.cache
 config.log
 config.status
 configure
@@ -38,10 +39,11 @@ libtool
 src/config/placeh-config.h
 src/config/placeh-config.h.in
 src/config/stamp-h1
+src/obj
 share/setup.nsi
 share/qt/Info.plist
 
-
+src/univalue/gen
 
 src/qt/*.moc
 src/qt/moc_*.cpp
@@ -49,10 +51,11 @@ src/qt/forms/ui_*.h
 
 src/qt/test/moc*.cpp
 
-.settings
-.cproject
-.project
-.vscode
+src/qt/placeh-qt.config
+src/qt/placeh-qt.creator
+src/qt/placeh-qt.creator.user
+src/qt/placeh-qt.files
+src/qt/placeh-qt.includes
 
 .deps
 .dirstamp
@@ -65,10 +68,10 @@ src/qt/test/moc*.cpp
 *.pyc
 *.o
 *.o-*
-*.patch
 *.a
 *.pb.cc
 *.pb.h
+*.dat
 
 *.log
 *.trs
@@ -77,6 +80,10 @@ src/qt/test/moc*.cpp
 *.json.h
 *.raw.h
 
+# Only ignore unexpected patches
+*.patch
+!depends/patches/**/*.patch
+
 #libtool object files
 *.lo
 *.la
@@ -84,8 +91,13 @@ src/qt/test/moc*.cpp
 # Compilation and Qt preprocessor part
 *.qm
 Makefile
-placeh-qt
-Placeh-Qt.app
+!depends/Makefile
+src/qt/placeh-qt
+Placeholders-Qt.app
+background.tiff*
+
+# Qt Creator
+Makefile.am.user
 
 # Unit-tests
 Makefile.test
@@ -97,7 +109,9 @@ qrc_*.cpp
 # Mac specific
 .DS_Store
 build
-src/bench/bench_placeh
+
+# Previous releases
+releases
 
 #lcov
 *.gcno
@@ -113,6 +127,7 @@ linux-build
 win32-build
 test/config.ini
 test/cache/*
+test/.mypy_cache/
 
 !src/leveldb*/Makefile
 
@@ -120,7 +135,15 @@ test/cache/*
 
 libplacehconsensus.pc
 contrib/devtools/split-debug.sh
-.idea
-cmake-build-debug
 
-CMakeLists.txt
+# Output from running db4 installation
+db4/
+
+# clang-check
+*.plist
+
+osx_volname
+dist/
+*.background.tiff
+
+.appdata

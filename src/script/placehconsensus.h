@@ -1,16 +1,15 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Placeholder Core developers
+// Copyright (c) 2009-2018 The Placeholders Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_PLACEHCONSENSUS_H
-#define PLACEH_PLACEHCONSENSUS_H
+#ifndef PLACEH_SCRIPT_PLACEHCONSENSUS_H
+#define PLACEH_SCRIPT_PLACEHCONSENSUS_H
 
 #include <stdint.h>
 
 #if defined(BUILD_PLACEH_INTERNAL) && defined(HAVE_CONFIG_H)
-#include "config/placeh-config.h"
+#include <config/placeh-config.h>
   #if defined(_WIN32)
     #if defined(DLL_EXPORT)
       #if defined(HAVE_FUNC_ATTRIBUTE_DLLEXPORT)
@@ -81,4 +80,4 @@ EXPORT_SYMBOL unsigned int placehconsensus_version();
 
 #undef EXPORT_SYMBOL
 
-#endif // PLACEH_PLACEHCONSENSUS_H
+#endif // PLACEH_SCRIPT_PLACEHCONSENSUS_H

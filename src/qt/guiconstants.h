@@ -1,10 +1,11 @@
-// Copyright (c) 2011-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Placeholder Core developers
+// Copyright (c) 2011-2020 The Placeholders Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #ifndef PLACEH_QT_GUICONSTANTS_H
 #define PLACEH_QT_GUICONSTANTS_H
+
+#include <cstdint>
 
 /* Milliseconds between model updates */
 static const int MODEL_UPDATE_DELAY = 250;
@@ -12,7 +13,7 @@ static const int MODEL_UPDATE_DELAY = 250;
 /* AskPassphraseDialog -- Maximum passphrase length */
 static const int MAX_PASSPHRASE_SIZE = 1024;
 
-/* PlacehGUI -- Size of icons in status bar */
+/* PlaceholdersGUI -- Size of icons in status bar */
 static const int STATUSBAR_ICONSIZE = 16;
 
 static const bool DEFAULT_SPLASHSCREEN = true;
@@ -28,8 +29,6 @@ static const bool DEFAULT_SPLASHSCREEN = true;
 #define COLOR_BAREADDRESS QColor(140, 140, 140)
 /* Transaction list -- TX status decoration - open until date */
 #define COLOR_TX_STATUS_OPENUNTILDATE QColor(64, 64, 255)
-/* Transaction list -- TX status decoration - offline */
-#define COLOR_TX_STATUS_OFFLINE QColor(192, 192, 192)
 /* Transaction list -- TX status decoration - danger, tx needs attention */
 #define COLOR_TX_STATUS_DANGER QColor(200, 100, 100)
 /* Transaction list -- TX status decoration - default color */
@@ -40,18 +39,19 @@ static const bool DEFAULT_SPLASHSCREEN = true;
  */
 static const int TOOLTIP_WRAP_THRESHOLD = 80;
 
-/* Maximum allowed URI length */
-static const int MAX_URI_LENGTH = 255;
-
-/* QRCodeDialog -- size of exported QR Code image */
-#define QR_IMAGE_SIZE 300
-
 /* Number of frames in spinner animation */
 #define SPINNER_FRAMES 36
 
-#define QAPP_ORG_NAME "Placeh"
-#define QAPP_ORG_DOMAIN "placeh.org"
-#define QAPP_APP_NAME_DEFAULT "Placeh-Qt"
-#define QAPP_APP_NAME_TESTNET "Placeh-Qt-testnet"
+#define QAPP_ORG_NAME "Placeholders"
+#define QAPP_ORG_DOMAIN "placehproject.com"
+#define QAPP_APP_NAME_DEFAULT "Placeholders-Qt"
+#define QAPP_APP_NAME_TESTNET "Placeholders-Qt-testnet"
+#define QAPP_APP_NAME_REGTEST "Placeholders-Qt-regtest"
+
+/* One gigabyte (GB) in bytes */
+static constexpr uint64_t GB_BYTES{1000000000};
+
+// Default prune target displayed in GUI.
+static constexpr int DEFAULT_PRUNE_TARGET_GB{2};
 
 #endif // PLACEH_QT_GUICONSTANTS_H

@@ -1,26 +1,26 @@
 #!/usr/bin/env python3
-# Copyright (c) 2016 The Bitcoin Core developers
-# Copyright (c) 2017-2018 The Placeholder Core developers
+# Copyright (c) 2016-2019 The Placeholders Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test using named arguments for RPCs."""
 
-from test_framework.test_framework import PlacehTestFramework
+from test_framework.test_framework import PlaceholdersTestFramework
 from test_framework.util import (
     assert_equal,
     assert_raises_rpc_error,
 )
 
-class NamedArgumentTest(PlacehTestFramework):
+class NamedArgumentTest(PlaceholdersTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
+        self.supports_cli = False
 
     def run_test(self):
         node = self.nodes[0]
-        h = node.help(command='getinfo')
-        assert(h.startswith('getinfo\n'))
+        h = node.help(command='getblockchaininfo')
+        assert h.startswith('getblockchaininfo\n')
 
-        assert_raises_rpc_error(-8, 'Unknown named parameter', node.help, random='getinfo')
+        assert_raises_rpc_error(-8, 'Unknown named parameter', node.help, random='getblockchaininfo')
 
         h = node.getblockhash(height=0)
         node.getblock(blockhash=h)

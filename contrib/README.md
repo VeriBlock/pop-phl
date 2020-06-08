@@ -3,17 +3,17 @@ Repository Tools
 
 ### [Developer tools](/contrib/devtools) ###
 Specific tools for developers working on this repository.
-Contains the script `github-merge.py` for merging GitHub pull requests securely and signing them using GPG.
+Additional tools, including the `github-merge.py` script, are available in the [maintainer-tools](https://github.com/placeh-core/placeh-maintainer-tools) repository.
 
 ### [Verify-Commits](/contrib/verify-commits) ###
-Tool to verify that every merge commit was signed by a developer using the above `github-merge.py` script.
+Tool to verify that every merge commit was signed by a developer using the `github-merge.py` script.
 
 ### [Linearize](/contrib/linearize) ###
 Construct a linear, no-fork, best version of the blockchain.
 
 ### [Qos](/contrib/qos) ###
 
-A Linux bash script that will set up traffic control (tc) to limit the outgoing bandwidth for connections to the Placeh network. This means one can have an always-on placehd instance running, and another local placehd/placeh-qt instance which connects to this node and receives blocks from it.
+A Linux bash script that will set up traffic control (tc) to limit the outgoing bandwidth for connections to the Placeholders network. This means one can have an always-on placehd instance running, and another local placehd/placeh-qt instance which connects to this node and receives blocks from it.
 
 ### [Seeds](/contrib/seeds) ###
 Utility to generate the pnSeed[] array that is compiled into the client.
@@ -21,30 +21,28 @@ Utility to generate the pnSeed[] array that is compiled into the client.
 Build Tools and Keys
 ---------------------
 
-### [Debian](/contrib/debian) ###
-Contains files used to package placehd/placeh-qt
-for Debian-based Linux systems. If you compile placehd/placeh-qt yourself, there are some useful files here.
+### Packaging ###
+The [Debian](/contrib/debian) subfolder contains the copyright file.
+
+All other packaging related files can be found in the [placeh-core/packaging](https://github.com/placeh-core/packaging) repository.
 
 ### [Gitian-descriptors](/contrib/gitian-descriptors) ###
-Files used during the gitian build process. For more information about gitian, see the [the Placeholder Core documentation repository](https://github.com/placeh-core/docs).
+Files used during the gitian build process. For more information about gitian, see the [the Placeholders Core documentation repository](https://github.com/placeh-core/docs).
 
 ### [Gitian-keys](/contrib/gitian-keys)
-PGP keys used for signing Placeholder Core [Gitian release](/doc/release-process.md) results.
+PGP keys used for signing Placeholders Core [Gitian release](/doc/release-process.md) results.
 
 ### [MacDeploy](/contrib/macdeploy) ###
-Scripts and notes for Mac builds. 
+Scripts and notes for Mac builds.
 
-### [RPM](/contrib/rpm) ###
-RPM spec file for building placeh-core on RPM based distributions.
-
-### [Gitian-build](/contrib/gitian-build.sh) ###
+### [Gitian-build](/contrib/gitian-build.py) ###
 Script for running full Gitian builds.
 
-Test and Verify Tools 
+Test and Verify Tools
 ---------------------
 
 ### [TestGen](/contrib/testgen) ###
-Utilities to generate test vectors for the data-driven Placeh tests.
+Utilities to generate test vectors for the data-driven Placeholders tests.
 
 ### [Verify Binaries](/contrib/verifybinaries) ###
-This script attempts to download and verify the signature file SHA256SUMS.asc from placeh.org.
+This script attempts to download and verify the signature file SHA256SUMS.asc from placehproject.com.

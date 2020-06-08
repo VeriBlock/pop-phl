@@ -1,18 +1,14 @@
-// Copyright (c) 2011-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Placeholder Core developers
+// Copyright (c) 2011-2020 The Placeholders Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #ifndef PLACEH_QT_WALLETVIEW_H
 #define PLACEH_QT_WALLETVIEW_H
 
-#include "amount.h"
+#include <amount.h>
 
 #include <QStackedWidget>
-#include <QApplication>
-#include <QtWidgets>
 
-class PlacehGUI;
 class ClientModel;
 class OverviewPage;
 class PlatformStyle;
@@ -22,10 +18,6 @@ class SendCoinsRecipient;
 class TransactionView;
 class WalletModel;
 class AddressBookPage;
-class AssetsDialog;
-class RepositoryDialog;
-class ProvideResourcesDialog;
-class DeployVMDialog;
 
 QT_BEGIN_NAMESPACE
 class QModelIndex;
@@ -46,11 +38,11 @@ public:
     explicit WalletView(const PlatformStyle *platformStyle, QWidget *parent);
     ~WalletView();
 
-    void setPlacehGUI(PlacehGUI *gui);
     /** Set the client model.
         The client model represents the part of the core that communicates with the P2P network, and is wallet-agnostic.
     */
     void setClientModel(ClientModel *clientModel);
+    WalletModel *getWalletModel() { return walletModel; }
     /** Set the wallet model.
         The wallet model represents a placeh wallet, and offers access to the list of transactions, address book and sending
         functionality.
@@ -60,8 +52,6 @@ public:
     bool handlePaymentRequest(const SendCoinsRecipient& recipient);
 
     void showOutOfSyncWarning(bool fShow);
-
-    void displayAssetInfo();
 
 private:
     ClientModel *clientModel;
@@ -76,26 +66,9 @@ private:
 
     TransactionView *transactionView;
 
-    QProgressDialog *progressDialog;
+    QProgressDialog* progressDialog{nullptr};
     const PlatformStyle *platformStyle;
 
-
-    /** PHL START */
-    AssetsDialog *assetsPage;
-    /** PHL END */
-
-    /** PHL START */
-    RepositoryDialog *repositoryPage;
-    /** PHL END */
-
-    /** PHL START */
-    ProvideResourcesDialog *provideResourcesPage;
-    /** PHL END */
-	
-	 /** PHL START */
-    DeployVMDialog *deployVMPage;
-    /** PHL END */
-	
 public Q_SLOTS:
     /** Switch to overview (home) page */
     void gotoOverviewPage();
@@ -110,12 +83,14 @@ public Q_SLOTS:
     void gotoSignMessageTab(QString addr = "");
     /** Show Sign/Verify Message dialog and switch to verify message tab */
     void gotoVerifyMessageTab(QString addr = "");
+    /** Load Partially Signed Placeholders Transaction */
+    void gotoLoadPSBT();
 
     /** Show incoming transaction notification for new transactions.
 
         The new items are those between start and end inclusive, under the given parent item.
     */
-    void processNewTransaction(const QModelIndex& parent, int start, int end);
+    void processNewTransaction(const QModelIndex& parent, int start, int /*end*/);
     /** Encrypt the wallet */
     void encryptWallet(bool status);
     /** Backup the wallet */
@@ -139,34 +114,20 @@ public Q_SLOTS:
     /** User has requested more information about the out of sync state */
     void requestedSyncWarningInfo();
 
-
-    /** PHL START */
-    void gotoAssetsPage();
-    /** PHL END */
-
-    void gotoRepositoryPage();
-    /** PHL END */
-
-    void gotoProvideResourcesPage();
-    /** PHL END */
-    void gotoDeployVMPage();
-    /** PHL END */
-
 Q_SIGNALS:
-    /** Signal that we want to show the main window */
-    void showNormalIfMinimized();
+    void setPrivacy(bool privacy);
+    void transactionClicked();
+    void coinsSent();
     /**  Fired when a message should be reported to the user */
     void message(const QString &title, const QString &message, unsigned int style);
     /** Encryption status of wallet changed */
-    void encryptionStatusChanged(int status);
+    void encryptionStatusChanged();
     /** HD-Enabled status of wallet changed (only possible during startup) */
-    void hdEnabledStatusChanged(int hdEnabled);
+    void hdEnabledStatusChanged();
     /** Notify that a new transaction appeared */
-    void incomingTransaction(const QString& date, int unit, const CAmount& amount, const QString& type, const QString& address, const QString& label, const QString& assetName);
+    void incomingTransaction(const QString& date, int unit, const CAmount& amount, const QString& type, const QString& address, const QString& label, const QString& walletName);
     /** Notify that the out of sync warning icon has been pressed */
     void outOfSyncWarningClicked();
-    /** Show the assets GUI */
-    void checkAssets();
 };
 
 #endif // PLACEH_QT_WALLETVIEW_H

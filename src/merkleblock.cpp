@@ -1,17 +1,31 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The Bitcoin Core developers
-// Copyright (c) 2017 The Raven Core developers
-// Copyright (c) 2018 The Placeholder Core developers
+// Copyright (c) 2009-2019 The Placeholders Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "merkleblock.h"
+#include <merkleblock.h>
 
-#include "hash.h"
-#include "consensus/consensus.h"
-#include "utilstrencodings.h"
-#include "validation.h"
+#include <hash.h>
+#include <consensus/consensus.h>
 
+
+std::vector<unsigned char> BitsToBytes(const std::vector<bool>& bits)
+{
+    std::vector<unsigned char> ret((bits.size() + 7) / 8);
+    for (unsigned int p = 0; p < bits.size(); p++) {
+        ret[p / 8] |= bits[p] << (p % 8);
+    }
+    return ret;
+}
+
+std::vector<bool> BytesToBits(const std::vector<unsigned char>& bytes)
+{
+    std::vector<bool> ret(bytes.size() * 8);
+    for (unsigned int p = 0; p < ret.size(); p++) {
+        ret[p] = (bytes[p / 8] & (1 << (p % 8))) != 0;
+    }
+    return ret;
+}
 
 CMerkleBlock::CMerkleBlock(const CBlock& block, CBloomFilter* filter, const std::set<uint256>* txids)
 {
@@ -56,7 +70,7 @@ uint256 CPartialMerkleTree::CalcHash(int height, unsigned int pos, const std::ve
         else
             right = left;
         // combine subhashes
-        return Hash(BEGIN(left), END(left), BEGIN(right), END(right));
+        return Hash(left.begin(), left.end(), right.begin(), right.end());
     }
 }
 
@@ -112,7 +126,7 @@ uint256 CPartialMerkleTree::TraverseAndExtract(int height, unsigned int pos, uns
             right = left;
         }
         // and combine them before returning
-        return Hash(BEGIN(left), END(left), BEGIN(right), END(right));
+        return Hash(left.begin(), left.end(), right.begin(), right.end());
     }
 }
 
@@ -138,7 +152,7 @@ uint256 CPartialMerkleTree::ExtractMatches(std::vector<uint256> &vMatch, std::ve
     if (nTransactions == 0)
         return uint256();
     // check for excessively high numbers of transactions
-    if (nTransactions > GetMaxBlockWeight() / MIN_TRANSACTION_WEIGHT)
+    if (nTransactions > MAX_BLOCK_WEIGHT / MIN_TRANSACTION_WEIGHT)
         return uint256();
     // there can never be more hashes provided than one for every txid
     if (vHash.size() > nTransactions)

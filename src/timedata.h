@@ -1,7 +1,4 @@
-// Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The Bitcoin Core developers
-// Copyright (c) 2017 The Raven Core developers
-// Copyright (c) 2018 The Placeholder Core developers
+// Copyright (c) 2014-2018 The Placeholders Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -17,7 +14,7 @@ static const int64_t DEFAULT_MAX_TIME_ADJUSTMENT = 70 * 60;
 
 class CNetAddr;
 
-/** 
+/**
  * Median filter over a stream of values.
  * Returns the median of the last N numbers
  */

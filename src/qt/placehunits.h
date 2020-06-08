@@ -1,40 +1,18 @@
-// Copyright (c) 2011-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Placeholder Core developers
+// Copyright (c) 2011-2020 The Placeholders Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #ifndef PLACEH_QT_PLACEHUNITS_H
 #define PLACEH_QT_PLACEHUNITS_H
 
-#include "amount.h"
+#include <amount.h>
 
 #include <QAbstractListModel>
 #include <QString>
 
-// Asset units
-#define MAX_ASSET_UNITS 8
-#define MIN_ASSET_UNITS 0
-
-
 // U+2009 THIN SPACE = UTF-8 E2 80 89
 #define REAL_THIN_SP_CP 0x2009
 #define REAL_THIN_SP_UTF8 "\xE2\x80\x89"
-#define REAL_THIN_SP_HTML "&thinsp;"
-
-// U+200A HAIR SPACE = UTF-8 E2 80 8A
-#define HAIR_SP_CP 0x200A
-#define HAIR_SP_UTF8 "\xE2\x80\x8A"
-#define HAIR_SP_HTML "&#8202;"
-
-// U+2006 SIX-PER-EM SPACE = UTF-8 E2 80 86
-#define SIXPEREM_SP_CP 0x2006
-#define SIXPEREM_SP_UTF8 "\xE2\x80\x86"
-#define SIXPEREM_SP_HTML "&#8198;"
-
-// U+2007 FIGURE SPACE = UTF-8 E2 80 87
-#define FIGURE_SP_CP 0x2007
-#define FIGURE_SP_UTF8 "\xE2\x80\x87"
-#define FIGURE_SP_HTML "&#8199;"
 
 // QMessageBox seems to have a bug whereby it doesn't display thin/hair spaces
 // correctly.  Workaround is to display a space in a small font.  If you
@@ -47,24 +25,25 @@
 #define THIN_SP_UTF8 REAL_THIN_SP_UTF8
 #define THIN_SP_HTML HTML_HACK_SP
 
-/** Placeh unit definitions. Encapsulates parsing and formatting
+/** Placeholders unit definitions. Encapsulates parsing and formatting
    and serves as list model for drop-down selection boxes.
 */
-class PlacehUnits: public QAbstractListModel
+class PlaceholdersUnits: public QAbstractListModel
 {
     Q_OBJECT
 
 public:
-    explicit PlacehUnits(QObject *parent);
+    explicit PlaceholdersUnits(QObject *parent);
 
-    /** Placeh units.
+    /** Placeholders units.
       @note Source: https://en.placeh.it/wiki/Units . Please add only sensible ones
      */
     enum Unit
     {
         PHL,
         mPHL,
-        uPHL
+        uPHL,
+        SAT
     };
 
     enum SeparatorStyle
@@ -82,8 +61,10 @@ public:
     static QList<Unit> availableUnits();
     //! Is unit ID valid?
     static bool valid(int unit);
+    //! Long name
+    static QString longName(int unit);
     //! Short name
-    static QString name(int unit);
+    static QString shortName(int unit);
     //! Longer description
     static QString description(int unit);
     //! Number of Satoshis (1e-8) per unit
@@ -91,13 +72,13 @@ public:
     //! Number of decimals left
     static int decimals(int unit);
     //! Format as string
-    static QString format(int unit, const CAmount& amount, bool plussign=false, SeparatorStyle separators=separatorStandard, const int nAssetUnit = MIN_ASSET_UNITS - 1);
+    static QString format(int unit, const CAmount& amount, bool plussign = false, SeparatorStyle separators = separatorStandard, bool justify = false);
     //! Format as string (with unit)
     static QString formatWithUnit(int unit, const CAmount& amount, bool plussign=false, SeparatorStyle separators=separatorStandard);
-    //! Format as string (with custom name)
-    static QString formatWithCustomName(QString customName, const CAmount& amount, int unit = MAX_ASSET_UNITS, bool plussign=false, SeparatorStyle separators=separatorStandard);
     //! Format as HTML string (with unit)
     static QString formatHtmlWithUnit(int unit, const CAmount& amount, bool plussign=false, SeparatorStyle separators=separatorStandard);
+    //! Format as string (with unit) of fixed length to preserve privacy, if it is set.
+    static QString formatWithPrivacy(int unit, const CAmount& amount, SeparatorStyle separators, bool privacy);
     //! Parse string to coin amount
     static bool parse(int unit, const QString &value, CAmount *val_out);
     //! Gets title for amount column including current display unit if optionsModel reference available */
@@ -111,17 +92,14 @@ public:
         /** Unit identifier */
         UnitRole = Qt::UserRole
     };
-    int rowCount(const QModelIndex &parent) const;
-    QVariant data(const QModelIndex &index, int role) const;
+    int rowCount(const QModelIndex &parent) const override;
+    QVariant data(const QModelIndex &index, int role) const override;
     ///@}
 
     static QString removeSpaces(QString text)
     {
         text.remove(' ');
         text.remove(QChar(THIN_SP_CP));
-#if (THIN_SP_CP != REAL_THIN_SP_CP)
-        text.remove(QChar(REAL_THIN_SP_CP));
-#endif
         return text;
     }
 
@@ -129,8 +107,8 @@ public:
     static CAmount maxMoney();
 
 private:
-    QList<PlacehUnits::Unit> unitlist;
+    QList<PlaceholdersUnits::Unit> unitlist;
 };
-typedef PlacehUnits::Unit PlacehUnit;
+typedef PlaceholdersUnits::Unit PlaceholdersUnit;
 
 #endif // PLACEH_QT_PLACEHUNITS_H

@@ -1,25 +1,23 @@
-// Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The Bitcoin Core developers
-// Copyright (c) 2017 The Raven Core developers
-// Copyright (c) 2018 The Placeholder Core developers
+// Copyright (c) 2014-2020 The Placeholders Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
 #if defined(HAVE_CONFIG_H)
-#include "config/placeh-config.h"
+#include <config/placeh-config.h>
 #endif
 
-#include "timedata.h"
+#include <timedata.h>
 
-#include "netaddress.h"
-#include "sync.h"
-#include "ui_interface.h"
-#include "util.h"
-#include "utilstrencodings.h"
-#include "warnings.h"
+#include <netaddress.h>
+#include <sync.h>
+#include <ui_interface.h>
+#include <util/system.h>
+#include <util/translation.h>
+#include <warnings.h>
 
 
-static CCriticalSection cs_nTimeOffset;
-static int64_t nTimeOffset = 0;
+static RecursiveMutex cs_nTimeOffset;
+static int64_t nTimeOffset GUARDED_BY(cs_nTimeOffset) = 0;
 
 /**
  * "Never go to sea with two chronometers; take one or three."
@@ -96,25 +94,25 @@ void AddTimeData(const CNetAddr& ip, int64_t nOffsetSample)
             {
                 // If nobody has a time different than ours but within 5 minutes of ours, give a warning
                 bool fMatch = false;
-                for (int64_t nOffset : vSorted)
+                for (const int64_t nOffset : vSorted)
                     if (nOffset != 0 && abs64(nOffset) < 5 * 60)
                         fMatch = true;
 
                 if (!fMatch)
                 {
                     fDone = true;
-                    std::string strMessage = strprintf(_("Please check that your computer's date and time are correct! If your clock is wrong, %s will not work properly."), _(PACKAGE_NAME));
-                    SetMiscWarning(strMessage);
+                    bilingual_str strMessage = strprintf(_("Please check that your computer's date and time are correct! If your clock is wrong, %s will not work properly."), PACKAGE_NAME);
+                    SetMiscWarning(strMessage.translated);
                     uiInterface.ThreadSafeMessageBox(strMessage, "", CClientUIInterface::MSG_WARNING);
                 }
             }
         }
 
         if (LogAcceptCategory(BCLog::NET)) {
-            for (int64_t n : vSorted) {
-                LogPrint(BCLog::NET, "%+d  ", n);
+            for (const int64_t n : vSorted) {
+                LogPrint(BCLog::NET, "%+d  ", n); /* Continued */
             }
-            LogPrint(BCLog::NET, "|  ");
+            LogPrint(BCLog::NET, "|  "); /* Continued */
 
             LogPrint(BCLog::NET, "nTimeOffset = %+d  (%+d minutes)\n", nTimeOffset, nTimeOffset/60);
         }

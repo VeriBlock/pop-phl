@@ -1,23 +1,25 @@
-// Copyright (c) 2011-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Placeholder Core developers
+// Copyright (c) 2011-2018 The Placeholders Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #ifndef PLACEH_QT_SPLASHSCREEN_H
 #define PLACEH_QT_SPLASHSCREEN_H
 
+#include <QWidget>
 
-#include <functional>
-#include <QtWidgets>
-#include <QSplashScreen>
-#include <QNetworkAccessManager>
+#include <memory>
 
-class CWallet;
 class NetworkStyle;
+
+namespace interfaces {
+class Handler;
+class Node;
+class Wallet;
+};
 
 /** Class for the splashscreen with information of the running client.
  *
- * @note this is intentionally not a QSplashScreen. Placeholder Core initialization
+ * @note this is intentionally not a QSplashScreen. Placeholders Core initialization
  * can take a long time, and in that case a progress window that cannot be
  * moved around and minimized has turned out to be frustrating to the user.
  */
@@ -26,22 +28,22 @@ class SplashScreen : public QWidget
     Q_OBJECT
 
 public:
-    explicit SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle);
+    explicit SplashScreen(interfaces::Node& node, Qt::WindowFlags f, const NetworkStyle *networkStyle);
     ~SplashScreen();
 
 protected:
-    void paintEvent(QPaintEvent *event);
-    void closeEvent(QCloseEvent *event);
+    void paintEvent(QPaintEvent *event) override;
+    void closeEvent(QCloseEvent *event) override;
 
 public Q_SLOTS:
-    /** Slot to call finish() method as it's not defined as slot */
-    void slotFinish(QWidget *mainWin);
+    /** Hide the splash screen window and schedule the splash screen object for deletion */
+    void finish();
 
     /** Show message and progress */
     void showMessage(const QString &message, int alignment, const QColor &color);
 
 protected:
-    bool eventFilter(QObject * obj, QEvent * ev);
+    bool eventFilter(QObject * obj, QEvent * ev) override;
 
 private:
     /** Connect core signals to splash screen */
@@ -49,16 +51,19 @@ private:
     /** Disconnect core signals to splash screen */
     void unsubscribeFromCoreSignals();
     /** Connect wallet signals to splash screen */
-    void ConnectWallet(CWallet*);
+    void ConnectWallet(std::unique_ptr<interfaces::Wallet> wallet);
 
     QPixmap pixmap;
-    //QPixmap pixmap(":/media/splash.png");
-	QString curMessage;
+    QString curMessage;
     QColor curColor;
     int curAlignment;
-	QNetworkAccessManager networkManager;
 
-    QList<CWallet*> connectedWallets;
+    interfaces::Node& m_node;
+    std::unique_ptr<interfaces::Handler> m_handler_init_message;
+    std::unique_ptr<interfaces::Handler> m_handler_show_progress;
+    std::unique_ptr<interfaces::Handler> m_handler_load_wallet;
+    std::list<std::unique_ptr<interfaces::Wallet>> m_connected_wallets;
+    std::list<std::unique_ptr<interfaces::Handler>> m_connected_wallet_handlers;
 };
 
 #endif // PLACEH_QT_SPLASHSCREEN_H

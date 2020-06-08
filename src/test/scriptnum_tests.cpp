@@ -1,11 +1,10 @@
-// Copyright (c) 2012-2015 The Bitcoin Core developers
-// Copyright (c) 2017 The Placeholder Core developers
+// Copyright (c) 2012-2020 The Placeholders Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "scriptnum10.h"
-#include "script/script.h"
-#include "test/test_placeh.h"
+#include <script/script.h>
+#include <test/scriptnum10.h>
+#include <test/util/setup_common.h>
 
 #include <boost/test/unit_test.hpp>
 #include <limits.h>

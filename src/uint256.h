@@ -1,7 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The Bitcoin Core developers
-// Copyright (c) 2017 The Raven Core developers
-// Copyright (c) 2018 The Placeholder Core developers
+// Copyright (c) 2009-2019 The Placeholders Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -14,7 +12,7 @@
 #include <stdint.h>
 #include <string>
 #include <vector>
-#include "crypto/common.h"
+#include <crypto/common.h>
 
 /** Template base class for fixed-sized opaque blobs. */
 template<unsigned int BITS>
@@ -164,6 +162,8 @@ inline uint256 uint256S(const std::string& str)
     rv.SetHex(str);
     return rv;
 }
+
+uint256& UINT256_ONE();
 
 class uint512 : public base_blob<512> {
 public:

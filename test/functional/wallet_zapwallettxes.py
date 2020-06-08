@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2016 The Bitcoin Core developers
-# Copyright (c) 2017-2018 The Placeholder Core developers
+# Copyright (c) 2014-2018 The Placeholders Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test the zapwallettxes functionality.
@@ -11,21 +10,24 @@
   transactions are still available.
 - restart node 0 with zapwallettxes and persistmempool, and verify that both
   the confirmed and the unconfirmed transactions are still available.
-- restart node 0 with just zapwallettxed and verify that the confirmed
+- restart node 0 with just zapwallettxes and verify that the confirmed
   transactions are still available, but that the unconfirmed transaction has
   been zapped.
 """
-from test_framework.test_framework import PlacehTestFramework
+from test_framework.test_framework import PlaceholdersTestFramework
 from test_framework.util import (
     assert_equal,
     assert_raises_rpc_error,
     wait_until,
 )
 
-class ZapWalletTXesTest (PlacehTestFramework):
+class ZapWalletTXesTest (PlaceholdersTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 2
+
+    def skip_test_if_missing_module(self):
+        self.skip_if_no_wallet()
 
     def run_test(self):
         self.log.info("Mining blocks...")
@@ -60,6 +62,7 @@ class ZapWalletTXesTest (PlacehTestFramework):
         self.start_node(0, ["-persistmempool=1", "-zapwallettxes=2"])
 
         wait_until(lambda: self.nodes[0].getmempoolinfo()['size'] == 1, timeout=3)
+        self.nodes[0].syncwithvalidationinterfacequeue()  # Flush mempool to wallet
 
         assert_equal(self.nodes[0].gettransaction(txid1)['txid'], txid1)
         assert_equal(self.nodes[0].gettransaction(txid2)['txid'], txid2)

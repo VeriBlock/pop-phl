@@ -1,34 +1,32 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The Bitcoin Core developers
-// Copyright (c) 2017 The Raven Core developers
-// Copyright (c) 2018 The Placeholder Core developers
+// Copyright (c) 2009-2020 The Placeholders Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #ifndef PLACEH_INIT_H
 #define PLACEH_INIT_H
 
+#include <memory>
 #include <string>
+#include <util/system.h>
 
-class CScheduler;
-class CWallet;
-
-namespace boost
-{
+struct NodeContext;
+namespace boost {
 class thread_group;
 } // namespace boost
+namespace util {
+class Ref;
+} // namespace util
 
-void StartShutdown();
-bool ShutdownRequested();
 /** Interrupt threads */
-void Interrupt(boost::thread_group& threadGroup);
-void Shutdown();
+void Interrupt(NodeContext& node);
+void Shutdown(NodeContext& node);
 //!Initialize the logging infrastructure
 void InitLogging();
 //!Parameter interaction: change current parameters depending on various rules
 void InitParameterInteraction();
 
-/** Initialize placeholder core: Basic context setup.
+/** Initialize placeh core: Basic context setup.
  *  @note This can be done before daemonization. Do not call Shutdown() if this function fails.
  *  @pre Parameters should be parsed and config file should be read.
  */
@@ -46,26 +44,23 @@ bool AppInitParameterInteraction();
  */
 bool AppInitSanityChecks();
 /**
- * Lock placeholder core data directory.
+ * Lock placeh core data directory.
  * @note This should only be done after daemonization. Do not call Shutdown() if this function fails.
  * @pre Parameters should be parsed and config file should be read, AppInitSanityChecks should have been called.
  */
 bool AppInitLockDataDirectory();
 /**
- * Placeh core main initialization.
+ * Placeholders core main initialization.
  * @note This should only be done after daemonization. Call Shutdown() if this function fails.
  * @pre Parameters should be parsed and config file should be read, AppInitLockDataDirectory should have been called.
  */
-bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler);
+bool AppInitMain(const util::Ref& context, NodeContext& node);
 
-/** The help message mode determines what help message to show */
-enum HelpMessageMode {
-    HMM_PLACEHD,
-    HMM_PLACEH_QT
-};
+/**
+ * Register all arguments with the ArgsManager
+ */
+void SetupServerArgs(NodeContext& node);
 
-/** Help for options shared between UI and daemon (for -help) */
-std::string HelpMessage(HelpMessageMode mode);
 /** Returns licensing information (for -version) */
 std::string LicenseInfo();
 

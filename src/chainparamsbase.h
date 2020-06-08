@@ -1,7 +1,4 @@
-// Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The Bitcoin Core developers
-// Copyright (c) 2017 The Raven Core developers
-// Copyright (c) 2018 The Placeholder Core developers
+// Copyright (c) 2014-2019 The Placeholders Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -10,27 +7,28 @@
 
 #include <memory>
 #include <string>
-#include <vector>
 
 /**
  * CBaseChainParams defines the base parameters (shared between placeh-cli and placehd)
- * of a given instance of the Placeh system.
+ * of a given instance of the Placeholders system.
  */
 class CBaseChainParams
 {
 public:
-    /** BIP70 chain name strings (main, test or regtest) */
+    ///@{
+    /** Chain name strings */
     static const std::string MAIN;
     static const std::string TESTNET;
     static const std::string REGTEST;
+    ///@}
 
     const std::string& DataDir() const { return strDataDir; }
     int RPCPort() const { return nRPCPort; }
- 
 
-protected:
-    CBaseChainParams() {}
+    CBaseChainParams() = delete;
+    CBaseChainParams(const std::string& data_dir, int rpc_port) : nRPCPort(rpc_port), strDataDir(data_dir) {}
 
+private:
     int nRPCPort;
     std::string strDataDir;
 };
@@ -43,10 +41,9 @@ protected:
 std::unique_ptr<CBaseChainParams> CreateBaseChainParams(const std::string& chain);
 
 /**
- * Append the help messages for the chainparams options to the
- * parameter string.
+ *Set the arguments for chainparams
  */
-void AppendParamsHelpMessages(std::string& strUsage, bool debugHelp=true);
+void SetupChainParamsBaseOptions();
 
 /**
  * Return the currently selected parameters. This won't change after app
@@ -56,11 +53,5 @@ const CBaseChainParams& BaseParams();
 
 /** Sets the params returned by Params() to those for the given network. */
 void SelectBaseParams(const std::string& chain);
-
-/**
- * Looks for -regtest, -testnet and returns the appropriate BIP70 chain name.
- * @return CBaseChainParams::MAX_NETWORK_TYPES if an invalid combination is given. CBaseChainParams::MAIN by default.
- */
-std::string ChainNameFromCommandLine();
 
 #endif // PLACEH_CHAINPARAMSBASE_H

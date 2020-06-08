@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2017 The Bitcoin Core developers
-# Copyright (c) 2017-2018 The Placeholder Core developers
+# Copyright (c) 2017-2019 The Placeholders Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test the RPC call related to the uptime command.
@@ -10,10 +9,10 @@ Test corresponds to code in rpc/server.cpp.
 
 import time
 
-from test_framework.test_framework import PlacehTestFramework
+from test_framework.test_framework import PlaceholdersTestFramework
 
 
-class UptimeTest(PlacehTestFramework):
+class UptimeTest(PlaceholdersTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
         self.setup_clean_chain = True
@@ -24,7 +23,7 @@ class UptimeTest(PlacehTestFramework):
     def _test_uptime(self):
         wait_time = 10
         self.nodes[0].setmocktime(int(time.time() + wait_time))
-        assert(self.nodes[0].uptime() >= wait_time)
+        assert self.nodes[0].uptime() >= wait_time
 
 
 if __name__ == '__main__':

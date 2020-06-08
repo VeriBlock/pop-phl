@@ -1,12 +1,11 @@
-// Copyright (c) 2014 The Bitcoin Core developers
-// Copyright (c) 2017 The Placeholder Core developers
+// Copyright (c) 2014-2018 The Placeholders Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #ifndef PLACEH_CRYPTO_HMAC_SHA256_H
 #define PLACEH_CRYPTO_HMAC_SHA256_H
 
-#include "crypto/sha256.h"
+#include <crypto/sha256.h>
 
 #include <stdint.h>
 #include <stdlib.h>

@@ -1,13 +1,11 @@
-// Copyright (c) 2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Placeholder Core developers
+// Copyright (c) 2016-2019 The Placeholders Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "bench.h"
+#include <bench/bench.h>
 
-#include "support/lockedpool.h"
+#include <support/lockedpool.h>
 
-#include <iostream>
 #include <vector>
 
 #define ASIZE 2048
@@ -44,5 +42,4 @@ static void BenchLockedPool(benchmark::State& state)
     addr.clear();
 }
 
-BENCHMARK(BenchLockedPool);
-
+BENCHMARK(BenchLockedPool, 1300);

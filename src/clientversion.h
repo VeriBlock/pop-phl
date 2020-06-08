@@ -1,7 +1,4 @@
-// Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The Bitcoin Core developers
-// Copyright (c) 2017 The Raven Core developers
-// Copyright (c) 2018 The Placeholder Core developers
+// Copyright (c) 2009-2018 The Placeholders Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -9,7 +6,7 @@
 #define PLACEH_CLIENTVERSION_H
 
 #if defined(HAVE_CONFIG_H)
-#include "config/placeh-config.h"
+#include <config/placeh-config.h>
 #endif //HAVE_CONFIG_H
 
 // Check that required client information is defined

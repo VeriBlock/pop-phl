@@ -1,20 +1,17 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The Bitcoin Core developers
-// Copyright (c) 2017 The Raven Core developers
-// Copyright (c) 2018 The Placeholder Core developers
+// Copyright (c) 2009-2018 The Placeholders Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "pow.h"
-
-#include "arith_uint256.h"
-#include "chain.h"
-#include "primitives/block.h"
-#include "uint256.h"
-#include "util.h"
-#include "validation.h"
-#include "chainparams.h"
-#include "tinyformat.h"
+#include <pow.h>
+#include <arith_uint256.h>
+#include <chain.h>
+#include <primitives/block.h>
+#include <uint256.h>
+#include <util/system.h>
+#include <validation.h>
+#include <chainparams.h>
+#include <tinyformat.h>
 
 unsigned int static DarkGravityWave(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params) {
     /* current difficulty formula, dash - DarkGravity v3, written by Evan Duffield - evan@dash.org */
@@ -85,7 +82,7 @@ unsigned int static DarkGravityWave(const CBlockIndex* pindexLast, const CBlockH
     return bnNew.GetCompact();
 }
 
-unsigned int GetNextWorkRequiredBTC(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params)
+unsigned int GetNextWorkRequiredPLACEH(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params)
 {
     assert(pindexLast != nullptr);
     unsigned int nProofOfWorkLimit = UintToArith256(params.powLimit).GetCompact();
@@ -124,16 +121,16 @@ unsigned int GetNextWorkRequiredBTC(const CBlockIndex* pindexLast, const CBlockH
 unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params)
 {
     int dgw = DarkGravityWave(pindexLast, pblock, params);
-    int btc = GetNextWorkRequiredBTC(pindexLast, pblock, params);
+    int btc = GetNextWorkRequiredPLACEH(pindexLast, pblock, params);
     int64_t nPrevBlockTime = (pindexLast->pprev ? pindexLast->pprev->GetBlockTime() : pindexLast->GetBlockTime());
 
     if (IsDGWActive(pindexLast->nHeight + 1)) {
-        LogPrint(BCLog::NET, "Block %s - version: %s: found next work required using DGW: [%s] (BTC would have been [%s]\t(%+d)\t(%0.3f%%)\t(%s sec))\n",
+        LogPrint(BCLog::NET, "Block %s - version: %s: found next work required using DGW: [%s] (PLACEH would have been [%s]\t(%+d)\t(%0.3f%%)\t(%s sec))\n",
                  pindexLast->nHeight + 1, pblock->nVersion, dgw, btc, btc - dgw, (float)(btc - dgw) * 100.0 / (float)dgw, pindexLast->GetBlockTime() - nPrevBlockTime);
         return dgw;
     }
     else {
-        LogPrint(BCLog::NET, "Block %s - version: %s: found next work required using BTC: [%s] (DGW would have been [%s]\t(%+d)\t(%0.3f%%)\t(%s sec))\n",
+        LogPrint(BCLog::NET, "Block %s - version: %s: found next work required using PLACEH: [%s] (DGW would have been [%s]\t(%+d)\t(%0.3f%%)\t(%s sec))\n",
                   pindexLast->nHeight + 1, pblock->nVersion, btc, dgw, dgw - btc, (float)(dgw - btc) * 100.0 / (float)btc, pindexLast->GetBlockTime() - nPrevBlockTime);
         return btc;
     }

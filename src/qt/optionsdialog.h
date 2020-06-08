@@ -1,5 +1,4 @@
-// Copyright (c) 2011-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Placeholder Core developers
+// Copyright (c) 2011-2018 The Placeholders Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -29,7 +28,7 @@ class ProxyAddressValidator : public QValidator
 public:
     explicit ProxyAddressValidator(QObject *parent);
 
-    State validate(QString &input, int &pos) const;
+    State validate(QString &input, int &pos) const override;
 };
 
 /** Preferences dialog. */
@@ -41,19 +40,26 @@ public:
     explicit OptionsDialog(QWidget *parent, bool enableWallet);
     ~OptionsDialog();
 
+    enum Tab {
+        TAB_MAIN,
+        TAB_NETWORK,
+    };
+
     void setModel(OptionsModel *model);
     void setMapper();
+    void setCurrentTab(OptionsDialog::Tab tab);
 
 private Q_SLOTS:
     /* set OK button state (enabled / disabled) */
     void setOkButtonState(bool fState);
     void on_resetButton_clicked();
-    void on_openPlacehConfButton_clicked();
+    void on_openPlaceholdersConfButton_clicked();
     void on_okButton_clicked();
     void on_cancelButton_clicked();
-    
+
     void on_hideTrayIcon_stateChanged(int fState);
 
+    void togglePruneWarning(bool enabled);
     void showRestartWarning(bool fPersistent = false);
     void clearStatusLabel();
     void updateProxyValidationState();

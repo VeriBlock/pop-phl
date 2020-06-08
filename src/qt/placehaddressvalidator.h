@@ -1,5 +1,4 @@
-// Copyright (c) 2011-2014 The Bitcoin Core developers
-// Copyright (c) 2017 The Placeholder Core developers
+// Copyright (c) 2011-2014 The Placeholders Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -11,26 +10,26 @@
 /** Base58 entry widget validator, checks for valid characters and
  * removes some whitespace.
  */
-class PlacehAddressEntryValidator : public QValidator
+class PlaceholdersAddressEntryValidator : public QValidator
 {
     Q_OBJECT
 
 public:
-    explicit PlacehAddressEntryValidator(QObject *parent);
+    explicit PlaceholdersAddressEntryValidator(QObject *parent);
 
-    State validate(QString &input, int &pos) const;
+    State validate(QString &input, int &pos) const override;
 };
 
-/** Placeh address widget validator, checks for a valid placeh address.
+/** Placeholders address widget validator, checks for a valid placeh address.
  */
-class PlacehAddressCheckValidator : public QValidator
+class PlaceholdersAddressCheckValidator : public QValidator
 {
     Q_OBJECT
 
 public:
-    explicit PlacehAddressCheckValidator(QObject *parent);
+    explicit PlaceholdersAddressCheckValidator(QObject *parent);
 
-    State validate(QString &input, int &pos) const;
+    State validate(QString &input, int &pos) const override;
 };
 
 #endif // PLACEH_QT_PLACEHADDRESSVALIDATOR_H

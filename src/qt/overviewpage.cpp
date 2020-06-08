@@ -1,43 +1,43 @@
-// Copyright (c) 2011-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Placeholder Core developers
+// Copyright (c) 2011-2019 The Placeholders Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "overviewpage.h"
-#include "ui_overviewpage.h"
+#include <qt/overviewpage.h>
+#include <qt/forms/ui_overviewpage.h>
 
-#include "placehunits.h"
-#include "clientmodel.h"
-#include "guiconstants.h"
-#include "guiutil.h"
-#include "optionsmodel.h"
-#include "platformstyle.h"
-#include "transactionfilterproxy.h"
-#include "transactiontablemodel.h"
-#include "assettablemodel.h"
-#include "walletmodel.h"
+#include <qt/placehunits.h>
+#include <qt/clientmodel.h>
+#include <qt/guiconstants.h>
+#include <qt/guiutil.h>
+#include <qt/optionsmodel.h>
+#include <qt/platformstyle.h>
+#include <qt/transactionfilterproxy.h>
+#include <qt/transactiontablemodel.h>
+#include <qt/walletmodel.h>
 
 #include <QAbstractItemDelegate>
+#include <QApplication>
 #include <QPainter>
-#include <validation.h>
-#include <utiltime.h>
+#include <QStatusTipEvent>
 
 #define DECORATION_SIZE 54
 #define NUM_ITEMS 5
+
+Q_DECLARE_METATYPE(interfaces::WalletBalances)
 
 class TxViewDelegate : public QAbstractItemDelegate
 {
     Q_OBJECT
 public:
     explicit TxViewDelegate(const PlatformStyle *_platformStyle, QObject *parent=nullptr):
-        QAbstractItemDelegate(parent), unit(PlacehUnits::PHL),
+        QAbstractItemDelegate(parent), unit(PlaceholdersUnits::PHL),
         platformStyle(_platformStyle)
     {
 
     }
 
     inline void paint(QPainter *painter, const QStyleOptionViewItem &option,
-                      const QModelIndex &index ) const
+                      const QModelIndex &index ) const override
     {
         painter->save();
 
@@ -88,15 +88,12 @@ public:
             foreground = option.palette.color(QPalette::Text);
         }
         painter->setPen(foreground);
-        QString amountText = index.data(TransactionTableModel::FormattedAmountRole).toString();
+        QString amountText = PlaceholdersUnits::formatWithUnit(unit, amount, true, PlaceholdersUnits::separatorAlways);
         if(!confirmed)
         {
             amountText = QString("[") + amountText + QString("]");
         }
-        painter->drawText(addressRect, Qt::AlignRight|Qt::AlignVCenter, amountText);
-
-        QString assetName = index.data(TransactionTableModel::AssetNameRole).toString();
-        painter->drawText(amountRect, Qt::AlignRight|Qt::AlignVCenter, assetName);
+        painter->drawText(amountRect, Qt::AlignRight|Qt::AlignVCenter, amountText);
 
         painter->setPen(option.palette.color(QPalette::Text));
         painter->drawText(amountRect, Qt::AlignLeft|Qt::AlignVCenter, GUIUtil::dateTimeStr(date));
@@ -104,7 +101,7 @@ public:
         painter->restore();
     }
 
-    inline QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
+    inline QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override
     {
         return QSize(DECORATION_SIZE, DECORATION_SIZE);
     }
@@ -113,31 +110,24 @@ public:
     const PlatformStyle *platformStyle;
 
 };
-#include "overviewpage.moc"
-#include "placehgui.h"
+#include <qt/overviewpage.moc>
 
 OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::OverviewPage),
-    clientModel(0),
-    walletModel(0),
-    currentBalance(-1),
-    currentUnconfirmedBalance(-1),
-    currentImmatureBalance(-1),
-    currentWatchOnlyBalance(-1),
-    currentWatchUnconfBalance(-1),
-    currentWatchImmatureBalance(-1),
+    clientModel(nullptr),
+    walletModel(nullptr),
     txdelegate(new TxViewDelegate(platformStyle, this))
 {
     ui->setupUi(this);
+
+    m_balances.balance = -1;
 
     // use a SingleColorIcon for the "out of sync warning" icon
     QIcon icon = platformStyle->SingleColorIcon(":/icons/warning");
     icon.addPixmap(icon.pixmap(QSize(64,64), QIcon::Normal), QIcon::Disabled); // also set the disabled icon because we are using a disabled QPushButton to work around missing HiDPI support of QLabel (https://bugreports.qt.io/browse/QTBUG-42503)
     ui->labelTransactionsStatus->setIcon(icon);
     ui->labelWalletStatus->setIcon(icon);
-    ui->labelAssetStatus->setIcon(icon);
-    ui->labelAssetAdministrator->setPixmap(QPixmap::fromImage(QImage(":/icons/asset_administrator")));
 
     // Recent transactions
     ui->listTransactions->setItemDelegate(txdelegate);
@@ -145,16 +135,12 @@ OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) 
     ui->listTransactions->setMinimumHeight(NUM_ITEMS * (DECORATION_SIZE + 2));
     ui->listTransactions->setAttribute(Qt::WA_MacShowFocusRect, false);
 
-    connect(ui->listTransactions, SIGNAL(clicked(QModelIndex)), this, SLOT(handleTransactionClicked(QModelIndex)));
+    connect(ui->listTransactions, &QListView::clicked, this, &OverviewPage::handleTransactionClicked);
 
     // start with displaying the "out of sync" warnings
     showOutOfSyncWarning(true);
-    connect(ui->labelWalletStatus, SIGNAL(clicked()), this, SLOT(handleOutOfSyncWarningClicks()));
-    connect(ui->labelAssetStatus, SIGNAL(clicked()), this, SLOT(handleOutOfSyncWarningClicks()));
-    connect(ui->labelTransactionsStatus, SIGNAL(clicked()), this, SLOT(handleOutOfSyncWarningClicks()));
-
-    // Trigger the call to show the assets table if assets are active
-    showAssets();
+    connect(ui->labelWalletStatus, &QPushButton::clicked, this, &OverviewPage::handleOutOfSyncWarningClicks);
+    connect(ui->labelTransactionsStatus, &QPushButton::clicked, this, &OverviewPage::handleOutOfSyncWarningClicks);
 }
 
 void OverviewPage::handleTransactionClicked(const QModelIndex &index)
@@ -168,38 +154,61 @@ void OverviewPage::handleOutOfSyncWarningClicks()
     Q_EMIT outOfSyncWarningClicked();
 }
 
+void OverviewPage::setPrivacy(bool privacy)
+{
+    m_privacy = privacy;
+    if (m_balances.balance != -1) {
+        setBalance(m_balances);
+    }
+
+    ui->listTransactions->setVisible(!m_privacy);
+
+    const QString status_tip = m_privacy ? tr("Privacy mode activated for the Overview tab. To unmask the values, uncheck Settings->Mask values.") : "";
+    setStatusTip(status_tip);
+    QStatusTipEvent event(status_tip);
+    QApplication::sendEvent(this, &event);
+}
+
 OverviewPage::~OverviewPage()
 {
     delete ui;
 }
 
-void OverviewPage::setBalance(const CAmount& balance, const CAmount& unconfirmedBalance, const CAmount& immatureBalance, const CAmount& watchOnlyBalance, const CAmount& watchUnconfBalance, const CAmount& watchImmatureBalance)
+void OverviewPage::setBalance(const interfaces::WalletBalances& balances)
 {
     int unit = walletModel->getOptionsModel()->getDisplayUnit();
-    currentBalance = balance;
-    currentUnconfirmedBalance = unconfirmedBalance;
-    currentImmatureBalance = immatureBalance;
-    currentWatchOnlyBalance = watchOnlyBalance;
-    currentWatchUnconfBalance = watchUnconfBalance;
-    currentWatchImmatureBalance = watchImmatureBalance;
-    ui->labelBalance->setText(PlacehUnits::formatWithUnit(unit, balance, false, PlacehUnits::separatorAlways));
-    ui->labelUnconfirmed->setText(PlacehUnits::formatWithUnit(unit, unconfirmedBalance, false, PlacehUnits::separatorAlways));
-    ui->labelImmature->setText(PlacehUnits::formatWithUnit(unit, immatureBalance, false, PlacehUnits::separatorAlways));
-    ui->labelTotal->setText(PlacehUnits::formatWithUnit(unit, balance + unconfirmedBalance + immatureBalance, false, PlacehUnits::separatorAlways));
-    ui->labelWatchAvailable->setText(PlacehUnits::formatWithUnit(unit, watchOnlyBalance, false, PlacehUnits::separatorAlways));
-    ui->labelWatchPending->setText(PlacehUnits::formatWithUnit(unit, watchUnconfBalance, false, PlacehUnits::separatorAlways));
-    ui->labelWatchImmature->setText(PlacehUnits::formatWithUnit(unit, watchImmatureBalance, false, PlacehUnits::separatorAlways));
-    ui->labelWatchTotal->setText(PlacehUnits::formatWithUnit(unit, watchOnlyBalance + watchUnconfBalance + watchImmatureBalance, false, PlacehUnits::separatorAlways));
-
+    m_balances = balances;
+    if (walletModel->wallet().isLegacy()) {
+        if (walletModel->wallet().privateKeysDisabled()) {
+            ui->labelBalance->setText(PlaceholdersUnits::formatWithPrivacy(unit, balances.watch_only_balance, PlaceholdersUnits::separatorAlways, m_privacy));
+            ui->labelUnconfirmed->setText(PlaceholdersUnits::formatWithPrivacy(unit, balances.unconfirmed_watch_only_balance, PlaceholdersUnits::separatorAlways, m_privacy));
+            ui->labelImmature->setText(PlaceholdersUnits::formatWithPrivacy(unit, balances.immature_watch_only_balance, PlaceholdersUnits::separatorAlways, m_privacy));
+            ui->labelTotal->setText(PlaceholdersUnits::formatWithPrivacy(unit, balances.watch_only_balance + balances.unconfirmed_watch_only_balance + balances.immature_watch_only_balance, PlaceholdersUnits::separatorAlways, m_privacy));
+        } else {
+            ui->labelBalance->setText(PlaceholdersUnits::formatWithPrivacy(unit, balances.balance, PlaceholdersUnits::separatorAlways, m_privacy));
+            ui->labelUnconfirmed->setText(PlaceholdersUnits::formatWithPrivacy(unit, balances.unconfirmed_balance, PlaceholdersUnits::separatorAlways, m_privacy));
+            ui->labelImmature->setText(PlaceholdersUnits::formatWithPrivacy(unit, balances.immature_balance, PlaceholdersUnits::separatorAlways, m_privacy));
+            ui->labelTotal->setText(PlaceholdersUnits::formatWithPrivacy(unit, balances.balance + balances.unconfirmed_balance + balances.immature_balance, PlaceholdersUnits::separatorAlways, m_privacy));
+            ui->labelWatchAvailable->setText(PlaceholdersUnits::formatWithPrivacy(unit, balances.watch_only_balance, PlaceholdersUnits::separatorAlways, m_privacy));
+            ui->labelWatchPending->setText(PlaceholdersUnits::formatWithPrivacy(unit, balances.unconfirmed_watch_only_balance, PlaceholdersUnits::separatorAlways, m_privacy));
+            ui->labelWatchImmature->setText(PlaceholdersUnits::formatWithPrivacy(unit, balances.immature_watch_only_balance, PlaceholdersUnits::separatorAlways, m_privacy));
+            ui->labelWatchTotal->setText(PlaceholdersUnits::formatWithPrivacy(unit, balances.watch_only_balance + balances.unconfirmed_watch_only_balance + balances.immature_watch_only_balance, PlaceholdersUnits::separatorAlways, m_privacy));
+        }
+    } else {
+        ui->labelBalance->setText(PlaceholdersUnits::formatWithPrivacy(unit, balances.balance, PlaceholdersUnits::separatorAlways, m_privacy));
+        ui->labelUnconfirmed->setText(PlaceholdersUnits::formatWithPrivacy(unit, balances.unconfirmed_balance, PlaceholdersUnits::separatorAlways, m_privacy));
+        ui->labelImmature->setText(PlaceholdersUnits::formatWithPrivacy(unit, balances.immature_balance, PlaceholdersUnits::separatorAlways, m_privacy));
+        ui->labelTotal->setText(PlaceholdersUnits::formatWithPrivacy(unit, balances.balance + balances.unconfirmed_balance + balances.immature_balance, PlaceholdersUnits::separatorAlways, m_privacy));
+    }
     // only show immature (newly mined) balance if it's non-zero, so as not to complicate things
     // for the non-mining users
-    bool showImmature = immatureBalance != 0;
-    bool showWatchOnlyImmature = watchImmatureBalance != 0;
+    bool showImmature = balances.immature_balance != 0;
+    bool showWatchOnlyImmature = balances.immature_watch_only_balance != 0;
 
     // for symmetry reasons also show immature label when the watch-only one is shown
     ui->labelImmature->setVisible(showImmature || showWatchOnlyImmature);
     ui->labelImmatureText->setVisible(showImmature || showWatchOnlyImmature);
-    ui->labelWatchImmature->setVisible(showWatchOnlyImmature); // show watch-only immature balance
+    ui->labelWatchImmature->setVisible(!walletModel->wallet().privateKeysDisabled() && showWatchOnlyImmature); // show watch-only immature balance
 }
 
 // show/hide watch-only labels
@@ -219,10 +228,9 @@ void OverviewPage::updateWatchOnlyLabels(bool showWatchOnly)
 void OverviewPage::setClientModel(ClientModel *model)
 {
     this->clientModel = model;
-    if(model)
-    {
-        // Show warning if this is a prerelease version
-        connect(model, SIGNAL(alertsChanged(QString)), this, SLOT(updateAlerts(QString)));
+    if (model) {
+        // Show warning, for example if this is a prerelease version
+        connect(model, &ClientModel::alertsChanged, this, &OverviewPage::updateAlerts);
         updateAlerts(model->getStatusBarWarnings());
     }
 }
@@ -244,33 +252,31 @@ void OverviewPage::setWalletModel(WalletModel *model)
         ui->listTransactions->setModel(filter.get());
         ui->listTransactions->setModelColumn(TransactionTableModel::ToAddress);
 
-        assetFilter.reset(new QSortFilterProxyModel());
-        assetFilter->setSourceModel(model->getAssetTableModel());
-        ui->listAssets->setModel(assetFilter.get());
-
         // Keep up to date with wallet
-        setBalance(model->getBalance(), model->getUnconfirmedBalance(), model->getImmatureBalance(),
-                   model->getWatchBalance(), model->getWatchUnconfirmedBalance(), model->getWatchImmatureBalance());
-        connect(model, SIGNAL(balanceChanged(CAmount,CAmount,CAmount,CAmount,CAmount,CAmount)), this, SLOT(setBalance(CAmount,CAmount,CAmount,CAmount,CAmount,CAmount)));
+        interfaces::Wallet& wallet = model->wallet();
+        interfaces::WalletBalances balances = wallet.getBalances();
+        setBalance(balances);
+        connect(model, &WalletModel::balanceChanged, this, &OverviewPage::setBalance);
 
-        connect(model->getOptionsModel(), SIGNAL(displayUnitChanged(int)), this, SLOT(updateDisplayUnit()));
+        connect(model->getOptionsModel(), &OptionsModel::displayUnitChanged, this, &OverviewPage::updateDisplayUnit);
 
-        updateWatchOnlyLabels(model->haveWatchOnly());
-        connect(model, SIGNAL(notifyWatchonlyChanged(bool)), this, SLOT(updateWatchOnlyLabels(bool)));
+        updateWatchOnlyLabels(wallet.haveWatchOnly() && !model->wallet().privateKeysDisabled());
+        connect(model, &WalletModel::notifyWatchonlyChanged, [this](bool showWatchOnly) {
+            updateWatchOnlyLabels(showWatchOnly && !walletModel->wallet().privateKeysDisabled());
+        });
     }
 
-    // update the display unit, to not use the default ("PHL")
+    // update the display unit, to not use the default ("PLACEH")
     updateDisplayUnit();
-    ui->listAssets->resizeColumnsToContents();
 }
 
 void OverviewPage::updateDisplayUnit()
 {
     if(walletModel && walletModel->getOptionsModel())
     {
-        if(currentBalance != -1)
-            setBalance(currentBalance, currentUnconfirmedBalance, currentImmatureBalance,
-                       currentWatchOnlyBalance, currentWatchUnconfBalance, currentWatchImmatureBalance);
+        if (m_balances.balance != -1) {
+            setBalance(m_balances);
+        }
 
         // Update txdelegate->unit with the current unit
         txdelegate->unit = walletModel->getOptionsModel()->getDisplayUnit();
@@ -289,161 +295,4 @@ void OverviewPage::showOutOfSyncWarning(bool fShow)
 {
     ui->labelWalletStatus->setVisible(fShow);
     ui->labelTransactionsStatus->setVisible(fShow);
-    if (AreAssetsDeployed()) {
-        ui->labelAssetStatus->setVisible(fShow);
-    }
-}
-
-void OverviewPage::showAssets()
-{
-    if (AreAssetsDeployed()) {
-        ui->listAssets->show();
-        ui->assetBalanceLabel->show();
-        ui->labelAssetStatus->show();
-        ui->labelAssetAdministrator->show();
-
-        // Disable the vertical space so that listAssets goes to the bottom of the screen
-        ui->assetVeriticalSpaceWidget->hide();
-    } else {
-        ui->assetBalanceLabel->hide();
-        ui->labelAssetStatus->hide();
-        ui->listAssets->hide();
-        ui->labelAssetAdministrator->hide();
-
-        // This keeps the PHL balance grid from expanding and looking terrible when asset balance is hidden
-        ui->assetVeriticalSpaceWidget->show();
-    }
-
-    displayAssetInfo();
-}
-
-void OverviewPage::displayAssetInfo()
-{
-	bool blocker = true;
-		
-	if( blocker ) {
-		hideAssetInfo();
-		return;
-	}
-	
-    ui->assetInfoTitleLabel->setText("<b>" + tr("Asset Activation Status") + "</b>");
-    ui->assetInfoPercentageLabel->setText(tr("Current Percentage") + ":");
-    ui->assetInfoStatusLabel->setText(tr("Status") + ":");
-    ui->assetInfoBlockLabel->setText(tr("Target Percentage") + ":");
-    ui->assetInfoPossibleLabel->setText(tr("Could Vote Pass") + ":");
-    ui->assetInfoBlocksLeftLabel->setText(tr("Voting Block Cycle") + ":");
-
-    const ThresholdState thresholdState = VersionBitsTipState(Params().GetConsensus(),
-                                                              Consensus::DeploymentPos::DEPLOYMENT_ASSETS);
-    auto startTime = Params().GetConsensus().vDeployments[Consensus::DeploymentPos::DEPLOYMENT_ASSETS].nStartTime * 1000;
-    auto currentTime = GetTimeMillis();
-    auto date = GUIUtil::dateTimeStr(startTime / 1000);
-
-    QString status;
-    switch (thresholdState) {
-        case THRESHOLD_DEFINED:
-            if (currentTime < startTime)
-                status = tr("Waiting until ") + date;
-            else {
-                auto cycleWidth = Params().GetConsensus().nMinerConfirmationWindow;
-                QString currentCount;
-                currentCount.sprintf("%d of %d blocks", chainActive.Height() % cycleWidth, cycleWidth);
-                status = tr("Waiting - ") +  currentCount;
-            }
-            break;
-        case THRESHOLD_STARTED:
-            status = tr("Voting Started");
-            break;
-        case THRESHOLD_LOCKED_IN:
-            status = tr("Locked in - Not Active");
-            break;
-        case THRESHOLD_ACTIVE:
-            status = tr("Active");
-            break;
-        case THRESHOLD_FAILED:
-            status = tr("Failed");
-            break;
-    }
-
-    if (thresholdState == THRESHOLD_ACTIVE) {
-        hideAssetInfo();
-        return;
-    }
-
-    ui->assetInfoStatusValue->setText(status);
-
-    // Get the current height of the chain
-    auto currentheight = chainActive.Height();
-
-    auto heightLockedIn = VersionBitsTipStateSinceHeight(Params().GetConsensus(),
-                                                         Consensus::DeploymentPos::DEPLOYMENT_ASSETS);
-    auto cycleWidth = Params().GetConsensus().nMinerConfirmationWindow;
-    auto difference = (currentheight - heightLockedIn + 1) % cycleWidth;
-    QString currentCount;
-    currentCount.sprintf("%d/%d blocks", difference, cycleWidth);
-
-    if (thresholdState == THRESHOLD_STARTED) {
-        BIP9Stats statsStruct = VersionBitsTipStatistics(Params().GetConsensus(),
-                                                         Consensus::DeploymentPos::DEPLOYMENT_ASSETS);
-
-        double targetDouble = double(statsStruct.threshold) / double(statsStruct.period);
-        QString targetPercentage;
-        targetPercentage.sprintf("%0.2f%%", targetDouble * 100);
-        ui->assetInfoBlockValue->setText(targetPercentage);
-
-        double currentDouble = double(statsStruct.count) / double(statsStruct.period);
-        QString currentPercentage;
-        currentPercentage.sprintf("%0.2f%%", currentDouble * 100);
-        ui->assetInfoPercentageValue->setText(currentPercentage);
-
-        QString possible = statsStruct.possible ? tr("yes") : tr("no");
-        ui->assetInfoPossibleValue->setText(possible);
-
-        ui->assetInfoBlocksLeftValue->setText(currentCount);
-
-        ui->assetInfoPercentageValue->show();
-        ui->assetInfoBlockValue->show();
-        ui->assetInfoPercentageLabel->show();
-        ui->assetInfoBlockLabel->show();
-        ui->assetInfoPossibleLabel->show();
-        ui->assetInfoPossibleValue->show();
-        ui->assetInfoBlocksLeftLabel->show();
-        ui->assetInfoBlocksLeftValue->show();
-    } else if (thresholdState == THRESHOLD_LOCKED_IN) {
-
-        ui->assetInfoBlockLabel->setText(tr("Active in") + ":");
-        ui->assetInfoBlockValue->setText(currentCount);
-
-        ui->assetInfoPercentageValue->hide();
-        ui->assetInfoPercentageLabel->hide();
-        ui->assetInfoPossibleLabel->hide();
-        ui->assetInfoPossibleValue->hide();
-        ui->assetInfoBlocksLeftLabel->hide();
-        ui->assetInfoBlocksLeftValue->hide();
-    } else {
-        ui->assetInfoPercentageValue->hide();
-        ui->assetInfoBlockValue->hide();
-        ui->assetInfoPercentageLabel->hide();
-        ui->assetInfoBlockLabel->hide();
-        ui->assetInfoPossibleLabel->hide();
-        ui->assetInfoPossibleValue->hide();
-        ui->assetInfoBlocksLeftLabel->hide();
-        ui->assetInfoBlocksLeftValue->hide();
-    }
-}
-
-void OverviewPage::hideAssetInfo()
-{
-    ui->assetInfoPercentageValue->hide();
-    ui->assetInfoBlockValue->hide();
-    ui->assetInfoStatusValue->hide();
-    ui->assetInfoPossibleValue->hide();
-    ui->assetInfoBlocksLeftValue->hide();
-
-    ui->assetInfoTitleLabel->hide();
-    ui->assetInfoBlockLabel->hide();
-    ui->assetInfoStatusLabel->hide();
-    ui->assetInfoPercentageLabel->hide();
-    ui->assetInfoPossibleLabel->hide();
-    ui->assetInfoBlocksLeftLabel->hide();
 }

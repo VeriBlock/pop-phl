@@ -1,15 +1,14 @@
-// Copyright (c) 2011-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Placeholder Core developers
+// Copyright (c) 2011-2019 The Placeholders Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #ifndef PLACEH_QT_RPCCONSOLE_H
 #define PLACEH_QT_RPCCONSOLE_H
 
-#include "guiutil.h"
-#include "peertablemodel.h"
+#include <qt/guiutil.h>
+#include <qt/peertablemodel.h>
 
-#include "net.h"
+#include <net.h>
 
 #include <QWidget>
 #include <QCompleter>
@@ -18,6 +17,11 @@
 class ClientModel;
 class PlatformStyle;
 class RPCTimerInterface;
+class WalletModel;
+
+namespace interfaces {
+    class Node;
+}
 
 namespace Ui {
     class RPCConsole;
@@ -28,21 +32,23 @@ class QMenu;
 class QItemSelection;
 QT_END_NAMESPACE
 
-/** Local Placeh RPC console. */
+/** Local Placeholders RPC console. */
 class RPCConsole: public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit RPCConsole(const PlatformStyle *platformStyle, QWidget *parent);
+    explicit RPCConsole(interfaces::Node& node, const PlatformStyle *platformStyle, QWidget *parent);
     ~RPCConsole();
 
-    static bool RPCParseCommandLine(std::string &strResult, const std::string &strCommand, bool fExecute, std::string * const pstrFilteredOut = nullptr);
-    static bool RPCExecuteCommandLine(std::string &strResult, const std::string &strCommand, std::string * const pstrFilteredOut = nullptr) {
-        return RPCParseCommandLine(strResult, strCommand, true, pstrFilteredOut);
+    static bool RPCParseCommandLine(interfaces::Node* node, std::string &strResult, const std::string &strCommand, bool fExecute, std::string * const pstrFilteredOut = nullptr, const WalletModel* wallet_model = nullptr);
+    static bool RPCExecuteCommandLine(interfaces::Node& node, std::string &strResult, const std::string &strCommand, std::string * const pstrFilteredOut = nullptr, const WalletModel* wallet_model = nullptr) {
+        return RPCParseCommandLine(&node, strResult, strCommand, true, pstrFilteredOut, wallet_model);
     }
 
     void setClientModel(ClientModel *model);
+    void addWallet(WalletModel * const walletModel);
+    void removeWallet(WalletModel* const walletModel);
 
     enum MessageClass {
         MC_ERROR,
@@ -52,16 +58,21 @@ public:
         CMD_ERROR
     };
 
-    enum TabTypes {
-        TAB_INFO = 0,
-        TAB_CONSOLE = 1,
-        TAB_GRAPH = 2,
-        TAB_PEERS = 3
+    enum class TabTypes {
+        INFO,
+        CONSOLE,
+        GRAPH,
+        PEERS
     };
 
+    std::vector<TabTypes> tabs() const { return {TabTypes::INFO, TabTypes::CONSOLE, TabTypes::GRAPH, TabTypes::PEERS}; }
+
+    QString tabTitle(TabTypes tab_type) const;
+    QKeySequence tabShortcut(TabTypes tab_type) const;
+
 protected:
-    virtual bool eventFilter(QObject* obj, QEvent *event);
-    void keyPressEvent(QKeyEvent *);
+    virtual bool eventFilter(QObject* obj, QEvent *event) override;
+    void keyPressEvent(QKeyEvent *) override;
 
 private Q_SLOTS:
     void on_lineEdit_returnPressed();
@@ -72,9 +83,9 @@ private Q_SLOTS:
     void on_sldGraphRange_valueChanged(int value);
     /** update traffic statistics */
     void updateTrafficStats(quint64 totalBytesIn, quint64 totalBytesOut);
-    void resizeEvent(QResizeEvent *event);
-    void showEvent(QShowEvent *event);
-    void hideEvent(QHideEvent *event);
+    void resizeEvent(QResizeEvent *event) override;
+    void showEvent(QShowEvent *event) override;
+    void hideEvent(QHideEvent *event) override;
     /** Show custom context menu on Peers tab */
     void showPeersTableContextMenu(const QPoint& point);
     /** Show custom context menu on Bans tab */
@@ -90,7 +101,8 @@ public Q_SLOTS:
     void fontSmaller();
     void setFontSize(int newSize);
     /** Append the message to the message widget */
-    void message(int category, const QString &message, bool html = false);
+    void message(int category, const QString &msg) { message(category, msg, false); }
+    void message(int category, const QString &message, bool html);
     /** Set number of connections shown in the UI */
     void setNumConnections(int count);
     /** Set network state shown in the UI */
@@ -120,8 +132,7 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     // For RPC command executor
-    void stopExecutor();
-    void cmdRequest(const QString &command);
+    void cmdRequest(const QString &command, const WalletModel* wallet_model);
 
 private:
     void startExecutor();
@@ -139,22 +150,27 @@ private:
 
     };
 
-    Ui::RPCConsole *ui;
-    ClientModel *clientModel;
+    interfaces::Node& m_node;
+    Ui::RPCConsole* const ui;
+    ClientModel *clientModel = nullptr;
     QStringList history;
-    int historyPtr;
+    int historyPtr = 0;
     QString cmdBeforeBrowsing;
     QList<NodeId> cachedNodeids;
-    const PlatformStyle *platformStyle;
-    RPCTimerInterface *rpcTimerInterface;
-    QMenu *peersTableContextMenu;
-    QMenu *banTableContextMenu;
-    int consoleFontSize;
-    QCompleter *autoCompleter;
+    const PlatformStyle* const platformStyle;
+    RPCTimerInterface *rpcTimerInterface = nullptr;
+    QMenu *peersTableContextMenu = nullptr;
+    QMenu *banTableContextMenu = nullptr;
+    int consoleFontSize = 0;
+    QCompleter *autoCompleter = nullptr;
     QThread thread;
+    WalletModel* m_last_wallet_model{nullptr};
 
     /** Update UI with latest network info from model. */
     void updateNetworkState();
+
+private Q_SLOTS:
+    void updateAlerts(const QString& warnings);
 };
 
 #endif // PLACEH_QT_RPCCONSOLE_H

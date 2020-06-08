@@ -1,22 +1,13 @@
-// Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The Bitcoin Core developers
-// Copyright (c) 2017 The Raven Core developers
-// Copyright (c) 2018 The Placeholder Core developers
+// Copyright (c) 2012-2019 The Placeholders Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "coins.h"
+#include <coins.h>
 
-#include "consensus/consensus.h"
-#include "memusage.h"
-#include "random.h"
-#include "util.h"
-#include "validation.h"
-#include "tinyformat.h"
-
-#include <assert.h>
-#include <assets/assets.h>
-#include <wallet/wallet.h>
+#include <consensus/consensus.h>
+#include <logging.h>
+#include <random.h>
+#include <version.h>
 
 bool CCoinsView::GetCoin(const COutPoint &outpoint, Coin &coin) const { return false; }
 uint256 CCoinsView::GetBestBlock() const { return uint256(); }
@@ -86,8 +77,21 @@ void CCoinsViewCache::AddCoin(const COutPoint &outpoint, Coin&& coin, bool possi
     }
     if (!possible_overwrite) {
         if (!it->second.coin.IsSpent()) {
-            throw std::logic_error("Adding new coin that replaces non-pruned entry");
+            throw std::logic_error("Attempted to overwrite an unspent coin (when possible_overwrite is false)");
         }
+        // If the coin exists in this cache as a spent coin and is DIRTY, then
+        // its spentness hasn't been flushed to the parent cache. We're
+        // re-adding the coin to this cache now but we can't mark it as FRESH.
+        // If we mark it FRESH and then spend it before the cache is flushed
+        // we would remove it from this cache and would never flush spentness
+        // to the parent cache.
+        //
+        // Re-adding a spent coin can happen in the case of a re-org (the coin
+        // is 'spent' when the block adding it is disconnected and then
+        // re-added when it is also added in a newly connected block).
+        //
+        // If the coin doesn't exist in the current cache, or is spent but not
+        // DIRTY, then it can be marked FRESH.
         fresh = !(it->second.flags & CCoinsCacheEntry::DIRTY);
     }
     it->second.coin = std::move(coin);
@@ -95,140 +99,21 @@ void CCoinsViewCache::AddCoin(const COutPoint &outpoint, Coin&& coin, bool possi
     cachedCoinsUsage += it->second.coin.DynamicMemoryUsage();
 }
 
-void AddCoins(CCoinsViewCache& cache, const CTransaction &tx, int nHeight, uint256 blockHash, bool check, CAssetsCache* assetsCache, std::pair<std::string, CBlockAssetUndo>* undoAssetData) {
+void AddCoins(CCoinsViewCache& cache, const CTransaction &tx, int nHeight, bool check_for_overwrite) {
     bool fCoinbase = tx.IsCoinBase();
     const uint256& txid = tx.GetHash();
-
-    /** PHL START */
-    if (AreAssetsDeployed()) {
-        if (assetsCache) {
-            if (tx.IsNewAsset()) {
-                CNewAsset asset;
-                std::string strAddress;
-                AssetFromTransaction(tx, asset, strAddress);
-
-                std::string ownerName;
-                std::string ownerAddress;
-                OwnerFromTransaction(tx, ownerName, ownerAddress);
-
-                // Add the new asset to cache
-                if (!assetsCache->AddNewAsset(asset, strAddress, nHeight, blockHash))
-                    error("%s : Failed at adding a new asset to our cache. asset: %s", __func__,
-                          asset.strName);
-
-                // Add the owner asset to cache
-                if (!assetsCache->AddOwnerAsset(ownerName, ownerAddress))
-                    error("%s : Failed at adding a new asset to our cache. asset: %s", __func__,
-                          asset.strName);
-
-                int assetIndex = tx.vout.size() - 1;
-                int ownerIndex = assetIndex - 1;
-
-                CAssetCachePossibleMine possibleMineOwner(ownerName, COutPoint(tx.GetHash(), ownerIndex),
-                                                          tx.vout[ownerIndex]);
-                if (!assetsCache->AddPossibleOutPoint(possibleMineOwner))
-                    error("%s: Failed to add the owner asset I own to my Unspent Asset Cache. Asset Name : %s",
-                          __func__, ownerName);
-
-                CAssetCachePossibleMine possibleMine(asset.strName, COutPoint(tx.GetHash(), assetIndex),
-                                                     tx.vout[assetIndex]);
-                if (!assetsCache->AddPossibleOutPoint(possibleMine))
-                    error("%s: Failed to add an asset I own to my Unspent Asset Cache. Asset Name : %s",
-                          __func__, asset.strName);
-            } else if (tx.IsReissueAsset()) {
-                CReissueAsset reissue;
-                std::string strAddress;
-                ReissueAssetFromTransaction(tx, reissue, strAddress);
-
-                int reissueIndex = tx.vout.size() - 1;
-
-
-                // Get the asset before we change it
-                CNewAsset asset;
-                if (!assetsCache->GetAssetMetaDataIfExists(reissue.strName, asset))
-                    error("%s: Failed to get the original asset that is getting reissued. Asset Name : %s",
-                          __func__, reissue.strName);
-
-                if (!assetsCache->AddReissueAsset(reissue, strAddress, COutPoint(txid, reissueIndex)))
-                    error("%s: Failed to reissue an asset. Asset Name : %s", __func__, reissue.strName);
-
-                // Set the old IPFSHash for the blockundo
-                bool fIPFSChanged = !reissue.strIPFSHash.empty();
-                bool fUnitsChanged = reissue.nUnits != -1;
-                if (fIPFSChanged || fUnitsChanged) {
-                    undoAssetData->first = reissue.strName; // Asset Name
-                    undoAssetData->second = CBlockAssetUndo {fIPFSChanged, fUnitsChanged, asset.strIPFSHash, asset.units}; // ipfschanged, unitchanged, Old Assets IPFSHash, old units
-                }
-
-                CAssetCachePossibleMine possibleMine(reissue.strName, COutPoint(tx.GetHash(), reissueIndex),
-                                                     tx.vout[reissueIndex]);
-                if (!assetsCache->AddPossibleOutPoint(possibleMine))
-                    error("%s: Failed to add an reissued asset I own to my Unspent Asset Cache. Asset Name : %s",
-                          __func__, reissue.strName);
-            } else if (tx.IsNewUniqueAsset()) {
-                for (int n = 0; n < (int)tx.vout.size(); n++) {
-                    auto out = tx.vout[n];
-
-                    CNewAsset asset;
-                    std::string strAddress;
-
-                    if (IsScriptNewUniqueAsset(out.scriptPubKey)) {
-                        AssetFromScript(out.scriptPubKey, asset, strAddress);
-
-                        // Add the new asset to cache
-                        if (!assetsCache->AddNewAsset(asset, strAddress, nHeight, blockHash))
-                            error("%s : Failed at adding a new asset to our cache. asset: %s", __func__,
-                                  asset.strName);
-
-                        CAssetCachePossibleMine possibleMine(asset.strName, COutPoint(tx.GetHash(), n), out);
-                        if (!assetsCache->AddPossibleOutPoint(possibleMine))
-                            error("%s: Failed to add an asset I own to my Unspent Asset Cache. Asset Name : %s",
-                                  __func__, asset.strName);
-                    }
-                }
-            }
-        }
-    }
-    /** PHL END */
-
     for (size_t i = 0; i < tx.vout.size(); ++i) {
-        bool overwrite = check ? cache.HaveCoin(COutPoint(txid, i)) : fCoinbase;
-        // Always set the possible_overwrite flag to AddCoin for coinbase txn, in order to correctly
+        bool overwrite = check_for_overwrite ? cache.HaveCoin(COutPoint(txid, i)) : fCoinbase;
+        // Coinbase transactions can always be overwritten, in order to correctly
         // deal with the pre-BIP30 occurrences of duplicate coinbase transactions.
         cache.AddCoin(COutPoint(txid, i), Coin(tx.vout[i], nHeight, fCoinbase), overwrite);
-
-        /** PHL START */
-        if (AreAssetsDeployed()) {
-            if (assetsCache) {
-                if (tx.vout[i].scriptPubKey.IsTransferAsset() && !tx.vout[i].scriptPubKey.IsUnspendable()) {
-                    CAssetTransfer assetTransfer;
-                    std::string address;
-                    if (!TransferAssetFromScript(tx.vout[i].scriptPubKey, assetTransfer, address))
-                        LogPrintf(
-                                "%s : ERROR - Received a coin that was a Transfer Asset but failed to get the transfer object from the scriptPubKey. CTxOut: %s\n",
-                                __func__, tx.vout[i].ToString());
-
-                    if (!assetsCache->AddTransferAsset(assetTransfer, address, COutPoint(txid, i), tx.vout[i]))
-                        LogPrintf("%s : ERROR - Failed to add transfer asset CTxOut: %s\n", __func__,
-                                  tx.vout[i].ToString());
-                }
-            }
-        }
-        /** PHL END */
     }
 }
 
-bool CCoinsViewCache::SpendCoin(const COutPoint &outpoint, Coin* moveout, CAssetsCache* assetsCache) {
-
+bool CCoinsViewCache::SpendCoin(const COutPoint &outpoint, Coin* moveout) {
     CCoinsMap::iterator it = FetchCoin(outpoint);
-    if (it == cacheCoins.end())
-        return false;
+    if (it == cacheCoins.end()) return false;
     cachedCoinsUsage -= it->second.coin.DynamicMemoryUsage();
-
-    /** PHL START */
-    Coin tempCoin = it->second.coin;
-    /** PHL END */
-
     if (moveout) {
         *moveout = std::move(it->second.coin);
     }
@@ -238,17 +123,6 @@ bool CCoinsViewCache::SpendCoin(const COutPoint &outpoint, Coin* moveout, CAsset
         it->second.flags |= CCoinsCacheEntry::DIRTY;
         it->second.coin.Clear();
     }
-
-    /** PHL START */
-    if (AreAssetsDeployed()) {
-        if (assetsCache) {
-            if (!assetsCache->TrySpendCoin(outpoint, tempCoin.out)) {
-                return error("%s : Failed to try and spend the asset. COutPoint : %s", __func__, outpoint.ToString());
-            }
-        }
-    }
-    /** PHL END */
-
     return true;
 }
 
@@ -284,56 +158,56 @@ void CCoinsViewCache::SetBestBlock(const uint256 &hashBlockIn) {
 }
 
 bool CCoinsViewCache::BatchWrite(CCoinsMap &mapCoins, const uint256 &hashBlockIn) {
-    for (CCoinsMap::iterator it = mapCoins.begin(); it != mapCoins.end();) {
-        if (it->second.flags & CCoinsCacheEntry::DIRTY) { // Ignore non-dirty entries (optimization).
-            CCoinsMap::iterator itUs = cacheCoins.find(it->first);
-            if (itUs == cacheCoins.end()) {
-                // The parent cache does not have an entry, while the child does
-                // We can ignore it if it's both FRESH and pruned in the child
-                if (!(it->second.flags & CCoinsCacheEntry::FRESH && it->second.coin.IsSpent())) {
-                    // Otherwise we will need to create it in the parent
-                    // and move the data up and mark it as dirty
-                    CCoinsCacheEntry& entry = cacheCoins[it->first];
-                    entry.coin = std::move(it->second.coin);
-                    cachedCoinsUsage += entry.coin.DynamicMemoryUsage();
-                    entry.flags = CCoinsCacheEntry::DIRTY;
-                    // We can mark it FRESH in the parent if it was FRESH in the child
-                    // Otherwise it might have just been flushed from the parent's cache
-                    // and already exist in the grandparent
-                    if (it->second.flags & CCoinsCacheEntry::FRESH)
-                        entry.flags |= CCoinsCacheEntry::FRESH;
-                }
-            } else {
-                // Assert that the child cache entry was not marked FRESH if the
-                // parent cache entry has unspent outputs. If this ever happens,
-                // it means the FRESH flag was misapplied and there is a logic
-                // error in the calling code.
-                if ((it->second.flags & CCoinsCacheEntry::FRESH) && !itUs->second.coin.IsSpent())
-                    throw std::logic_error("FRESH flag misapplied to cache entry for base transaction with spendable outputs");
-
-                // Found the entry in the parent cache
-                if ((itUs->second.flags & CCoinsCacheEntry::FRESH) && it->second.coin.IsSpent()) {
-                    // The grandparent does not have an entry, and the child is
-                    // modified and being pruned. This means we can just delete
-                    // it from the parent.
-                    cachedCoinsUsage -= itUs->second.coin.DynamicMemoryUsage();
-                    cacheCoins.erase(itUs);
-                } else {
-                    // A normal modification.
-                    cachedCoinsUsage -= itUs->second.coin.DynamicMemoryUsage();
-                    itUs->second.coin = std::move(it->second.coin);
-                    cachedCoinsUsage += itUs->second.coin.DynamicMemoryUsage();
-                    itUs->second.flags |= CCoinsCacheEntry::DIRTY;
-                    // NOTE: It is possible the child has a FRESH flag here in
-                    // the event the entry we found in the parent is pruned. But
-                    // we must not copy that FRESH flag to the parent as that
-                    // pruned state likely still needs to be communicated to the
-                    // grandparent.
+    for (CCoinsMap::iterator it = mapCoins.begin(); it != mapCoins.end(); it = mapCoins.erase(it)) {
+        // Ignore non-dirty entries (optimization).
+        if (!(it->second.flags & CCoinsCacheEntry::DIRTY)) {
+            continue;
+        }
+        CCoinsMap::iterator itUs = cacheCoins.find(it->first);
+        if (itUs == cacheCoins.end()) {
+            // The parent cache does not have an entry, while the child cache does.
+            // We can ignore it if it's both spent and FRESH in the child
+            if (!(it->second.flags & CCoinsCacheEntry::FRESH && it->second.coin.IsSpent())) {
+                // Create the coin in the parent cache, move the data up
+                // and mark it as dirty.
+                CCoinsCacheEntry& entry = cacheCoins[it->first];
+                entry.coin = std::move(it->second.coin);
+                cachedCoinsUsage += entry.coin.DynamicMemoryUsage();
+                entry.flags = CCoinsCacheEntry::DIRTY;
+                // We can mark it FRESH in the parent if it was FRESH in the child
+                // Otherwise it might have just been flushed from the parent's cache
+                // and already exist in the grandparent
+                if (it->second.flags & CCoinsCacheEntry::FRESH) {
+                    entry.flags |= CCoinsCacheEntry::FRESH;
                 }
             }
+        } else {
+            // Found the entry in the parent cache
+            if ((it->second.flags & CCoinsCacheEntry::FRESH) && !itUs->second.coin.IsSpent()) {
+                // The coin was marked FRESH in the child cache, but the coin
+                // exists in the parent cache. If this ever happens, it means
+                // the FRESH flag was misapplied and there is a logic error in
+                // the calling code.
+                throw std::logic_error("FRESH flag misapplied to coin that exists in parent cache");
+            }
+
+            if ((itUs->second.flags & CCoinsCacheEntry::FRESH) && it->second.coin.IsSpent()) {
+                // The grandparent cache does not have an entry, and the coin
+                // has been spent. We can just delete it from the parent cache.
+                cachedCoinsUsage -= itUs->second.coin.DynamicMemoryUsage();
+                cacheCoins.erase(itUs);
+            } else {
+                // A normal modification.
+                cachedCoinsUsage -= itUs->second.coin.DynamicMemoryUsage();
+                itUs->second.coin = std::move(it->second.coin);
+                cachedCoinsUsage += itUs->second.coin.DynamicMemoryUsage();
+                itUs->second.flags |= CCoinsCacheEntry::DIRTY;
+                // NOTE: It isn't safe to mark the coin as FRESH in the parent
+                // cache. If it already existed and was spent in the parent
+                // cache then marking it FRESH would prevent that spentness
+                // from being flushed to the grandparent.
+            }
         }
-        CCoinsMap::iterator itOld = it++;
-        mapCoins.erase(itOld);
     }
     hashBlock = hashBlockIn;
     return true;
@@ -359,18 +233,6 @@ unsigned int CCoinsViewCache::GetCacheSize() const {
     return cacheCoins.size();
 }
 
-CAmount CCoinsViewCache::GetValueIn(const CTransaction& tx) const
-{
-    if (tx.IsCoinBase())
-        return 0;
-
-    CAmount nResult = 0;
-    for (unsigned int i = 0; i < tx.vin.size(); i++)
-        nResult += AccessCoin(tx.vin[i].prevout).out.nValue;
-
-    return nResult;
-}
-
 bool CCoinsViewCache::HaveInputs(const CTransaction& tx) const
 {
     if (!tx.IsCoinBase()) {
@@ -383,16 +245,32 @@ bool CCoinsViewCache::HaveInputs(const CTransaction& tx) const
     return true;
 }
 
-static const size_t MIN_TRANSACTION_OUTPUT_WEIGHT = WITNESS_SCALE_FACTOR * ::GetSerializeSize(CTxOut(), SER_NETWORK, PROTOCOL_VERSION);
-//static const size_t MAX_OUTPUTS_PER_BLOCK = MAX_BLOCK_WEIGHT / MIN_TRANSACTION_OUTPUT_WEIGHT;
+static const size_t MIN_TRANSACTION_OUTPUT_WEIGHT = WITNESS_SCALE_FACTOR * ::GetSerializeSize(CTxOut(), PROTOCOL_VERSION);
+static const size_t MAX_OUTPUTS_PER_BLOCK = MAX_BLOCK_WEIGHT / MIN_TRANSACTION_OUTPUT_WEIGHT;
 
 const Coin& AccessByTxid(const CCoinsViewCache& view, const uint256& txid)
 {
     COutPoint iter(txid, 0);
-    while (iter.n < GetMaxBlockWeight() / MIN_TRANSACTION_OUTPUT_WEIGHT) {
+    while (iter.n < MAX_OUTPUTS_PER_BLOCK) {
         const Coin& alternate = view.AccessCoin(iter);
         if (!alternate.IsSpent()) return alternate;
         ++iter.n;
     }
     return coinEmpty;
+}
+
+bool CCoinsViewErrorCatcher::GetCoin(const COutPoint &outpoint, Coin &coin) const {
+    try {
+        return CCoinsViewBacked::GetCoin(outpoint, coin);
+    } catch(const std::runtime_error& e) {
+        for (auto f : m_err_callbacks) {
+            f();
+        }
+        LogPrintf("Error reading from database: %s\n", e.what());
+        // Starting the shutdown sequence and returning false to the caller would be
+        // interpreted as 'entry not found' (as opposed to unable to read data), and
+        // could lead to invalid interpretation. Just exit immediately, as we can't
+        // continue anyway, and all writes should be atomic.
+        std::abort();
+    }
 }

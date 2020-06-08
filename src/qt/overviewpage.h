@@ -1,15 +1,12 @@
-// Copyright (c) 2011-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Placeholder Core developers
+// Copyright (c) 2011-2018 The Placeholders Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #ifndef PLACEH_QT_OVERVIEWPAGE_H
 #define PLACEH_QT_OVERVIEWPAGE_H
 
-#include "amount.h"
+#include <interfaces/wallet.h>
 
-#include <QtWidgets>
-#include <QSortFilterProxyModel>
 #include <QWidget>
 #include <memory>
 
@@ -33,19 +30,16 @@ class OverviewPage : public QWidget
     Q_OBJECT
 
 public:
-    explicit OverviewPage(const PlatformStyle *platformStyle, QWidget *parent = 0);
+    explicit OverviewPage(const PlatformStyle *platformStyle, QWidget *parent = nullptr);
     ~OverviewPage();
 
     void setClientModel(ClientModel *clientModel);
     void setWalletModel(WalletModel *walletModel);
     void showOutOfSyncWarning(bool fShow);
-    void showAssets();
-    void displayAssetInfo();
-    void hideAssetInfo();
 
 public Q_SLOTS:
-    void setBalance(const CAmount& balance, const CAmount& unconfirmedBalance, const CAmount& immatureBalance,
-                    const CAmount& watchOnlyBalance, const CAmount& watchUnconfBalance, const CAmount& watchImmatureBalance);
+    void setBalance(const interfaces::WalletBalances& balances);
+    void setPrivacy(bool privacy);
 
 Q_SIGNALS:
     void transactionClicked(const QModelIndex &index);
@@ -55,16 +49,11 @@ private:
     Ui::OverviewPage *ui;
     ClientModel *clientModel;
     WalletModel *walletModel;
-    CAmount currentBalance;
-    CAmount currentUnconfirmedBalance;
-    CAmount currentImmatureBalance;
-    CAmount currentWatchOnlyBalance;
-    CAmount currentWatchUnconfBalance;
-    CAmount currentWatchImmatureBalance;
+    interfaces::WalletBalances m_balances;
+    bool m_privacy{false};
 
     TxViewDelegate *txdelegate;
     std::unique_ptr<TransactionFilterProxy> filter;
-    std::unique_ptr<QSortFilterProxyModel> assetFilter;
 
 private Q_SLOTS:
     void updateDisplayUnit();

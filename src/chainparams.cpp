@@ -95,16 +95,16 @@ public:
          * The characters are rarely used upper ASCII, not valid as UTF-8, and produce
          * a large 32-bit integer with any alignment.
          */
-        pchMessageStart[0] = 0x50; // P
-        pchMessageStart[1] = 0x45; // E
-        pchMessageStart[2] = 0x58; // X
-        pchMessageStart[3] = 0x41; // A
-        nDefaultPort = 8235;
+        pchMessageStart[0] = 0x52;
+        pchMessageStart[1] = 0x41;
+        pchMessageStart[2] = 0x56;
+        pchMessageStart[3] = 0x4e;
+        nDefaultPort = 6608;
         nPruneAfterHeight = 100000;
         m_assumed_blockchain_size = 320;
         m_assumed_chain_state_size = 4;
 
-        genesis = CreateGenesisBlock(1562369695, 33393258, 0x1e00ffff, 4, 50 * COIN );
+        genesis = CreateGenesisBlock(1562369695, 33393258, 0x1e00ffff, 4, 5000 * COIN );
         consensus.hashGenesisBlock = genesis.GetX16RHash();
         assert(consensus.hashGenesisBlock == uint256S("0x000000b3f4b347d4a1fb2f2a8f42d5fc33094a49858608e511c0d45f51628b85"));
         assert(genesis.hashMerkleRoot == uint256S("0x4e5951cce11bbe8d10e3f9e8b584ee2ed3c80583311e06f40d7e6146f2087f9d"));
@@ -115,6 +115,15 @@ public:
         // service bits we want, but we should get them updated to support all service bits wanted by any
         // release ASAP to avoid it where possible.
         vSeeds.emplace_back("dnsseeds.placehproject.com", false);
+        
+        vSeeds.emplace_back("142.11.209.68", false);
+        vSeeds.emplace_back("206.223.171.38", false);
+        vSeeds.emplace_back("104.248.191.27", false);
+        vSeeds.emplace_back("seed.placeh.io", false);
+		vSeeds.emplace_back("104.248.177.232", false);
+        vSeeds.emplace_back("23.254.211.237", false);
+		vSeeds.emplace_back("104.168.162.121", false);
+        vSeeds.emplace_back("104.168.149.150", false);
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,75);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,122);

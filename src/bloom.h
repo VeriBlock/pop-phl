@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_BLOOM_H
-#define PLACEH_BLOOM_H
+#ifndef PHL_BLOOM_H
+#define PHL_BLOOM_H
 
 #include <serialize.h>
 
@@ -117,4 +117,4 @@ private:
     int nHashFuncs;
 };
 
-#endif // PLACEH_BLOOM_H
+#endif // PHL_BLOOM_H

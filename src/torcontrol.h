@@ -5,8 +5,8 @@
 /**
  * Functionality for communicating with Tor.
  */
-#ifndef PLACEH_TORCONTROL_H
-#define PLACEH_TORCONTROL_H
+#ifndef PHL_TORCONTROL_H
+#define PHL_TORCONTROL_H
 
 
 extern const std::string DEFAULT_TOR_CONTROL;
@@ -16,4 +16,4 @@ void StartTorControl();
 void InterruptTorControl();
 void StopTorControl();
 
-#endif /* PLACEH_TORCONTROL_H */
+#endif /* PHL_TORCONTROL_H */

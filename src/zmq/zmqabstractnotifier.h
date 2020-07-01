@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_ZMQ_ZMQABSTRACTNOTIFIER_H
-#define PLACEH_ZMQ_ZMQABSTRACTNOTIFIER_H
+#ifndef PHL_ZMQ_ZMQABSTRACTNOTIFIER_H
+#define PHL_ZMQ_ZMQABSTRACTNOTIFIER_H
 
 #include <zmq/zmqconfig.h>
 
@@ -50,4 +50,4 @@ protected:
     int outbound_message_high_water_mark; // aka SNDHWM
 };
 
-#endif // PLACEH_ZMQ_ZMQABSTRACTNOTIFIER_H
+#endif // PHL_ZMQ_ZMQABSTRACTNOTIFIER_H

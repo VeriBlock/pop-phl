@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_HTTPSERVER_H
-#define PLACEH_HTTPSERVER_H
+#ifndef PHL_HTTPSERVER_H
+#define PHL_HTTPSERVER_H
 
 #include <string>
 #include <functional>
@@ -147,4 +147,4 @@ private:
     struct event* ev;
 };
 
-#endif // PLACEH_HTTPSERVER_H
+#endif // PHL_HTTPSERVER_H

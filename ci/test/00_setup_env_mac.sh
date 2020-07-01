@@ -13,4 +13,4 @@ export OSX_SDK=10.14
 export RUN_UNIT_TESTS=false
 export RUN_FUNCTIONAL_TESTS=false
 export GOAL="deploy"
-export PLACEH_CONFIG="--enable-gui --enable-reduce-exports --enable-werror"
+export PHL_CONFIG="--enable-gui --enable-reduce-exports --enable-werror"

@@ -2,8 +2,8 @@
 // Copyright (c) 2009-2020 The Placeholders Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
-#ifndef PLACEH_POLICY_FEES_H
-#define PLACEH_POLICY_FEES_H
+#ifndef PHL_POLICY_FEES_H
+#define PHL_POLICY_FEES_H
 
 #include <amount.h>
 #include <policy/feerate.h>
@@ -288,4 +288,4 @@ private:
     FastRandomContext insecure_rand;
 };
 
-#endif // PLACEH_POLICY_FEES_H
+#endif // PHL_POLICY_FEES_H

@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_QT_NOTIFICATOR_H
-#define PLACEH_QT_NOTIFICATOR_H
+#ifndef PHL_QT_NOTIFICATOR_H
+#define PHL_QT_NOTIFICATOR_H
 
 #if defined(HAVE_CONFIG_H)
 #include <config/placeh-config.h>
@@ -74,4 +74,4 @@ private:
 #endif
 };
 
-#endif // PLACEH_QT_NOTIFICATOR_H
+#endif // PHL_QT_NOTIFICATOR_H

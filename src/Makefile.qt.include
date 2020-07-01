@@ -4,7 +4,7 @@
 
 bin_PROGRAMS += qt/placeh-qt
 
-if BUILD_PLACEH_GUI
+if BUILD_PHL_GUI
   bin_PROGRAMS += placeh-gui
 endif
 
@@ -84,7 +84,7 @@ QT_MOC_CPP = \
   qt/moc_walletmodel.cpp \
   qt/moc_walletview.cpp
 
-PLACEH_MM = \
+PHL_MM = \
   qt/macdockiconhandler.mm \
   qt/macnotificationhandler.mm \
   qt/macos_appnap.mm
@@ -100,7 +100,7 @@ QT_QRC = qt/placeh.qrc
 QT_QRC_LOCALE_CPP = qt/qrc_placeh_locale.cpp
 QT_QRC_LOCALE = qt/placeh_locale.qrc
 
-PLACEH_QT_H = \
+PHL_QT_H = \
   qt/addressbookpage.h \
   qt/addresstablemodel.h \
   qt/askpassphrasedialog.h \
@@ -207,7 +207,7 @@ RES_ICONS = \
   qt/res/icons/tx_mined.png \
   qt/res/icons/warning.png
 
-PLACEH_QT_BASE_CPP = \
+PHL_QT_BASE_CPP = \
   qt/bantablemodel.cpp \
   qt/placeh.cpp \
   qt/placehaddressvalidator.cpp \
@@ -232,9 +232,9 @@ PLACEH_QT_BASE_CPP = \
   qt/trafficgraphwidget.cpp \
   qt/utilitydialog.cpp
 
-PLACEH_QT_WINDOWS_CPP = qt/winshutdownmonitor.cpp
+PHL_QT_WINDOWS_CPP = qt/winshutdownmonitor.cpp
 
-PLACEH_QT_WALLET_CPP = \
+PHL_QT_WALLET_CPP = \
   qt/addressbookpage.cpp \
   qt/addresstablemodel.cpp \
   qt/askpassphrasedialog.cpp \
@@ -264,31 +264,31 @@ PLACEH_QT_WALLET_CPP = \
   qt/walletmodeltransaction.cpp \
   qt/walletview.cpp
 
-PLACEH_QT_CPP = $(PLACEH_QT_BASE_CPP)
+PHL_QT_CPP = $(PHL_QT_BASE_CPP)
 if TARGET_WINDOWS
-PLACEH_QT_CPP += $(PLACEH_QT_WINDOWS_CPP)
+PHL_QT_CPP += $(PHL_QT_WINDOWS_CPP)
 endif
 if ENABLE_WALLET
-PLACEH_QT_CPP += $(PLACEH_QT_WALLET_CPP)
+PHL_QT_CPP += $(PHL_QT_WALLET_CPP)
 endif # ENABLE_WALLET
 
 RES_IMAGES =
 
 RES_MOVIES = $(wildcard $(srcdir)/qt/res/movies/spinner-*.png)
 
-PLACEH_RC = qt/res/placeh-qt-res.rc
+PHL_RC = qt/res/placeh-qt-res.rc
 
-PLACEH_QT_INCLUDES = -DQT_NO_KEYWORDS
+PHL_QT_INCLUDES = -DQT_NO_KEYWORDS
 
-qt_libplacehqt_a_CPPFLAGS = $(AM_CPPFLAGS) $(PLACEH_INCLUDES) $(PLACEH_QT_INCLUDES) \
+qt_libplacehqt_a_CPPFLAGS = $(AM_CPPFLAGS) $(PHL_INCLUDES) $(PHL_QT_INCLUDES) \
   $(QT_INCLUDES) $(QT_DBUS_INCLUDES) $(QR_CFLAGS)
 qt_libplacehqt_a_CXXFLAGS = $(AM_CXXFLAGS) $(QT_PIE_FLAGS)
 qt_libplacehqt_a_OBJCXXFLAGS = $(AM_OBJCXXFLAGS) $(QT_PIE_FLAGS)
 
-qt_libplacehqt_a_SOURCES = $(PLACEH_QT_CPP) $(PLACEH_QT_H) $(QT_FORMS_UI) \
+qt_libplacehqt_a_SOURCES = $(PHL_QT_CPP) $(PHL_QT_H) $(QT_FORMS_UI) \
   $(QT_QRC) $(QT_QRC_LOCALE) $(QT_TS) $(RES_ICONS) $(RES_IMAGES) $(RES_MOVIES)
 if TARGET_DARWIN
-  qt_libplacehqt_a_SOURCES += $(PLACEH_MM)
+  qt_libplacehqt_a_SOURCES += $(PHL_MM)
 endif
 
 nodist_qt_libplacehqt_a_SOURCES = $(QT_MOC_CPP) $(QT_MOC) $(QT_QRC_CPP) $(QT_QRC_LOCALE_CPP)
@@ -302,24 +302,24 @@ $(QT_MOC): $(QT_FORMS_H)
 $(qt_libplacehqt_a_OBJECTS) $(qt_placeh_qt_OBJECTS) $(placeh_gui_OBJECTS) : | $(QT_MOC)
 
 # placeh-qt and placeh-gui binaries #
-placeh_qt_cppflags = $(AM_CPPFLAGS) $(PLACEH_INCLUDES) $(PLACEH_QT_INCLUDES) \
+placeh_qt_cppflags = $(AM_CPPFLAGS) $(PHL_INCLUDES) $(PHL_QT_INCLUDES) \
   $(QT_INCLUDES) $(QR_CFLAGS)
 placeh_qt_cxxflags = $(AM_CXXFLAGS) $(QT_PIE_FLAGS)
 
 placeh_qt_sources = qt/main.cpp
 if TARGET_WINDOWS
-  placeh_qt_sources += $(PLACEH_RC)
+  placeh_qt_sources += $(PHL_RC)
 endif
-placeh_qt_ldadd = qt/libplacehqt.a $(LIBPLACEH_SERVER)
+placeh_qt_ldadd = qt/libplacehqt.a $(LIBPHL_SERVER)
 if ENABLE_WALLET
-placeh_qt_ldadd += $(LIBPLACEH_UTIL) $(LIBPLACEH_WALLET)
+placeh_qt_ldadd += $(LIBPHL_UTIL) $(LIBPHL_WALLET)
 endif
 if ENABLE_ZMQ
-placeh_qt_ldadd += $(LIBPLACEH_ZMQ) $(ZMQ_LIBS)
+placeh_qt_ldadd += $(LIBPHL_ZMQ) $(ZMQ_LIBS)
 endif
-placeh_qt_ldadd += $(LIBPLACEH_CLI) $(LIBPLACEH_COMMON) $(LIBPLACEH_UTIL) $(LIBPLACEH_CONSENSUS) $(LIBPLACEH_CRYPTO) $(LIBUNIVALUE) $(LIBLEVELDB) $(LIBLEVELDB_SSE42) $(LIBMEMENV) \
+placeh_qt_ldadd += $(LIBPHL_CLI) $(LIBPHL_COMMON) $(LIBPHL_UTIL) $(LIBPHL_CONSENSUS) $(LIBPHL_CRYPTO) $(LIBUNIVALUE) $(LIBLEVELDB) $(LIBLEVELDB_SSE42) $(LIBMEMENV) \
   $(BOOST_LIBS) $(QT_LIBS) $(QT_DBUS_LIBS) $(QR_LIBS) $(BDB_LIBS) $(MINIUPNPC_LIBS) $(LIBSECP256K1) \
-  $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS)
+  $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(VERIBLOCK_POP_CPP_LIBS)
 placeh_qt_ldflags = $(RELDFLAGS) $(AM_LDFLAGS) $(QT_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 placeh_qt_libtoolflags = $(AM_LIBTOOLFLAGS) --tag CXX
 
@@ -346,7 +346,7 @@ $(srcdir)/qt/placehstrings.cpp: FORCE
 	@test -n $(XGETTEXT) || echo "xgettext is required for updating translations"
 	$(AM_V_GEN) cd $(srcdir); XGETTEXT=$(XGETTEXT) COPYRIGHT_HOLDERS="$(COPYRIGHT_HOLDERS)" $(PYTHON) ../share/qt/extract_strings_qt.py $(libplaceh_server_a_SOURCES) $(libplaceh_wallet_a_SOURCES) $(libplaceh_common_a_SOURCES) $(libplaceh_zmq_a_SOURCES) $(libplaceh_consensus_a_SOURCES) $(libplaceh_util_a_SOURCES)
 
-translate: $(srcdir)/qt/placehstrings.cpp $(QT_FORMS_UI) $(QT_FORMS_UI) $(PLACEH_QT_BASE_CPP) qt/placeh.cpp $(PLACEH_QT_WINDOWS_CPP) $(PLACEH_QT_WALLET_CPP) $(PLACEH_QT_H) $(PLACEH_MM)
+translate: $(srcdir)/qt/placehstrings.cpp $(QT_FORMS_UI) $(QT_FORMS_UI) $(PHL_QT_BASE_CPP) qt/placeh.cpp $(PHL_QT_WINDOWS_CPP) $(PHL_QT_WALLET_CPP) $(PHL_QT_H) $(PHL_MM)
 	@test -n $(LUPDATE) || echo "lupdate is required for updating translations"
 	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(LUPDATE) $^ -locations relative -no-obsolete -ts $(srcdir)/qt/locale/placeh_en.ts
 
@@ -367,7 +367,7 @@ CLEAN_QT = $(nodist_qt_libplacehqt_a_SOURCES) $(QT_QM) $(QT_FORMS_H) qt/*.gcda q
 CLEANFILES += $(CLEAN_QT)
 
 placeh_qt_clean: FORCE
-	rm -f $(CLEAN_QT) $(qt_libplacehqt_a_OBJECTS) $(qt_placeh_qt_OBJECTS) qt/placeh-qt$(EXEEXT) $(LIBPLACEHQT)
+	rm -f $(CLEAN_QT) $(qt_libplacehqt_a_OBJECTS) $(qt_placeh_qt_OBJECTS) qt/placeh-qt$(EXEEXT) $(LIBPHLQT)
 
 placeh_qt : qt/placeh-qt$(EXEEXT)
 

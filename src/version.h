@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_VERSION_H
-#define PLACEH_VERSION_H
+#ifndef PHL_VERSION_H
+#define PHL_VERSION_H
 
 /**
  * network protocol versioning
@@ -45,4 +45,4 @@ static const int INVALID_CB_NO_BAN_VERSION = 70015;
 //! getassetdata reutrn asstnotfound, and assetdata doesn't have blockhash in the data
 static const int X16RV2_VERSION = 70025;
 
-#endif // PLACEH_VERSION_H
+#endif // PHL_VERSION_H

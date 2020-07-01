@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_SPAN_H
-#define PLACEH_SPAN_H
+#ifndef PHL_SPAN_H
+#define PHL_SPAN_H
 
 #include <type_traits>
 #include <cstddef>

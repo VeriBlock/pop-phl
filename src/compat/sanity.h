@@ -2,10 +2,10 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_COMPAT_SANITY_H
-#define PLACEH_COMPAT_SANITY_H
+#ifndef PHL_COMPAT_SANITY_H
+#define PHL_COMPAT_SANITY_H
 
 bool glibc_sanity_test();
 bool glibcxx_sanity_test();
 
-#endif // PLACEH_COMPAT_SANITY_H
+#endif // PHL_COMPAT_SANITY_H

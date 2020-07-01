@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_RPC_PROTOCOL_H
-#define PLACEH_RPC_PROTOCOL_H
+#ifndef PHL_RPC_PROTOCOL_H
+#define PHL_RPC_PROTOCOL_H
 
 //! HTTP status codes
 enum HTTPStatusCode
@@ -86,4 +86,4 @@ enum RPCErrorCode
     RPC_FORBIDDEN_BY_SAFE_MODE      = -2,  //!< Server is in safe mode, and command is not allowed in safe mode
 };
 
-#endif // PLACEH_RPC_PROTOCOL_H
+#endif // PHL_RPC_PROTOCOL_H

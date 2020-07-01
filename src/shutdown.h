@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_SHUTDOWN_H
-#define PLACEH_SHUTDOWN_H
+#ifndef PHL_SHUTDOWN_H
+#define PHL_SHUTDOWN_H
 
 void StartShutdown();
 void AbortShutdown();

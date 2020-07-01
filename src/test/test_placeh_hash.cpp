@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2016 The Placeholders Core developers
-// Copyright (c) 2017 The PLACEH Core developers
+// Copyright (c) 2017 The PHL Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -22,7 +22,7 @@ int main(int argc, char **argv)
         std::cout << HashX16R(rawHeader.data(), rawHeader.data() + 80, hashPrevBlock).GetHex();
     } else
     {
-        std::cerr << "Usage: test_PLACEH_hash blockHex" << std::endl;
+        std::cerr << "Usage: test_PHL_hash blockHex" << std::endl;
         return 1;
     }
 

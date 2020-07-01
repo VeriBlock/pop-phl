@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_VERSIONBITSINFO_H
-#define PLACEH_VERSIONBITSINFO_H
+#ifndef PHL_VERSIONBITSINFO_H
+#define PHL_VERSIONBITSINFO_H
 
 struct VBDeploymentInfo {
     /** Deployment name */
@@ -14,4 +14,4 @@ struct VBDeploymentInfo {
 
 extern const struct VBDeploymentInfo VersionBitsDeploymentInfo[];
 
-#endif // PLACEH_VERSIONBITSINFO_H
+#endif // PHL_VERSIONBITSINFO_H

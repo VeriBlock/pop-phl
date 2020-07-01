@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_INDEX_BASE_H
-#define PLACEH_INDEX_BASE_H
+#ifndef PHL_INDEX_BASE_H
+#define PHL_INDEX_BASE_H
 
 #include <dbwrapper.h>
 #include <primitives/block.h>
@@ -108,4 +108,4 @@ public:
     void Stop();
 };
 
-#endif // PLACEH_INDEX_BASE_H
+#endif // PHL_INDEX_BASE_H

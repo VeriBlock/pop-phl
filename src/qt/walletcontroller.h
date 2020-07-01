@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_QT_WALLETCONTROLLER_H
-#define PLACEH_QT_WALLETCONTROLLER_H
+#ifndef PHL_QT_WALLETCONTROLLER_H
+#define PHL_QT_WALLETCONTROLLER_H
 
 #include <qt/sendcoinsrecipient.h>
 #include <support/allocators/secure.h>
@@ -149,4 +149,4 @@ private:
     void finish();
 };
 
-#endif // PLACEH_QT_WALLETCONTROLLER_H
+#endif // PHL_QT_WALLETCONTROLLER_H

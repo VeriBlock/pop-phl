@@ -2,11 +2,14 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_QT_TRANSACTIONDESC_H
-#define PLACEH_QT_TRANSACTIONDESC_H
+#ifndef PHL_QT_TRANSACTIONDESC_H
+#define PHL_QT_TRANSACTIONDESC_H
 
+#include <QDebug>
 #include <QObject>
 #include <QString>
+#include <QJsonObject>
+#include <QJsonDocument>
 
 class TransactionRecord;
 
@@ -25,11 +28,16 @@ class TransactionDesc: public QObject
 
 public:
     static QString toHTML(interfaces::Node& node, interfaces::Wallet& wallet, TransactionRecord *rec, int unit);
+	// VBK
+	static QJsonObject objectFromString(const QString& in);
+	// VBK
+
 
 private:
     TransactionDesc() {}
 
+	
     static QString FormatTxStatus(const interfaces::WalletTx& wtx, const interfaces::WalletTxStatus& status, bool inMempool, int numBlocks);
 };
 
-#endif // PLACEH_QT_TRANSACTIONDESC_H
+#endif // PHL_QT_TRANSACTIONDESC_H

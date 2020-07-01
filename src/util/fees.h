@@ -2,8 +2,8 @@
 // Copyright (c) 2009-2019 The Placeholders Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
-#ifndef PLACEH_UTIL_FEES_H
-#define PLACEH_UTIL_FEES_H
+#ifndef PHL_UTIL_FEES_H
+#define PHL_UTIL_FEES_H
 
 #include <string>
 
@@ -13,4 +13,4 @@ enum class FeeReason;
 bool FeeModeFromString(const std::string& mode_string, FeeEstimateMode& fee_estimate_mode);
 std::string StringForFeeReason(FeeReason reason);
 
-#endif // PLACEH_UTIL_FEES_H
+#endif // PHL_UTIL_FEES_H

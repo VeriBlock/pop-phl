@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_QT_TRANSACTIONVIEW_H
-#define PLACEH_QT_TRANSACTIONVIEW_H
+#ifndef PHL_QT_TRANSACTIONVIEW_H
+#define PHL_QT_TRANSACTIONVIEW_H
 
 #include <qt/guiutil.h>
 
@@ -123,4 +123,4 @@ public Q_SLOTS:
     void focusTransaction(const uint256& txid);
 };
 
-#endif // PLACEH_QT_TRANSACTIONVIEW_H
+#endif // PHL_QT_TRANSACTIONVIEW_H

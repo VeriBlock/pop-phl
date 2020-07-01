@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_RANDOMENV_H
-#define PLACEH_RANDOMENV_H
+#ifndef PHL_RANDOMENV_H
+#define PHL_RANDOMENV_H
 
 #include <crypto/sha512.h>
 

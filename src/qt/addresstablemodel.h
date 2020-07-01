@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_QT_ADDRESSTABLEMODEL_H
-#define PLACEH_QT_ADDRESSTABLEMODEL_H
+#ifndef PHL_QT_ADDRESSTABLEMODEL_H
+#define PHL_QT_ADDRESSTABLEMODEL_H
 
 #include <QAbstractTableModel>
 #include <QStringList>
@@ -102,4 +102,4 @@ public Q_SLOTS:
     friend class AddressTablePriv;
 };
 
-#endif // PLACEH_QT_ADDRESSTABLEMODEL_H
+#endif // PHL_QT_ADDRESSTABLEMODEL_H

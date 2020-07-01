@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_RPC_UTIL_H
-#define PLACEH_RPC_UTIL_H
+#ifndef PHL_RPC_UTIL_H
+#define PHL_RPC_UTIL_H
 
 #include <node/transaction.h>
 #include <outputtype.h>
@@ -348,4 +348,4 @@ private:
     const RPCExamples m_examples;
 };
 
-#endif // PLACEH_RPC_UTIL_H
+#endif // PHL_RPC_UTIL_H

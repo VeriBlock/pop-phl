@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_UTIL_SETTINGS_H
-#define PLACEH_UTIL_SETTINGS_H
+#ifndef PHL_UTIL_SETTINGS_H
+#define PHL_UTIL_SETTINGS_H
 
 #include <map>
 #include <string>
@@ -91,4 +91,4 @@ auto FindKey(Map&& map, Key&& key) -> decltype(&map.at(key))
 
 } // namespace util
 
-#endif // PLACEH_UTIL_SETTINGS_H
+#endif // PHL_UTIL_SETTINGS_H

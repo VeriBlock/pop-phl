@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_VERSIONBITS_H
-#define PLACEH_VERSIONBITS_H
+#ifndef PHL_VERSIONBITS_H
+#define PHL_VERSIONBITS_H
 
 #include <chain.h>
 #include <map>
@@ -86,4 +86,4 @@ BIP9Stats VersionBitsStatistics(const CBlockIndex* pindexPrev, const Consensus::
 int VersionBitsStateSinceHeight(const CBlockIndex* pindexPrev, const Consensus::Params& params, Consensus::DeploymentPos pos, VersionBitsCache& cache);
 uint32_t VersionBitsMask(const Consensus::Params& params, Consensus::DeploymentPos pos);
 
-#endif // PLACEH_VERSIONBITS_H
+#endif // PHL_VERSIONBITS_H

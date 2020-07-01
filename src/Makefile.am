@@ -19,43 +19,43 @@ else
 LIBUNIVALUE = $(UNIVALUE_LIBS)
 endif
 
-PLACEH_INCLUDES=-I$(builddir) $(BDB_CPPFLAGS) $(BOOST_CPPFLAGS) $(LEVELDB_CPPFLAGS)
+PHL_INCLUDES=-I$(builddir) $(BDB_CPPFLAGS) $(BOOST_CPPFLAGS) $(LEVELDB_CPPFLAGS)
 
-PLACEH_INCLUDES += -I$(srcdir)/secp256k1/include
-PLACEH_INCLUDES += $(UNIVALUE_CFLAGS)
+PHL_INCLUDES += -I$(srcdir)/secp256k1/include
+PHL_INCLUDES += $(UNIVALUE_CFLAGS)
 
-LIBPLACEH_SERVER=libplaceh_server.a
-LIBPLACEH_COMMON=libplaceh_common.a
-LIBPLACEH_CONSENSUS=libplaceh_consensus.a
-LIBPLACEH_CLI=libplaceh_cli.a
-LIBPLACEH_UTIL=libplaceh_util.a
-LIBPLACEH_CRYPTO_BASE=crypto/libplaceh_crypto_base.a
-LIBPLACEHQT=qt/libplacehqt.a
+LIBPHL_SERVER=libplaceh_server.a
+LIBPHL_COMMON=libplaceh_common.a
+LIBPHL_CONSENSUS=libplaceh_consensus.a
+LIBPHL_CLI=libplaceh_cli.a
+LIBPHL_UTIL=libplaceh_util.a
+LIBPHL_CRYPTO_BASE=crypto/libplaceh_crypto_base.a
+LIBPHLQT=qt/libplacehqt.a
 LIBSECP256K1=secp256k1/libsecp256k1.la
 
 if ENABLE_ZMQ
-LIBPLACEH_ZMQ=libplaceh_zmq.a
+LIBPHL_ZMQ=libplaceh_zmq.a
 endif
-if BUILD_PLACEH_LIBS
-LIBPLACEHCONSENSUS=libplacehconsensus.la
+if BUILD_PHL_LIBS
+LIBPHLCONSENSUS=libplacehconsensus.la
 endif
 if ENABLE_WALLET
-LIBPLACEH_WALLET=libplaceh_wallet.a
-LIBPLACEH_WALLET_TOOL=libplaceh_wallet_tool.a
+LIBPHL_WALLET=libplaceh_wallet.a
+LIBPHL_WALLET_TOOL=libplaceh_wallet_tool.a
 endif
 
-LIBPLACEH_CRYPTO= $(LIBPLACEH_CRYPTO_BASE)
+LIBPHL_CRYPTO= $(LIBPHL_CRYPTO_BASE)
 if ENABLE_SSE41
-LIBPLACEH_CRYPTO_SSE41 = crypto/libplaceh_crypto_sse41.a
-LIBPLACEH_CRYPTO += $(LIBPLACEH_CRYPTO_SSE41)
+LIBPHL_CRYPTO_SSE41 = crypto/libplaceh_crypto_sse41.a
+LIBPHL_CRYPTO += $(LIBPHL_CRYPTO_SSE41)
 endif
 if ENABLE_AVX2
-LIBPLACEH_CRYPTO_AVX2 = crypto/libplaceh_crypto_avx2.a
-LIBPLACEH_CRYPTO += $(LIBPLACEH_CRYPTO_AVX2)
+LIBPHL_CRYPTO_AVX2 = crypto/libplaceh_crypto_avx2.a
+LIBPHL_CRYPTO += $(LIBPHL_CRYPTO_AVX2)
 endif
 if ENABLE_SHANI
-LIBPLACEH_CRYPTO_SHANI = crypto/libplaceh_crypto_shani.a
-LIBPLACEH_CRYPTO += $(LIBPLACEH_CRYPTO_SHANI)
+LIBPHL_CRYPTO_SHANI = crypto/libplaceh_crypto_shani.a
+LIBPHL_CRYPTO += $(LIBPHL_CRYPTO_SHANI)
 endif
 
 $(LIBSECP256K1): $(wildcard secp256k1/src/*.h) $(wildcard secp256k1/src/*.c) $(wildcard secp256k1/include/*)
@@ -64,46 +64,62 @@ $(LIBSECP256K1): $(wildcard secp256k1/src/*.h) $(wildcard secp256k1/src/*.c) $(w
 # Make is not made aware of per-object dependencies to avoid limiting building parallelization
 # But to build the less dependent modules first, we manually select their order here:
 EXTRA_LIBRARIES += \
-  $(LIBPLACEH_CRYPTO) \
-  $(LIBPLACEH_UTIL) \
-  $(LIBPLACEH_COMMON) \
-  $(LIBPLACEH_CONSENSUS) \
-  $(LIBPLACEH_SERVER) \
-  $(LIBPLACEH_CLI) \
-  $(LIBPLACEH_WALLET) \
-  $(LIBPLACEH_WALLET_TOOL) \
-  $(LIBPLACEH_ZMQ)
+  $(LIBPHL_CRYPTO) \
+  $(LIBPHL_UTIL) \
+  $(LIBPHL_COMMON) \
+  $(LIBPHL_CONSENSUS) \
+  $(LIBPHL_SERVER) \
+  $(LIBPHL_CLI) \
+  $(LIBPHL_WALLET) \
+  $(LIBPHL_WALLET_TOOL) \
+  $(LIBPHL_ZMQ)
 
-lib_LTLIBRARIES = $(LIBPLACEHCONSENSUS)
+lib_LTLIBRARIES = $(LIBPHLCONSENSUS)
 
 bin_PROGRAMS =
 noinst_PROGRAMS =
 TESTS =
 BENCHMARKS =
 
-if BUILD_PLACEHD
+if BUILD_PHLD
   bin_PROGRAMS += placehd
 endif
 
-if BUILD_PLACEH_NODE
+if BUILD_PHL_NODE
   bin_PROGRAMS += placeh-node
 endif
 
-if BUILD_PLACEH_CLI
+if BUILD_PHL_CLI
   bin_PROGRAMS += placeh-cli
 endif
-if BUILD_PLACEH_TX
+if BUILD_PHL_TX
   bin_PROGRAMS += placeh-tx
 endif
 if ENABLE_WALLET
-if BUILD_PLACEH_WALLET
+if BUILD_PHL_WALLET
   bin_PROGRAMS += placeh-wallet
 endif
 endif
 
+### VeriBlock section start
+VBK_H = \
+  vbk/entity/context_info_container.hpp \
+  vbk/init.hpp \
+  vbk/service_locator.hpp \
+  vbk/pop_service.hpp \
+  vbk/pop_service_impl.hpp \
+  vbk/config.hpp \
+  vbk/typed_wrapper.hpp \
+  vbk/merkle.hpp \
+  vbk/genesis.hpp \
+  vbk/altchainparam.hpp \
+  vbk/util.hpp
+### VeriBlock section end
+
 .PHONY: FORCE check-symbols check-security
 # placeh core #
-PLACEH_CORE_H = \
+PHL_CORE_H = \
+  $(VBK_H) \
   addrdb.h \
   addrman.h \
   attributes.h \
@@ -159,6 +175,7 @@ PLACEH_CORE_H = \
   blockencodings.h \
   blockfilter.h \
   chain.h \
+  bootstraps.h \
   chainparams.h \
   chainparamsbase.h \
   chainparamsseeds.h \
@@ -318,9 +335,11 @@ libplaceh_util_a-clientversion.$(OBJEXT): obj/build.h
 # Contains code accessing mempool and chain state that is meant to be separated
 # from wallet and gui code (see node/README.md). Shared code should go in
 # libplaceh_common or libplaceh_util libraries, instead.
-libplaceh_server_a_CPPFLAGS = $(AM_CPPFLAGS) $(PLACEH_INCLUDES) $(MINIUPNPC_CPPFLAGS) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS)
+libplaceh_server_a_CPPFLAGS = $(AM_CPPFLAGS) $(PHL_INCLUDES) $(MINIUPNPC_CPPFLAGS) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS)
 libplaceh_server_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libplaceh_server_a_SOURCES = \
+  vbk/pop_service_impl.cpp \
+  vbk/pop_service_impl.hpp \
   addrdb.cpp \
   addrman.cpp \
   banman.cpp \
@@ -352,6 +371,8 @@ libplaceh_server_a_SOURCES = \
   policy/settings.cpp \
   pow.cpp \
   rest.cpp \
+  vbk/rpc_register.hpp \
+  vbk/rpc_register.cpp \
   rpc/blockchain.cpp \
   rpc/mining.cpp \
   rpc/misc.cpp \
@@ -368,7 +389,7 @@ libplaceh_server_a_SOURCES = \
   validation.cpp \
   validationinterface.cpp \
   versionbits.cpp \
-  $(PLACEH_CORE_H)
+  $(PHL_CORE_H)
 
 if ENABLE_WALLET
 libplaceh_server_a_SOURCES += wallet/init.cpp
@@ -378,7 +399,7 @@ libplaceh_server_a_SOURCES += dummywallet.cpp
 endif
 
 if ENABLE_ZMQ
-libplaceh_zmq_a_CPPFLAGS = $(AM_CPPFLAGS) $(PLACEH_INCLUDES) $(ZMQ_CFLAGS)
+libplaceh_zmq_a_CPPFLAGS = $(AM_CPPFLAGS) $(PHL_INCLUDES) $(ZMQ_CFLAGS)
 libplaceh_zmq_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libplaceh_zmq_a_SOURCES = \
   zmq/zmqabstractnotifier.cpp \
@@ -390,7 +411,7 @@ endif
 
 # wallet: shared between placehd and placeh-qt, but only linked
 # when wallet enabled
-libplaceh_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(PLACEH_INCLUDES)
+libplaceh_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(PHL_INCLUDES)
 libplaceh_wallet_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libplaceh_wallet_a_SOURCES = \
   interfaces/wallet.cpp \
@@ -408,13 +429,13 @@ libplaceh_wallet_a_SOURCES = \
   wallet/walletdb.cpp \
   wallet/walletutil.cpp \
   wallet/coinselection.cpp \
-  $(PLACEH_CORE_H)
+  $(PHL_CORE_H)
 
-libplaceh_wallet_tool_a_CPPFLAGS = $(AM_CPPFLAGS) $(PLACEH_INCLUDES)
+libplaceh_wallet_tool_a_CPPFLAGS = $(AM_CPPFLAGS) $(PHL_INCLUDES)
 libplaceh_wallet_tool_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libplaceh_wallet_tool_a_SOURCES = \
   wallet/wallettool.cpp \
-  $(PLACEH_CORE_H)
+  $(PHL_CORE_H)
 
 # crypto primitives library
 crypto_libplaceh_crypto_base_a_CPPFLAGS = $(AM_CPPFLAGS)
@@ -469,7 +490,7 @@ crypto_libplaceh_crypto_shani_a_CPPFLAGS += -DENABLE_SHANI
 crypto_libplaceh_crypto_shani_a_SOURCES = crypto/sha256_shani.cpp
 
 # consensus: shared between all executables that validate any consensus rules.
-libplaceh_consensus_a_CPPFLAGS = $(AM_CPPFLAGS) $(PLACEH_INCLUDES)
+libplaceh_consensus_a_CPPFLAGS = $(AM_CPPFLAGS) $(PHL_INCLUDES)
 libplaceh_consensus_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libplaceh_consensus_a_SOURCES = \
   amount.h \
@@ -505,15 +526,16 @@ libplaceh_consensus_a_SOURCES = \
   util/strencodings.cpp \
   util/strencodings.h \
   version.h \
-  $(PLACEH_CORE_H)
+  $(PHL_CORE_H)
 
 # common: shared between placehd, and placeh-qt and non-server tools
-libplaceh_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(PLACEH_INCLUDES)
+libplaceh_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(PHL_INCLUDES)
 libplaceh_common_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libplaceh_common_a_SOURCES = \
   base58.cpp \
   bech32.cpp \
   bloom.cpp \
+  bootstraps.cpp \
   chainparams.cpp \
   coins.cpp \
   compressor.cpp \
@@ -539,12 +561,12 @@ libplaceh_common_a_SOURCES = \
   script/standard.cpp \
   versionbitsinfo.cpp \
   warnings.cpp \
-  $(PLACEH_CORE_H)
+  $(PHL_CORE_H)
 
 # util: shared between all executables.
 # This library *must* be included to make sure that the glibc
 # backward-compatibility objects and their sanity checks are linked.
-libplaceh_util_a_CPPFLAGS = $(AM_CPPFLAGS) $(PLACEH_INCLUDES)
+libplaceh_util_a_CPPFLAGS = $(AM_CPPFLAGS) $(PHL_INCLUDES)
 libplaceh_util_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libplaceh_util_a_SOURCES = \
   support/lockedpool.cpp \
@@ -577,7 +599,7 @@ libplaceh_util_a_SOURCES = \
   util/strencodings.cpp \
   util/string.cpp \
   util/time.cpp \
-  $(PLACEH_CORE_H)
+  $(PHL_CORE_H)
 
 if USE_LIBEVENT
 libplaceh_util_a_SOURCES += util/url.cpp
@@ -589,20 +611,20 @@ AM_LDFLAGS += $(COMPAT_LDFLAGS)
 endif
 
 # cli: shared between placeh-cli and placeh-qt
-libplaceh_cli_a_CPPFLAGS = $(AM_CPPFLAGS) $(PLACEH_INCLUDES)
+libplaceh_cli_a_CPPFLAGS = $(AM_CPPFLAGS) $(PHL_INCLUDES)
 libplaceh_cli_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libplaceh_cli_a_SOURCES = \
   compat/stdin.h \
   compat/stdin.cpp \
   rpc/client.cpp \
-  $(PLACEH_CORE_H)
+  $(PHL_CORE_H)
 
 nodist_libplaceh_util_a_SOURCES = $(srcdir)/obj/build.h
 #
 
 # placehd & placeh-node binaries #
 placeh_daemon_sources = placehd.cpp
-placeh_bin_cppflags = $(AM_CPPFLAGS) $(PLACEH_INCLUDES)
+placeh_bin_cppflags = $(AM_CPPFLAGS) $(PHL_INCLUDES)
 placeh_bin_cxxflags = $(AM_CXXFLAGS) $(PIE_FLAGS)
 placeh_bin_ldflags = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
@@ -611,35 +633,35 @@ placeh_daemon_sources += placehd-res.rc
 endif
 
 placeh_bin_ldadd = \
-  $(LIBPLACEH_WALLET) \
-  $(LIBPLACEH_COMMON) \
-  $(LIBPLACEH_UTIL) \
+  $(LIBPHL_WALLET) \
+  $(LIBPHL_COMMON) \
+  $(LIBPHL_UTIL) \
   $(LIBUNIVALUE) \
-  $(LIBPLACEH_ZMQ) \
-  $(LIBPLACEH_CONSENSUS) \
-  $(LIBPLACEH_CRYPTO) \
+  $(LIBPHL_ZMQ) \
+  $(LIBPHL_CONSENSUS) \
+  $(LIBPHL_CRYPTO) \
   $(LIBLEVELDB) \
   $(LIBLEVELDB_SSE42) \
   $(LIBMEMENV) \
   $(LIBSECP256K1)
 
-placeh_bin_ldadd += $(BOOST_LIBS) $(BDB_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS)
+placeh_bin_ldadd += $(BOOST_LIBS) $(BDB_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS) $(VERIBLOCK_POP_CPP_LIBS)
 
 placehd_SOURCES = $(placeh_daemon_sources)
 placehd_CPPFLAGS = $(placeh_bin_cppflags)
 placehd_CXXFLAGS = $(placeh_bin_cxxflags)
 placehd_LDFLAGS = $(placeh_bin_ldflags)
-placehd_LDADD = $(LIBPLACEH_SERVER) $(placeh_bin_ldadd)
+placehd_LDADD = $(LIBPHL_SERVER) $(placeh_bin_ldadd)
 
 placeh_node_SOURCES = $(placeh_daemon_sources)
 placeh_node_CPPFLAGS = $(placeh_bin_cppflags)
 placeh_node_CXXFLAGS = $(placeh_bin_cxxflags)
 placeh_node_LDFLAGS = $(placeh_bin_ldflags)
-placeh_node_LDADD = $(LIBPLACEH_SERVER) $(placeh_bin_ldadd)
+placeh_node_LDADD = $(LIBPHL_SERVER) $(placeh_bin_ldadd)
 
 # placeh-cli binary #
 placeh_cli_SOURCES = placeh-cli.cpp
-placeh_cli_CPPFLAGS = $(AM_CPPFLAGS) $(PLACEH_INCLUDES) $(EVENT_CFLAGS)
+placeh_cli_CPPFLAGS = $(AM_CPPFLAGS) $(PHL_INCLUDES) $(EVENT_CFLAGS)
 placeh_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 placeh_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
@@ -648,17 +670,18 @@ placeh_cli_SOURCES += placeh-cli-res.rc
 endif
 
 placeh_cli_LDADD = \
-  $(LIBPLACEH_CLI) \
+  $(LIBPHL_CLI) \
   $(LIBUNIVALUE) \
-  $(LIBPLACEH_UTIL) \
-  $(LIBPLACEH_CRYPTO)
+  $(LIBPHL_UTIL) \
+  $(LIBPHL_CRYPTO) \
+  $(VERIBLOCK_POP_CPP_LIBS)
 
 placeh_cli_LDADD += $(BOOST_LIBS) $(EVENT_LIBS)
 #
 
 # placeh-tx binary #
 placeh_tx_SOURCES = placeh-tx.cpp
-placeh_tx_CPPFLAGS = $(AM_CPPFLAGS) $(PLACEH_INCLUDES)
+placeh_tx_CPPFLAGS = $(AM_CPPFLAGS) $(PHL_INCLUDES)
 placeh_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 placeh_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
@@ -668,13 +691,13 @@ endif
 
 placeh_tx_LDADD = \
   $(LIBUNIVALUE) \
-  $(LIBPLACEH_COMMON) \
-  $(LIBPLACEH_UTIL) \
-  $(LIBPLACEH_CONSENSUS) \
-  $(LIBPLACEH_CRYPTO) \
+  $(LIBPHL_COMMON) \
+  $(LIBPHL_UTIL) \
+  $(LIBPHL_CONSENSUS) \
+  $(LIBPHL_CRYPTO) \
   $(LIBSECP256K1)
 
-placeh_tx_LDADD += $(BOOST_LIBS)
+placeh_tx_LDADD += $(BOOST_LIBS) $(VERIBLOCK_POP_CPP_LIBS)
 #
 
 # placeh-wallet binary #
@@ -682,7 +705,7 @@ placeh_wallet_SOURCES = placeh-wallet.cpp
 placeh_wallet_CPPFLAGS = $(placeh_bin_cppflags)
 placeh_wallet_CXXFLAGS = $(placeh_bin_cxxflags)
 placeh_wallet_LDFLAGS = $(placeh_bin_ldflags)
-placeh_wallet_LDADD = $(LIBPLACEH_WALLET_TOOL) $(placeh_bin_ldadd)
+placeh_wallet_LDADD = $(LIBPHL_WALLET_TOOL) $(placeh_bin_ldadd)
 
 if TARGET_WINDOWS
 placeh_wallet_SOURCES += placeh-wallet-res.rc
@@ -690,9 +713,9 @@ endif
 #
 
 # placehconsensus library #
-if BUILD_PLACEH_LIBS
+if BUILD_PHL_LIBS
 include_HEADERS = script/placehconsensus.h
-libplacehconsensus_la_SOURCES = support/cleanse.cpp $(crypto_libplaceh_crypto_base_a_SOURCES) $(libplaceh_consensus_a_SOURCES)
+libplacehconsensus_la_SOURCES = support/cleanse.cpp $(crypto_libplaceh_crypto_base_a_SOURCES) $(libplaceh_consensus_a_SOURCES) $(VBK_H)
 
 if GLIBC_BACK_COMPAT
   libplacehconsensus_la_SOURCES += compat/glibc_compat.cpp
@@ -700,7 +723,7 @@ endif
 
 libplacehconsensus_la_LDFLAGS = $(AM_LDFLAGS) -no-undefined $(RELDFLAGS)
 libplacehconsensus_la_LIBADD = $(LIBSECP256K1)
-libplacehconsensus_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(builddir)/obj -I$(srcdir)/secp256k1/include -DBUILD_PLACEH_INTERNAL
+libplacehconsensus_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(builddir)/obj -I$(srcdir)/secp256k1/include -DBUILD_PHL_INTERNAL
 libplacehconsensus_la_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 
 endif

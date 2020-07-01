@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_THREADINTERRUPT_H
-#define PLACEH_THREADINTERRUPT_H
+#ifndef PHL_THREADINTERRUPT_H
+#define PHL_THREADINTERRUPT_H
 
 #include <sync.h>
 
@@ -33,4 +33,4 @@ private:
     std::atomic<bool> flag;
 };
 
-#endif //PLACEH_THREADINTERRUPT_H
+#endif //PHL_THREADINTERRUPT_H

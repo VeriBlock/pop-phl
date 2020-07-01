@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_NETADDRESS_H
-#define PLACEH_NETADDRESS_H
+#ifndef PHL_NETADDRESS_H
+#define PHL_NETADDRESS_H
 
 #if defined(HAVE_CONFIG_H)
 #include <config/placeh-config.h>
@@ -164,4 +164,4 @@ class CService : public CNetAddr
 
 bool SanityCheckASMap(const std::vector<bool>& asmap);
 
-#endif // PLACEH_NETADDRESS_H
+#endif // PHL_NETADDRESS_H

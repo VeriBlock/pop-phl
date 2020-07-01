@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_QT_OPTIONSDIALOG_H
-#define PLACEH_QT_OPTIONSDIALOG_H
+#ifndef PHL_QT_OPTIONSDIALOG_H
+#define PHL_QT_OPTIONSDIALOG_H
 
 #include <QDialog>
 #include <QValidator>
@@ -65,7 +65,7 @@ private Q_SLOTS:
     void updateProxyValidationState();
     /* query the networks, for which the default proxy is used */
     void updateDefaultProxyNets();
-
+	
 Q_SIGNALS:
     void proxyIpChecks(QValidatedLineEdit *pUiProxyIp, int nProxyPort);
 
@@ -75,4 +75,4 @@ private:
     QDataWidgetMapper *mapper;
 };
 
-#endif // PLACEH_QT_OPTIONSDIALOG_H
+#endif // PHL_QT_OPTIONSDIALOG_H

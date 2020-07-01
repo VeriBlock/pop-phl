@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_SCHEDULER_H
-#define PLACEH_SCHEDULER_H
+#ifndef PHL_SCHEDULER_H
+#define PHL_SCHEDULER_H
 
 //
 // NOTE:

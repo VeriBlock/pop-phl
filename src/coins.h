@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_COINS_H
-#define PLACEH_COINS_H
+#ifndef PHL_COINS_H
+#define PHL_COINS_H
 
 #include <compressor.h>
 #include <core_memusage.h>
@@ -364,4 +364,4 @@ private:
 
 };
 
-#endif // PLACEH_COINS_H
+#endif // PHL_COINS_H

@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_UTIL_ASMAP_H
-#define PLACEH_UTIL_ASMAP_H
+#ifndef PHL_UTIL_ASMAP_H
+#define PHL_UTIL_ASMAP_H
 
 #include <stdint.h>
 #include <vector>
@@ -12,4 +12,4 @@ uint32_t Interpret(const std::vector<bool> &asmap, const std::vector<bool> &ip);
 
 bool SanityCheckASMap(const std::vector<bool>& asmap, int bits);
 
-#endif // PLACEH_UTIL_ASMAP_H
+#endif // PHL_UTIL_ASMAP_H

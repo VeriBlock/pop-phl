@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_CHAIN_H
-#define PLACEH_CHAIN_H
+#ifndef PHL_CHAIN_H
+#define PHL_CHAIN_H
 
 #include <arith_uint256.h>
 #include <consensus/params.h>
@@ -125,9 +125,14 @@ enum BlockStatus: uint32_t {
 
     BLOCK_FAILED_VALID       =   32, //!< stage after last reached validness failed
     BLOCK_FAILED_CHILD       =   64, //!< descends from failed block
-    BLOCK_FAILED_MASK        =   BLOCK_FAILED_VALID | BLOCK_FAILED_CHILD,
 
     BLOCK_OPT_WITNESS       =   128, //!< block data in blk*.data was received with a witness-enforcing client
+
+    // VeriBlock: block status
+    VERIBLOCK_BLOCK_FAILED_POP = 256,
+    VERIBLOCK_BLOCK_FAILED_CHILD = 512,
+
+    BLOCK_FAILED_MASK = BLOCK_FAILED_VALID | BLOCK_FAILED_CHILD | VERIBLOCK_BLOCK_FAILED_POP | VERIBLOCK_BLOCK_FAILED_CHILD,
 };
 
 /** The block chain is a tree shaped structure starting with the
@@ -436,4 +441,4 @@ public:
     CBlockIndex* FindEarliestAtLeast(int64_t nTime, int height) const;
 };
 
-#endif // PLACEH_CHAIN_H
+#endif // PHL_CHAIN_H

@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_NET_TYPES_H
-#define PLACEH_NET_TYPES_H
+#ifndef PHL_NET_TYPES_H
+#define PHL_NET_TYPES_H
 
 #include <map>
 
@@ -12,4 +12,4 @@ class CSubNet;
 
 using banmap_t = std::map<CSubNet, CBanEntry>;
 
-#endif // PLACEH_NET_TYPES_H
+#endif // PHL_NET_TYPES_H

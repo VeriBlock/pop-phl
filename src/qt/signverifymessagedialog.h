@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_QT_SIGNVERIFYMESSAGEDIALOG_H
-#define PLACEH_QT_SIGNVERIFYMESSAGEDIALOG_H
+#ifndef PHL_QT_SIGNVERIFYMESSAGEDIALOG_H
+#define PHL_QT_SIGNVERIFYMESSAGEDIALOG_H
 
 #include <QDialog>
 
@@ -50,4 +50,4 @@ private Q_SLOTS:
     void on_clearButton_VM_clicked();
 };
 
-#endif // PLACEH_QT_SIGNVERIFYMESSAGEDIALOG_H
+#endif // PHL_QT_SIGNVERIFYMESSAGEDIALOG_H

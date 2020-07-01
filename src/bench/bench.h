@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_BENCH_BENCH_H
-#define PLACEH_BENCH_BENCH_H
+#ifndef PHL_BENCH_BENCH_H
+#define PHL_BENCH_BENCH_H
 
 #include <chrono>
 #include <functional>
@@ -138,4 +138,4 @@ private:
 #define BENCHMARK(n, num_iters_for_one_second) \
     benchmark::BenchRunner BOOST_PP_CAT(bench_, BOOST_PP_CAT(__LINE__, n))(BOOST_PP_STRINGIZE(n), n, (num_iters_for_one_second));
 
-#endif // PLACEH_BENCH_BENCH_H
+#endif // PHL_BENCH_BENCH_H

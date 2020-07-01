@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_NOUI_H
-#define PLACEH_NOUI_H
+#ifndef PHL_NOUI_H
+#define PHL_NOUI_H
 
 #include <string>
 
@@ -25,4 +25,4 @@ void noui_test_redirect();
 /** Reconnects the regular Non-GUI handlers after having used noui_test_redirect */
 void noui_reconnect();
 
-#endif // PLACEH_NOUI_H
+#endif // PHL_NOUI_H

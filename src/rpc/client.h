@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_RPC_CLIENT_H
-#define PLACEH_RPC_CLIENT_H
+#ifndef PHL_RPC_CLIENT_H
+#define PHL_RPC_CLIENT_H
 
 #include <univalue.h>
 
@@ -19,4 +19,4 @@ UniValue RPCConvertNamedValues(const std::string& strMethod, const std::vector<s
  */
 UniValue ParseNonRFCJSONValue(const std::string& strVal);
 
-#endif // PLACEH_RPC_CLIENT_H
+#endif // PHL_RPC_CLIENT_H

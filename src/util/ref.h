@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_UTIL_REF_H
-#define PLACEH_UTIL_REF_H
+#ifndef PHL_UTIL_REF_H
+#define PHL_UTIL_REF_H
 
 #include <util/check.h>
 
@@ -35,4 +35,4 @@ private:
 
 } // namespace util
 
-#endif // PLACEH_UTIL_REF_H
+#endif // PHL_UTIL_REF_H

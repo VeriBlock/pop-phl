@@ -53,19 +53,19 @@ RUN set -ex \
     gpg --batch --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys "$key" ; \
   done
 
-ENV PLACEH_VERSION=1.6.1
-ENV PLACEH_PREFIX=/opt/placeh-${PLACEH_VERSION}
+ENV PHL_VERSION=1.6.1
+ENV PHL_PREFIX=/opt/placeh-${PHL_VERSION}
 
-COPY . /placeh-${PLACEH_VERSION}
+COPY . /placeh-${PHL_VERSION}
 
-WORKDIR /placeh-${PLACEH_VERSION}
+WORKDIR /placeh-${PHL_VERSION}
 
 RUN sed -i '/AC_PREREQ/a\AR_FLAGS=cr' src/univalue/configure.ac
 RUN sed -i '/AX_PROG_CC_FOR_BUILD/a\AR_FLAGS=cr' src/secp256k1/configure.ac
 RUN sed -i s:sys/fcntl.h:fcntl.h: src/compat.h
 RUN ./autogen.sh
 RUN ./configure LDFLAGS=-L`ls -d /opt/db*`/lib/ CPPFLAGS=-I`ls -d /opt/db*`/include/ \
-    --prefix=${PLACEH_PREFIX} \
+    --prefix=${PHL_PREFIX} \
     --mandir=/usr/share/man \
     --disable-tests \
     --disable-bench \
@@ -76,10 +76,10 @@ RUN ./configure LDFLAGS=-L`ls -d /opt/db*`/lib/ CPPFLAGS=-I`ls -d /opt/db*`/incl
     --with-daemon
 RUN make -j4
 RUN make install
-RUN strip ${PLACEH_PREFIX}/bin/placeh-cli
-RUN strip ${PLACEH_PREFIX}/bin/placehd
-RUN strip ${PLACEH_PREFIX}/lib/libplacehconsensus.a
-RUN strip ${PLACEH_PREFIX}/lib/libplacehconsensus.so.0.0.0
+RUN strip ${PHL_PREFIX}/bin/placeh-cli
+RUN strip ${PHL_PREFIX}/bin/placehd
+RUN strip ${PHL_PREFIX}/lib/libplacehconsensus.a
+RUN strip ${PHL_PREFIX}/lib/libplacehconsensus.so.0.0.0
 
 # Build stage for compiled artifacts
 FROM alpine
@@ -96,9 +96,9 @@ RUN apk --no-cache add \
   su-exec
 
 ENV DATA_DIR=/home/placeh/.placeh
-ENV PLACEH_VERSION=1.6.1
-ENV PLACEH_PREFIX=/opt/placeh-${PLACEH_VERSION}
-ENV PATH=${PLACEH_PREFIX}/bin:$PATH
+ENV PHL_VERSION=1.6.1
+ENV PHL_PREFIX=/opt/placeh-${PHL_VERSION}
+ENV PATH=${PHL_PREFIX}/bin:$PATH
 ENV DOCKERIZE_VERSION v0.6.1
 
 RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \

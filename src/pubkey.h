@@ -4,8 +4,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_PUBKEY_H
-#define PLACEH_PUBKEY_H
+#ifndef PHL_PUBKEY_H
+#define PHL_PUBKEY_H
 
 #include <hash.h>
 #include <serialize.h>
@@ -240,4 +240,4 @@ public:
     ~ECCVerifyHandle();
 };
 
-#endif // PLACEH_PUBKEY_H
+#endif // PHL_PUBKEY_H

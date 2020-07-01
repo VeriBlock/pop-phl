@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_INTERFACES_CHAIN_H
-#define PLACEH_INTERFACES_CHAIN_H
+#ifndef PHL_INTERFACES_CHAIN_H
+#define PHL_INTERFACES_CHAIN_H
 
 #include <optional.h>               // For Optional and nullopt
 #include <primitives/transaction.h> // For CTransactionRef
@@ -325,4 +325,4 @@ std::unique_ptr<ChainClient> MakeWalletClient(Chain& chain, std::vector<std::str
 
 } // namespace interfaces
 
-#endif // PLACEH_INTERFACES_CHAIN_H
+#endif // PHL_INTERFACES_CHAIN_H

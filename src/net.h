@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_NET_H
-#define PLACEH_NET_H
+#ifndef PHL_NET_H
+#define PHL_NET_H
 
 #include <addrdb.h>
 #include <addrman.h>
@@ -1015,4 +1015,4 @@ inline std::chrono::microseconds PoissonNextSend(std::chrono::microseconds now, 
     return std::chrono::microseconds{PoissonNextSend(now.count(), average_interval.count())};
 }
 
-#endif // PLACEH_NET_H
+#endif // PHL_NET_H

@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_BLOCKFILTER_H
-#define PLACEH_BLOCKFILTER_H
+#ifndef PHL_BLOCKFILTER_H
+#define PHL_BLOCKFILTER_H
 
 #include <stdint.h>
 #include <string>
@@ -168,4 +168,4 @@ public:
     }
 };
 
-#endif // PLACEH_BLOCKFILTER_H
+#endif // PHL_BLOCKFILTER_H

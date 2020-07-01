@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_ADDRDB_H
-#define PLACEH_ADDRDB_H
+#ifndef PHL_ADDRDB_H
+#define PHL_ADDRDB_H
 
 #include <fs.h>
 #include <net_types.h> // For banmap_t
@@ -95,4 +95,4 @@ public:
     bool Read(banmap_t& banSet);
 };
 
-#endif // PLACEH_ADDRDB_H
+#endif // PHL_ADDRDB_H

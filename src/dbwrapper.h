@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_DBWRAPPER_H
-#define PLACEH_DBWRAPPER_H
+#ifndef PHL_DBWRAPPER_H
+#define PHL_DBWRAPPER_H
 
 #include <clientversion.h>
 #include <fs.h>
@@ -348,4 +348,4 @@ public:
 
 };
 
-#endif // PLACEH_DBWRAPPER_H
+#endif // PHL_DBWRAPPER_H

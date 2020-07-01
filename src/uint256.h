@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_UINT256_H
-#define PLACEH_UINT256_H
+#ifndef PHL_UINT256_H
+#define PHL_UINT256_H
 
 #include <assert.h>
 #include <cstring>
@@ -102,6 +102,10 @@ public:
     {
         s.read((char*)data, sizeof(data));
     }
+
+    std::vector<uint8_t> asVector() const {
+        return std::vector<uint8_t>{begin(), end()};
+    }
 };
 
 /** 160-bit opaque blob.
@@ -177,4 +181,4 @@ public:
         return result;
     }
 };
-#endif // PLACEH_UINT256_H
+#endif // PHL_UINT256_H

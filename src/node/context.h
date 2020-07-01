@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_NODE_CONTEXT_H
-#define PLACEH_NODE_CONTEXT_H
+#ifndef PHL_NODE_CONTEXT_H
+#define PHL_NODE_CONTEXT_H
 
 #include <cassert>
 #include <memory>
@@ -55,4 +55,4 @@ inline ChainstateManager& EnsureChainman(const NodeContext& node)
     return *node.chainman;
 }
 
-#endif // PLACEH_NODE_CONTEXT_H
+#endif // PHL_NODE_CONTEXT_H

@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_LIMITEDMAP_H
-#define PLACEH_LIMITEDMAP_H
+#ifndef PHL_LIMITEDMAP_H
+#define PHL_LIMITEDMAP_H
 
 #include <assert.h>
 #include <map>
@@ -97,4 +97,4 @@ public:
     }
 };
 
-#endif // PLACEH_LIMITEDMAP_H
+#endif // PHL_LIMITEDMAP_H

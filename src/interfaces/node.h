@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_INTERFACES_NODE_H
-#define PLACEH_INTERFACES_NODE_H
+#ifndef PHL_INTERFACES_NODE_H
+#define PHL_INTERFACES_NODE_H
 
 #include <amount.h>     // For CAmount
 #include <net.h>        // For CConnman::NumConnections
@@ -278,4 +278,4 @@ struct BlockTip {
 
 } // namespace interfaces
 
-#endif // PLACEH_INTERFACES_NODE_H
+#endif // PHL_INTERFACES_NODE_H

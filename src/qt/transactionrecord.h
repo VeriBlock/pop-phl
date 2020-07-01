@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_QT_TRANSACTIONRECORD_H
-#define PLACEH_QT_TRANSACTIONRECORD_H
+#ifndef PHL_QT_TRANSACTIONRECORD_H
+#define PHL_QT_TRANSACTIONRECORD_H
 
 #include <amount.h>
 #include <uint256.h>
@@ -144,4 +144,4 @@ public:
     bool statusUpdateNeeded(const uint256& block_hash) const;
 };
 
-#endif // PLACEH_QT_TRANSACTIONRECORD_H
+#endif // PHL_QT_TRANSACTIONRECORD_H

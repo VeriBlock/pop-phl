@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_ZMQ_ZMQCONFIG_H
-#define PLACEH_ZMQ_ZMQCONFIG_H
+#ifndef PHL_ZMQ_ZMQCONFIG_H
+#define PHL_ZMQ_ZMQCONFIG_H
 
 #if defined(HAVE_CONFIG_H)
 #include <config/placeh-config.h>
@@ -19,4 +19,4 @@
 
 void zmqError(const char *str);
 
-#endif // PLACEH_ZMQ_ZMQCONFIG_H
+#endif // PHL_ZMQ_ZMQCONFIG_H

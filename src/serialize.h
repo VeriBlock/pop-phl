@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_SERIALIZE_H
-#define PLACEH_SERIALIZE_H
+#ifndef PHL_SERIALIZE_H
+#define PHL_SERIALIZE_H
 
 #include <compat/endian.h>
 
@@ -1114,4 +1114,4 @@ size_t GetSerializeSizeMany(int nVersion, const T&... t)
     return sc.size();
 }
 
-#endif // PLACEH_SERIALIZE_H
+#endif // PHL_SERIALIZE_H

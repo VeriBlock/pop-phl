@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_CRYPTO_RIPEMD160_H
-#define PLACEH_CRYPTO_RIPEMD160_H
+#ifndef PHL_CRYPTO_RIPEMD160_H
+#define PHL_CRYPTO_RIPEMD160_H
 
 #include <stdint.h>
 #include <stdlib.h>
@@ -25,4 +25,4 @@ public:
     CRIPEMD160& Reset();
 };
 
-#endif // PLACEH_CRYPTO_RIPEMD160_H
+#endif // PHL_CRYPTO_RIPEMD160_H

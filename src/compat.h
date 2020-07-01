@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_COMPAT_H
-#define PLACEH_COMPAT_H
+#ifndef PHL_COMPAT_H
+#define PHL_COMPAT_H
 
 #if defined(HAVE_CONFIG_H)
 #include <config/placeh-config.h>
@@ -103,4 +103,4 @@ bool static inline IsSelectableSocket(const SOCKET& s) {
 #endif
 }
 
-#endif // PLACEH_COMPAT_H
+#endif // PHL_COMPAT_H

@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_OUTPUTTYPE_H
-#define PLACEH_OUTPUTTYPE_H
+#ifndef PHL_OUTPUTTYPE_H
+#define PHL_OUTPUTTYPE_H
 
 #include <attributes.h>
 #include <script/signingprovider.h>
@@ -49,4 +49,4 @@ std::vector<CTxDestination> GetAllDestinationsForKey(const CPubKey& key);
  */
 CTxDestination AddAndGetDestinationForScript(FillableSigningProvider& keystore, const CScript& script, OutputType);
 
-#endif // PLACEH_OUTPUTTYPE_H
+#endif // PHL_OUTPUTTYPE_H

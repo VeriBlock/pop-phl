@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_NODE_PSBT_H
-#define PLACEH_NODE_PSBT_H
+#ifndef PHL_NODE_PSBT_H
+#define PHL_NODE_PSBT_H
 
 #include <psbt.h>
 
@@ -51,4 +51,4 @@ struct PSBTAnalysis {
  */
 PSBTAnalysis AnalyzePSBT(PartiallySignedTransaction psbtx);
 
-#endif // PLACEH_NODE_PSBT_H
+#endif // PHL_NODE_PSBT_H

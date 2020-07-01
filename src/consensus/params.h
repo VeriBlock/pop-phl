@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_CONSENSUS_PARAMS_H
-#define PLACEH_CONSENSUS_PARAMS_H
+#ifndef PHL_CONSENSUS_PARAMS_H
+#define PHL_CONSENSUS_PARAMS_H
 
 #include <uint256.h>
 #include <limits>
@@ -45,6 +45,9 @@ struct BIP9Deployment {
 struct Params {
     uint256 hashGenesisBlock;
     int nSubsidyHalvingInterval;
+    /** Block height at which POP becomes active */
+    // TODO: Change or remove when pop height is enabled.
+    int nPopEnabledHeight;
     /* Block hash that is excepted from BIP16 enforcement */
     uint256 BIP16Exception;
     /** Block height and hash at which BIP34 becomes active */
@@ -83,4 +86,4 @@ struct Params {
 };
 } // namespace Consensus
 
-#endif // PLACEH_CONSENSUS_PARAMS_H
+#endif // PHL_CONSENSUS_PARAMS_H

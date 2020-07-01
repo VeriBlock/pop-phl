@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_WALLET_LOAD_H
-#define PLACEH_WALLET_LOAD_H
+#ifndef PHL_WALLET_LOAD_H
+#define PHL_WALLET_LOAD_H
 
 #include <string>
 #include <vector>
@@ -33,4 +33,4 @@ void StopWallets();
 //! Close all wallets.
 void UnloadWallets();
 
-#endif // PLACEH_WALLET_LOAD_H
+#endif // PHL_WALLET_LOAD_H

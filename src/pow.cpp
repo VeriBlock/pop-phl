@@ -17,6 +17,11 @@ unsigned int static DarkGravityWave(const CBlockIndex* pindexLast, const CBlockH
     /* current difficulty formula, dash - DarkGravity v3, written by Evan Duffield - evan@dash.org */
     assert(pindexLast != nullptr);
 
+    // TODO: REMOVE MODIFIED TESTNET DIFF
+    if(Params().NetworkIDString() == CBaseChainParams::TESTNET && (int)::ChainActive().Height() > 0){
+        return 0.000000000000000124;
+    }
+
     unsigned int nProofOfWorkLimit = UintToArith256(params.powLimit).GetCompact();
     const arith_uint256 bnPowLimit = UintToArith256(params.powLimit);
     int64_t nPastBlocks = 180; // ~3hr
@@ -82,7 +87,7 @@ unsigned int static DarkGravityWave(const CBlockIndex* pindexLast, const CBlockH
     return bnNew.GetCompact();
 }
 
-unsigned int GetNextWorkRequiredPLACEH(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params)
+unsigned int GetNextWorkRequiredPHL(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params)
 {
     assert(pindexLast != nullptr);
     unsigned int nProofOfWorkLimit = UintToArith256(params.powLimit).GetCompact();
@@ -120,21 +125,11 @@ unsigned int GetNextWorkRequiredPLACEH(const CBlockIndex* pindexLast, const CBlo
 
 unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params)
 {
-    int dgw = DarkGravityWave(pindexLast, pblock, params);
-    int btc = GetNextWorkRequiredPLACEH(pindexLast, pblock, params);
-    int64_t nPrevBlockTime = (pindexLast->pprev ? pindexLast->pprev->GetBlockTime() : pindexLast->GetBlockTime());
-
     if (IsDGWActive(pindexLast->nHeight + 1)) {
-        LogPrint(BCLog::NET, "Block %s - version: %s: found next work required using DGW: [%s] (PLACEH would have been [%s]\t(%+d)\t(%0.3f%%)\t(%s sec))\n",
-                 pindexLast->nHeight + 1, pblock->nVersion, dgw, btc, btc - dgw, (float)(btc - dgw) * 100.0 / (float)dgw, pindexLast->GetBlockTime() - nPrevBlockTime);
-        return dgw;
-    }
-    else {
-        LogPrint(BCLog::NET, "Block %s - version: %s: found next work required using PLACEH: [%s] (DGW would have been [%s]\t(%+d)\t(%0.3f%%)\t(%s sec))\n",
-                  pindexLast->nHeight + 1, pblock->nVersion, btc, dgw, dgw - btc, (float)(dgw - btc) * 100.0 / (float)btc, pindexLast->GetBlockTime() - nPrevBlockTime);
-        return btc;
+        return DarkGravityWave(pindexLast, pblock, params);
     }
 
+    return GetNextWorkRequiredPHL(pindexLast, pblock, params);
 }
 
 unsigned int CalculateNextWorkRequired(const CBlockIndex* pindexLast, int64_t nFirstBlockTime, const Consensus::Params& params)

@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_HTTPRPC_H
-#define PLACEH_HTTPRPC_H
+#ifndef PHL_HTTPRPC_H
+#define PHL_HTTPRPC_H
 
 namespace util {
 class Ref;

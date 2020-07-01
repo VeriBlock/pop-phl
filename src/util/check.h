@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_UTIL_CHECK_H
-#define PLACEH_UTIL_CHECK_H
+#ifndef PHL_UTIL_CHECK_H
+#define PHL_UTIL_CHECK_H
 
 #if defined(HAVE_CONFIG_H)
 #include <config/placeh-config.h>
@@ -42,4 +42,4 @@ class NonFatalCheckError : public std::runtime_error
         }                                                         \
     } while (false)
 
-#endif // PLACEH_UTIL_CHECK_H
+#endif // PHL_UTIL_CHECK_H

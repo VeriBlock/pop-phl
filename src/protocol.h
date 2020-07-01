@@ -7,8 +7,8 @@
 #error This header can only be compiled as C++.
 #endif
 
-#ifndef PLACEH_PROTOCOL_H
-#define PLACEH_PROTOCOL_H
+#ifndef PHL_PROTOCOL_H
+#define PHL_PROTOCOL_H
 
 #include <netaddress.h>
 #include <serialize.h>
@@ -421,4 +421,4 @@ public:
     uint256 hash;
 };
 
-#endif // PLACEH_PROTOCOL_H
+#endif // PHL_PROTOCOL_H

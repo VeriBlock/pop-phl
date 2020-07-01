@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_RPC_SERVER_H
-#define PLACEH_RPC_SERVER_H
+#ifndef PHL_RPC_SERVER_H
+#define PHL_RPC_SERVER_H
 
 #include <amount.h>
 #include <rpc/request.h>
@@ -170,4 +170,4 @@ std::string JSONRPCExecBatch(const JSONRPCRequest& jreq, const UniValue& vReq);
 // Retrieves any serialization flags requested in command line argument
 int RPCSerializationFlags();
 
-#endif // PLACEH_RPC_SERVER_H
+#endif // PHL_RPC_SERVER_H

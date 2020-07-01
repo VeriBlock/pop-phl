@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_STREAMS_H
-#define PLACEH_STREAMS_H
+#ifndef PHL_STREAMS_H
+#define PHL_STREAMS_H
 
 #include <support/allocators/zeroafterfree.h>
 #include <serialize.h>
@@ -854,4 +854,4 @@ public:
     }
 };
 
-#endif // PLACEH_STREAMS_H
+#endif // PHL_STREAMS_H

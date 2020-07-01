@@ -6,8 +6,8 @@
 #include <vector>
 #include <netaddress.h>
 
-#ifndef PLACEH_NET_PERMISSIONS_H
-#define PLACEH_NET_PERMISSIONS_H
+#ifndef PHL_NET_PERMISSIONS_H
+#define PHL_NET_PERMISSIONS_H
 enum NetPermissionFlags
 {
     PF_NONE = 0,
@@ -59,4 +59,4 @@ public:
     CSubNet m_subnet;
 };
 
-#endif // PLACEH_NET_PERMISSIONS_H
+#endif // PHL_NET_PERMISSIONS_H

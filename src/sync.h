@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_SYNC_H
-#define PLACEH_SYNC_H
+#ifndef PHL_SYNC_H
+#define PHL_SYNC_H
 
 #include <threadsafety.h>
 #include <util/macros.h>
@@ -139,7 +139,8 @@ private:
     bool TryEnter(const char* pszName, const char* pszFile, int nLine)
     {
         EnterCritical(pszName, pszFile, nLine, (void*)(Base::mutex()), true);
-        Base::try_lock();
+        bool ignore = Base::try_lock();
+        (void)ignore;
         if (!Base::owns_lock())
             LeaveCritical();
         return Base::owns_lock();
@@ -356,4 +357,4 @@ struct SCOPED_LOCKABLE LockAssertion
     ~LockAssertion() UNLOCK_FUNCTION() {}
 };
 
-#endif // PLACEH_SYNC_H
+#endif // PHL_SYNC_H

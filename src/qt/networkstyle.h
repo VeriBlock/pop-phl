@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_QT_NETWORKSTYLE_H
-#define PLACEH_QT_NETWORKSTYLE_H
+#ifndef PHL_QT_NETWORKSTYLE_H
+#define PHL_QT_NETWORKSTYLE_H
 
 #include <QIcon>
 #include <QPixmap>
@@ -30,4 +30,4 @@ private:
     QString titleAddText;
 };
 
-#endif // PLACEH_QT_NETWORKSTYLE_H
+#endif // PHL_QT_NETWORKSTYLE_H

@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_TEST_UTIL_WALLET_H
-#define PLACEH_TEST_UTIL_WALLET_H
+#ifndef PHL_TEST_UTIL_WALLET_H
+#define PHL_TEST_UTIL_WALLET_H
 
 #include <string>
 
@@ -21,4 +21,4 @@ void importaddress(CWallet& wallet, const std::string& address);
 std::string getnewaddress(CWallet& w);
 
 
-#endif // PLACEH_TEST_UTIL_WALLET_H
+#endif // PHL_TEST_UTIL_WALLET_H

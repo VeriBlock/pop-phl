@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_SCRIPT_STANDARD_H
-#define PLACEH_SCRIPT_STANDARD_H
+#ifndef PHL_SCRIPT_STANDARD_H
+#define PHL_SCRIPT_STANDARD_H
 
 #include <script/interpreter.h>
 #include <uint256.h>
@@ -205,4 +205,4 @@ CScript GetScriptForMultisig(int nRequired, const std::vector<CPubKey>& keys);
  */
 CScript GetScriptForWitness(const CScript& redeemscript);
 
-#endif // PLACEH_SCRIPT_STANDARD_H
+#endif // PHL_SCRIPT_STANDARD_H

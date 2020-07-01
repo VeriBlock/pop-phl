@@ -19,14 +19,14 @@ fi
 RETVAL=0
 
 prog=placehd
-# you can override the lockfile via PLACEHD_LOCKFILE in /etc/sysconfig/placehd
-lockfile=${PLACEHD_LOCKFILE-/var/lock/subsys/placehd}
+# you can override the lockfile via PHLD_LOCKFILE in /etc/sysconfig/placehd
+lockfile=${PHLD_LOCKFILE-/var/lock/subsys/placehd}
 
-# placehd defaults to /usr/bin/placehd, override with PLACEHD_BIN
-placehd=${PLACEHD_BIN-/usr/bin/placehd}
+# placehd defaults to /usr/bin/placehd, override with PHLD_BIN
+placehd=${PHLD_BIN-/usr/bin/placehd}
 
-# placehd opts default to -disablewallet, override with PLACEHD_OPTS
-placehd_opts=${PLACEHD_OPTS--disablewallet}
+# placehd opts default to -disablewallet, override with PHLD_OPTS
+placehd_opts=${PHLD_OPTS--disablewallet}
 
 start() {
     echo -n $"Starting $prog: "

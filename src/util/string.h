@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_UTIL_STRING_H
-#define PLACEH_UTIL_STRING_H
+#ifndef PHL_UTIL_STRING_H
+#define PHL_UTIL_STRING_H
 
 #include <attributes.h>
 
@@ -74,4 +74,4 @@ std::string ToString(const T& t)
     return oss.str();
 }
 
-#endif // PLACEH_UTIL_STRENCODINGS_H
+#endif // PHL_UTIL_STRENCODINGS_H

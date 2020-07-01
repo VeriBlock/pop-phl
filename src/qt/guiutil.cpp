@@ -403,7 +403,7 @@ void openDebugLogfile()
 
 bool openPlaceholdersConf()
 {
-    fs::path pathConfig = GetConfigFile(gArgs.GetArg("-conf", PLACEH_CONF_FILENAME));
+    fs::path pathConfig = GetConfigFile(gArgs.GetArg("-conf", PHL_CONF_FILENAME));
 
     /* Create the file */
     fsbridge::ofstream configFile(pathConfig, std::ios_base::app);

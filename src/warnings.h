@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_WARNINGS_H
-#define PLACEH_WARNINGS_H
+#ifndef PHL_WARNINGS_H
+#define PHL_WARNINGS_H
 
 #include <string>
 
@@ -20,4 +20,4 @@ void SetfLargeWorkInvalidChainFound(bool flag);
  */
 std::string GetWarnings(bool verbose);
 
-#endif //  PLACEH_WARNINGS_H
+#endif //  PHL_WARNINGS_H

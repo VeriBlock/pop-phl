@@ -2,8 +2,8 @@
 // Copyright (c) 2009-2020 The Placeholders Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
-#ifndef PLACEH_BANMAN_H
-#define PLACEH_BANMAN_H
+#ifndef PHL_BANMAN_H
+#define PHL_BANMAN_H
 
 #include <addrdb.h>
 #include <fs.h>

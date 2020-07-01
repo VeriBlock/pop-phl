@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_QT_PLACEHGUI_H
-#define PLACEH_QT_PLACEHGUI_H
+#ifndef PHL_QT_PHLGUI_H
+#define PHL_QT_PHLGUI_H
 
 #if defined(HAVE_CONFIG_H)
 #include <config/placeh-config.h>
@@ -348,4 +348,4 @@ private Q_SLOTS:
     void onMenuSelection(QAction* action);
 };
 
-#endif // PLACEH_QT_PLACEHGUI_H
+#endif // PHL_QT_PHLGUI_H

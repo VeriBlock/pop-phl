@@ -2,8 +2,10 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_RPC_REGISTER_H
-#define PLACEH_RPC_REGISTER_H
+#ifndef PHL_RPC_REGISTER_H
+#define PHL_RPC_REGISTER_H
+
+#include "vbk/rpc_register.hpp"
 
 /** These are in one header file to avoid creating tons of single-function
  * headers for everything under src/rpc/ */
@@ -27,6 +29,7 @@ static inline void RegisterAllCoreRPCCommands(CRPCTable &t)
     RegisterMiscRPCCommands(t);
     RegisterMiningRPCCommands(t);
     RegisterRawTransactionRPCCommands(t);
+    VeriBlock::RegisterPOPMiningRPCCommands(t);
 }
 
-#endif // PLACEH_RPC_REGISTER_H
+#endif // PHL_RPC_REGISTER_H

@@ -9,8 +9,8 @@
 //
 // For more information, see BIP 173.
 
-#ifndef PLACEH_BECH32_H
-#define PLACEH_BECH32_H
+#ifndef PHL_BECH32_H
+#define PHL_BECH32_H
 
 #include <stdint.h>
 #include <string>
@@ -27,4 +27,4 @@ std::pair<std::string, std::vector<uint8_t>> Decode(const std::string& str);
 
 } // namespace bech32
 
-#endif // PLACEH_BECH32_H
+#endif // PHL_BECH32_H

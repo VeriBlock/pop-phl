@@ -3,12 +3,12 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_WALLET_SALVAGE_H
-#define PLACEH_WALLET_SALVAGE_H
+#ifndef PHL_WALLET_SALVAGE_H
+#define PHL_WALLET_SALVAGE_H
 
 #include <fs.h>
 #include <streams.h>
 
 bool RecoverDatabaseFile(const fs::path& file_path);
 
-#endif // PLACEH_WALLET_SALVAGE_H
+#endif // PHL_WALLET_SALVAGE_H

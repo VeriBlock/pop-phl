@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_PRIMITIVES_BLOCK_H
-#define PLACEH_PRIMITIVES_BLOCK_H
+#ifndef PHL_PRIMITIVES_BLOCK_H
+#define PHL_PRIMITIVES_BLOCK_H
 
 #include <primitives/transaction.h>
 #include <serialize.h>
@@ -156,4 +156,4 @@ struct CBlockLocator
     }
 };
 
-#endif // PLACEH_PRIMITIVES_BLOCK_H
+#endif // PHL_PRIMITIVES_BLOCK_H

@@ -10,5 +10,5 @@ export CONTAINER_NAME=ci_native_multiprocess
 export PACKAGES="cmake python3"
 export DEP_OPTS="MULTIPROCESS=1"
 export GOAL="install"
-export PLACEH_CONFIG=""
-export TEST_RUNNER_ENV="PLACEHD=placeh-node"
+export PHL_CONFIG=""
+export TEST_RUNNER_ENV="PHLD=placeh-node"

@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_SCRIPT_SIGNINGPROVIDER_H
-#define PLACEH_SCRIPT_SIGNINGPROVIDER_H
+#ifndef PHL_SCRIPT_SIGNINGPROVIDER_H
+#define PHL_SCRIPT_SIGNINGPROVIDER_H
 
 #include <key.h>
 #include <pubkey.h>
@@ -135,4 +135,4 @@ public:
 /** Return the CKeyID of the key involved in a script (if there is a unique one). */
 CKeyID GetKeyForDestination(const SigningProvider& store, const CTxDestination& dest);
 
-#endif // PLACEH_SCRIPT_SIGNINGPROVIDER_H
+#endif // PHL_SCRIPT_SIGNINGPROVIDER_H

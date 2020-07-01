@@ -11,8 +11,8 @@
  * - E-mail usually won't line-break if there's no punctuation to break at.
  * - Double-clicking selects the whole string as one word if it's all alphanumeric.
  */
-#ifndef PLACEH_BASE58_H
-#define PLACEH_BASE58_H
+#ifndef PHL_BASE58_H
+#define PHL_BASE58_H
 
 #include <attributes.h>
 
@@ -60,4 +60,4 @@ NODISCARD bool DecodeBase58Check(const char* psz, std::vector<unsigned char>& vc
  */
 NODISCARD bool DecodeBase58Check(const std::string& str, std::vector<unsigned char>& vchRet, int max_ret_len);
 
-#endif // PLACEH_BASE58_H
+#endif // PHL_BASE58_H

@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_LOGGING_H
-#define PLACEH_LOGGING_H
+#ifndef PHL_LOGGING_H
+#define PHL_LOGGING_H
 
 #include <fs.h>
 #include <tinyformat.h>
@@ -56,6 +56,7 @@ namespace BCLog {
         QT          = (1 << 19),
         LEVELDB     = (1 << 20),
         VALIDATION  = (1 << 21),
+        POP         = (1 << 22),
         ALL         = ~(uint32_t)0,
     };
 
@@ -186,4 +187,4 @@ static inline void LogPrintf(const char* fmt, const Args&... args)
         }                                    \
     } while (0)
 
-#endif // PLACEH_LOGGING_H
+#endif // PHL_LOGGING_H

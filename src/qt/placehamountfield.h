@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_QT_PLACEHAMOUNTFIELD_H
-#define PLACEH_QT_PLACEHAMOUNTFIELD_H
+#ifndef PHL_QT_PHLAMOUNTFIELD_H
+#define PHL_QT_PHLAMOUNTFIELD_H
 
 #include <amount.h>
 
@@ -81,4 +81,4 @@ private Q_SLOTS:
 
 };
 
-#endif // PLACEH_QT_PLACEHAMOUNTFIELD_H
+#endif // PHL_QT_PHLAMOUNTFIELD_H

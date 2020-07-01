@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_POLICY_FEERATE_H
-#define PLACEH_POLICY_FEERATE_H
+#ifndef PHL_POLICY_FEERATE_H
+#define PHL_POLICY_FEERATE_H
 
 #include <amount.h>
 #include <serialize.h>
@@ -51,4 +51,4 @@ public:
     SERIALIZE_METHODS(CFeeRate, obj) { READWRITE(obj.nSatoshisPerK); }
 };
 
-#endif //  PLACEH_POLICY_FEERATE_H
+#endif //  PHL_POLICY_FEERATE_H

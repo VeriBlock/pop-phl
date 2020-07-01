@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_WALLET_COINCONTROL_H
-#define PLACEH_WALLET_COINCONTROL_H
+#ifndef PHL_WALLET_COINCONTROL_H
+#define PHL_WALLET_COINCONTROL_H
 
 #include <optional.h>
 #include <outputtype.h>
@@ -90,4 +90,4 @@ private:
     std::set<COutPoint> setSelected;
 };
 
-#endif // PLACEH_WALLET_COINCONTROL_H
+#endif // PHL_WALLET_COINCONTROL_H

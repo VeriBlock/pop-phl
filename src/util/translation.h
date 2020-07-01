@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_UTIL_TRANSLATION_H
-#define PLACEH_UTIL_TRANSLATION_H
+#ifndef PHL_UTIL_TRANSLATION_H
+#define PHL_UTIL_TRANSLATION_H
 
 #include <tinyformat.h>
 #include <functional>
@@ -59,4 +59,4 @@ inline bilingual_str _(const char* psz)
     return bilingual_str{psz, G_TRANSLATION_FUN ? (G_TRANSLATION_FUN)(psz) : psz};
 }
 
-#endif // PLACEH_UTIL_TRANSLATION_H
+#endif // PHL_UTIL_TRANSLATION_H

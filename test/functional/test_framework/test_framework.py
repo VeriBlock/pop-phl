@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 # Copyright (c) 2014-2019 The Placeholders Core developers
+# Copyright (c) 2014-2019 The Bitcoin Core developers
+# Copyright (c) 2019-2020 Xenios SEZC
+# https://www.veriblock.org
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Base class for RPC testing."""
@@ -205,8 +208,8 @@ class PlaceholdersTestFramework(metaclass=PlaceholdersTestMetaClass):
             "src",
             "placeh-cli" + config["environment"]["EXEEXT"],
         )
-        self.options.placehd = os.getenv("PLACEHD", default=fname_placehd)
-        self.options.placehcli = os.getenv("PLACEHCLI", default=fname_placehcli)
+        self.options.placehd = os.getenv("PHLD", default=fname_placehd)
+        self.options.placehcli = os.getenv("PHLCLI", default=fname_placehcli)
 
         os.environ['PATH'] = os.pathsep.join([
             os.path.join(config['environment']['BUILDDIR'], 'src'),
@@ -667,6 +670,13 @@ class PlaceholdersTestFramework(metaclass=PlaceholdersTestMetaClass):
             import zmq  # noqa
         except ImportError:
             raise SkipTest("python3-zmq module not available.")
+
+    def skip_if_no_pypopminer(self):
+        """Attempt to import the pypopminer package and skip the test if the import fails."""
+        try:
+            import pypopminer  # noqa
+        except ImportError:
+            raise SkipTest("pypopminer module not available.")
 
     def skip_if_no_placehd_zmq(self):
         """Skip the running test if placehd has not been compiled with zmq support."""

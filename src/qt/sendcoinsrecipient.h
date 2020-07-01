@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_QT_SENDCOINSRECIPIENT_H
-#define PLACEH_QT_SENDCOINSRECIPIENT_H
+#ifndef PHL_QT_SENDCOINSRECIPIENT_H
+#define PHL_QT_SENDCOINSRECIPIENT_H
 
 #if defined(HAVE_CONFIG_H)
 #include <config/placeh-config.h>
@@ -62,4 +62,4 @@ public:
     }
 };
 
-#endif // PLACEH_QT_SENDCOINSRECIPIENT_H
+#endif // PHL_QT_SENDCOINSRECIPIENT_H

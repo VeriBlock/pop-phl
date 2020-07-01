@@ -6,8 +6,8 @@
 /**
  * Utilities for converting data from/to strings.
  */
-#ifndef PLACEH_UTIL_STRENCODINGS_H
-#define PLACEH_UTIL_STRENCODINGS_H
+#ifndef PHL_UTIL_STRENCODINGS_H
+#define PHL_UTIL_STRENCODINGS_H
 
 #include <attributes.h>
 
@@ -260,4 +260,4 @@ std::string ToUpper(const std::string& str);
  */
 std::string Capitalize(std::string str);
 
-#endif // PLACEH_UTIL_STRENCODINGS_H
+#endif // PHL_UTIL_STRENCODINGS_H

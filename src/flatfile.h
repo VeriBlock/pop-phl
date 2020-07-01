@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_FLATFILE_H
-#define PLACEH_FLATFILE_H
+#ifndef PHL_FLATFILE_H
+#define PHL_FLATFILE_H
 
 #include <string>
 
@@ -87,4 +87,4 @@ public:
     bool Flush(const FlatFilePos& pos, bool finalize = false);
 };
 
-#endif // PLACEH_FLATFILE_H
+#endif // PHL_FLATFILE_H

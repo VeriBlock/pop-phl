@@ -45,7 +45,7 @@ QString PlaceholdersUnits::longName(int unit)
     case PHL: return QString("PHL");
     case mPHL: return QString("mPHL");
     case uPHL: return QString::fromUtf8("µPHL (bits)");
-    case SAT: return QString("Thorn (sat)");
+    case SAT: return QString("Satoshi (sat)");
     default: return QString("???");
     }
 }
@@ -64,10 +64,10 @@ QString PlaceholdersUnits::description(int unit)
 {
     switch(unit)
     {
-    case PHL: return QString("Placeholders");
-    case mPHL: return QString("Milli-Placeholders (1 / 1" THIN_SP_UTF8 "000)");
-    case uPHL: return QString("Micro-Placeholders (bits) (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
-    case SAT: return QString("Thorn (sat) (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+    case PHL: return QString("Placeholderss");
+    case mPHL: return QString("Milli-Placeholderss (1 / 1" THIN_SP_UTF8 "000)");
+    case uPHL: return QString("Micro-Placeholderss (bits) (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+    case SAT: return QString("Satoshi (sat) (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
     default: return QString("???");
     }
 }

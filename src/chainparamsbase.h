@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_CHAINPARAMSBASE_H
-#define PLACEH_CHAINPARAMSBASE_H
+#ifndef PHL_CHAINPARAMSBASE_H
+#define PHL_CHAINPARAMSBASE_H
 
 #include <memory>
 #include <string>
@@ -54,4 +54,4 @@ const CBaseChainParams& BaseParams();
 /** Sets the params returned by Params() to those for the given network. */
 void SelectBaseParams(const std::string& chain);
 
-#endif // PLACEH_CHAINPARAMSBASE_H
+#endif // PHL_CHAINPARAMSBASE_H

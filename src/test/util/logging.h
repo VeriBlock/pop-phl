@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_TEST_UTIL_LOGGING_H
-#define PLACEH_TEST_UTIL_LOGGING_H
+#ifndef PHL_TEST_UTIL_LOGGING_H
+#define PHL_TEST_UTIL_LOGGING_H
 
 #include <util/macros.h>
 
@@ -38,4 +38,4 @@ public:
 
 #define ASSERT_DEBUG_LOG(message) DebugLogHelper PASTE2(debugloghelper, __COUNTER__)(message)
 
-#endif // PLACEH_TEST_UTIL_LOGGING_H
+#endif // PHL_TEST_UTIL_LOGGING_H

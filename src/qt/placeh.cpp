@@ -6,6 +6,8 @@
 #include <config/placeh-config.h>
 #endif
 
+#include <vbk/init.hpp>
+
 #include <qt/placeh.h>
 #include <qt/placehgui.h>
 
@@ -427,6 +429,7 @@ int GuiMain(int argc, char* argv[])
     util::WinCmdLineArgs winArgs;
     std::tie(argc, argv) = winArgs.get();
 #endif
+    VeriBlock::InitConfig();
     SetupEnvironment();
     util::ThreadSetInternalName("main");
 

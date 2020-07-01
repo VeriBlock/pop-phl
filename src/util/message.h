@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_UTIL_MESSAGE_H
-#define PLACEH_UTIL_MESSAGE_H
+#ifndef PHL_UTIL_MESSAGE_H
+#define PHL_UTIL_MESSAGE_H
 
 #include <key.h> // For CKey
 #include <uint256.h>
@@ -73,4 +73,4 @@ uint256 MessageHash(const std::string& message);
 
 std::string SigningResultString(const SigningResult res);
 
-#endif // PLACEH_UTIL_MESSAGE_H
+#endif // PHL_UTIL_MESSAGE_H

@@ -1247,7 +1247,7 @@ UniValue getblockchaininfo(const JSONRPCRequest& request)
     if (IsDGWActive((int)::ChainActive().Height())) {
         obj.pushKV("difficulty_algorithm", "DGW-180");
     } else {
-        obj.pushKV("difficulty_algorithm", "PLACEH");
+        obj.pushKV("difficulty_algorithm", "PHL");
         obj.pushKV("DGW_activation_height",    (int)Params().DGWActivationBlock());
     }
     obj.pushKV("mediantime",            (int64_t)tip->GetMedianTimePast());

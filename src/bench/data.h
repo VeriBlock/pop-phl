@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_BENCH_DATA_H
-#define PLACEH_BENCH_DATA_H
+#ifndef PHL_BENCH_DATA_H
+#define PHL_BENCH_DATA_H
 
 #include <cstdint>
 #include <vector>
@@ -16,4 +16,4 @@ extern const std::vector<uint8_t> block413567;
 } // namespace data
 } // namespace benchmark
 
-#endif // PLACEH_BENCH_DATA_H
+#endif // PHL_BENCH_DATA_H

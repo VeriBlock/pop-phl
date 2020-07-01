@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_SCRIPT_SCRIPT_H
-#define PLACEH_SCRIPT_SCRIPT_H
+#ifndef PHL_SCRIPT_SCRIPT_H
+#define PHL_SCRIPT_SCRIPT_H
 
 #include <crypto/common.h>
 #include <prevector.h>
@@ -186,12 +186,17 @@ enum opcodetype
     OP_NOP8 = 0xb7,
     OP_NOP9 = 0xb8,
     OP_NOP10 = 0xb9,
+    OP_CHECKATV = 0xba,
+    OP_CHECKVTB = 0xbb,
+    OP_CHECKPOP = 0xbc,
+    OP_POPBTCHEADER = 0xbd,
+    OP_POPVBKHEADER = 0xbe,
 
     OP_INVALIDOPCODE = 0xff,
 };
 
 // Maximum value that an opcode can be
-static const unsigned int MAX_OPCODE = OP_NOP10;
+static const unsigned int MAX_OPCODE = OP_POPVBKHEADER;
 
 std::string GetOpName(opcodetype opcode);
 
@@ -555,4 +560,4 @@ struct CScriptWitness
     std::string ToString() const;
 };
 
-#endif // PLACEH_SCRIPT_SCRIPT_H
+#endif // PHL_SCRIPT_SCRIPT_H

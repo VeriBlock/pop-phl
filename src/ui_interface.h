@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_UI_INTERFACE_H
-#define PLACEH_UI_INTERFACE_H
+#ifndef PHL_UI_INTERFACE_H
+#define PHL_UI_INTERFACE_H
 
 #include <functional>
 #include <memory>
@@ -128,4 +128,4 @@ bool InitError(const bilingual_str& str);
 
 extern CClientUIInterface uiInterface;
 
-#endif // PLACEH_UI_INTERFACE_H
+#endif // PHL_UI_INTERFACE_H

@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_QT_SENDCOINSDIALOG_H
-#define PLACEH_QT_SENDCOINSDIALOG_H
+#ifndef PHL_QT_SENDCOINSDIALOG_H
+#define PHL_QT_SENDCOINSDIALOG_H
 
 #include <qt/walletmodel.h>
 
@@ -127,4 +127,4 @@ private:
     QString confirmButtonText;
 };
 
-#endif // PLACEH_QT_SENDCOINSDIALOG_H
+#endif // PHL_QT_SENDCOINSDIALOG_H

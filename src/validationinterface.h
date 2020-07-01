@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_VALIDATIONINTERFACE_H
-#define PLACEH_VALIDATIONINTERFACE_H
+#ifndef PHL_VALIDATIONINTERFACE_H
+#define PHL_VALIDATIONINTERFACE_H
 
 #include <primitives/transaction.h> // CTransaction(Ref)
 #include <sync.h>
@@ -208,4 +208,4 @@ public:
 
 CMainSignals& GetMainSignals();
 
-#endif // PLACEH_VALIDATIONINTERFACE_H
+#endif // PHL_VALIDATIONINTERFACE_H

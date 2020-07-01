@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_ZMQ_ZMQPUBLISHNOTIFIER_H
-#define PLACEH_ZMQ_ZMQPUBLISHNOTIFIER_H
+#ifndef PHL_ZMQ_ZMQPUBLISHNOTIFIER_H
+#define PHL_ZMQ_ZMQPUBLISHNOTIFIER_H
 
 #include <zmq/zmqabstractnotifier.h>
 
@@ -52,4 +52,4 @@ public:
     bool NotifyTransaction(const CTransaction &transaction) override;
 };
 
-#endif // PLACEH_ZMQ_ZMQPUBLISHNOTIFIER_H
+#endif // PHL_ZMQ_ZMQPUBLISHNOTIFIER_H

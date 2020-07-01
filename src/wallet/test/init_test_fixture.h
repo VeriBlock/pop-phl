@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_WALLET_TEST_INIT_TEST_FIXTURE_H
-#define PLACEH_WALLET_TEST_INIT_TEST_FIXTURE_H
+#ifndef PHL_WALLET_TEST_INIT_TEST_FIXTURE_H
+#define PHL_WALLET_TEST_INIT_TEST_FIXTURE_H
 
 #include <interfaces/chain.h>
 #include <node/context.h>
@@ -23,4 +23,4 @@ struct InitWalletDirTestingSetup: public BasicTestingSetup {
     std::unique_ptr<interfaces::ChainClient> m_chain_client;
 };
 
-#endif // PLACEH_WALLET_TEST_INIT_TEST_FIXTURE_H
+#endif // PHL_WALLET_TEST_INIT_TEST_FIXTURE_H

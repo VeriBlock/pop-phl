@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_UTIL_MEMORY_H
-#define PLACEH_UTIL_MEMORY_H
+#ifndef PHL_UTIL_MEMORY_H
+#define PHL_UTIL_MEMORY_H
 
 #include <memory>
 #include <utility>

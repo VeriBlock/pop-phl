@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_SUPPORT_LOCKEDPOOL_H
-#define PLACEH_SUPPORT_LOCKEDPOOL_H
+#ifndef PHL_SUPPORT_LOCKEDPOOL_H
+#define PHL_SUPPORT_LOCKEDPOOL_H
 
 #include <stdint.h>
 #include <list>
@@ -237,4 +237,4 @@ private:
     static LockedPoolManager* _instance;
 };
 
-#endif // PLACEH_SUPPORT_LOCKEDPOOL_H
+#endif // PHL_SUPPORT_LOCKEDPOOL_H

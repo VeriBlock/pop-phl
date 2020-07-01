@@ -266,7 +266,7 @@ void OverviewPage::setWalletModel(WalletModel *model)
         });
     }
 
-    // update the display unit, to not use the default ("PLACEH")
+    // update the display unit, to not use the default ("PHL")
     updateDisplayUnit();
 }
 

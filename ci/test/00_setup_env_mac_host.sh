@@ -9,7 +9,7 @@ export LC_ALL=C.UTF-8
 export HOST=x86_64-apple-darwin16
 export PIP_PACKAGES="zmq"
 export GOAL="install"
-export PLACEH_CONFIG="--enable-gui --enable-reduce-exports --enable-werror"
+export PHL_CONFIG="--enable-gui --enable-reduce-exports --enable-werror"
 export TEST_RUNNER_EXTRA="wallet_disable"  # Only run wallet_disable as a smoke test, see https://github.com/placeh/placeh/pull/17240#issuecomment-546022121 why the other tests are disabled
 # Run without depends
 export NO_DEPENDS=1

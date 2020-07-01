@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_QT_QRIMAGEWIDGET_H
-#define PLACEH_QT_QRIMAGEWIDGET_H
+#ifndef PHL_QT_QRIMAGEWIDGET_H
+#define PHL_QT_QRIMAGEWIDGET_H
 
 #include <QImage>
 #include <QLabel>
@@ -42,4 +42,4 @@ private:
     QMenu *contextMenu;
 };
 
-#endif // PLACEH_QT_QRIMAGEWIDGET_H
+#endif // PHL_QT_QRIMAGEWIDGET_H

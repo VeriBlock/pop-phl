@@ -72,7 +72,7 @@
 // Application startup time (used for uptime calculation)
 const int64_t nStartupTime = GetTime();
 
-const char * const PLACEH_CONF_FILENAME = "placeh.conf";
+const char * const PHL_CONF_FILENAME = "placeh.conf";
 
 ArgsManager gArgs;
 
@@ -749,7 +749,7 @@ bool ArgsManager::ReadConfigFiles(std::string& error, bool ignore_invalid_keys)
         m_config_sections.clear();
     }
 
-    const std::string confPath = GetArg("-conf", PLACEH_CONF_FILENAME);
+    const std::string confPath = GetArg("-conf", PHL_CONF_FILENAME);
     fsbridge::ifstream stream(GetConfigFile(confPath));
 
     // ok to not have a config file
@@ -886,7 +886,7 @@ void ArgsManager::logArgsPrefix(
         }
     }
 }
-
+// TODO: Update for Placeholders to remove pop config printing on init
 void ArgsManager::LogArgs() const
 {
     LOCK(cs_args);

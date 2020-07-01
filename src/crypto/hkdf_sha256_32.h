@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_CRYPTO_HKDF_SHA256_32_H
-#define PLACEH_CRYPTO_HKDF_SHA256_32_H
+#ifndef PHL_CRYPTO_HKDF_SHA256_32_H
+#define PHL_CRYPTO_HKDF_SHA256_32_H
 
 #include <crypto/hmac_sha256.h>
 
@@ -22,4 +22,4 @@ public:
     void Expand32(const std::string& info, unsigned char hash[OUTPUT_SIZE]);
 };
 
-#endif // PLACEH_CRYPTO_HKDF_SHA256_32_H
+#endif // PHL_CRYPTO_HKDF_SHA256_32_H

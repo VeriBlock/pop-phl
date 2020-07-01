@@ -7,8 +7,8 @@
  * Server/client environment: argument handling, config file parsing,
  * thread wrappers, startup time
  */
-#ifndef PLACEH_UTIL_SYSTEM_H
-#define PLACEH_UTIL_SYSTEM_H
+#ifndef PHL_UTIL_SYSTEM_H
+#define PHL_UTIL_SYSTEM_H
 
 #if defined(HAVE_CONFIG_H)
 #include <config/placeh-config.h>
@@ -40,7 +40,7 @@
 // Application startup time (used for uptime calculation)
 int64_t GetStartupTime();
 
-extern const char * const PLACEH_CONF_FILENAME;
+extern const char * const PHL_CONF_FILENAME;
 
 void SetupEnvironment();
 bool SetupNetworking();
@@ -445,4 +445,4 @@ private:
 
 } // namespace util
 
-#endif // PLACEH_UTIL_SYSTEM_H
+#endif // PHL_UTIL_SYSTEM_H

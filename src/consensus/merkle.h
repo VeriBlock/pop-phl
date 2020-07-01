@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_CONSENSUS_MERKLE_H
-#define PLACEH_CONSENSUS_MERKLE_H
+#ifndef PHL_CONSENSUS_MERKLE_H
+#define PHL_CONSENSUS_MERKLE_H
 
 #include <vector>
 
@@ -24,4 +24,4 @@ uint256 BlockMerkleRoot(const CBlock& block, bool* mutated = nullptr);
  */
 uint256 BlockWitnessMerkleRoot(const CBlock& block, bool* mutated = nullptr);
 
-#endif // PLACEH_CONSENSUS_MERKLE_H
+#endif // PHL_CONSENSUS_MERKLE_H

@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_ADDRMAN_H
-#define PLACEH_ADDRMAN_H
+#ifndef PHL_ADDRMAN_H
+#define PHL_ADDRMAN_H
 
 #include <clientversion.h>
 #include <netaddress.h>
@@ -669,4 +669,4 @@ public:
 
 };
 
-#endif // PLACEH_ADDRMAN_H
+#endif // PHL_ADDRMAN_H

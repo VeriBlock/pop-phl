@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_QT_TEST_WALLETTESTS_H
-#define PLACEH_QT_TEST_WALLETTESTS_H
+#ifndef PHL_QT_TEST_WALLETTESTS_H
+#define PHL_QT_TEST_WALLETTESTS_H
 
 #include <QObject>
 #include <QTest>
@@ -24,4 +24,4 @@ private Q_SLOTS:
     void walletTests();
 };
 
-#endif // PLACEH_QT_TEST_WALLETTESTS_H
+#endif // PHL_QT_TEST_WALLETTESTS_H

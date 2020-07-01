@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_QT_RPCCONSOLE_H
-#define PLACEH_QT_RPCCONSOLE_H
+#ifndef PHL_QT_RPCCONSOLE_H
+#define PHL_QT_RPCCONSOLE_H
 
 #include <qt/guiutil.h>
 #include <qt/peertablemodel.h>
@@ -173,4 +173,4 @@ private Q_SLOTS:
     void updateAlerts(const QString& warnings);
 };
 
-#endif // PLACEH_QT_RPCCONSOLE_H
+#endif // PHL_QT_RPCCONSOLE_H

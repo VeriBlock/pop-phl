@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_INIT_H
-#define PLACEH_INIT_H
+#ifndef PHL_INIT_H
+#define PHL_INIT_H
 
 #include <memory>
 #include <string>
@@ -64,4 +64,4 @@ void SetupServerArgs(NodeContext& node);
 /** Returns licensing information (for -version) */
 std::string LicenseInfo();
 
-#endif // PLACEH_INIT_H
+#endif // PHL_INIT_H

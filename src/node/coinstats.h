@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_NODE_COINSTATS_H
-#define PLACEH_NODE_COINSTATS_H
+#ifndef PHL_NODE_COINSTATS_H
+#define PHL_NODE_COINSTATS_H
 
 #include <amount.h>
 #include <uint256.h>
@@ -32,4 +32,4 @@ struct CCoinsStats
 //! Calculate statistics about the unspent transaction output set
 bool GetUTXOStats(CCoinsView* view, CCoinsStats& stats, const std::function<void()>& interruption_point = {});
 
-#endif // PLACEH_NODE_COINSTATS_H
+#endif // PHL_NODE_COINSTATS_H

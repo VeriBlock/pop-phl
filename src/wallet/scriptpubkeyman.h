@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_WALLET_SCRIPTPUBKEYMAN_H
-#define PLACEH_WALLET_SCRIPTPUBKEYMAN_H
+#ifndef PHL_WALLET_SCRIPTPUBKEYMAN_H
+#define PHL_WALLET_SCRIPTPUBKEYMAN_H
 
 #include <psbt.h>
 #include <script/descriptor.h>
@@ -615,4 +615,4 @@ public:
     const std::vector<CScript> GetScriptPubKeys() const;
 };
 
-#endif // PLACEH_WALLET_SCRIPTPUBKEYMAN_H
+#endif // PHL_WALLET_SCRIPTPUBKEYMAN_H

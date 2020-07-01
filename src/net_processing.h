@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_NET_PROCESSING_H
-#define PLACEH_NET_PROCESSING_H
+#ifndef PHL_NET_PROCESSING_H
+#define PHL_NET_PROCESSING_H
 
 #include <consensus/params.h>
 #include <net.h>
@@ -99,4 +99,4 @@ bool GetNodeStateStats(NodeId nodeid, CNodeStateStats &stats);
 /** Relay transaction to every node */
 void RelayTransaction(const uint256&, const CConnman& connman);
 
-#endif // PLACEH_NET_PROCESSING_H
+#endif // PHL_NET_PROCESSING_H

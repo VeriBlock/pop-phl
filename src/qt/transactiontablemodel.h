@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_QT_TRANSACTIONTABLEMODEL_H
-#define PLACEH_QT_TRANSACTIONTABLEMODEL_H
+#ifndef PHL_QT_TRANSACTIONTABLEMODEL_H
+#define PHL_QT_TRANSACTIONTABLEMODEL_H
 
 #include <qt/placehunits.h>
 
@@ -120,4 +120,4 @@ public Q_SLOTS:
     friend class TransactionTablePriv;
 };
 
-#endif // PLACEH_QT_TRANSACTIONTABLEMODEL_H
+#endif // PHL_QT_TRANSACTIONTABLEMODEL_H

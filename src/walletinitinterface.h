@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_WALLETINITINTERFACE_H
-#define PLACEH_WALLETINITINTERFACE_H
+#ifndef PHL_WALLETINITINTERFACE_H
+#define PHL_WALLETINITINTERFACE_H
 
 struct NodeContext;
 
@@ -23,4 +23,4 @@ public:
 
 extern const WalletInitInterface& g_wallet_init_interface;
 
-#endif // PLACEH_WALLETINITINTERFACE_H
+#endif // PHL_WALLETINITINTERFACE_H

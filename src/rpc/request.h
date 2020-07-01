@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_RPC_REQUEST_H
-#define PLACEH_RPC_REQUEST_H
+#ifndef PHL_RPC_REQUEST_H
+#define PHL_RPC_REQUEST_H
 
 #include <string>
 
@@ -44,4 +44,4 @@ public:
     void parse(const UniValue& valRequest);
 };
 
-#endif // PLACEH_RPC_REQUEST_H
+#endif // PHL_RPC_REQUEST_H

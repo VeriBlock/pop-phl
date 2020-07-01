@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_HASH_H
-#define PLACEH_HASH_H
+#ifndef PHL_HASH_H
+#define PHL_HASH_H
 
 #include <iostream>
 #include <crypto/common.h>
@@ -210,4 +210,4 @@ unsigned int MurmurHash3(unsigned int nHashSeed, const std::vector<unsigned char
 
 void BIP32Hash(const ChainCode &chainCode, unsigned int nChild, unsigned char header, const unsigned char data[32], unsigned char output[64]);
 
-#endif // PLACEH_HASH_H
+#endif // PHL_HASH_H

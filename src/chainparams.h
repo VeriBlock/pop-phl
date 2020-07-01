@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_CHAINPARAMS_H
-#define PLACEH_CHAINPARAMS_H
+#ifndef PHL_CHAINPARAMS_H
+#define PHL_CHAINPARAMS_H
 
 #include <chainparamsbase.h>
 #include <consensus/params.h>
@@ -87,12 +87,12 @@ public:
     const CCheckpointData& Checkpoints() const { return checkpointData; }
     const ChainTxData& TxData() const { return chainTxData; }
 
-    /** PLACEH START **/
+    /** PHL START **/
 
     unsigned int DGWActivationBlock() const { return nDGWActivationBlock; }
     int AssetsDeactivationBlock() const { return nAssetsDeactivationBlock; }
 
-    /** PLACEH End **/
+    /** PHL End **/
 
 protected:
     CChainParams() {}
@@ -116,12 +116,12 @@ protected:
     CCheckpointData checkpointData;
     ChainTxData chainTxData;
 
-    /** PLACEH Start **/
+    /** PHL Start **/
 
     unsigned int nDGWActivationBlock;
     int nAssetsDeactivationBlock;
 
-    /** PLACEH End **/
+    /** PHL End **/
 };
 
 /**
@@ -144,4 +144,4 @@ const CChainParams &Params();
 void SelectParams(const std::string& chain, bool fForceBlockNetwork = false);
 
 
-#endif // PLACEH_CHAINPARAMS_H
+#endif // PHL_CHAINPARAMS_H

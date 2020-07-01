@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_ATTRIBUTES_H
-#define PLACEH_ATTRIBUTES_H
+#ifndef PHL_ATTRIBUTES_H
+#define PHL_ATTRIBUTES_H
 
 #if defined(__has_cpp_attribute)
 #  if __has_cpp_attribute(nodiscard)
@@ -19,4 +19,4 @@
 #  endif
 #endif
 
-#endif // PLACEH_ATTRIBUTES_H
+#endif // PHL_ATTRIBUTES_H

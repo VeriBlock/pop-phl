@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_CRYPTO_SIPHASH_H
-#define PLACEH_CRYPTO_SIPHASH_H
+#ifndef PHL_CRYPTO_SIPHASH_H
+#define PHL_CRYPTO_SIPHASH_H
 
 #include <stdint.h>
 
@@ -56,4 +56,4 @@ inline int GetHashSelection(const uint256 PrevBlockHash, int index) {
 extern double algoHashTotal[16];
 extern int algoHashHits[16];
 
-#endif // PLACEH_CRYPTO_SIPHASH_H
+#endif // PHL_CRYPTO_SIPHASH_H

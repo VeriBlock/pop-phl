@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_WALLET_FEEBUMPER_H
-#define PLACEH_WALLET_FEEBUMPER_H
+#ifndef PHL_WALLET_FEEBUMPER_H
+#define PHL_WALLET_FEEBUMPER_H
 
 #include <primitives/transaction.h>
 
@@ -55,4 +55,4 @@ Result CommitTransaction(CWallet& wallet,
 
 } // namespace feebumper
 
-#endif // PLACEH_WALLET_FEEBUMPER_H
+#endif // PHL_WALLET_FEEBUMPER_H

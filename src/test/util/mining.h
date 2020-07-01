@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_TEST_UTIL_MINING_H
-#define PLACEH_TEST_UTIL_MINING_H
+#ifndef PHL_TEST_UTIL_MINING_H
+#define PHL_TEST_UTIL_MINING_H
 
 #include <memory>
 #include <string>
@@ -22,4 +22,4 @@ std::shared_ptr<CBlock> PrepareBlock(const NodeContext&, const CScript& coinbase
 /** RPC-like helper function, returns the generated coin */
 CTxIn generatetoaddress(const NodeContext&, const std::string& address);
 
-#endif // PLACEH_TEST_UTIL_MINING_H
+#endif // PHL_TEST_UTIL_MINING_H

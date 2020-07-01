@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_NODE_COIN_H
-#define PLACEH_NODE_COIN_H
+#ifndef PHL_NODE_COIN_H
+#define PHL_NODE_COIN_H
 
 #include <map>
 
@@ -21,4 +21,4 @@ struct NodeContext;
  */
 void FindCoins(const NodeContext& node, std::map<COutPoint, Coin>& coins);
 
-#endif // PLACEH_NODE_COIN_H
+#endif // PHL_NODE_COIN_H

@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_MEMUSAGE_H
-#define PLACEH_MEMUSAGE_H
+#ifndef PHL_MEMUSAGE_H
+#define PHL_MEMUSAGE_H
 
 #include <indirectmap.h>
 #include <prevector.h>
@@ -169,4 +169,4 @@ static inline size_t DynamicUsage(const std::unordered_map<X, Y, Z>& m)
 
 }
 
-#endif // PLACEH_MEMUSAGE_H
+#endif // PHL_MEMUSAGE_H

@@ -15,4 +15,4 @@ export RUN_FUNCTIONAL_TESTS=false
 export RUN_FUZZ_TESTS=true
 export FUZZ_TESTS_CONFIG="--valgrind"
 export GOAL="install"
-export PLACEH_CONFIG="--enable-fuzz --with-sanitizers=fuzzer --enable-c++17 CC=clang CXX=clang++"
+export PHL_CONFIG="--enable-fuzz --with-sanitizers=fuzzer --enable-c++17 CC=clang CXX=clang++"

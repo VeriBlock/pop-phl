@@ -125,5 +125,5 @@ int placehconsensus_verify_script(const unsigned char *scriptPubKey, unsigned in
 unsigned int placehconsensus_version()
 {
     // Just use the API version for now
-    return PLACEHCONSENSUS_API_VER;
+    return PHLCONSENSUS_API_VER;
 }

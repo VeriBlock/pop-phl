@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_TEST_SCRIPTNUM10_H
-#define PLACEH_TEST_SCRIPTNUM10_H
+#ifndef PHL_TEST_SCRIPTNUM10_H
+#define PHL_TEST_SCRIPTNUM10_H
 
 #include <assert.h>
 #include <limits>
@@ -179,4 +179,4 @@ private:
 };
 
 
-#endif // PLACEH_TEST_BIGNUM_H
+#endif // PHL_TEST_BIGNUM_H

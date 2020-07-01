@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_MINER_H
-#define PLACEH_MINER_H
+#ifndef PHL_MINER_H
+#define PHL_MINER_H
 
 #include <optional.h>
 #include <primitives/block.h>
@@ -13,6 +13,8 @@
 
 #include <memory>
 #include <stdint.h>
+
+#include <vbk/util.hpp>
 
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/ordered_index.hpp>
@@ -101,6 +103,12 @@ typedef boost::multi_index_container<
             boost::multi_index::tag<ancestor_score>,
             boost::multi_index::identity<CTxMemPoolModifiedEntry>,
             CompareTxMemPoolEntryByAncestorFee
+        >,
+        // sorted by pop tx priority
+        boost::multi_index::ordered_non_unique<
+            boost::multi_index::tag<VeriBlock::poptx_priority<ancestor_score>>,
+            boost::multi_index::identity<CTxMemPoolModifiedEntry>,
+            VeriBlock::CompareTxMemPoolEntryByPoPtxPriority<CompareTxMemPoolEntryByAncestorFee>
         >
     >
 > indexed_modified_transaction_set;
@@ -125,7 +133,7 @@ struct update_for_parent_inclusion
 /** Generate a new block, without valid proof-of-work */
 class BlockAssembler
 {
-private:
+protected:
     // The constructed block template
     std::unique_ptr<CBlockTemplate> pblocktemplate;
     // A convenience pointer that always refers to the CBlock in pblocktemplate
@@ -139,6 +147,7 @@ private:
     // Information on the current status of the block
     uint64_t nBlockWeight;
     uint64_t nBlockTx;
+    uint64_t nPopTx = 0;
     uint64_t nBlockSigOpsCost;
     CAmount nFees;
     CTxMemPool::setEntries inBlock;
@@ -165,7 +174,7 @@ public:
     static Optional<int64_t> m_last_block_num_txs;
     static Optional<int64_t> m_last_block_weight;
 
-private:
+protected:
     // utility functions
     /** Clear the block's state and prepare for assembling a new block */
     void resetBlock();
@@ -176,7 +185,8 @@ private:
     /** Add transactions based on feerate including unconfirmed ancestors
       * Increments nPackagesSelected / nDescendantsUpdated with corresponding
       * statistics from the package selection (for logging statistics). */
-    void addPackageTxs(int& nPackagesSelected, int& nDescendantsUpdated) EXCLUSIVE_LOCKS_REQUIRED(m_mempool.cs);
+    template<typename MempoolComparatorTagName>
+    void addPackageTxs(int& nPackagesSelected, int& nDescendantsUpdated, CBlockIndex& prevIndex) EXCLUSIVE_LOCKS_REQUIRED(mempool.cs);
 
     // helper functions for addPackageTxs()
     /** Remove confirmed (inBlock) entries from given set */
@@ -206,4 +216,4 @@ int64_t UpdateTime(CBlockHeader* pblock, const Consensus::Params& consensusParam
 /** Update an old GenerateCoinbaseCommitment from CreateNewBlock after the block txs have changed */
 void RegenerateCommitments(CBlock& block);
 
-#endif // PLACEH_MINER_H
+#endif // PHL_MINER_H

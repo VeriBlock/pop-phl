@@ -101,11 +101,12 @@ public:
          * The characters are rarely used upper ASCII, not valid as UTF-8, and produce
          * a large 32-bit integer with any alignment.
          */
-        pchMessageStart[0] = 0x50; // P
-        pchMessageStart[1] = 0x45; // E
-        pchMessageStart[2] = 0x58; // X
-        pchMessageStart[3] = 0x41; // A
-        nDefaultPort = 8235;
+        pchMessageStart[0] = 0x52;
+        pchMessageStart[1] = 0x41;
+        pchMessageStart[2] = 0x56;
+        pchMessageStart[3] = 0x4e;
+        nDefaultPort = 6608;
+        
         nPruneAfterHeight = 100000;
         m_assumed_blockchain_size = 320;
         m_assumed_chain_state_size = 4;
@@ -120,14 +121,14 @@ public:
         // This is fine at runtime as we'll fall back to using them as a oneshot if they don't support the
         // service bits we want, but we should get them updated to support all service bits wanted by any
         // release ASAP to avoid it where possible.
-        vSeeds.emplace_back("dnsseeds.placehproject.com", false);
+        vSeeds.emplace_back("seed.placeh.io", false);
 
-        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,75);
-        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,122);
-        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,128);
+base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,35);
+        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,38);
+        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,176);
         base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x88, 0xB2, 0x1E};
         base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x88, 0xAD, 0xE4};
-
+        
         bech32_hrp = "x";
 
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
@@ -209,11 +210,12 @@ public:
         // By default assume that the signatures in ancestors of this block are valid.
         consensus.defaultAssumeValid = uint256S("0x00");
 
-        pchMessageStart[0] = 0x50; // P
-        pchMessageStart[1] = 0x43; // C
-        pchMessageStart[2] = 0x54; // T
-        pchMessageStart[3] = 0x4e; // N
-        nDefaultPort = 18770;
+        pchMessageStart[0] = 0x52;
+        pchMessageStart[1] = 0x41;
+        pchMessageStart[2] = 0x56;
+        pchMessageStart[3] = 0x4e;
+        
+        nDefaultPort = 16608;
         nPruneAfterHeight = 1000;
         m_assumed_blockchain_size = 40;
         m_assumed_chain_state_size = 2;

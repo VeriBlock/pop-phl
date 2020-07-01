@@ -45,15 +45,15 @@ bench_bench_placeh_SOURCES = \
 
 nodist_bench_bench_placeh_SOURCES = $(GENERATED_BENCH_FILES)
 
-bench_bench_placeh_CPPFLAGS = $(AM_CPPFLAGS) $(PHL_INCLUDES) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS) -I$(builddir)/bench/
+bench_bench_placeh_CPPFLAGS = $(AM_CPPFLAGS) $(PLACEH_INCLUDES) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS) -I$(builddir)/bench/
 bench_bench_placeh_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 bench_bench_placeh_LDADD = \
-  $(LIBPHL_SERVER) \
-  $(LIBPHL_WALLET) \
-  $(LIBPHL_COMMON) \
-  $(LIBPHL_UTIL) \
-  $(LIBPHL_CONSENSUS) \
-  $(LIBPHL_CRYPTO) \
+  $(LIBPLACEH_SERVER) \
+  $(LIBPLACEH_WALLET) \
+  $(LIBPLACEH_COMMON) \
+  $(LIBPLACEH_UTIL) \
+  $(LIBPLACEH_CONSENSUS) \
+  $(LIBPLACEH_CRYPTO) \
   $(LIBTEST_UTIL) \
   $(LIBLEVELDB) \
   $(LIBLEVELDB_SSE42) \
@@ -65,7 +65,7 @@ bench_bench_placeh_LDADD = \
   $(VERIBLOCK_POP_CPP_LIBS)
 
 if ENABLE_ZMQ
-bench_bench_placeh_LDADD += $(LIBPHL_ZMQ) $(ZMQ_LIBS)
+bench_bench_placeh_LDADD += $(LIBPLACEH_ZMQ) $(ZMQ_LIBS)
 endif
 
 if ENABLE_WALLET
@@ -76,9 +76,9 @@ endif
 bench_bench_placeh_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(MINIUPNPC_LIBS)
 bench_bench_placeh_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
-CLEAN_PHL_BENCH = bench/*.gcda bench/*.gcno $(GENERATED_BENCH_FILES)
+CLEAN_PLACEH_BENCH = bench/*.gcda bench/*.gcno $(GENERATED_BENCH_FILES)
 
-CLEANFILES += $(CLEAN_PHL_BENCH)
+CLEANFILES += $(CLEAN_PLACEH_BENCH)
 
 bench/data.cpp: bench/data/block413567.raw.h
 
@@ -88,7 +88,7 @@ bench: $(BENCH_BINARY) FORCE
 	$(BENCH_BINARY)
 
 placeh_bench_clean : FORCE
-	rm -f $(CLEAN_PHL_BENCH) $(bench_bench_placeh_OBJECTS) $(BENCH_BINARY)
+	rm -f $(CLEAN_PLACEH_BENCH) $(bench_bench_placeh_OBJECTS) $(BENCH_BINARY)
 
 %.raw.h: %.raw
 	@$(MKDIR_P) $(@D)

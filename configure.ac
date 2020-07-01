@@ -14,11 +14,11 @@ AC_CONFIG_HEADERS([src/config/placeh-config.h])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([build-aux/m4])
 
-PHL_DAEMON_NAME=placehd
-PHL_GUI_NAME=placeh-qt
-PHL_CLI_NAME=placeh-cli
-PHL_TX_NAME=placeh-tx
-PHL_WALLET_TOOL_NAME=placeh-wallet
+PLACEH_DAEMON_NAME=placehd
+PLACEH_GUI_NAME=placeh-qt
+PLACEH_CLI_NAME=placeh-cli
+PLACEH_TX_NAME=placeh-tx
+PLACEH_WALLET_TOOL_NAME=placeh-wallet
 
 dnl Unless the user specified ARFLAGS, force it to be cr
 AC_ARG_VAR(ARFLAGS, [Flags for the archiver, defaults to <cr> if not set])
@@ -28,9 +28,9 @@ fi
 
 AC_CANONICAL_HOST
 
-AH_TOP([#ifndef PHL_CONFIG_H])
-AH_TOP([#define PHL_CONFIG_H])
-AH_BOTTOM([#endif //PHL_CONFIG_H])
+AH_TOP([#ifndef PLACEH_CONFIG_H])
+AH_TOP([#define PLACEH_CONFIG_H])
+AH_BOTTOM([#endif //PLACEH_CONFIG_H])
 
 dnl faketime breaks configure and is only needed for make. Disable it here.
 unset FAKETIME
@@ -1134,15 +1134,15 @@ if test "x$enable_fuzz" = "xyes"; then
   use_upnp=no
   use_zmq=no
 else
-  PHL_QT_INIT
+  PLACEH_QT_INIT
 
   dnl sets $placeh_enable_qt, $placeh_enable_qt_test, $placeh_enable_qt_dbus
-  PHL_QT_CONFIGURE([$use_pkgconfig])
+  PLACEH_QT_CONFIGURE([$use_pkgconfig])
 fi
 
 if test x$enable_wallet != xno; then
     dnl Check for libdb_cxx only if wallet enabled
-    PHL_FIND_BDB48
+    PLACEH_FIND_BDB48
 fi
 
 dnl Check for libminiupnpc (optional)
@@ -1311,10 +1311,10 @@ if test x$use_pkgconfig = xyes; then
       export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/lib/pkgconfig
       PKG_CHECK_MODULES([VERIBLOCK_POP_CPP], [veriblock-pop-cpp],,[AC_MSG_ERROR(libveriblock-pop-cpp not found.)])
       if test x$enable_bip70 != xno; then
-        PHL_QT_CHECK([PKG_CHECK_MODULES([PROTOBUF], [protobuf], [have_protobuf=yes], [have_protobuf=no])])
+        PLACEH_QT_CHECK([PKG_CHECK_MODULES([PROTOBUF], [protobuf], [have_protobuf=yes], [have_protobuf=no])])
       fi
       if test x$use_qr != xno; then
-        PHL_QT_CHECK([PKG_CHECK_MODULES([QR], [libqrencode], [have_qrencode=yes], [have_qrencode=no])])
+        PLACEH_QT_CHECK([PKG_CHECK_MODULES([QR], [libqrencode], [have_qrencode=yes], [have_qrencode=no])])
       fi
       if test x$build_placeh_cli$build_placehd$placeh_enable_qt$use_tests$use_bench != xnonononono; then
         PKG_CHECK_MODULES([EVENT], [libevent >= 2.0.21], [use_libevent=yes], [AC_MSG_ERROR(libevent version 2.0.21 or greater not found.)])
@@ -1373,8 +1373,8 @@ else
   fi
 
   if test x$use_qr != xno; then
-    PHL_QT_CHECK([AC_CHECK_LIB([qrencode], [main],[QR_LIBS=-lqrencode], [have_qrencode=no])])
-    PHL_QT_CHECK([AC_CHECK_HEADER([qrencode.h],, have_qrencode=no)])
+    PLACEH_QT_CHECK([AC_CHECK_LIB([qrencode], [main],[QR_LIBS=-lqrencode], [have_qrencode=no])])
+    PLACEH_QT_CHECK([AC_CHECK_HEADER([qrencode.h],, have_qrencode=no)])
   fi
 fi
 
@@ -1456,8 +1456,8 @@ else
 fi
 
 AM_CONDITIONAL([BUILD_MULTIPROCESS],[test "x$build_multiprocess" = xyes])
-AM_CONDITIONAL([BUILD_PHL_NODE], [test "x$build_multiprocess" = xyes])
-AM_CONDITIONAL([BUILD_PHL_GUI], [test "x$build_multiprocess" = xyes])
+AM_CONDITIONAL([BUILD_PLACEH_NODE], [test "x$build_multiprocess" = xyes])
+AM_CONDITIONAL([BUILD_PLACEH_GUI], [test "x$build_multiprocess" = xyes])
 
 dnl codegen tools check
 
@@ -1471,23 +1471,23 @@ if test x$build_multiprocess != xno; then
 fi
 
 AC_MSG_CHECKING([whether to build placehd])
-AM_CONDITIONAL([BUILD_PHLD], [test x$build_placehd = xyes])
+AM_CONDITIONAL([BUILD_PLACEHD], [test x$build_placehd = xyes])
 AC_MSG_RESULT($build_placehd)
 
 AC_MSG_CHECKING([whether to build placeh-cli])
-AM_CONDITIONAL([BUILD_PHL_CLI], [test x$build_placeh_cli = xyes])
+AM_CONDITIONAL([BUILD_PLACEH_CLI], [test x$build_placeh_cli = xyes])
 AC_MSG_RESULT($build_placeh_cli)
 
 AC_MSG_CHECKING([whether to build placeh-tx])
-AM_CONDITIONAL([BUILD_PHL_TX], [test x$build_placeh_tx = xyes])
+AM_CONDITIONAL([BUILD_PLACEH_TX], [test x$build_placeh_tx = xyes])
 AC_MSG_RESULT($build_placeh_tx)
 
 AC_MSG_CHECKING([whether to build placeh-wallet])
-AM_CONDITIONAL([BUILD_PHL_WALLET], [test x$build_placeh_wallet = xyes])
+AM_CONDITIONAL([BUILD_PLACEH_WALLET], [test x$build_placeh_wallet = xyes])
 AC_MSG_RESULT($build_placeh_wallet)
 
 AC_MSG_CHECKING([whether to build libraries])
-AM_CONDITIONAL([BUILD_PHL_LIBS], [test x$build_placeh_libs = xyes])
+AM_CONDITIONAL([BUILD_PLACEH_LIBS], [test x$build_placeh_libs = xyes])
 if test x$build_placeh_libs = xyes; then
   AC_DEFINE(HAVE_CONSENSUS_LIB, 1, [Define this symbol if the consensus lib has been built])
   AC_CONFIG_FILES([libplacehconsensus.pc:libplacehconsensus.pc.in])
@@ -1652,11 +1652,11 @@ AC_SUBST(COPYRIGHT_YEAR, _COPYRIGHT_YEAR)
 AC_SUBST(COPYRIGHT_HOLDERS, "_COPYRIGHT_HOLDERS")
 AC_SUBST(COPYRIGHT_HOLDERS_SUBSTITUTION, "_COPYRIGHT_HOLDERS_SUBSTITUTION")
 AC_SUBST(COPYRIGHT_HOLDERS_FINAL, "_COPYRIGHT_HOLDERS_FINAL")
-AC_SUBST(PHL_DAEMON_NAME)
-AC_SUBST(PHL_GUI_NAME)
-AC_SUBST(PHL_CLI_NAME)
-AC_SUBST(PHL_TX_NAME)
-AC_SUBST(PHL_WALLET_TOOL_NAME)
+AC_SUBST(PLACEH_DAEMON_NAME)
+AC_SUBST(PLACEH_GUI_NAME)
+AC_SUBST(PLACEH_CLI_NAME)
+AC_SUBST(PLACEH_TX_NAME)
+AC_SUBST(PLACEH_WALLET_TOOL_NAME)
 
 AC_SUBST(RELDFLAGS)
 AC_SUBST(DEBUG_CPPFLAGS)

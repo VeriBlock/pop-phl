@@ -24,21 +24,21 @@ fi
 GENERATE_AT_HEIGHT="${1}"; shift;
 OUTPUT_PATH="${1}"; shift;
 # Most of the calls we make take a while to run, so pad with a lengthy timeout.
-PHL_CLI_CALL="${*} -rpcclienttimeout=9999999"
+PLACEH_CLI_CALL="${*} -rpcclienttimeout=9999999"
 
 # Block we'll invalidate/reconsider to rewind/fast-forward the chain.
-PIVOT_BLOCKHASH=$($PHL_CLI_CALL getblockhash $(( GENERATE_AT_HEIGHT + 1 )) )
+PIVOT_BLOCKHASH=$($PLACEH_CLI_CALL getblockhash $(( GENERATE_AT_HEIGHT + 1 )) )
 
 (>&2 echo "Rewinding chain back to height ${GENERATE_AT_HEIGHT} (by invalidating ${PIVOT_BLOCKHASH}); this may take a while")
-${PHL_CLI_CALL} invalidateblock "${PIVOT_BLOCKHASH}"
+${PLACEH_CLI_CALL} invalidateblock "${PIVOT_BLOCKHASH}"
 
 if [[ "${OUTPUT_PATH}" = "-" ]]; then
   (>&2 echo "Generating txoutset info...")
-  ${PHL_CLI_CALL} gettxoutsetinfo | grep hash_serialized_2 | sed 's/^.*: "\(.\+\)\+",/\1/g'
+  ${PLACEH_CLI_CALL} gettxoutsetinfo | grep hash_serialized_2 | sed 's/^.*: "\(.\+\)\+",/\1/g'
 else
   (>&2 echo "Generating UTXO snapshot...")
-  ${PHL_CLI_CALL} dumptxoutset "${OUTPUT_PATH}"
+  ${PLACEH_CLI_CALL} dumptxoutset "${OUTPUT_PATH}"
 fi
 
 (>&2 echo "Restoring chain to original height; this may take a while")
-${PHL_CLI_CALL} reconsiderblock "${PIVOT_BLOCKHASH}"
+${PLACEH_CLI_CALL} reconsiderblock "${PIVOT_BLOCKHASH}"

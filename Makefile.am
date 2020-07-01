@@ -15,17 +15,17 @@ endif
 
 export PYTHONPATH
 
-if BUILD_PHL_LIBS
+if BUILD_PLACEH_LIBS
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libplacehconsensus.pc
 endif
 
-PHLD_BIN=$(top_builddir)/src/$(PHL_DAEMON_NAME)$(EXEEXT)
-PHL_QT_BIN=$(top_builddir)/src/qt/$(PHL_GUI_NAME)$(EXEEXT)
-PHL_CLI_BIN=$(top_builddir)/src/$(PHL_CLI_NAME)$(EXEEXT)
-PHL_TX_BIN=$(top_builddir)/src/$(PHL_TX_NAME)$(EXEEXT)
-PHL_WALLET_BIN=$(top_builddir)/src/$(PHL_WALLET_TOOL_NAME)$(EXEEXT)
-PHL_WIN_INSTALLER=$(PACKAGE)-$(PACKAGE_VERSION)-win64-setup$(EXEEXT)
+PLACEHD_BIN=$(top_builddir)/src/$(PLACEH_DAEMON_NAME)$(EXEEXT)
+PLACEH_QT_BIN=$(top_builddir)/src/qt/$(PLACEH_GUI_NAME)$(EXEEXT)
+PLACEH_CLI_BIN=$(top_builddir)/src/$(PLACEH_CLI_NAME)$(EXEEXT)
+PLACEH_TX_BIN=$(top_builddir)/src/$(PLACEH_TX_NAME)$(EXEEXT)
+PLACEH_WALLET_BIN=$(top_builddir)/src/$(PLACEH_WALLET_TOOL_NAME)$(EXEEXT)
+PLACEH_WIN_INSTALLER=$(PACKAGE)-$(PACKAGE_VERSION)-win64-setup$(EXEEXT)
 
 empty :=
 space := $(empty) $(empty)
@@ -73,13 +73,13 @@ COVERAGE_INFO = baseline.info \
 dist-hook:
 	-$(GIT) archive --format=tar HEAD -- src/clientversion.cpp | $(AMTAR) -C $(top_distdir) -xf -
 
-$(PHL_WIN_INSTALLER): all-recursive
+$(PLACEH_WIN_INSTALLER): all-recursive
 	$(MKDIR_P) $(top_builddir)/release
-	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(PHLD_BIN) $(top_builddir)/release
-	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(PHL_QT_BIN) $(top_builddir)/release
-	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(PHL_CLI_BIN) $(top_builddir)/release
-	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(PHL_TX_BIN) $(top_builddir)/release
-	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(PHL_WALLET_BIN) $(top_builddir)/release
+	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(PLACEHD_BIN) $(top_builddir)/release
+	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(PLACEH_QT_BIN) $(top_builddir)/release
+	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(PLACEH_CLI_BIN) $(top_builddir)/release
+	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(PLACEH_TX_BIN) $(top_builddir)/release
+	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(PLACEH_WALLET_BIN) $(top_builddir)/release
 	@test -f $(MAKENSIS) && echo 'OutFile "$@"' | cat $(top_builddir)/share/setup.nsi - | $(MAKENSIS) -V2 - || \
 	  echo error: could not build $@
 	@echo built $@
@@ -102,7 +102,7 @@ $(OSX_APP)/Contents/Resources/placeh.icns: $(OSX_INSTALLER_ICONS)
 
 $(OSX_APP)/Contents/MacOS/Placeholders-Qt: all-recursive
 	$(MKDIR_P) $(@D)
-	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM)  $(PHL_QT_BIN) $@
+	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM)  $(PLACEH_QT_BIN) $@
 
 $(OSX_APP)/Contents/Resources/Base.lproj/InfoPlist.strings:
 	$(MKDIR_P) $(@D)
@@ -161,40 +161,40 @@ appbundle: $(OSX_APP_BUILT)
 deploy: $(OSX_DMG)
 endif
 if TARGET_WINDOWS
-deploy: $(PHL_WIN_INSTALLER)
+deploy: $(PLACEH_WIN_INSTALLER)
 endif
 if TARGET_LINUX
 if ENABLE_QT
 deploy: all-recursive
 	$(MKDIR_P) $(top_builddir)/release
-	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(PHLD_BIN) $(top_builddir)/release
-	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(PHL_QT_BIN) $(top_builddir)/release
-	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(PHL_CLI_BIN) $(top_builddir)/release
-	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(PHL_TX_BIN) $(top_builddir)/release
-	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(PHL_WALLET_BIN) $(top_builddir)/release
+	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(PLACEHD_BIN) $(top_builddir)/release
+	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(PLACEH_QT_BIN) $(top_builddir)/release
+	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(PLACEH_CLI_BIN) $(top_builddir)/release
+	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(PLACEH_TX_BIN) $(top_builddir)/release
+	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(PLACEH_WALLET_BIN) $(top_builddir)/release
 else
 deploy: all-recursive
 	$(MKDIR_P) $(top_builddir)/release
-	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(PHLD_BIN) $(top_builddir)/release
-	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(PHL_CLI_BIN) $(top_builddir)/release
-	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(PHL_TX_BIN) $(top_builddir)/release
-	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(PHL_WALLET_BIN) $(top_builddir)/release
+	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(PLACEHD_BIN) $(top_builddir)/release
+	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(PLACEH_CLI_BIN) $(top_builddir)/release
+	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(PLACEH_TX_BIN) $(top_builddir)/release
+	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(PLACEH_WALLET_BIN) $(top_builddir)/release
 endif
 endif
 
-$(PHL_QT_BIN): FORCE
+$(PLACEH_QT_BIN): FORCE
 	$(MAKE) -C src qt/$(@F)
 
-$(PHLD_BIN): FORCE
+$(PLACEHD_BIN): FORCE
 	$(MAKE) -C src $(@F)
 
-$(PHL_CLI_BIN): FORCE
+$(PLACEH_CLI_BIN): FORCE
 	$(MAKE) -C src $(@F)
 
-$(PHL_TX_BIN): FORCE
+$(PLACEH_TX_BIN): FORCE
 	$(MAKE) -C src $(@F)
 
-$(PHL_WALLET_BIN): FORCE
+$(PLACEH_WALLET_BIN): FORCE
 	$(MAKE) -C src $(@F)
 
 if USE_LCOV
@@ -335,7 +335,7 @@ EXTRA_DIST += \
     test/util/data/txcreatesignv2.hex \
     test/util/rpcauth-test.py
 
-CLEANFILES = $(OSX_DMG) $(PHL_WIN_INSTALLER)
+CLEANFILES = $(OSX_DMG) $(PLACEH_WIN_INSTALLER)
 
 .INTERMEDIATE: $(COVERAGE_INFO)
 

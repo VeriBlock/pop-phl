@@ -4,7 +4,7 @@ dnl file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 dnl Helper for cases where a qt dependency is not met.
 dnl Output: If qt version is auto, set placeh_enable_qt to false. Else, exit.
-AC_DEFUN([PHL_QT_FAIL],[
+AC_DEFUN([PLACEH_QT_FAIL],[
   if test "x$placeh_qt_want_version" = xauto && test "x$placeh_qt_force" != xyes; then
     if test "x$placeh_enable_qt" != xno; then
       AC_MSG_WARN([$1; placeh-qt frontend will not be built])
@@ -16,7 +16,7 @@ AC_DEFUN([PHL_QT_FAIL],[
   fi
 ])
 
-AC_DEFUN([PHL_QT_CHECK],[
+AC_DEFUN([PLACEH_QT_CHECK],[
   if test "x$placeh_enable_qt" != xno && test "x$placeh_qt_want_version" != xno; then
     true
     $1
@@ -26,31 +26,31 @@ AC_DEFUN([PHL_QT_CHECK],[
   fi
 ])
 
-dnl PHL_QT_PATH_PROGS([FOO], [foo foo2], [/path/to/search/first], [continue if missing])
+dnl PLACEH_QT_PATH_PROGS([FOO], [foo foo2], [/path/to/search/first], [continue if missing])
 dnl Helper for finding the path of programs needed for Qt.
 dnl Inputs: $1: Variable to be set
 dnl Inputs: $2: List of programs to search for
 dnl Inputs: $3: Look for $2 here before $PATH
 dnl Inputs: $4: If "yes", don't fail if $2 is not found.
 dnl Output: $1 is set to the path of $2 if found. $2 are searched in order.
-AC_DEFUN([PHL_QT_PATH_PROGS],[
-  PHL_QT_CHECK([
+AC_DEFUN([PLACEH_QT_PATH_PROGS],[
+  PLACEH_QT_CHECK([
     if test "x$3" != x; then
       AC_PATH_PROGS($1,$2,,$3)
     else
       AC_PATH_PROGS($1,$2)
     fi
     if test "x$$1" = x && test "x$4" != xyes; then
-      PHL_QT_FAIL([$1 not found])
+      PLACEH_QT_FAIL([$1 not found])
     fi
   ])
 ])
 
 dnl Initialize qt input.
-dnl This must be called before any other PHL_QT* macros to ensure that
+dnl This must be called before any other PLACEH_QT* macros to ensure that
 dnl input variables are set correctly.
 dnl CAUTION: Do not use this inside of a conditional.
-AC_DEFUN([PHL_QT_INIT],[
+AC_DEFUN([PLACEH_QT_INIT],[
   dnl enable qt support
   AC_ARG_WITH([gui],
     [AS_HELP_STRING([--with-gui@<:@=no|qt5|auto@:>@],
@@ -83,10 +83,10 @@ dnl Find the appropriate version of Qt libraries and includes.
 dnl Inputs: $1: Whether or not pkg-config should be used. yes|no. Default: yes.
 dnl Inputs: $2: If $1 is "yes" and --with-gui=auto, which qt version should be
 dnl         tried first.
-dnl Outputs: See _PHL_QT_FIND_LIBS_*
+dnl Outputs: See _PLACEH_QT_FIND_LIBS_*
 dnl Outputs: Sets variables for all qt-related tools.
 dnl Outputs: placeh_enable_qt, placeh_enable_qt_dbus, placeh_enable_qt_test
-AC_DEFUN([PHL_QT_CONFIGURE],[
+AC_DEFUN([PLACEH_QT_CONFIGURE],[
   use_pkgconfig=$1
 
   if test "x$use_pkgconfig" = x; then
@@ -94,9 +94,9 @@ AC_DEFUN([PHL_QT_CONFIGURE],[
   fi
 
   if test "x$use_pkgconfig" = xyes; then
-    PHL_QT_CHECK([_PHL_QT_FIND_LIBS_WITH_PKGCONFIG])
+    PLACEH_QT_CHECK([_PLACEH_QT_FIND_LIBS_WITH_PKGCONFIG])
   else
-    PHL_QT_CHECK([_PHL_QT_FIND_LIBS_WITHOUT_PKGCONFIG])
+    PLACEH_QT_CHECK([_PLACEH_QT_FIND_LIBS_WITHOUT_PKGCONFIG])
   fi
 
   dnl This is ugly and complicated. Yuck. Works as follows:
@@ -105,30 +105,30 @@ AC_DEFUN([PHL_QT_CONFIGURE],[
   dnl the final binary as well.
   dnl With Qt5, languages moved into core and the WindowsIntegration plugin was
   dnl added.
-  dnl _PHL_QT_CHECK_STATIC_PLUGINS does a quick link-check and appends the
+  dnl _PLACEH_QT_CHECK_STATIC_PLUGINS does a quick link-check and appends the
   dnl results to QT_LIBS.
-  PHL_QT_CHECK([
+  PLACEH_QT_CHECK([
   TEMP_CPPFLAGS=$CPPFLAGS
   TEMP_CXXFLAGS=$CXXFLAGS
   CPPFLAGS="$QT_INCLUDES $CPPFLAGS"
   CXXFLAGS="$PIC_FLAGS $CXXFLAGS"
-  _PHL_QT_IS_STATIC
+  _PLACEH_QT_IS_STATIC
   if test "x$placeh_cv_static_qt" = xyes; then
-    _PHL_QT_FIND_STATIC_PLUGINS
+    _PLACEH_QT_FIND_STATIC_PLUGINS
     AC_DEFINE(QT_STATICPLUGIN, 1, [Define this symbol if qt plugins are static])
     if test "x$TARGET_OS" != xandroid; then
-       _PHL_QT_CHECK_STATIC_PLUGINS([Q_IMPORT_PLUGIN(QMinimalIntegrationPlugin)],[-lqminimal])
+       _PLACEH_QT_CHECK_STATIC_PLUGINS([Q_IMPORT_PLUGIN(QMinimalIntegrationPlugin)],[-lqminimal])
        AC_DEFINE(QT_QPA_PLATFORM_MINIMAL, 1, [Define this symbol if the minimal qt platform exists])
     fi
     if test "x$TARGET_OS" = xwindows; then
-      _PHL_QT_CHECK_STATIC_PLUGINS([Q_IMPORT_PLUGIN(QWindowsIntegrationPlugin)],[-lqwindows])
+      _PLACEH_QT_CHECK_STATIC_PLUGINS([Q_IMPORT_PLUGIN(QWindowsIntegrationPlugin)],[-lqwindows])
       AC_DEFINE(QT_QPA_PLATFORM_WINDOWS, 1, [Define this symbol if the qt platform is windows])
     elif test "x$TARGET_OS" = xlinux; then
-      _PHL_QT_CHECK_STATIC_PLUGINS([Q_IMPORT_PLUGIN(QXcbIntegrationPlugin)],[-lqxcb -lxcb-static])
+      _PLACEH_QT_CHECK_STATIC_PLUGINS([Q_IMPORT_PLUGIN(QXcbIntegrationPlugin)],[-lqxcb -lxcb-static])
       AC_DEFINE(QT_QPA_PLATFORM_XCB, 1, [Define this symbol if the qt platform is xcb])
     elif test "x$TARGET_OS" = xdarwin; then
       AX_CHECK_LINK_FLAG([[-framework IOKit]],[QT_LIBS="$QT_LIBS -framework IOKit"],[AC_MSG_ERROR(could not iokit framework)])
-      _PHL_QT_CHECK_STATIC_PLUGINS([Q_IMPORT_PLUGIN(QCocoaIntegrationPlugin)],[-lqcocoa])
+      _PLACEH_QT_CHECK_STATIC_PLUGINS([Q_IMPORT_PLUGIN(QCocoaIntegrationPlugin)],[-lqcocoa])
       AC_DEFINE(QT_QPA_PLATFORM_COCOA, 1, [Define this symbol if the qt platform is cocoa])
     elif test "x$TARGET_OS" = xandroid; then
       QT_LIBS="-Wl,--export-dynamic,--undefined=JNI_OnLoad -lqtforandroid -ljnigraphics -landroid -lqtfreetype -lQt5EglSupport $QT_LIBS"
@@ -144,7 +144,7 @@ AC_DEFUN([PHL_QT_CONFIGURE],[
   fi
 
   if test "x$use_hardening" != xno; then
-    PHL_QT_CHECK([
+    PLACEH_QT_CHECK([
     AC_MSG_CHECKING(whether -fPIE can be used with this Qt config)
     TEMP_CPPFLAGS=$CPPFLAGS
     TEMP_CXXFLAGS=$CXXFLAGS
@@ -168,7 +168,7 @@ AC_DEFUN([PHL_QT_CONFIGURE],[
     CXXFLAGS=$TEMP_CXXFLAGS
     ])
   else
-    PHL_QT_CHECK([
+    PLACEH_QT_CHECK([
     AC_MSG_CHECKING(whether -fPIC is needed with this Qt config)
     TEMP_CPPFLAGS=$CPPFLAGS
     CPPFLAGS="$QT_INCLUDES $CPPFLAGS"
@@ -190,23 +190,23 @@ AC_DEFUN([PHL_QT_CONFIGURE],[
     ])
   fi
 
-  PHL_QT_PATH_PROGS([MOC], [moc-qt5 moc5 moc], $qt_bin_path)
-  PHL_QT_PATH_PROGS([UIC], [uic-qt5 uic5 uic], $qt_bin_path)
-  PHL_QT_PATH_PROGS([RCC], [rcc-qt5 rcc5 rcc], $qt_bin_path)
-  PHL_QT_PATH_PROGS([LRELEASE], [lrelease-qt5 lrelease5 lrelease], $qt_bin_path)
-  PHL_QT_PATH_PROGS([LUPDATE], [lupdate-qt5 lupdate5 lupdate],$qt_bin_path, yes)
+  PLACEH_QT_PATH_PROGS([MOC], [moc-qt5 moc5 moc], $qt_bin_path)
+  PLACEH_QT_PATH_PROGS([UIC], [uic-qt5 uic5 uic], $qt_bin_path)
+  PLACEH_QT_PATH_PROGS([RCC], [rcc-qt5 rcc5 rcc], $qt_bin_path)
+  PLACEH_QT_PATH_PROGS([LRELEASE], [lrelease-qt5 lrelease5 lrelease], $qt_bin_path)
+  PLACEH_QT_PATH_PROGS([LUPDATE], [lupdate-qt5 lupdate5 lupdate],$qt_bin_path, yes)
 
   MOC_DEFS='-DHAVE_CONFIG_H -I$(srcdir)'
   case $host in
     *darwin*)
-     PHL_QT_CHECK([
+     PLACEH_QT_CHECK([
        MOC_DEFS="${MOC_DEFS} -DQ_OS_MAC"
        base_frameworks="-framework Foundation -framework ApplicationServices -framework AppKit"
        AX_CHECK_LINK_FLAG([[$base_frameworks]],[QT_LIBS="$QT_LIBS $base_frameworks"],[AC_MSG_ERROR(could not find base frameworks)])
      ])
     ;;
     *mingw*)
-       PHL_QT_CHECK([
+       PLACEH_QT_CHECK([
          AX_CHECK_LINK_FLAG([[-mwindows]],[QT_LDFLAGS="$QT_LDFLAGS -mwindows"],[AC_MSG_WARN(-mwindows linker support not detected)])
        ])
   esac
@@ -214,7 +214,7 @@ AC_DEFUN([PHL_QT_CONFIGURE],[
 
   dnl enable qt support
   AC_MSG_CHECKING(whether to build ]AC_PACKAGE_NAME[ GUI)
-  PHL_QT_CHECK([
+  PLACEH_QT_CHECK([
     placeh_enable_qt=yes
     placeh_enable_qt_test=yes
     if test "x$have_qt_test" = xno; then
@@ -258,7 +258,7 @@ dnl ----
 dnl Internal. Check included version of Qt against minimum specified in doc/dependencies.md
 dnl Requires: INCLUDES must be populated as necessary.
 dnl Output: placeh_cv_qt5=yes|no
-AC_DEFUN([_PHL_QT_CHECK_QT5],[
+AC_DEFUN([_PLACEH_QT_CHECK_QT5],[
   AC_CACHE_CHECK(for Qt 5, placeh_cv_qt5,[
   AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
       #include <QtCore/qconfig.h>
@@ -278,7 +278,7 @@ AC_DEFUN([_PHL_QT_CHECK_QT5],[
 dnl Internal. Check if the included version of Qt is greater than Qt58.
 dnl Requires: INCLUDES must be populated as necessary.
 dnl Output: placeh_cv_qt58=yes|no
-AC_DEFUN([_PHL_QT_CHECK_QT58],[
+AC_DEFUN([_PLACEH_QT_CHECK_QT58],[
   AC_CACHE_CHECK(for > Qt 5.7, placeh_cv_qt58,[
   AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
       #include <QtCore/qconfig.h>
@@ -301,7 +301,7 @@ dnl Requires: Qt5.
 dnl Requires: INCLUDES and LIBS must be populated as necessary.
 dnl Output: placeh_cv_static_qt=yes|no
 dnl Output: Defines QT_STATICPLUGIN if plugins are static.
-AC_DEFUN([_PHL_QT_IS_STATIC],[
+AC_DEFUN([_PLACEH_QT_IS_STATIC],[
   AC_CACHE_CHECK(for static Qt, placeh_cv_static_qt,[
     AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
         #include <QtCore/qconfig.h>
@@ -327,7 +327,7 @@ dnl Requires: INCLUDES and LIBS must be populated as necessary.
 dnl Inputs: $1: A series of Q_IMPORT_PLUGIN().
 dnl Inputs: $2: The libraries that resolve $1.
 dnl Output: QT_LIBS is prepended or configure exits.
-AC_DEFUN([_PHL_QT_CHECK_STATIC_PLUGINS],[
+AC_DEFUN([_PLACEH_QT_CHECK_STATIC_PLUGINS],[
   AC_MSG_CHECKING(for static Qt plugins: $2)
   CHECK_STATIC_PLUGINS_TEMP_LIBS="$LIBS"
   LIBS="$2 $QT_LIBS $LIBS"
@@ -337,14 +337,14 @@ AC_DEFUN([_PHL_QT_CHECK_STATIC_PLUGINS],[
     $1]],
     [[return 0;]])],
     [AC_MSG_RESULT(yes); QT_LIBS="$2 $QT_LIBS"],
-    [AC_MSG_RESULT(no); PHL_QT_FAIL(Could not resolve: $2)])
+    [AC_MSG_RESULT(no); PLACEH_QT_FAIL(Could not resolve: $2)])
   LIBS="$CHECK_STATIC_PLUGINS_TEMP_LIBS"
 ])
 
 dnl Internal. Find paths necessary for linking qt static plugins
 dnl Inputs: qt_plugin_path. optional.
 dnl Outputs: QT_LIBS is appended
-AC_DEFUN([_PHL_QT_FIND_STATIC_PLUGINS],[
+AC_DEFUN([_PLACEH_QT_FIND_STATIC_PLUGINS],[
     if test "x$qt_plugin_path" != x; then
       QT_LIBS="$QT_LIBS -L$qt_plugin_path/platforms"
       if test -d "$qt_plugin_path/accessible"; then
@@ -393,14 +393,14 @@ AC_DEFUN([_PHL_QT_FIND_STATIC_PLUGINS],[
          ])
          if test "x$placeh_cv_need_platformsupport" = xyes; then
            if test x$placeh_cv_qt58 = xno; then
-             PHL_QT_CHECK(AC_CHECK_LIB([${QT_LIB_PREFIX}PlatformSupport],[main],,PHL_QT_FAIL(lib$QT_LIB_PREFIXPlatformSupport not found)))
+             PLACEH_QT_CHECK(AC_CHECK_LIB([${QT_LIB_PREFIX}PlatformSupport],[main],,PLACEH_QT_FAIL(lib$QT_LIB_PREFIXPlatformSupport not found)))
            else
-             PHL_QT_CHECK(AC_CHECK_LIB([${QT_LIB_PREFIX}FontDatabaseSupport],[main],,PHL_QT_FAIL(lib$QT_LIB_PREFIXFontDatabaseSupport not found)))
-             PHL_QT_CHECK(AC_CHECK_LIB([${QT_LIB_PREFIX}EventDispatcherSupport],[main],,PHL_QT_FAIL(lib$QT_LIB_PREFIXEventDispatcherSupport not found)))
-             PHL_QT_CHECK(AC_CHECK_LIB([${QT_LIB_PREFIX}ThemeSupport],[main],,PHL_QT_FAIL(lib$QT_LIB_PREFIXThemeSupport not found)))
-             PHL_QT_CHECK(AC_CHECK_LIB([${QT_LIB_PREFIX}FbSupport],[main],,PHL_QT_FAIL(lib$QT_LIB_PREFIXFbSupport not found)))
-             PHL_QT_CHECK(AC_CHECK_LIB([${QT_LIB_PREFIX}DeviceDiscoverySupport],[main],,PHL_QT_FAIL(lib$QT_LIB_PREFIXDeviceDiscoverySupport not found)))
-             PHL_QT_CHECK(AC_CHECK_LIB([${QT_LIB_PREFIX}AccessibilitySupport],[main],,PHL_QT_FAIL(lib$QT_LIB_PREFIXAccessibilitySupport not found)))
+             PLACEH_QT_CHECK(AC_CHECK_LIB([${QT_LIB_PREFIX}FontDatabaseSupport],[main],,PLACEH_QT_FAIL(lib$QT_LIB_PREFIXFontDatabaseSupport not found)))
+             PLACEH_QT_CHECK(AC_CHECK_LIB([${QT_LIB_PREFIX}EventDispatcherSupport],[main],,PLACEH_QT_FAIL(lib$QT_LIB_PREFIXEventDispatcherSupport not found)))
+             PLACEH_QT_CHECK(AC_CHECK_LIB([${QT_LIB_PREFIX}ThemeSupport],[main],,PLACEH_QT_FAIL(lib$QT_LIB_PREFIXThemeSupport not found)))
+             PLACEH_QT_CHECK(AC_CHECK_LIB([${QT_LIB_PREFIX}FbSupport],[main],,PLACEH_QT_FAIL(lib$QT_LIB_PREFIXFbSupport not found)))
+             PLACEH_QT_CHECK(AC_CHECK_LIB([${QT_LIB_PREFIX}DeviceDiscoverySupport],[main],,PLACEH_QT_FAIL(lib$QT_LIB_PREFIXDeviceDiscoverySupport not found)))
+             PLACEH_QT_CHECK(AC_CHECK_LIB([${QT_LIB_PREFIX}AccessibilitySupport],[main],,PLACEH_QT_FAIL(lib$QT_LIB_PREFIXAccessibilitySupport not found)))
              QT_LIBS="$QT_LIBS -lversion -ldwmapi -luxtheme"
            fi
          fi
@@ -416,19 +416,19 @@ dnl Inputs: $1: If placeh_qt_want_version is "auto", check for this version
 dnl         first.
 dnl Outputs: All necessary QT_* variables are set.
 dnl Outputs: have_qt_test and have_qt_dbus are set (if applicable) to yes|no.
-AC_DEFUN([_PHL_QT_FIND_LIBS_WITH_PKGCONFIG],[
+AC_DEFUN([_PLACEH_QT_FIND_LIBS_WITH_PKGCONFIG],[
   m4_ifdef([PKG_CHECK_MODULES],[
     QT_LIB_PREFIX=Qt5
     qt5_modules="Qt5Core Qt5Gui Qt5Network Qt5Widgets"
-    PHL_QT_CHECK([
+    PLACEH_QT_CHECK([
       PKG_CHECK_MODULES([QT5], [$qt5_modules], [QT_INCLUDES="$QT5_CFLAGS"; QT_LIBS="$QT5_LIBS" have_qt=yes],[have_qt=no])
 
       if test "x$have_qt" != xyes; then
         have_qt=no
-        PHL_QT_FAIL([Qt dependencies not found])
+        PLACEH_QT_FAIL([Qt dependencies not found])
       fi
     ])
-    PHL_QT_CHECK([
+    PLACEH_QT_CHECK([
       PKG_CHECK_MODULES([QT_TEST], [${QT_LIB_PREFIX}Test], [QT_TEST_INCLUDES="$QT_TEST_CFLAGS"; have_qt_test=yes], [have_qt_test=no])
       if test "x$use_dbus" != xno; then
         PKG_CHECK_MODULES([QT_DBUS], [${QT_LIB_PREFIX}DBus], [QT_DBUS_INCLUDES="$QT_DBUS_CFLAGS"; have_qt_dbus=yes], [have_qt_dbus=no])
@@ -441,61 +441,61 @@ AC_DEFUN([_PHL_QT_FIND_LIBS_WITH_PKGCONFIG],[
 dnl Internal. Find Qt libraries without using pkg-config. Version is deduced
 dnl from the discovered headers.
 dnl Inputs: placeh_qt_want_version (from --with-gui=). The version to use.
-dnl         If "auto", the version will be discovered by _PHL_QT_CHECK_QT5.
+dnl         If "auto", the version will be discovered by _PLACEH_QT_CHECK_QT5.
 dnl Outputs: All necessary QT_* variables are set.
 dnl Outputs: have_qt_test and have_qt_dbus are set (if applicable) to yes|no.
-AC_DEFUN([_PHL_QT_FIND_LIBS_WITHOUT_PKGCONFIG],[
+AC_DEFUN([_PLACEH_QT_FIND_LIBS_WITHOUT_PKGCONFIG],[
   TEMP_CPPFLAGS="$CPPFLAGS"
   TEMP_CXXFLAGS="$CXXFLAGS"
   CXXFLAGS="$PIC_FLAGS $CXXFLAGS"
   TEMP_LIBS="$LIBS"
-  PHL_QT_CHECK([
+  PLACEH_QT_CHECK([
     if test "x$qt_include_path" != x; then
       QT_INCLUDES="-I$qt_include_path -I$qt_include_path/QtCore -I$qt_include_path/QtGui -I$qt_include_path/QtWidgets -I$qt_include_path/QtNetwork -I$qt_include_path/QtTest -I$qt_include_path/QtDBus"
       CPPFLAGS="$QT_INCLUDES $CPPFLAGS"
     fi
   ])
 
-  PHL_QT_CHECK([AC_CHECK_HEADER([QtPlugin],,PHL_QT_FAIL(QtCore headers missing))])
-  PHL_QT_CHECK([AC_CHECK_HEADER([QApplication],, PHL_QT_FAIL(QtGui headers missing))])
-  PHL_QT_CHECK([AC_CHECK_HEADER([QLocalSocket],, PHL_QT_FAIL(QtNetwork headers missing))])
+  PLACEH_QT_CHECK([AC_CHECK_HEADER([QtPlugin],,PLACEH_QT_FAIL(QtCore headers missing))])
+  PLACEH_QT_CHECK([AC_CHECK_HEADER([QApplication],, PLACEH_QT_FAIL(QtGui headers missing))])
+  PLACEH_QT_CHECK([AC_CHECK_HEADER([QLocalSocket],, PLACEH_QT_FAIL(QtNetwork headers missing))])
 
-  PHL_QT_CHECK([
+  PLACEH_QT_CHECK([
     if test "x$placeh_qt_want_version" = xauto; then
-      _PHL_QT_CHECK_QT5
-      _PHL_QT_CHECK_QT58
+      _PLACEH_QT_CHECK_QT5
+      _PLACEH_QT_CHECK_QT58
     fi
     QT_LIB_PREFIX=Qt5
   ])
 
-  PHL_QT_CHECK([
+  PLACEH_QT_CHECK([
     LIBS=
     if test "x$qt_lib_path" != x; then
       LIBS="$LIBS -L$qt_lib_path"
     fi
 
     if test "x$TARGET_OS" = xwindows; then
-      AC_CHECK_LIB([imm32],      [main],, PHL_QT_FAIL(libimm32 not found))
+      AC_CHECK_LIB([imm32],      [main],, PLACEH_QT_FAIL(libimm32 not found))
     fi
   ])
 
-  PHL_QT_CHECK(AC_CHECK_LIB([z] ,[main],,AC_MSG_WARN([zlib not found. Assuming qt has it built-in])))
+  PLACEH_QT_CHECK(AC_CHECK_LIB([z] ,[main],,AC_MSG_WARN([zlib not found. Assuming qt has it built-in])))
   if test x$placeh_cv_qt58 = xno; then
-    PHL_QT_CHECK(AC_SEARCH_LIBS([png_error] ,[qtpng png],,AC_MSG_WARN([libpng not found. Assuming qt has it built-in])))
-    PHL_QT_CHECK(AC_SEARCH_LIBS([pcre16_exec], [qtpcre pcre16],,AC_MSG_WARN([libpcre16 not found. Assuming qt has it built-in])))
+    PLACEH_QT_CHECK(AC_SEARCH_LIBS([png_error] ,[qtpng png],,AC_MSG_WARN([libpng not found. Assuming qt has it built-in])))
+    PLACEH_QT_CHECK(AC_SEARCH_LIBS([pcre16_exec], [qtpcre pcre16],,AC_MSG_WARN([libpcre16 not found. Assuming qt has it built-in])))
   else
-    PHL_QT_CHECK(AC_SEARCH_LIBS([png_error] ,[qtlibpng png],,AC_MSG_WARN([libpng not found. Assuming qt has it built-in])))
-    PHL_QT_CHECK(AC_SEARCH_LIBS([pcre2_match_16], [qtpcre2 libqtpcre2],,AC_MSG_WARN([libqtpcre2 not found. Assuming qt has it built-in])))
+    PLACEH_QT_CHECK(AC_SEARCH_LIBS([png_error] ,[qtlibpng png],,AC_MSG_WARN([libpng not found. Assuming qt has it built-in])))
+    PLACEH_QT_CHECK(AC_SEARCH_LIBS([pcre2_match_16], [qtpcre2 libqtpcre2],,AC_MSG_WARN([libqtpcre2 not found. Assuming qt has it built-in])))
   fi
-  PHL_QT_CHECK(AC_SEARCH_LIBS([hb_ot_tags_from_script] ,[qtharfbuzzng qtharfbuzz harfbuzz],,AC_MSG_WARN([libharfbuzz not found. Assuming qt has it built-in or support is disabled])))
-  PHL_QT_CHECK(AC_CHECK_LIB([${QT_LIB_PREFIX}Core]   ,[main],,PHL_QT_FAIL(lib${QT_LIB_PREFIX}Core not found)))
-  PHL_QT_CHECK(AC_CHECK_LIB([${QT_LIB_PREFIX}Gui]    ,[main],,PHL_QT_FAIL(lib${QT_LIB_PREFIX}Gui not found)))
-  PHL_QT_CHECK(AC_CHECK_LIB([${QT_LIB_PREFIX}Network],[main],,PHL_QT_FAIL(lib${QT_LIB_PREFIX}Network not found)))
-  PHL_QT_CHECK(AC_CHECK_LIB([${QT_LIB_PREFIX}Widgets],[main],,PHL_QT_FAIL(lib${QT_LIB_PREFIX}Widgets not found)))
+  PLACEH_QT_CHECK(AC_SEARCH_LIBS([hb_ot_tags_from_script] ,[qtharfbuzzng qtharfbuzz harfbuzz],,AC_MSG_WARN([libharfbuzz not found. Assuming qt has it built-in or support is disabled])))
+  PLACEH_QT_CHECK(AC_CHECK_LIB([${QT_LIB_PREFIX}Core]   ,[main],,PLACEH_QT_FAIL(lib${QT_LIB_PREFIX}Core not found)))
+  PLACEH_QT_CHECK(AC_CHECK_LIB([${QT_LIB_PREFIX}Gui]    ,[main],,PLACEH_QT_FAIL(lib${QT_LIB_PREFIX}Gui not found)))
+  PLACEH_QT_CHECK(AC_CHECK_LIB([${QT_LIB_PREFIX}Network],[main],,PLACEH_QT_FAIL(lib${QT_LIB_PREFIX}Network not found)))
+  PLACEH_QT_CHECK(AC_CHECK_LIB([${QT_LIB_PREFIX}Widgets],[main],,PLACEH_QT_FAIL(lib${QT_LIB_PREFIX}Widgets not found)))
   QT_LIBS="$LIBS"
   LIBS="$TEMP_LIBS"
 
-  PHL_QT_CHECK([
+  PLACEH_QT_CHECK([
     LIBS=
     if test "x$qt_lib_path" != x; then
       LIBS="-L$qt_lib_path"

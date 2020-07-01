@@ -6,7 +6,7 @@
 
 export LC_ALL=C.UTF-8
 
-PHL_CONFIG_ALL="--disable-dependency-tracking --prefix=$DEPENDS_DIR/$HOST --bindir=$BASE_OUTDIR/bin --libdir=$BASE_OUTDIR/lib"
+PLACEH_CONFIG_ALL="--disable-dependency-tracking --prefix=$DEPENDS_DIR/$HOST --bindir=$BASE_OUTDIR/bin --libdir=$BASE_OUTDIR/lib"
 DOCKER_EXEC "ccache --zero-stats --max-size=$CCACHE_SIZE"
 
 BEGIN_FOLD autogen
@@ -21,7 +21,7 @@ DOCKER_EXEC mkdir -p "${BASE_BUILD_DIR}"
 export P_CI_DIR="${BASE_BUILD_DIR}"
 
 BEGIN_FOLD configure
-DOCKER_EXEC "${BASE_ROOT_DIR}/configure" --cache-file=config.cache $PHL_CONFIG_ALL $PHL_CONFIG || ( (DOCKER_EXEC cat config.log) && false)
+DOCKER_EXEC "${BASE_ROOT_DIR}/configure" --cache-file=config.cache $PLACEH_CONFIG_ALL $PLACEH_CONFIG || ( (DOCKER_EXEC cat config.log) && false)
 END_FOLD
 
 BEGIN_FOLD distdir
@@ -31,7 +31,7 @@ END_FOLD
 export P_CI_DIR="${BASE_BUILD_DIR}/placeh-$HOST"
 
 BEGIN_FOLD configure
-DOCKER_EXEC ./configure --cache-file=../config.cache $PHL_CONFIG_ALL $PHL_CONFIG || ( (DOCKER_EXEC cat config.log) && false)
+DOCKER_EXEC ./configure --cache-file=../config.cache $PLACEH_CONFIG_ALL $PLACEH_CONFIG || ( (DOCKER_EXEC cat config.log) && false)
 END_FOLD
 
 set -o errtrace

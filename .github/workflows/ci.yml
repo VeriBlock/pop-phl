@@ -66,6 +66,7 @@ jobs:
       - name: configure
         run: ./configure
           --disable-bench
+          --disable-man
       - name: make
         run: make -j2
       - name: Post status to Discord
@@ -77,6 +78,22 @@ jobs:
           job: linux build
           description: native ubuntu 18.04 build
           nofail: true
+      - name: create artifacts
+        if: success()
+        run: |
+          mkdir -p ./release
+          mv ./src/placehd ./release/
+          mv ./src/placeh-cli ./release/
+          mv ./src/placeh-tx ./release/
+          mv ./src/placeh-wallet ./release/
+          strip ./release/placeh*
+          mv ./release placeh-${{ steps.extract_branch.outputs.last_tag }}-${{ steps.extract_branch.outputs.branch }}.${{ steps.extract_branch.outputs.commits_ahead }}-${{ steps.extract_branch.outputs.git_hash }}
+      - name: placeh-${{ steps.extract_branch.outputs.last_tag }}-${{ steps.extract_branch.outputs.branch }}.${{ steps.extract_branch.outputs.commits_ahead }}-${{ steps.extract_branch.outputs.git_hash }}-x86_64-linux-gnu
+        if: success()
+        uses: actions/upload-artifact@v1
+        with:
+          name: placeh-${{ steps.extract_branch.outputs.last_tag }}-${{ steps.extract_branch.outputs.branch }}.${{ steps.extract_branch.outputs.commits_ahead }}-${{ steps.extract_branch.outputs.git_hash }}-x86_64-linux-gnu
+          path: placeh-${{ steps.extract_branch.outputs.last_tag }}-${{ steps.extract_branch.outputs.branch }}.${{ steps.extract_branch.outputs.commits_ahead }}-${{ steps.extract_branch.outputs.git_hash }}
 
   x86_64-w64-mingw32:
     runs-on: ubuntu-latest
@@ -126,7 +143,7 @@ jobs:
       - name: autogen
         run: ./autogen.sh
       - name: configure
-        run: CONFIG_SITE=$PWD/depends/x86_64-w64-mingw32/share/config.site ./configure --prefix=/ --disable-bench
+        run: CONFIG_SITE=$PWD/depends/x86_64-w64-mingw32/share/config.site ./configure --prefix=/ --disable-bench --disable-man
       - name: make
         run: make -j2
       - name: Post status to Discord
@@ -195,6 +212,7 @@ jobs:
           --disable-shared
           --disable-bench
           --without-qtdbus
+          --disable-man
       - name: make
         run: make -j2 deploy
 
@@ -252,7 +270,7 @@ jobs:
       - name: autogen
         run: ./autogen.sh
       - name: configure
-        run: ./configure --disable-bench
+        run: ./configure --disable-bench --disable-man
       - name: make
         run: make -j2
       - name: Post status to Discord

@@ -1258,8 +1258,8 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
 {
     int halvings = nHeight / consensusParams.nSubsidyHalvingInterval;
     // Force block reward to zero when right shift is undefined.
-    if (halvings >= 64)
-        return 0;
+    //if (halvings >= 64)
+    //    return 0;
 
     CAmount nSubsidy = 50 * COIN;
 
@@ -1267,11 +1267,11 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
         nSubsidy = 5 * COIN;
     }
 
-    if(nHeight >= consensusParams.nPopEnabledHeight){
-        nSubsidy = VeriBlock::getCoinbaseSubsidy(nSubsidy);
-    }
+    //if(nHeight >= consensusParams.nPopEnabledHeight){
+    nSubsidy = VeriBlock::getCoinbaseSubsidy(nSubsidy);
+    //}
 
-    nSubsidy >>= halvings;
+    //nSubsidy >>= halvings;
     return nSubsidy;
 }
 

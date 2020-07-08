@@ -225,7 +225,7 @@ public:
             "047c62bbf7f5aa4dd5c16bad99ac621b857fac4e93de86e45f5ada73404eeb44dedcf377b03c14a24e9d51605d9dd2d8ddaef58760d9c4bb82d9c8f06d96e79488",
             "FOX News 6/29/2019 Trump heads to DMZ possibility of meeting Kim crossing into North Korea");
         consensus.hashGenesisBlock = genesis.GetX16RV2Hash();
-        assert(consensus.hashGenesisBlock == uint256S("000000047eedc087cb59e1eee409ba075614dc2c66e6987371b9b8a66b9057c2"));
+        //assert(consensus.hashGenesisBlock == uint256S("000000047eedc087cb59e1eee409ba075614dc2c66e6987371b9b8a66b9057c2"));
         assert(genesis.hashMerkleRoot == uint256S("9020431617db3faf456ecfe73c864a58a1b3f39f88af923627234f943da6ad26"));
 
         vFixedSeeds.clear();
@@ -348,7 +348,7 @@ public:
         bech32_hrp = "xcrt";
 
         // DGW Activation
-        nDGWActivationBlock = 200;
+        nDGWActivationBlock = 5;
     }
 
     /**

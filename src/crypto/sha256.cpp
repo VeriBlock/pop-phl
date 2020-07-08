@@ -10,6 +10,7 @@
 
 #include <compat/cpuid.h>
 
+#define ENABLE_SHANI 0
 #if defined(__x86_64__) || defined(__amd64__) || defined(__i386__)
 #if defined(USE_ASM)
 namespace sha256_sse4
@@ -19,25 +20,25 @@ void Transform(uint32_t* s, const unsigned char* chunk, size_t blocks);
 #endif
 #endif
 
-namespace sha256d64_sse41
-{
-void Transform_4way(unsigned char* out, const unsigned char* in);
-}
+//namespace sha256d64_sse41
+//{
+//void Transform_4way(unsigned char* out, const unsigned char* in);
+//}
 
-namespace sha256d64_avx2
-{
-void Transform_8way(unsigned char* out, const unsigned char* in);
-}
+//namespace sha256d64_avx2
+//{
+//void Transform_8way(unsigned char* out, const unsigned char* in);
+//}
 
-namespace sha256d64_shani
-{
-void Transform_2way(unsigned char* out, const unsigned char* in);
-}
+//namespace sha256d64_shani
+//{
+//void Transform_2way(unsigned char* out, const unsigned char* in);
+//}
 
-namespace sha256_shani
-{
-void Transform(uint32_t* s, const unsigned char* chunk, size_t blocks);
-}
+//namespace sha256_shani
+//{
+//void Transform(uint32_t* s, const unsigned char* chunk, size_t blocks);
+//}
 
 // Internal implementation code.
 namespace
@@ -524,6 +525,7 @@ bool SelfTest() {
     if (!std::equal(out, out + 32, result_d64)) return false;
 
     // Test TransformD64_2way, if available.
+    /*
     if (TransformD64_2way) {
         unsigned char out[64];
         TransformD64_2way(out, data + 1);
@@ -543,6 +545,7 @@ bool SelfTest() {
         TransformD64_8way(out, data + 1);
         if (!std::equal(out, out + 256, result_d64)) return false;
     }
+    */
 
     return true;
 }
@@ -593,14 +596,14 @@ std::string SHA256AutoDetect()
     }
 
 #if defined(ENABLE_SHANI) && !defined(BUILD_PHL_INTERNAL)
-    if (have_shani) {
-        Transform = sha256_shani::Transform;
-        TransformD64 = TransformD64Wrapper<sha256_shani::Transform>;
-        TransformD64_2way = sha256d64_shani::Transform_2way;
-        ret = "shani(1way,2way)";
-        have_sse4 = false; // Disable SSE4/AVX2;
-        have_avx2 = false;
-    }
+    //if (have_shani) {
+    //    Transform = sha256_shani::Transform;
+   //     TransformD64 = TransformD64Wrapper<sha256_shani::Transform>;
+   //     TransformD64_2way = sha256d64_shani::Transform_2way;
+  //      ret = "shani(1way,2way)";
+  //      have_sse4 = false; // Disable SSE4/AVX2;
+ //       have_avx2 = false;
+  //  }
 #endif
 
     if (have_sse4) {
@@ -610,16 +613,16 @@ std::string SHA256AutoDetect()
         ret = "sse4(1way)";
 #endif
 #if defined(ENABLE_SSE41) && !defined(BUILD_PHL_INTERNAL)
-        TransformD64_4way = sha256d64_sse41::Transform_4way;
-        ret += ",sse41(4way)";
+     //   TransformD64_4way = sha256d64_sse41::Transform_4way;
+     //   ret += ",sse41(4way)";
 #endif
     }
 
 #if defined(ENABLE_AVX2) && !defined(BUILD_PHL_INTERNAL)
-    if (have_avx2 && have_avx && enabled_avx) {
-        TransformD64_8way = sha256d64_avx2::Transform_8way;
-        ret += ",avx2(8way)";
-    }
+    //if (have_avx2 && have_avx && enabled_avx) {
+    //    TransformD64_8way = sha256d64_avx2::Transform_8way;
+    //    ret += ",avx2(8way)";
+    //}
 #endif
 #endif
 

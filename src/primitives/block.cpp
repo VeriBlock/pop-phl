@@ -15,9 +15,9 @@
 #include <crypto/common.h>
 
 
-static const uint32_t MAINNET_X16RV2ACTIVATIONTIME = 1568678400;
-static const uint32_t TESTNET_X16RV2ACTIVATIONTIME = 1568158500;
-static const uint32_t REGTEST_X16RV2ACTIVATIONTIME = 1568158500;
+static const uint32_t MAINNET_X16RV2ACTIVATIONTIME = 2147483647; // never
+static const uint32_t TESTNET_X16RV2ACTIVATIONTIME = 2147483647; // never
+static const uint32_t REGTEST_X16RV2ACTIVATIONTIME = 2147483647; // never
 
 BlockNetwork bNetwork = BlockNetwork();
 
@@ -48,12 +48,12 @@ uint256 CBlockHeader::GetHash() const
         return HashX16RV2(BEGIN(nVersion), END(nNonce), hashPrevBlock);
     }
 
-    return HashX16R(BEGIN(nVersion), END(nNonce), hashPrevBlock);
+    return HashX15R(BEGIN(nVersion), END(nNonce), hashPrevBlock);
 }
 
 uint256 CBlockHeader::GetX16RHash() const
 {
-    return HashX16R(BEGIN(nVersion), END(nNonce), hashPrevBlock);
+    return HashX15R(BEGIN(nVersion), END(nNonce), hashPrevBlock);
 }
 
 uint256 CBlockHeader::GetX16RV2Hash() const

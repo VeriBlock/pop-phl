@@ -43,7 +43,7 @@
 
 inline int GetHashSelection(const uint256 PrevBlockHash, int index) {
     assert(index >= 0);
-    assert(index < 16);
+    assert(index < 15);
 
 #define START_OF_LAST_16_NIBBLES_OF_HASH 48
     int hashSelection = PrevBlockHash.GetNibble(START_OF_LAST_16_NIBBLES_OF_HASH + index);
@@ -51,7 +51,7 @@ inline int GetHashSelection(const uint256 PrevBlockHash, int index) {
 }
 
 template<typename T1>
-inline uint256 HashX16R(const T1 pbegin, const T1 pend, const uint256 PrevBlockHash)
+inline uint256 HashX15R(const T1 pbegin, const T1 pend, const uint256 PrevBlockHash)
 {
 //      static std::chrono::duration<double>[16];
     int hashSelection;
@@ -77,9 +77,9 @@ inline uint256 HashX16R(const T1 pbegin, const T1 pend, const uint256 PrevBlockH
 
     static unsigned char pblank[1];
 
-    uint512 hash[16];
+    uint512 hash[15];
 
-    for (int i=0;i<16;i++)
+    for (int i=0;i<15;i++)
     {
         const void *toHash;
         int lenToHash;
@@ -164,20 +164,20 @@ inline uint256 HashX16R(const T1 pbegin, const T1 pend, const uint256 PrevBlockH
                 sph_shabal512 (&ctx_shabal, toHash, lenToHash);
                 sph_shabal512_close(&ctx_shabal, static_cast<void*>(&hash[i]));
                 break;
-            case 14:
+            default:
                 sph_whirlpool_init(&ctx_whirlpool);
                 sph_whirlpool(&ctx_whirlpool, toHash, lenToHash);
                 sph_whirlpool_close(&ctx_whirlpool, static_cast<void*>(&hash[i]));
                 break;
-            case 15:
-                sph_sha512_init(&ctx_sha512);
-                sph_sha512 (&ctx_sha512, toHash, lenToHash);
-                sph_sha512_close(&ctx_sha512, static_cast<void*>(&hash[i]));
-                break;
+            //case 15:
+            //    sph_sha512_init(&ctx_sha512);
+            //    sph_sha512 (&ctx_sha512, toHash, lenToHash);
+            //    sph_sha512_close(&ctx_sha512, static_cast<void*>(&hash[i]));
+            //    break;
         }
     }
 
-    return hash[15].trim256();
+    return hash[14].trim256();
 }
 
 template<typename T1>

@@ -43,7 +43,7 @@ struct Config {
 
     /////// Pop Rewards section start
     // TODO: Update for Placeholders
-    uint32_t POP_REWARD_PERCENTAGE = 10;
+    uint32_t POP_REWARD_PERCENTAGE = 50;
     int32_t POP_REWARD_COEFFICIENT = 5;
 };
 

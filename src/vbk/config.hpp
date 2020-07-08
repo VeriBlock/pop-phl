@@ -22,7 +22,7 @@ using KeystoneArray = std::array<uint256, 2>;
 
 struct Config {
     // unique index to this chain; network id across chains
-    uint32_t index = 0x304fa45;
+    uint32_t index = 0xdeadbeef;
 
     uint32_t btc_header_size = 80;
     uint32_t vbk_header_size = 64;

@@ -169,15 +169,15 @@ inline uint256 HashX15R(const T1 pbegin, const T1 pend, const uint256 PrevBlockH
                 sph_whirlpool(&ctx_whirlpool, toHash, lenToHash);
                 sph_whirlpool_close(&ctx_whirlpool, static_cast<void*>(&hash[i]));
                 break;
-            //case 15:
-            //    sph_sha512_init(&ctx_sha512);
-            //    sph_sha512 (&ctx_sha512, toHash, lenToHash);
-            //    sph_sha512_close(&ctx_sha512, static_cast<void*>(&hash[i]));
-            //    break;
+            case 15:
+                sph_sha512_init(&ctx_sha512);
+                sph_sha512 (&ctx_sha512, toHash, lenToHash);
+                sph_sha512_close(&ctx_sha512, static_cast<void*>(&hash[i]));
+                break;
         }
     }
 
-    return hash[14].trim256();
+    return hash[15].trim256();
 }
 
 template<typename T1>

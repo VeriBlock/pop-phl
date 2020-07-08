@@ -93,7 +93,7 @@ inline CBlock MineGenesisBlock(
         }
     }
 
-    assert(CheckProofOfWork(genesis.GetX16RV2Hash(), genesis.nBits, Params().GetConsensus()));
+    assert(CheckProofOfWork(genesis.GetX15RHash(), genesis.nBits, Params().GetConsensus()));
 
     return genesis;
 }

@@ -1,2 +1,2 @@
-placehd.exe -server -testnet
+placehd.exe -server -reindex -testnet
 pause

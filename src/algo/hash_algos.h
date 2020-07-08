@@ -43,7 +43,7 @@
 
 inline int GetHashSelection(const uint256 PrevBlockHash, int index) {
     assert(index >= 0);
-    assert(index < 15);
+    assert(index < 16);
 
 #define START_OF_LAST_16_NIBBLES_OF_HASH 48
     int hashSelection = PrevBlockHash.GetNibble(START_OF_LAST_16_NIBBLES_OF_HASH + index);

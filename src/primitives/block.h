@@ -62,7 +62,7 @@ public:
     }
 
     uint256 GetHash() const;
-    uint256 GetX16RHash() const;
+    uint256 GetX15RHash() const;
     uint256 GetX16RV2Hash() const;
 
     /// Use for testing algo switch

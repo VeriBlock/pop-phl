@@ -112,9 +112,9 @@ public:
         m_assumed_chain_state_size = 4;
 
         genesis = CreateGenesisBlockMainNet(1562369695, 33393258, 0x1e00ffff, 4, 50 * COIN );
-        consensus.hashGenesisBlock = genesis.GetX16RHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x000000b3f4b347d4a1fb2f2a8f42d5fc33094a49858608e511c0d45f51628b85"));
-        assert(genesis.hashMerkleRoot == uint256S("0x4e5951cce11bbe8d10e3f9e8b584ee2ed3c80583311e06f40d7e6146f2087f9d"));
+        consensus.hashGenesisBlock = genesis.GetX15RHash();
+        //assert(consensus.hashGenesisBlock == uint256S("0x000000b3f4b347d4a1fb2f2a8f42d5fc33094a49858608e511c0d45f51628b85"));
+        //assert(genesis.hashMerkleRoot == uint256S("0x4e5951cce11bbe8d10e3f9e8b584ee2ed3c80583311e06f40d7e6146f2087f9d"));
 
         // Note that of those which support the service bits prefix, most only support a subset of
         // possible options.
@@ -211,7 +211,7 @@ public:
             1591446900, 31627172, 0x1d0fffff, 1, 50 * COIN,
             "047c62bbf7f5aa4dd5c16bad99ac621b857fac4e93de86e45f5ada73404eeb44dedcf377b03c14a24e9d51605d9dd2d8ddaef58760d9c4bb82d9c8f06d96e79488",
             "FOX News 6/29/2019 Trump heads to DMZ possibility of meeting Kim crossing into North Korea");
-        consensus.hashGenesisBlock = genesis.GetX16RV2Hash();
+        consensus.hashGenesisBlock = genesis.GetX15RHash();
         //assert(consensus.hashGenesisBlock == uint256S("000000047eedc087cb59e1eee409ba075614dc2c66e6987371b9b8a66b9057c2"));
         //assert(genesis.hashMerkleRoot == uint256S("9020431617db3faf456ecfe73c864a58a1b3f39f88af923627234f943da6ad26"));
 

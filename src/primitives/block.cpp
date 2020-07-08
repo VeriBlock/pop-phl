@@ -51,7 +51,7 @@ uint256 CBlockHeader::GetHash() const
     return HashX15R(BEGIN(nVersion), END(nNonce), hashPrevBlock);
 }
 
-uint256 CBlockHeader::GetX16RHash() const
+uint256 CBlockHeader::GetX15RHash() const
 {
     return HashX15R(BEGIN(nVersion), END(nNonce), hashPrevBlock);
 }

@@ -605,8 +605,8 @@ void SetupServerArgs(NodeContext& node)
 
 std::string LicenseInfo()
 {
-    const std::string URL_SOURCE_CODE = "<https://github.com/placeh/core>";
-    const std::string URL_WEBSITE = "<https://placehproject.com>";
+    const std::string URL_SOURCE_CODE = "<https://github.com/VeriBlock/pop_phl>";
+    const std::string URL_WEBSITE = "<https://www.placeh.io>";
 
     return CopyrightHolders(strprintf(_("Copyright (C) %i-%i").translated, 2009, COPYRIGHT_YEAR) + " ") + "\n" +
            "\n" +

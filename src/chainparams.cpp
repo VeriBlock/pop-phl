@@ -69,7 +69,7 @@ class CMainParams : public CChainParams {
 public:
     CMainParams() {
         strNetworkID = CBaseChainParams::MAIN;
-        consensus.nSubsidyHalvingInterval = 1712290;
+        consensus.nSubsidyHalvingInterval = 1712290; // N/A
         consensus.nPopEnabledHeight = 600000;
         consensus.BIP16Exception = uint256S("0x000000b3f4b347d4a1fb2f2a8f42d5fc33094a49858608e511c0d45f51628b85");
         consensus.BIP34Height = 0;
@@ -113,6 +113,7 @@ public:
 
         genesis = CreateGenesisBlockMainNet(1562369695, 33393258, 0x1e00ffff, 4, 50 * COIN );
         consensus.hashGenesisBlock = genesis.GetX15RHash();
+		std::cout<<"GH M:"<<genesis.GetHash().ToString().c_str()<<std::endl;
         //assert(consensus.hashGenesisBlock == uint256S("0x000000b3f4b347d4a1fb2f2a8f42d5fc33094a49858608e511c0d45f51628b85"));
         //assert(genesis.hashMerkleRoot == uint256S("0x4e5951cce11bbe8d10e3f9e8b584ee2ed3c80583311e06f40d7e6146f2087f9d"));
 
@@ -147,7 +148,7 @@ public:
         chainTxData = ChainTxData{
             // Data from RPC:: getchaintxstats 4096
             // Stats as of 000000000000a72545994ce72b25042ea63707fca169ca4deb7f9dab4f1b1798 window size 43200
-            /* nTime    */ 1562369211,
+            /* nTime    */ 0,
             /* dTxRate  */ 0,
             0
         };
@@ -156,8 +157,8 @@ public:
 
         // DGW Activation.
 
-        nDGWActivationBlock = 12000;
-        nAssetsDeactivationBlock = 600000;
+        nDGWActivationBlock = 1;
+        nAssetsDeactivationBlock = 0;
 
         /** PHL End **/
     }
@@ -170,7 +171,7 @@ class CTestNetParams : public CChainParams {
 public:
     CTestNetParams() {
         strNetworkID = CBaseChainParams::TESTNET;
-        consensus.nSubsidyHalvingInterval = 210000;
+        consensus.nSubsidyHalvingInterval = 210000; // N/A
         consensus.nPopEnabledHeight = 0;
         consensus.BIP16Exception = uint256S("0x00000000dd30457c001f4095d208cc1296b0eed002427aa599874af7a432b105");
         consensus.BIP34Height = 1;
@@ -212,6 +213,8 @@ public:
             "047c62bbf7f5aa4dd5c16bad99ac621b857fac4e93de86e45f5ada73404eeb44dedcf377b03c14a24e9d51605d9dd2d8ddaef58760d9c4bb82d9c8f06d96e79488",
             "FOX News 6/29/2019 Trump heads to DMZ possibility of meeting Kim crossing into North Korea");
         consensus.hashGenesisBlock = genesis.GetX15RHash();
+		std::cout<<"GH T:"<<genesis.GetHash().ToString().c_str()<<std::endl;
+
         //assert(consensus.hashGenesisBlock == uint256S("000000047eedc087cb59e1eee409ba075614dc2c66e6987371b9b8a66b9057c2"));
         //assert(genesis.hashMerkleRoot == uint256S("9020431617db3faf456ecfe73c864a58a1b3f39f88af923627234f943da6ad26"));
 
@@ -288,11 +291,11 @@ public:
         // By default assume that the signatures in ancestors of this block are valid.
         consensus.defaultAssumeValid = uint256S("0x00");
 
-        pchMessageStart[0] = 0x50; // P
-        pchMessageStart[1] = 0x43; // C
-        pchMessageStart[2] = 0x52; // R
-        pchMessageStart[3] = 0x44; // T
-        nDefaultPort = 18444;
+        pchMessageStart[0] = 0x52;
+        pchMessageStart[1] = 0x41;
+        pchMessageStart[2] = 0x56;
+        pchMessageStart[3] = 0x4e;
+        nDefaultPort = 16608;
         nPruneAfterHeight = 1000;
         m_assumed_blockchain_size = 0;
         m_assumed_chain_state_size = 0;
@@ -303,9 +306,11 @@ public:
             1591446900, 1, 0x207fffff, 1, 50 * COIN,
             "047c62bbf7f5aa4dd5c16bad99ac621b857fac4e93de86e45f5ada73404eeb44dedcf377b03c14a24e9d51605d9dd2d8ddaef58760d9c4bb82d9c8f06d96e79488",
             "VeriBlock");
-        consensus.hashGenesisBlock = genesis.GetX16RV2Hash();
-        assert(consensus.hashGenesisBlock == uint256S("7e2c2b3766d271b86c33ad076df470b7cf35cf47034440442e5aabf4992020fe"));
-        assert(genesis.hashMerkleRoot == uint256S("41159e19a678894968919c2c4250302d277074de5fda813002e43fe502bf6bed"));
+        consensus.hashGenesisBlock = genesis.GetX15RHash();       
+		std::cout<<"GH RT:"<<genesis.GetHash().ToString().c_str()<<std::endl;
+
+        //assert(consensus.hashGenesisBlock == uint256S("7e2c2b3766d271b86c33ad076df470b7cf35cf47034440442e5aabf4992020fe"));
+        //assert(genesis.hashMerkleRoot == uint256S("41159e19a678894968919c2c4250302d277074de5fda813002e43fe502bf6bed"));
 
         vFixedSeeds.clear(); //!< Regtest mode doesn't have any fixed seeds.
         vSeeds.clear();      //!< Regtest mode doesn't have any DNS seeds.

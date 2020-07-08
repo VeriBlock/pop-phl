@@ -1,7 +1,0 @@
-::PLACEH
-
-    find . -name '*pexa*' -type f -exec bash -c 'mv "$1" "*placeh*"' -- {} \;
-    
-    
-    find . -name '*pexa*' -print0 | while IFS= read -r -d '' file; do mv "$file" "${file#123_}"; done
-    

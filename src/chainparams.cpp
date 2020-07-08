@@ -123,7 +123,7 @@ public:
         // release ASAP to avoid it where possible.
         vSeeds.emplace_back("seed.placeh.io", false);
 
-base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,35);
+        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,35);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,38);
         base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,176);
         base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x88, 0xB2, 0x1E};
@@ -140,20 +140,7 @@ base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,35);
 
         checkpointData = {
             {
-                { 0, uint256S("0x000000b3f4b347d4a1fb2f2a8f42d5fc33094a49858608e511c0d45f51628b85")},
-                { 15000, uint256S("0x0000000002cea9e1360328a2f74e6c2276b42b95f382063374124b7c05389668")},
-                { 25000, uint256S("0x000000000071ddf335efe23b771f1b18c0431fcf81293225ede1c860c1f9bcbb")},
-                { 30000, uint256S("0x0000000001892fd7234514e4a3788aa090fe4f04a33c8407e6c2cf911374574b")},
-                { 50000, uint256S("0x00000000003cc95ac63774699923f74d863ee47d373165fe187ec05cf4c60410")},
-                { 100000, uint256S("0x00000000000447e6cc530f1e5dd634474e8a17c0691f7d71938919684482e37f")},
-                { 110000, uint256S("0x0000000001538cf86005fb3e74e1fce31beca5b91308a8bcad8ed1d443ca6927")},
-                { 120000, uint256S("0x0000000000163cc34a9d9be033461a7b2ae25143269fcfb0c302a15e3184ce51")},
-                { 135000, uint256S("0x0000000001ac44a61d2bfd0642c7a6c06acd6fa2e4825075231f24d87b8c1f1f")},
-                { 162000, uint256S("0x0000000002dfacc55ac43107b3df39f3ade1cd9cf7b51f7dd223afe8cd1e6925")},
-                { 200000, uint256S("0x0000000000023dee0c2e55e83a49d59c83f72dd3533eaa031f52138149ac9c12")},
-                { 250000, uint256S("0x00000000009c42e9d918ed2824a7348042358b96e68bba6274e6decbb206dd14")},
-                { 300000, uint256S("0x0000000000225aae3a6bca08335cec757fb35df7e2a1c9b51c5ccc766011af51")},
-                { 339000, uint256S("0x00000000019dbada9e888d005391ee7551724dd16b514cd02a8b05e32d4f7655")},
+                
             }
         };
 
@@ -226,7 +213,7 @@ public:
             "FOX News 6/29/2019 Trump heads to DMZ possibility of meeting Kim crossing into North Korea");
         consensus.hashGenesisBlock = genesis.GetX16RV2Hash();
         //assert(consensus.hashGenesisBlock == uint256S("000000047eedc087cb59e1eee409ba075614dc2c66e6987371b9b8a66b9057c2"));
-        assert(genesis.hashMerkleRoot == uint256S("9020431617db3faf456ecfe73c864a58a1b3f39f88af923627234f943da6ad26"));
+        //assert(genesis.hashMerkleRoot == uint256S("9020431617db3faf456ecfe73c864a58a1b3f39f88af923627234f943da6ad26"));
 
         vFixedSeeds.clear();
         vSeeds.clear();

@@ -1266,6 +1266,8 @@ bool AppInitLockDataDirectory()
     // This creates a slight window for a race condition to happen, however this condition is harmless: it
     // will at most make us exit without printing a message to console.
     if (!LockDataDirectory(false)) {
+        LogPrintf("Unable to lock directory");
+
         // Detailed error printed inside LockDataDirectory
         return false;
     }
@@ -1276,7 +1278,8 @@ bool AppInitMain(const util::Ref& context, NodeContext& node)
 {
     const CChainParams& chainparams = Params();
     VeriBlock::InitPopService();
-
+    
+    
     // ********************************************************* Step 4a: application initialization
     if (!CreatePidFile()) {
         // Detailed error printed inside CreatePidFile().
@@ -1313,6 +1316,8 @@ bool AppInitMain(const util::Ref& context, NodeContext& node)
 
     // Log the config arguments to debug.log
     gArgs.LogArgs();
+
+    LogPrintf("AppInitMain:");
 
     LogPrintf("Using at most %i automatic connections (%i file descriptors available)\n", nMaxConnections, nFD);
 
@@ -1620,6 +1625,7 @@ bool AppInitMain(const util::Ref& context, NodeContext& node)
                 if (!chainman.LoadBlockIndex(chainparams)) {
                     if (ShutdownRequested()) break;
                     strLoadError = _("Error loading block database");
+                    LogPrintf("We exit here, unable to load block index\n");
                     break;
                 }
 
@@ -1643,6 +1649,8 @@ bool AppInitMain(const util::Ref& context, NodeContext& node)
                 // This is called again in ThreadImport after the reindex completes.
                 if (!fReindex && !LoadGenesisBlock(chainparams)) {
                     strLoadError = _("Error initializing block database");
+                    LogPrintf("We exit here, unable to genesis block\n");
+
                     break;
                 }
 
@@ -1683,11 +1691,14 @@ bool AppInitMain(const util::Ref& context, NodeContext& node)
                     chainstate->InitCoinsCache();
                     assert(chainstate->CanFlushToDisk());
 
+                    LogPrintf("Check LoadChainTip");
                     if (!is_coinsview_empty(chainstate)) {
                         // LoadChainTip initializes the chain based on CoinsTip()'s best block
                         if (!chainstate->LoadChainTip(chainparams)) {
                             strLoadError = _("Error initializing block database");
                             failed_chainstate_init = true;
+                            LogPrintf("Chain state init failed.");
+                             
                             break; // out of the per-chainstate loop
                         }
                         assert(chainstate->m_chain.Tip() != nullptr);

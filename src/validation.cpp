@@ -4810,18 +4810,23 @@ bool CChainState::LoadGenesisBlock(const CChainParams& chainparams)
     // m_blockman.m_block_index. Note that we can't use m_chain here, since it is
     // set based on the coins db, not the block index db, which is the only
     // thing loaded at this point.
-    if (m_blockman.m_block_index.count(chainparams.GenesisBlock().GetHash()))
+    if (m_blockman.m_block_index.count(chainparams.GenesisBlock().GetHash())){
+        LogPrintf("We can load G-Block here\n");
         return true;
+    }
 
     try {
         const CBlock& block = chainparams.GenesisBlock();
         FlatFilePos blockPos = SaveBlockToDisk(block, 0, chainparams, nullptr);
-        if (blockPos.IsNull())
+        if (blockPos.IsNull()){
+            LogPrintf("writing genesis block to disk failed\n");
             return error("%s: writing genesis block to disk failed", __func__);
+        }
         CBlockIndex *pindex = m_blockman.AddToBlockIndex(block);
         auto& pop = VeriBlock::getService<VeriBlock::PopService>();
         BlockValidationState state;
         if(!pop.acceptBlock(*pindex, state)){
+            LogPrintf("PoP will not accept G Block\n");
             return false;
         }
         ReceivedBlockTransactions(block, pindex, blockPos, chainparams.GetConsensus());

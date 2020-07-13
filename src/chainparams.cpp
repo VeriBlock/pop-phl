@@ -57,7 +57,7 @@ static CBlock CreateGenesisBlockMainNet(const char* pszTimestamp, const CScript&
  */
 static CBlock CreateGenesisBlockMainNet(uint32_t nTime, uint32_t nNonce, uint32_t nBits, int32_t nVersion, const CAmount& genesisReward)
 {
-    const char* pszTimestamp = "FOX News 6/29/2019 Trump heads to DMZ possibility of meeting Kim crossing into North Korea";
+    const char* pszTimestamp = "Pandemic Gives New Meaning to the Phrase Virtual Reality";
     const CScript genesisOutputScript = CScript() << ParseHex("04678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5f") << OP_CHECKSIG;
     return CreateGenesisBlockMainNet(pszTimestamp, genesisOutputScript, nTime, nNonce, nBits, nVersion, genesisReward);
 }
@@ -68,21 +68,25 @@ static CBlock CreateGenesisBlockMainNet(uint32_t nTime, uint32_t nNonce, uint32_
 class CMainParams : public CChainParams {
 public:
     CMainParams() {
+        
+        //PHLCreateGBlock();
+        
+        
         strNetworkID = CBaseChainParams::MAIN;
         consensus.nSubsidyHalvingInterval = 1712290; // N/A
-        consensus.nPopEnabledHeight = 600000;
+        consensus.nPopEnabledHeight = 0;
         consensus.BIP16Exception = uint256S("0x000000b3f4b347d4a1fb2f2a8f42d5fc33094a49858608e511c0d45f51628b85");
         consensus.BIP34Height = 0;
         consensus.BIP34Hash = uint256S("0x000000b3f4b347d4a1fb2f2a8f42d5fc33094a49858608e511c0d45f51628b85");
         consensus.BIP65Height = 0;
         consensus.BIP66Height = 0;
         consensus.CSVHeight = 0;
-        consensus.SegwitHeight = 0;
+        consensus.SegwitHeight = 100000;
         consensus.MinBIP9WarningHeight = 0; // segwit activation height + miner confirmation window
         consensus.powLimit = uint256S("00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 2016 * 60; // 1.4 days
         consensus.nPowTargetSpacing = 1 * 60;
-        consensus.fPowAllowMinDifficultyBlocks = false;
+        consensus.fPowAllowMinDifficultyBlocks = true;
         consensus.fPowNoRetargeting = false;
         consensus.nRuleChangeActivationThreshold = 1814; // Approx 90% of 2016
         consensus.nMinerConfirmationWindow = 2016; // nPowTargetTimespan / nPowTargetSpacing
@@ -111,9 +115,15 @@ public:
         m_assumed_blockchain_size = 320;
         m_assumed_chain_state_size = 4;
 
-        genesis = CreateGenesisBlockMainNet(1562369695, 33393258, 0x1e00ffff, 4, 50 * COIN );
-        consensus.hashGenesisBlock = genesis.GetX15RHash();
+        genesis = CreateGenesisBlockMainNet(1594650797, 33393258, 0x1e00ffff, 4, 50 * COIN );
+        //genesis = CreateGenesisBlockMainNet(1591446900, 31627172, 0x1d0fffff, 4, 50 * COIN );
+        
+        
+        consensus.hashGenesisBlock = genesis.GetX16RHash();
 		std::cout<<"GH M:"<<genesis.GetHash().ToString().c_str()<<std::endl;
+        
+        //assert(consensus.hashGenesisBlock == uint256S("000000000161b9a0000000000111eeb6057d4989d53cb46a0000000000001218"));
+
         //assert(consensus.hashGenesisBlock == uint256S("0x000000b3f4b347d4a1fb2f2a8f42d5fc33094a49858608e511c0d45f51628b85"));
         //assert(genesis.hashMerkleRoot == uint256S("0x4e5951cce11bbe8d10e3f9e8b584ee2ed3c80583311e06f40d7e6146f2087f9d"));
 
@@ -162,8 +172,11 @@ public:
 
         /** PHL End **/
     }
+    
 };
-
+   
+    
+    
 /**
  * Testnet (v6)
  */
@@ -179,9 +192,11 @@ public:
         consensus.BIP65Height = 1;
         consensus.BIP66Height = 1;
         consensus.CSVHeight = 1;
-        consensus.SegwitHeight = 1;
+        consensus.SegwitHeight = 1000000;
         consensus.MinBIP9WarningHeight = consensus.SegwitHeight + consensus.nMinerConfirmationWindow;
-        consensus.powLimit = uint256S("0000007fffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+        //consensus.powLimit = uint256S("0000007fffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+        consensus.powLimit = uint256S("00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+                
         consensus.nPowTargetTimespan = 2016 * 60; // 1.4 days
         consensus.nPowTargetSpacing = 1 * 60;
         consensus.fPowAllowMinDifficultyBlocks = true;
@@ -189,8 +204,11 @@ public:
         consensus.nRuleChangeActivationThreshold = 1310; // Approx 65% for testchains
         consensus.nMinerConfirmationWindow = 2016; // nPowTargetTimespan / nPowTargetSpacing
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
-        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 0;                                   // January 1, 2008
-        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT; // December 31, 2008
+        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 1199145601; // January 1, 2008
+        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 1230767999; // December 31, 2008
+        //consensus.vDeployments[Consensus::DEPLOYMENT_ASSETS].bit = 6;  //Assets (PIP2)
+        //consensus.vDeployments[Consensus::DEPLOYMENT_ASSETS].nStartTime = 1540944000; // Oct 31, 2018
+        //consensus.vDeployments[Consensus::DEPLOYMENT_ASSETS].nTimeout = 1572480000; // Oct 31, 2019
 
         // The best chain should have at least this much work.
         consensus.nMinimumChainWork = uint256S("0x00");
@@ -209,23 +227,25 @@ public:
         m_assumed_chain_state_size = 2;
 
         genesis = VeriBlock::CreateGenesisBlock(
-            1591446900, 31627172, 0x1d0fffff, 1, 50 * COIN,
+            1594650797, 33393258, 0x1e00ffff, 4, 50 * COIN,
             "047c62bbf7f5aa4dd5c16bad99ac621b857fac4e93de86e45f5ada73404eeb44dedcf377b03c14a24e9d51605d9dd2d8ddaef58760d9c4bb82d9c8f06d96e79488",
-            "FOX News 6/29/2019 Trump heads to DMZ possibility of meeting Kim crossing into North Korea");
-        consensus.hashGenesisBlock = genesis.GetX15RHash();
+            "VeriBlock");
+        consensus.hashGenesisBlock = genesis.GetX16RHash();
 		std::cout<<"GH T:"<<genesis.GetHash().ToString().c_str()<<std::endl;
 
         //assert(consensus.hashGenesisBlock == uint256S("000000047eedc087cb59e1eee409ba075614dc2c66e6987371b9b8a66b9057c2"));
+        //assert(consensus.hashGenesisBlock == uint256S("000000000145b9a00000000000f5eeb6349e9dd41ff488bc0000000000001218"));
+        
         //assert(genesis.hashMerkleRoot == uint256S("9020431617db3faf456ecfe73c864a58a1b3f39f88af923627234f943da6ad26"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
 
-        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,111);
-        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,196);
-        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,239);
-        base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x35, 0x87, 0xCF};
-        base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x35, 0x83, 0x94};
+        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,35);
+        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,38);
+        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,176);
+        base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x88, 0xB2, 0x1E};
+        base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x88, 0xAD, 0xE4};
 
         bech32_hrp = "xt";
 
@@ -264,7 +284,7 @@ class CRegTestParams : public CChainParams {
 public:
     explicit CRegTestParams(const ArgsManager& args) {
         strNetworkID =  CBaseChainParams::REGTEST;
-        consensus.nSubsidyHalvingInterval = 150;
+        consensus.nSubsidyHalvingInterval = 0; // N/A
         consensus.nPopEnabledHeight = 0;
         consensus.BIP16Exception = uint256();
         consensus.BIP34Height = 500; // BIP34 activated on regtest (Used in functional tests)
@@ -272,7 +292,7 @@ public:
         consensus.BIP65Height = 1; // BIP65 activated on regtest (Used in functional tests)
         consensus.BIP66Height = 1; // BIP66 activated on regtest (Used in functional tests)
         consensus.CSVHeight = 1; // CSV activated on regtest (Used in rpc activation tests)
-        consensus.SegwitHeight = 0; // SEGWIT is always activated on regtest unless overridden
+        consensus.SegwitHeight = 1000000; // SEGWIT is always activated on regtest unless overridden
         consensus.MinBIP9WarningHeight = 0;
         consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 2016 * 60; // 1.4 days
@@ -303,11 +323,14 @@ public:
         UpdateActivationParametersFromArgs(args);
 
         genesis = VeriBlock::CreateGenesisBlock(
-            1591446900, 1, 0x207fffff, 1, 50 * COIN,
+            1594650797, 33393258, 0x1e00ffff, 1, 50 * COIN,
             "047c62bbf7f5aa4dd5c16bad99ac621b857fac4e93de86e45f5ada73404eeb44dedcf377b03c14a24e9d51605d9dd2d8ddaef58760d9c4bb82d9c8f06d96e79488",
             "VeriBlock");
-        consensus.hashGenesisBlock = genesis.GetX15RHash();       
+            
+        consensus.hashGenesisBlock = genesis.GetX16RHash();       
 		std::cout<<"GH RT:"<<genesis.GetHash().ToString().c_str()<<std::endl;
+
+        //assert(consensus.hashGenesisBlock == uint256S("000000000145b9a00000000000f5eeb6349e9dd41ff488bc0000000000001218"));
 
         //assert(consensus.hashGenesisBlock == uint256S("7e2c2b3766d271b86c33ad076df470b7cf35cf47034440442e5aabf4992020fe"));
         //assert(genesis.hashMerkleRoot == uint256S("41159e19a678894968919c2c4250302d277074de5fda813002e43fe502bf6bed"));
@@ -330,17 +353,18 @@ public:
             0,
             0
         };
+    
+        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,35);
+        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,38);
+        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,176);
+        base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x88, 0xB2, 0x1E};
+        base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x88, 0xAD, 0xE4};
 
-        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,111);
-        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,196);
-        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,239);
-        base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x35, 0x87, 0xCF};
-        base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x35, 0x83, 0x94};
 
         bech32_hrp = "xcrt";
 
         // DGW Activation
-        nDGWActivationBlock = 5;
+        nDGWActivationBlock = 1;
     }
 
     /**

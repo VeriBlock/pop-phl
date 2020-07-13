@@ -1,2 +1,2 @@
-placehd.exe -server -chain=regtest
+placehd.exe -testnet -server 
 pause

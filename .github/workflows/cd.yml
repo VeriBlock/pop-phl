@@ -42,8 +42,8 @@ jobs:
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           status: ${{ job.status }}
-          job: win64 build
-          description: mingw32 x86_64 windows build
+          job: Alpine Docker CD
+          description: Alpine Docker Image
           nofail: true
 
   ubuntu:
@@ -84,6 +84,6 @@ jobs:
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           status: ${{ job.status }}
-          job: win64 build
-          description: mingw32 x86_64 windows build
+          job: Ubuntu ${{ matrix.build }} CD
+          description: Ubuntu ${{ matrix.build }} Docker Image
           nofail: true

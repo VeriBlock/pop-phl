@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2020 The Placeholders Core developers
+// Copyright (c) 2009-2019 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -37,6 +37,11 @@
 #include <sys/time.h>
 #include <sys/utsname.h>
 #include <unistd.h>
+#endif
+#ifdef __MACH__
+#include <mach/clock.h>
+#include <mach/mach.h>
+#include <mach/mach_time.h>
 #endif
 #if HAVE_DECL_GETIFADDRS
 #include <ifaddrs.h>
@@ -232,6 +237,8 @@ void RandAddDynamicEnv(CSHA512& hasher)
     GetSystemTimeAsFileTime(&ftime);
     hasher << ftime;
 #else
+#  ifndef __MACH__
+    // On non-MacOS systems, use various clock_gettime() calls.
     struct timespec ts = {};
 #    ifdef CLOCK_MONOTONIC
     clock_gettime(CLOCK_MONOTONIC, &ts);
@@ -245,6 +252,18 @@ void RandAddDynamicEnv(CSHA512& hasher)
     clock_gettime(CLOCK_BOOTTIME, &ts);
     hasher << ts;
 #    endif
+#  else
+    // On MacOS use mach_absolute_time (number of CPU ticks since boot) as a replacement for CLOCK_MONOTONIC,
+    // and clock_get_time for CALENDAR_CLOCK as a replacement for CLOCK_REALTIME.
+    hasher << mach_absolute_time();
+    // From https://gist.github.com/jbenet/1087739
+    clock_serv_t cclock;
+    mach_timespec_t mts = {};
+    if (host_get_clock_service(mach_host_self(), CALENDAR_CLOCK, &cclock) == KERN_SUCCESS && clock_get_time(cclock, &mts) == KERN_SUCCESS) {
+        hasher << mts;
+        mach_port_deallocate(mach_task_self(), cclock);
+    }
+#  endif
     // gettimeofday is available on all UNIX systems, but only has microsecond precision.
     struct timeval tv = {};
     gettimeofday(&tv, nullptr);
@@ -322,7 +341,7 @@ void RandAddStaticEnv(CSHA512& hasher)
     hasher.Write((const unsigned char*)COMPILER_VERSION, strlen(COMPILER_VERSION) + 1);
 #endif
 
-    // Placeholders client version
+    // Bitcoin client version
     hasher << CLIENT_VERSION;
 
 #ifdef __linux__

@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_SRC_VBK_POP_SERVICE_HPP
-#define BITCOIN_SRC_VBK_POP_SERVICE_HPP
+#ifndef PLACEH_SRC_VBK_POP_SERVICE_HPP
+#define PLACEH_SRC_VBK_POP_SERVICE_HPP
 
 #include <map>
 #include <vector>
@@ -49,10 +49,10 @@ struct PopService {
     virtual bool checkPopInputs(const CTransaction& tx, TxValidationState& state, unsigned int flags, bool cacheSigStore, PrecomputedTransactionData& txdata) = 0;
 
     virtual std::vector<BlockBytes> getLastKnownVBKBlocks(size_t blocks) = 0;
-    virtual std::vector<BlockBytes> getLastKnownBTCBlocks(size_t blocks) = 0;
+    virtual std::vector<BlockBytes> getLastKnownPHLBlocks(size_t blocks) = 0;
 
     virtual bool acceptBlock(const CBlockIndex& indexNew, BlockValidationState& state) = 0;
-    virtual bool addAllBlockPayloads(const CBlockIndex* prevIndex, const CBlock& fullBlock, BlockValidationState& state) = 0;
+    virtual bool addAllBlockPayloads(const CBlockIndex& prevIndex, const CBlock& fullBlock, BlockValidationState& state) = 0;
     virtual void invalidateBlockByHash(const uint256& block) = 0;
     virtual bool setState(const uint256& block, altintegration::ValidationState& state) = 0;
 
@@ -63,4 +63,4 @@ struct PopService {
 };
 } // namespace VeriBlock
 
-#endif //BITCOIN_SRC_VBK_POP_SERVICE_HPP
+#endif //PLACEH_SRC_VBK_POP_SERVICE_HPP

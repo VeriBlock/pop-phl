@@ -1,10 +1,10 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2019 The Placeholders Core developers
+// Copyright (c) 2009-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_STREAMS_H
-#define PHL_STREAMS_H
+#ifndef PLACEH_STREAMS_H
+#define PLACEH_STREAMS_H
 
 #include <support/allocators/zeroafterfree.h>
 #include <serialize.h>
@@ -854,4 +854,4 @@ public:
     }
 };
 
-#endif // PHL_STREAMS_H
+#endif // PLACEH_STREAMS_H

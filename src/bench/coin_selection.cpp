@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2019 The Placeholders Core developers
+// Copyright (c) 2012-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -31,8 +31,7 @@ static void CoinSelection(benchmark::State& state)
 {
     NodeContext node;
     auto chain = interfaces::MakeChain(node);
-    CWallet wallet(chain.get(), WalletLocation(), WalletDatabase::CreateDummy());
-    wallet.SetupLegacyScriptPubKeyMan();
+    const CWallet wallet(chain.get(), WalletLocation(), WalletDatabase::CreateDummy());
     std::vector<std::unique_ptr<CWalletTx>> wtxs;
     LOCK(wallet.cs_wallet);
 
@@ -65,7 +64,7 @@ static void CoinSelection(benchmark::State& state)
 typedef std::set<CInputCoin> CoinSet;
 static NodeContext testNode;
 static auto testChain = interfaces::MakeChain(testNode);
-static CWallet testWallet(testChain.get(), WalletLocation(), WalletDatabase::CreateDummy());
+static const CWallet testWallet(testChain.get(), WalletLocation(), WalletDatabase::CreateDummy());
 std::vector<std::unique_ptr<CWalletTx>> wtxn;
 
 // Copied from src/wallet/test/coinselector_tests.cpp
@@ -94,7 +93,6 @@ static CAmount make_hard_case(int utxos, std::vector<OutputGroup>& utxo_pool)
 static void BnBExhaustion(benchmark::State& state)
 {
     // Setup
-    testWallet.SetupLegacyScriptPubKeyMan();
     std::vector<OutputGroup> utxo_pool;
     CoinSet selection;
     CAmount value_ret = 0;

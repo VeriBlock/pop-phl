@@ -15,14 +15,14 @@ Service User
 
 All three Linux startup configurations assume the existence of a "placeh" user
 and group.  They must be created before attempting to use these scripts.
-The OS X configuration assumes placehd will be set up for the current user.
+The macOS configuration assumes placehd will be set up for the current user.
 
 Configuration
 ---------------------------------
 
 At a bare minimum, placehd requires that the rpcpassword setting be set
 when running as a daemon.  If the configuration file does not exist or this
-setting is not set, placehd will shutdown promptly after startup.
+setting is not set, placehd will shut down promptly after startup.
 
 This password does not have to be remembered or typed as it is mostly used
 as a fixed token that placehd and client programs read from the configuration
@@ -44,7 +44,7 @@ This allows for running placehd without having to do any manual configuration.
 relative to the data directory. `wallet` *only* supports relative paths.
 
 For an example configuration file that describes the configuration settings,
-see `contrib/debian/examples/placeh.conf`.
+see `share/examples/placeh.conf`.
 
 Paths
 ---------------------------------
@@ -53,24 +53,40 @@ Paths
 
 All three configurations assume several paths that might need to be adjusted.
 
-Binary:              `/usr/bin/placehd`  
-Configuration file:  `/etc/placeh/placeh.conf`  
-Data directory:      `/var/lib/placehd`  
-PID file:            `/var/run/placehd/placehd.pid` (OpenRC and Upstart) or `/var/lib/placehd/placehd.pid` (systemd)  
-Lock file:           `/var/lock/subsys/placehd` (CentOS)  
+Binary:              `/usr/bin/placehd`
+Configuration file:  `/etc/placeh/placeh.conf`
+Data directory:      `/var/lib/placehd`
+PID file:            `/var/run/placehd/placehd.pid` (OpenRC and Upstart) or `/run/placehd/placehd.pid` (systemd)
+Lock file:           `/var/lock/subsys/placehd` (CentOS)
 
-The configuration file, PID directory (if applicable) and data directory
-should all be owned by the placeh user and group.  It is advised for security
-reasons to make the configuration file and data directory only readable by the
-placeh user and group.  Access to placeh-cli and other placehd rpc clients
-can then be controlled by group membership.
+The PID directory (if applicable) and data directory should both be owned by the
+placeh user and group. It is advised for security reasons to make the
+configuration file and data directory only readable by the placeh user and
+group. Access to placeh-cli and other placehd rpc clients can then be
+controlled by group membership.
 
-### Mac OS X
+NOTE: When using the systemd .service file, the creation of the aforementioned
+directories and the setting of their permissions is automatically handled by
+systemd. Directories are given a permission of 710, giving the placeh group
+access to files under it _if_ the files themselves give permission to the
+placeh group to do so (e.g. when `-sysperms` is specified). This does not allow
+for the listing of files under the directory.
 
-Binary:              `/usr/local/bin/placehd`  
-Configuration file:  `~/Library/Application Support/Placeh/placeh.conf`  
-Data directory:      `~/Library/Application Support/Placeh`  
-Lock file:           `~/Library/Application Support/Placeh/.lock`  
+NOTE: It is not currently possible to override `datadir` in
+`/etc/placeh/placeh.conf` with the current systemd, OpenRC, and Upstart init
+files out-of-the-box. This is because the command line options specified in the
+init files take precedence over the configurations in
+`/etc/placeh/placeh.conf`. However, some init systems have their own
+configuration mechanisms that would allow for overriding the command line
+options specified in the init files (e.g. setting `PLACEHD_DATADIR` for
+OpenRC).
+
+### macOS
+
+Binary:              `/usr/local/bin/placehd`
+Configuration file:  `~/Library/Application Support/Placeholders/placeh.conf`
+Data directory:      `~/Library/Application Support/Placeholders`
+Lock file:           `~/Library/Application Support/Placeholders/.lock`
 
 Installing Service Configuration
 -----------------------------------
@@ -84,6 +100,8 @@ Installing this .service file consists of just copying it to
 To test, run `systemctl start placehd` and to enable for system startup run
 `systemctl enable placehd`
 
+NOTE: When installing for systemd in Debian/Ubuntu the .service file needs to be copied to the /lib/systemd/system directory instead.
+
 ### OpenRC
 
 Rename placehd.openrc to placehd and drop it in /etc/init.d.  Double
@@ -92,6 +110,8 @@ check ownership and permissions and make it executable.  Test it with
 `rc-update add placehd`
 
 ### Upstart (for Debian/Ubuntu based distributions)
+
+Upstart is the default init system for Debian/Ubuntu versions older than 15.04. If you are using version 15.04 or newer and haven't manually configured upstart you should follow the systemd instructions instead.
 
 Drop placehd.conf in /etc/init.  Test by running `service placehd start`
 it will automatically start on reboot.
@@ -107,7 +127,7 @@ Using this script, you can adjust the path and flags to the placehd program by
 setting the PLACEHD and FLAGS environment variables in the file
 /etc/sysconfig/placehd. You can also use the DAEMONOPTS environment variable here.
 
-### Mac OS X
+### macOS
 
 Copy org.placeh.placehd.plist into ~/Library/LaunchAgents. Load the launch agent by
 running `launchctl load ~/Library/LaunchAgents/org.placeh.placehd.plist`.

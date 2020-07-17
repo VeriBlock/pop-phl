@@ -1,9 +1,9 @@
-// Copyright (c) 2016-2019 The Placeholders Core developers
+// Copyright (c) 2016-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_POLICY_RBF_H
-#define PHL_POLICY_RBF_H
+#ifndef PLACEH_POLICY_RBF_H
+#define PLACEH_POLICY_RBF_H
 
 #include <txmempool.h>
 
@@ -19,4 +19,4 @@ enum class RBFTransactionState {
 // as the sequence numbers of all in-mempool ancestors.
 RBFTransactionState IsRBFOptIn(const CTransaction& tx, const CTxMemPool& pool) EXCLUSIVE_LOCKS_REQUIRED(pool.cs);
 
-#endif // PHL_POLICY_RBF_H
+#endif // PLACEH_POLICY_RBF_H

@@ -21,7 +21,6 @@ maintained:
 * for `src/leveldb`: https://github.com/placeh-core/leveldb.git (branch placeh-fork)
 * for `src/univalue`: https://github.com/placeh-core/univalue.git (branch master)
 * for `src/crypto/ctaes`: https://github.com/placeh-core/ctaes.git (branch master)
-* for `src/crc32c`: https://github.com/google/crc32c.git (branch master)
 
 Usage: `git-subtree-check.sh DIR (COMMIT)`
 

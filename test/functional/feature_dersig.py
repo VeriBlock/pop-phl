@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2015-2020 The Placeholders Core developers
+# Copyright (c) 2015-2019 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test BIP66 (DER SIG).
@@ -11,7 +11,7 @@ from test_framework.blocktools import create_coinbase, create_block, create_tran
 from test_framework.messages import msg_block
 from test_framework.mininode import P2PInterface
 from test_framework.script import CScript
-from test_framework.test_framework import PlaceholdersTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import (
     assert_equal,
 )
@@ -36,15 +36,13 @@ def unDERify(tx):
     tx.vin[0].scriptSig = CScript(newscript)
 
 
-class BIP66Test(PlaceholdersTestFramework):
+
+class BIP66Test(BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
-        self.extra_args = [[
-            '-whitelist=noban@127.0.0.1',
-            '-par=1',  # Use only one script thread to get the exact log msg for testing
-        ]]
+        self.extra_args = [['-whitelist=127.0.0.1', '-par=1']]  # Use only one script thread to get the exact log msg for testing
         self.setup_clean_chain = True
-        self.rpc_timeout = 240
+        self.rpc_timeout = 120
 
     def skip_test_if_missing_module(self):
         self.skip_if_no_wallet()
@@ -122,7 +120,7 @@ class BIP66Test(PlaceholdersTestFramework):
         block.rehash()
         block.solve()
 
-        with self.nodes[0].assert_debug_log(expected_msgs=['CheckInputScripts on {} failed with non-mandatory-script-verify-flag (Non-canonical DER signature)'.format(block.vtx[-1].hash)]):
+        with self.nodes[0].assert_debug_log(expected_msgs=['CheckInputs on {} failed with non-mandatory-script-verify-flag (Non-canonical DER signature)'.format(block.vtx[-1].hash)]):
             self.nodes[0].p2p.send_and_ping(msg_block(block))
             assert_equal(int(self.nodes[0].getbestblockhash(), 16), tip)
             self.nodes[0].p2p.sync_with_ping()

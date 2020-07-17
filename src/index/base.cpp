@@ -1,4 +1,4 @@
-// Copyright (c) 2017-2020 The Placeholders Core developers
+// Copyright (c) 2017-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -8,7 +8,6 @@
 #include <tinyformat.h>
 #include <ui_interface.h>
 #include <util/system.h>
-#include <util/translation.h>
 #include <validation.h>
 #include <warnings.h>
 
@@ -24,7 +23,7 @@ static void FatalError(const char* fmt, const Args&... args)
     SetMiscWarning(strMessage);
     LogPrintf("*** %s\n", strMessage);
     uiInterface.ThreadSafeMessageBox(
-        Untranslated("Error: A fatal internal error occurred, see debug.log for details"),
+        "Error: A fatal internal error occurred, see debug.log for details",
         "", CClientUIInterface::MSG_ERROR);
     StartShutdown();
 }
@@ -189,7 +188,8 @@ bool BaseIndex::Rewind(const CBlockIndex* current_tip, const CBlockIndex* new_ti
     return true;
 }
 
-void BaseIndex::BlockConnected(const std::shared_ptr<const CBlock>& block, const CBlockIndex* pindex)
+void BaseIndex::BlockConnected(const std::shared_ptr<const CBlock>& block, const CBlockIndex* pindex,
+                               const std::vector<CTransactionRef>& txn_conflicted)
 {
     if (!m_synced) {
         return;
@@ -270,7 +270,7 @@ void BaseIndex::ChainStateFlushed(const CBlockLocator& locator)
     Commit();
 }
 
-bool BaseIndex::BlockUntilSyncedToCurrentChain() const
+bool BaseIndex::BlockUntilSyncedToCurrentChain()
 {
     AssertLockNotHeld(cs_main);
 

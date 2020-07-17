@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2020 The Placeholders Core developers
+// Copyright (c) 2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -7,8 +7,8 @@
 #include <bech32.h>
 #include <util/strencodings.h>
 
-#include <string>
 #include <vector>
+#include <string>
 
 
 static void Bech32Encode(benchmark::State& state)

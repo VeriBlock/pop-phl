@@ -1,16 +1,16 @@
-// Copyright (c) 2014-2019 The Placeholders Core developers
+// Copyright (c) 2014-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_CHAINPARAMSBASE_H
-#define PHL_CHAINPARAMSBASE_H
+#ifndef PLACEH_CHAINPARAMSBASE_H
+#define PLACEH_CHAINPARAMSBASE_H
 
 #include <memory>
 #include <string>
 
 /**
  * CBaseChainParams defines the base parameters (shared between placeh-cli and placehd)
- * of a given instance of the Placeholders system.
+ * of a given instance of the Bitcoin system.
  */
 class CBaseChainParams
 {
@@ -54,4 +54,4 @@ const CBaseChainParams& BaseParams();
 /** Sets the params returned by Params() to those for the given network. */
 void SelectBaseParams(const std::string& chain);
 
-#endif // PHL_CHAINPARAMSBASE_H
+#endif // PLACEH_CHAINPARAMSBASE_H

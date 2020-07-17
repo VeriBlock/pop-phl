@@ -67,11 +67,11 @@
     </message>
     <message>
         <source>These are your Placeholders addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Disse er dine Placeholders-adresser til afsendelse af betalinger. Tjek altid beløb og modtagelsesadresse, inden du sender placehs.</translation>
+        <translation>Disse er dine Bitcoin-adresser til afsendelse af betalinger. Tjek altid beløb og modtagelsesadresse, inden du sender placehs.</translation>
     </message>
     <message>
         <source>These are your Placeholders addresses for receiving payments. Use the 'Create new receiving address' button in the receive tab to create new addresses.</source>
-        <translation>Disse er dine Placeholders adresser til at modtage betalinger. Benyt 'Opret ny modtager adresse' knappen i modtag fanen for at oprette nye adresser.</translation>
+        <translation>Disse er dine Placeholders adresser til at modtage betalinger. Benyt 'Opret ny modtager adresse' knappen i modtag fanen for at oprette nye adresser. </translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -168,8 +168,8 @@
         <translation>Bekræft tegnebogskryptering</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PHLS&lt;/b&gt;!</source>
-        <translation>Advarsel: Hvis du krypterer din tegnebog og mister din adgangskode, vil du &lt;b&gt;MISTE ALLE DINE PHLS&lt;/b&gt;!</translation>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PLACEHS&lt;/b&gt;!</source>
+        <translation>Advarsel: Hvis du krypterer din tegnebog og mister din adgangskode, vil du &lt;b&gt;MISTE ALLE DINE PLACEHS&lt;/b&gt;!</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -252,7 +252,7 @@
     </message>
 </context>
 <context>
-    <name>PlaceholdersGUI</name>
+    <name>BitcoinGUI</name>
     <message>
         <source>Sign &amp;message...</source>
         <translation>Signér &amp;besked…</translation>
@@ -363,7 +363,7 @@
     </message>
     <message>
         <source>Send coins to a Placeholders address</source>
-        <translation>Send placehs til en Placeholders-adresse</translation>
+        <translation>Send placehs til en Bitcoin-adresse</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -372,6 +372,14 @@
     <message>
         <source>Change the passphrase used for wallet encryption</source>
         <translation>Skift adgangskode anvendt til tegnebogskryptering</translation>
+    </message>
+    <message>
+        <source>&amp;Debug window</source>
+        <translation>&amp;Fejlsøgningsvindue</translation>
+    </message>
+    <message>
+        <source>Open debugging and diagnostic console</source>
+        <translation>Åbn fejlsøgnings- og diagnosticeringskonsollen</translation>
     </message>
     <message>
         <source>&amp;Verify message...</source>
@@ -399,11 +407,11 @@
     </message>
     <message>
         <source>Sign messages with your Placeholders addresses to prove you own them</source>
-        <translation>Signér beskeder med dine Placeholders-adresser for at bevise, at de tilhører dig</translation>
+        <translation>Signér beskeder med dine Bitcoin-adresser for at bevise, at de tilhører dig</translation>
     </message>
     <message>
         <source>Verify messages to ensure they were signed with specified Placeholders addresses</source>
-        <translation>Verificér beskeder for at sikre, at de er signeret med de angivne Placeholders-adresser</translation>
+        <translation>Verificér beskeder for at sikre, at de er signeret med de angivne Bitcoin-adresser</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -434,12 +442,16 @@
         <translation>Vis listen over brugte modtagelsesadresser og -mærkater</translation>
     </message>
     <message>
+        <source>Open a placeh: URI or payment request</source>
+        <translation>Åbn en “placeh:”-URI eller betalingsanmodning</translation>
+    </message>
+    <message>
         <source>&amp;Command-line options</source>
         <translation>Tilvalg for &amp;kommandolinje</translation>
     </message>
     <message numerus="yes">
         <source>%n active connection(s) to Placeholders network</source>
-        <translation><numerusform>%n aktiv forbindelse til Placeholders-netværket</numerusform><numerusform>%n aktive forbindelser til Placeholders-netværket</numerusform></translation>
+        <translation><numerusform>%n aktiv forbindelse til Bitcoin-netværket</numerusform><numerusform>%n aktive forbindelser til Bitcoin-netværket</numerusform></translation>
     </message>
     <message>
         <source>Indexing blocks on disk...</source>
@@ -482,24 +494,12 @@
         <translation>Opdateret</translation>
     </message>
     <message>
-        <source>Node window</source>
-        <translation>Knudevindue</translation>
-    </message>
-    <message>
-        <source>Open node debugging and diagnostic console</source>
-        <translation>Åbn knudens fejlsøgningskonsol</translation>
-    </message>
-    <message>
         <source>&amp;Sending addresses</source>
         <translation>&amp;Afsenderadresser</translation>
     </message>
     <message>
         <source>&amp;Receiving addresses</source>
         <translation>&amp;Modtageradresser</translation>
-    </message>
-    <message>
-        <source>Open a placeh: URI</source>
-        <translation>Åbn en placeh:-URI</translation>
     </message>
     <message>
         <source>Open Wallet</source>
@@ -875,7 +875,7 @@
     </message>
     <message>
         <source>The entered address "%1" is not a valid Placeholders address.</source>
-        <translation>Den indtastede adresse “%1” er ikke en gyldig Placeholders-adresse.</translation>
+        <translation>Den indtastede adresse “%1” er ikke en gyldig Bitcoin-adresse.</translation>
     </message>
     <message>
         <source>Address "%1" already exists as a receiving address with label "%2" and so cannot be added as a sending address.</source>
@@ -922,6 +922,10 @@
     <message>
         <source>version</source>
         <translation>version</translation>
+    </message>
+    <message>
+        <source>(%1-bit)</source>
+        <translation>(%1-bit)</translation>
     </message>
     <message>
         <source>About %1</source>
@@ -971,8 +975,8 @@
         <translation>Brug tilpasset mappe for data:</translation>
     </message>
     <message>
-        <source>Placeholders</source>
-        <translation>Placeholders</translation>
+        <source>Bitcoin</source>
+        <translation>Bitcoin</translation>
     </message>
     <message>
         <source>Discard blocks after verification, except most recent %1 GB (prune)</source>
@@ -988,7 +992,7 @@
     </message>
     <message>
         <source>%1 will download and store a copy of the Placeholders block chain.</source>
-        <translation>%1 vil downloade og gemme en kopi af Placeholders-blokkæden.</translation>
+        <translation>%1 vil downloade og gemme en kopi af Bitcoin-blokkæden.</translation>
     </message>
     <message>
         <source>The wallet will also be stored in this directory.</source>
@@ -1062,14 +1066,6 @@
         <translation>Skjul</translation>
     </message>
     <message>
-        <source>Esc</source>
-        <translation>Esc</translation>
-    </message>
-    <message>
-        <source>%1 is currently syncing.  It will download headers and blocks from peers and validate them until reaching the tip of the block chain.</source>
-        <translation>%1 synkroniserer lige nu. Hoveder og blokke bliver downloadet og valideret fra andre knuder. Processen fortsætter indtil den seneste blok nås.</translation>
-    </message>
-    <message>
         <source>Unknown. Syncing Headers (%1, %2%)...</source>
         <translation>Ukendt. Synkroniserer Hoveder (%1, %2%)...</translation>
     </message>
@@ -1077,12 +1073,24 @@
 <context>
     <name>OpenURIDialog</name>
     <message>
-        <source>Open placeh URI</source>
-        <translation>Åbn placeh-URI</translation>
+        <source>Open URI</source>
+        <translation>Åbn URI</translation>
+    </message>
+    <message>
+        <source>Open payment request from URI or file</source>
+        <translation>Åbn betalingsanmodning fra URI eller fil</translation>
     </message>
     <message>
         <source>URI:</source>
         <translation>URI:</translation>
+    </message>
+    <message>
+        <source>Select payment request file</source>
+        <translation>Vælg fil for betalingsanmodning</translation>
+    </message>
+    <message>
+        <source>Select payment request file to open</source>
+        <translation>Vælg fil for betalingsanmodning til åbning</translation>
     </message>
 </context>
 <context>
@@ -1224,7 +1232,7 @@
     </message>
     <message>
         <source>Automatically open the Placeholders client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Åbn automatisk Placeholders-klientens port på routeren. Dette virker kun, når din router understøtter UPnP, og UPnP er aktiveret.</translation>
+        <translation>Åbn automatisk Bitcoin-klientens port på routeren. Dette virker kun, når din router understøtter UPnP, og UPnP er aktiveret.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
@@ -1240,7 +1248,7 @@
     </message>
     <message>
         <source>Connect to the Placeholders network through a SOCKS5 proxy.</source>
-        <translation>Forbind til Placeholders-netværket gennem en SOCKS5-proxy.</translation>
+        <translation>Forbind til Bitcoin-netværket gennem en SOCKS5-proxy.</translation>
     </message>
     <message>
         <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
@@ -1276,7 +1284,7 @@
     </message>
     <message>
         <source>Connect to the Placeholders network through a separate SOCKS5 proxy for Tor hidden services.</source>
-        <translation>Forbind til Placeholders-netværket gennem en separat SOCKS5-proxy for Tors skjulte tjenester.</translation>
+        <translation>Forbind til Bitcoin-netværket gennem en separat SOCKS5-proxy for Tors skjulte tjenester.</translation>
     </message>
     <message>
         <source>&amp;Window</source>
@@ -1387,7 +1395,7 @@
     </message>
     <message>
         <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Placeholders network after a connection is established, but this process has not completed yet.</source>
-        <translation>Den viste information kan være forældet. Din tegnebog synkroniserer automatisk med Placeholders-netværket, når en forbindelse etableres, men denne proces er ikke gennemført endnu.</translation>
+        <translation>Den viste information kan være forældet. Din tegnebog synkroniserer automatisk med Bitcoin-netværket, når en forbindelse etableres, men denne proces er ikke gennemført endnu.</translation>
     </message>
     <message>
         <source>Watch-only:</source>
@@ -1470,15 +1478,23 @@
     </message>
     <message>
         <source>'placeh://' is not a valid URI. Use 'placeh:' instead.</source>
-        <translation>'placeh://' er ikke et gyldigt URI. Brug 'placeh:' istedet.</translation>
+        <translation>'placeh://' er ikke et gyldigt URI. Brug 'placeh:' istedet. </translation>
     </message>
     <message>
-        <source>Cannot process payment request because BIP70 is not supported.</source>
-        <translation>Betalingsanmodninger kan ikke behandles mere, da BIP70 ikke længere er understøttet.</translation>
+        <source>You are using a BIP70 URL which will be unsupported in the future.</source>
+        <translation>Du anvender et BIP70 URL hvilket ikke vil være understøttet i fremtiden.</translation>
+    </message>
+    <message>
+        <source>Payment request fetch URL is invalid: %1</source>
+        <translation>Hentnings-URL for betalingsanmodning er ugyldig: %1</translation>
+    </message>
+    <message>
+        <source>Cannot process payment request because BIP70 support was not compiled in.</source>
+        <translation>Kan ikke behandle betalingsanmodningen, da BIP70-understøttelse ikke er medtaget under programkodeoversættelsen.</translation>
     </message>
     <message>
         <source>Due to widespread security flaws in BIP70 it's strongly recommended that any merchant instructions to switch wallets be ignored.</source>
-        <translation>På grund af vidtstrakte sikkerhedsfejl i BIP70 anbefales det kraftigt, at enhver instruktion fra handlende om at skifte til en BIP70-tegnebog ignoreres.</translation>
+        <translation>På grund af vidtstrakte sikkerhedsfejl i BIP70 anbefales det kraftigt, at enhver instruktion til handlende om at skifte tegnebog ignoreres.</translation>
     </message>
     <message>
         <source>If you are receiving this error you should request the merchant provide a BIP21 compatible URI.</source>
@@ -1490,11 +1506,71 @@
     </message>
     <message>
         <source>URI cannot be parsed! This can be caused by an invalid Placeholders address or malformed URI parameters.</source>
-        <translation>URI kan ikke tolkes! Dette kan skyldes en ugyldig Placeholders-adresse eller forkert udformede URL-parametre.</translation>
+        <translation>URI kan ikke tolkes! Dette kan skyldes en ugyldig Bitcoin-adresse eller forkert udformede URL-parametre.</translation>
     </message>
     <message>
         <source>Payment request file handling</source>
         <translation>Filhåndtering for betalingsanmodninger</translation>
+    </message>
+    <message>
+        <source>Payment request file cannot be read! This can be caused by an invalid payment request file.</source>
+        <translation>Fil for betalingsanmodning kan ikke læses! Dette kan skyldes en ugyldig fil for betalingsanmodning.</translation>
+    </message>
+    <message>
+        <source>Payment request rejected</source>
+        <translation>Betalingsanmodning afvist</translation>
+    </message>
+    <message>
+        <source>Payment request network doesn't match client network.</source>
+        <translation>Netværk for betalingsanmodning stemmer ikke overens med klientens netværk.</translation>
+    </message>
+    <message>
+        <source>Payment request expired.</source>
+        <translation>Betalingsanmodning er udløbet.</translation>
+    </message>
+    <message>
+        <source>Payment request is not initialized.</source>
+        <translation>Betalingsanmodning er ikke klargjort.</translation>
+    </message>
+    <message>
+        <source>Unverified payment requests to custom payment scripts are unsupported.</source>
+        <translation>Ikke-verificerede betalingsanmodninger for tilpassede betalings-scripts understøttes ikke.</translation>
+    </message>
+    <message>
+        <source>Invalid payment request.</source>
+        <translation>Ugyldig betalingsanmodning.</translation>
+    </message>
+    <message>
+        <source>Requested payment amount of %1 is too small (considered dust).</source>
+        <translation>Anmodet betalingsbeløb på %1 er for lille (regnes som støv).</translation>
+    </message>
+    <message>
+        <source>Refund from %1</source>
+        <translation>Tilbagebetaling fra %1</translation>
+    </message>
+    <message>
+        <source>Payment request %1 is too large (%2 bytes, allowed %3 bytes).</source>
+        <translation>Betalingsanmodning %1 er for stor (%2 byte; %3 byte tilladt).</translation>
+    </message>
+    <message>
+        <source>Error communicating with %1: %2</source>
+        <translation>Fejl under kommunikation med %1: %2</translation>
+    </message>
+    <message>
+        <source>Payment request cannot be parsed!</source>
+        <translation>Betalingsanmodning kan ikke tolkes!</translation>
+    </message>
+    <message>
+        <source>Bad response from server %1</source>
+        <translation>Fejlagtigt svar fra server %1</translation>
+    </message>
+    <message>
+        <source>Network request error</source>
+        <translation>Fejl i netværksforespørgsel</translation>
+    </message>
+    <message>
+        <source>Payment acknowledged</source>
+        <translation>Betaling anerkendt</translation>
     </message>
 </context>
 <context>
@@ -1532,7 +1608,7 @@
     </message>
     <message>
         <source>Enter a Placeholders address (e.g. %1)</source>
-        <translation>Indtast en Placeholders-adresse (fx %1)</translation>
+        <translation>Indtast en Bitcoin-adresse (fx %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -1673,6 +1749,10 @@
         <translation>&amp;Information</translation>
     </message>
     <message>
+        <source>Debug window</source>
+        <translation>Fejlsøgningsvindue</translation>
+    </message>
+    <message>
         <source>General</source>
         <translation>Generelt</translation>
     </message>
@@ -1782,7 +1862,7 @@
     </message>
     <message>
         <source>Synced Headers</source>
-        <translation>Synkroniserede hoveder</translation>
+        <translation>Synkroniserede headers</translation>
     </message>
     <message>
         <source>Synced Blocks</source>
@@ -1791,10 +1871,6 @@
     <message>
         <source>User Agent</source>
         <translation>Brugeragent</translation>
-    </message>
-    <message>
-        <source>Node window</source>
-        <translation>Knudevindue</translation>
     </message>
     <message>
         <source>Open the %1 debug log file from the current data directory. This can take a few seconds for large log files.</source>
@@ -1993,7 +2069,7 @@
     </message>
     <message>
         <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Placeholders network.</source>
-        <translation>En valgfri besked, der føjes til betalingsanmodningen, og som vil vises, når anmodningen åbnes. Bemærk: Beskeden vil ikke sendes sammen med betalingen over Placeholders-netværket.</translation>
+        <translation>En valgfri besked, der føjes til betalingsanmodningen, og som vil vises, når anmodningen åbnes. Bemærk: Beskeden vil ikke sendes sammen med betalingen over Bitcoin-netværket.</translation>
     </message>
     <message>
         <source>An optional label to associate with the new receiving address.</source>
@@ -2006,14 +2082,6 @@
     <message>
         <source>An optional amount to request. Leave this empty or zero to not request a specific amount.</source>
         <translation>Et valgfrit beløb til anmodning. Lad dette felt være tomt eller indeholde nul for at anmode om et ikke-specifikt beløb.</translation>
-    </message>
-    <message>
-        <source>An optional label to associate with the new receiving address (used by you to identify an invoice).  It is also attached to the payment request.</source>
-        <translation>Et valgfrit mærkat, der associeres med den nye modtagelsesadresse. Det bruges til at identificere en faktura. Det er også indlejret i betalingsanmodningen.</translation>
-    </message>
-    <message>
-        <source>An optional message that is attached to the payment request and may be displayed to the sender.</source>
-        <translation>En valgfri meddelelse som er indlejret i betalingsanmodningen og som kan blive vist til afsenderen.</translation>
     </message>
     <message>
         <source>&amp;Create new receiving address</source>
@@ -2225,6 +2293,10 @@
         <translation>Advarsel: Gebyrestimering er ikke muligt i øjeblikket.</translation>
     </message>
     <message>
+        <source>collapse fee-settings</source>
+        <translation>sammenfold gebyropsætning</translation>
+    </message>
+    <message>
         <source>Specify a custom fee per kB (1,000 bytes) of the transaction's virtual size.
 
 Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis per kB" for a transaction size of 500 bytes (half of 1 kB) would ultimately yield a fee of only 50 satoshis.</source>
@@ -2267,10 +2339,6 @@ Note: Siden gebyret er kalkuleret på en per-byte basis, et gebyr på "100 satos
     <message>
         <source>Dust:</source>
         <translation>Støv:</translation>
-    </message>
-    <message>
-        <source>Hide transaction fee settings</source>
-        <translation>Skjul indstillinger for transaktionsgebyr</translation>
     </message>
     <message>
         <source>When there is less transaction volume than space in the blocks, miners as well as relaying nodes may enforce a minimum fee. Paying only this minimum fee is just fine, but be aware that this can result in a never confirming transaction once there is more demand for placeh transactions than the network can process.</source>
@@ -2341,10 +2409,6 @@ Note: Siden gebyret er kalkuleret på en per-byte basis, et gebyr på "100 satos
         <translation>%1 (%2 blokke)</translation>
     </message>
     <message>
-        <source>Cr&amp;eate Unsigned</source>
-        <translation>L&amp;av usigneret</translation>
-    </message>
-    <message>
         <source> from wallet '%1'</source>
         <translation>fra tegnebog '%1'</translation>
     </message>
@@ -2355,10 +2419,6 @@ Note: Siden gebyret er kalkuleret på en per-byte basis, et gebyr på "100 satos
     <message>
         <source>%1 to %2</source>
         <translation>%1 til %2</translation>
-    </message>
-    <message>
-        <source>Do you want to draft this transaction?</source>
-        <translation>Vil du lave et udkast til denne transaktion?</translation>
     </message>
     <message>
         <source>Are you sure you want to send?</source>
@@ -2397,26 +2457,6 @@ Note: Siden gebyret er kalkuleret på en per-byte basis, et gebyr på "100 satos
         <translation>Bekræft afsendelse af placehs</translation>
     </message>
     <message>
-        <source>Confirm transaction proposal</source>
-        <translation>Bekræft transaktionsudkast</translation>
-    </message>
-    <message>
-        <source>Copy PSBT to clipboard</source>
-        <translation>Kopiér PSBT til udklipsholderen</translation>
-    </message>
-    <message>
-        <source>Send</source>
-        <translation>Afsend</translation>
-    </message>
-    <message>
-        <source>PSBT copied</source>
-        <translation>PSBT kopieret</translation>
-    </message>
-    <message>
-        <source>Watch-only balance:</source>
-        <translation>Kiggebalance:</translation>
-    </message>
-    <message>
         <source>The recipient address is not valid. Please recheck.</source>
         <translation>Modtageradressen er ikke gyldig. Tjek venligst igen.</translation>
     </message>
@@ -2441,6 +2481,10 @@ Note: Siden gebyret er kalkuleret på en per-byte basis, et gebyr på "100 satos
         <translation>Oprettelse af transaktion mislykkedes!</translation>
     </message>
     <message>
+        <source>The transaction was rejected with the following reason: %1</source>
+        <translation>Transaktionen blev afvist med følgende begrundelse: %1</translation>
+    </message>
+    <message>
         <source>A fee higher than %1 is considered an absurdly high fee.</source>
         <translation>Et gebyr højere end %1 opfattes som et absurd højt gebyr.</translation>
     </message>
@@ -2454,7 +2498,7 @@ Note: Siden gebyret er kalkuleret på en per-byte basis, et gebyr på "100 satos
     </message>
     <message>
         <source>Warning: Invalid Placeholders address</source>
-        <translation>Advarsel: Ugyldig Placeholders-adresse</translation>
+        <translation>Advarsel: Ugyldig Bitcoin-adresse</translation>
     </message>
     <message>
         <source>Warning: Unknown change address</source>
@@ -2492,8 +2536,12 @@ Note: Siden gebyret er kalkuleret på en per-byte basis, et gebyr på "100 satos
         <translation>Vælg tidligere brugt adresse</translation>
     </message>
     <message>
+        <source>This is a normal payment.</source>
+        <translation>Dette er en normal betaling.</translation>
+    </message>
+    <message>
         <source>The Placeholders address to send the payment to</source>
-        <translation>Placeholders-adresse, som betalingen skal sendes til</translation>
+        <translation>Bitcoin-adresse, som betalingen skal sendes til</translation>
     </message>
     <message>
         <source>Alt+A</source>
@@ -2510,10 +2558,6 @@ Note: Siden gebyret er kalkuleret på en per-byte basis, et gebyr på "100 satos
     <message>
         <source>Remove this entry</source>
         <translation>Fjern denne indgang</translation>
-    </message>
-    <message>
-        <source>The amount to send in the selected unit</source>
-        <translation>Beløbet der skal afsendes i den valgte enhed</translation>
     </message>
     <message>
         <source>The fee will be deducted from the amount being sent. The recipient will receive less placehs than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
@@ -2545,7 +2589,7 @@ Note: Siden gebyret er kalkuleret på en per-byte basis, et gebyr på "100 satos
     </message>
     <message>
         <source>A message that was attached to the placeh: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Placeholders network.</source>
-        <translation>En besked, som blev føjet til “bitcon:”-URI'en, som vil gemmes med transaktionen til din reference. Bemærk: Denne besked vil ikke blive sendt over Placeholders-netværket.</translation>
+        <translation>En besked, som blev føjet til “bitcon:”-URI'en, som vil gemmes med transaktionen til din reference. Bemærk: Denne besked vil ikke blive sendt over Bitcoin-netværket.</translation>
     </message>
     <message>
         <source>Pay To:</source>
@@ -2554,6 +2598,17 @@ Note: Siden gebyret er kalkuleret på en per-byte basis, et gebyr på "100 satos
     <message>
         <source>Memo:</source>
         <translation>Memo:</translation>
+    </message>
+    <message>
+        <source>Enter a label for this address to add it to your address book</source>
+        <translation>Indtast en mærkat for denne adresse for at føje den til din adressebog</translation>
+    </message>
+</context>
+<context>
+    <name>SendConfirmationDialog</name>
+    <message>
+        <source>Yes</source>
+        <translation>Ja</translation>
     </message>
 </context>
 <context>
@@ -2578,12 +2633,12 @@ Note: Siden gebyret er kalkuleret på en per-byte basis, et gebyr på "100 satos
         <translation>&amp;Singér besked</translation>
     </message>
     <message>
-        <source>You can sign messages/agreements with your addresses to prove you can receive placehs sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
+        <source>You can sign messages/agreements with your addresses to prove you can receive Placeholderss sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
         <translation>Du kan signere beskeder/aftaler med dine adresser for at bevise, at du kan modtage placeh, der bliver sendt til adresserne. Vær forsigtig med ikke at signere noget vagt eller tilfældigt, da eventuelle phishing-angreb kan snyde dig til at overlade din identitet til dem. Signér kun fuldt ud detaljerede udsagn, som du er enig i.</translation>
     </message>
     <message>
         <source>The Placeholders address to sign the message with</source>
-        <translation>Placeholders-adresse, som beskeden skal signeres med</translation>
+        <translation>Bitcoin-adresse, som beskeden skal signeres med</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -2615,7 +2670,7 @@ Note: Siden gebyret er kalkuleret på en per-byte basis, et gebyr på "100 satos
     </message>
     <message>
         <source>Sign the message to prove you own this Placeholders address</source>
-        <translation>Signér denne besked for at bevise, at Placeholders-adressen tilhører dig</translation>
+        <translation>Signér denne besked for at bevise, at Bitcoin-adressen tilhører dig</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -2639,19 +2694,11 @@ Note: Siden gebyret er kalkuleret på en per-byte basis, et gebyr på "100 satos
     </message>
     <message>
         <source>The Placeholders address the message was signed with</source>
-        <translation>Placeholders-adressen, som beskeden blev signeret med</translation>
-    </message>
-    <message>
-        <source>The signed message to verify</source>
-        <translation>Den signerede meddelelse som skal verificeres</translation>
-    </message>
-    <message>
-        <source>The signature given when the message was signed</source>
-        <translation>Signaturen som blev givet da meddelelsen blev signeret</translation>
+        <translation>Bitcoin-adressen, som beskeden blev signeret med</translation>
     </message>
     <message>
         <source>Verify the message to ensure it was signed with the specified Placeholders address</source>
-        <translation>Verificér beskeden for at sikre, at den er signeret med den angivne Placeholders-adresse</translation>
+        <translation>Verificér beskeden for at sikre, at den er signeret med den angivne Bitcoin-adresse</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>
@@ -2680,10 +2727,6 @@ Note: Siden gebyret er kalkuleret på en per-byte basis, et gebyr på "100 satos
     <message>
         <source>Wallet unlock was cancelled.</source>
         <translation>Tegnebogsoplåsning annulleret.</translation>
-    </message>
-    <message>
-        <source>No error</source>
-        <translation>Ingen fejl</translation>
     </message>
     <message>
         <source>Private key for the entered address is not available.</source>
@@ -2858,10 +2901,6 @@ Note: Siden gebyret er kalkuleret på en per-byte basis, et gebyr på "100 satos
     <message>
         <source>Output index</source>
         <translation>Outputindeks</translation>
-    </message>
-    <message>
-        <source> (Certificate was not verified)</source>
-        <translation>(certifikat er ikke verificeret)</translation>
     </message>
     <message>
         <source>Merchant</source>
@@ -3221,10 +3260,6 @@ Note: Siden gebyret er kalkuleret på en per-byte basis, et gebyr på "100 satos
         <translation>Vil du forøge gebyret?</translation>
     </message>
     <message>
-        <source>Do you want to draft a transaction with fee increase?</source>
-        <translation>Vil du lave et transaktionsudkast med øget gebyr?</translation>
-    </message>
-    <message>
         <source>Current fee:</source>
         <translation>Aktuelt gebyr:</translation>
     </message>
@@ -3239,14 +3274,6 @@ Note: Siden gebyret er kalkuleret på en per-byte basis, et gebyr på "100 satos
     <message>
         <source>Confirm fee bump</source>
         <translation>Bekræft gebyrforøgelse</translation>
-    </message>
-    <message>
-        <source>Can't draft transaction.</source>
-        <translation>Kan ikke lave transaktionsudkast.</translation>
-    </message>
-    <message>
-        <source>PSBT copied</source>
-        <translation>PSBT kopieret</translation>
     </message>
     <message>
         <source>Can't sign transaction.</source>
@@ -3315,6 +3342,10 @@ Note: Siden gebyret er kalkuleret på en per-byte basis, et gebyr på "100 satos
         <translation>Beskæring: Seneste synkronisering rækker udover beskårne data. Du er nødt til at bruge -reindex (downloade hele blokkæden igen i fald af beskåret knude)</translation>
     </message>
     <message>
+        <source>Rescans are not possible in pruned mode. You will need to use -reindex which will download the whole blockchain again.</source>
+        <translation>Genindlæsninger er ikke mulige i beskåret tilstand. Du er nødt til at bruge -reindex, hvilket vil downloade hele blokkæden igen.</translation>
+    </message>
+    <message>
         <source>Error: A fatal internal error occurred, see debug.log for details</source>
         <translation>Fejl: En alvorlig intern fejl er opstået. Se debug.log for detaljer</translation>
     </message>
@@ -3332,7 +3363,7 @@ Note: Siden gebyret er kalkuleret på en per-byte basis, et gebyr på "100 satos
     </message>
     <message>
         <source>Can't generate a change-address key. No keys in the internal keypool and can't generate any keys.</source>
-        <translation>Kan ikke generere en bytte-adresse nøgle. Ingen nøgler i den interne nøglepulje og kan ikke generere nogle nøgler.</translation>
+        <translation>Kan ikke generere en bytte-adresse nøgle. Ingen nøgler i den interne nøglepulje og kan ikke generere nogle nøgler. </translation>
     </message>
     <message>
         <source>Cannot obtain a lock on data directory %s. %s is probably already running.</source>
@@ -3413,14 +3444,6 @@ Note: Siden gebyret er kalkuleret på en per-byte basis, et gebyr på "100 satos
     <message>
         <source>Corrupted block database detected</source>
         <translation>Ødelagt blokdatabase opdaget</translation>
-    </message>
-    <message>
-        <source>Could not find asmap file %s</source>
-        <translation>Kan ikke finde asmap-filen %s </translation>
-    </message>
-    <message>
-        <source>Could not parse asmap file %s</source>
-        <translation>Kan ikke fortolke asmap-filen %s</translation>
     </message>
     <message>
         <source>Do you want to rebuild the block database now?</source>
@@ -3516,7 +3539,7 @@ Note: Siden gebyret er kalkuleret på en per-byte basis, et gebyr på "100 satos
     </message>
     <message>
         <source>Error: Disk space is too low!</source>
-        <translation>Fejl: Disk pladsen er for lav!</translation>
+        <translation>Fejl: Disk pladsen er for lav! </translation>
     </message>
     <message>
         <source>Loading banlist...</source>
@@ -3711,6 +3734,10 @@ Note: Siden gebyret er kalkuleret på en per-byte basis, et gebyr på "100 satos
     <message>
         <source>This is the transaction fee you may pay when fee estimates are not available.</source>
         <translation>Dette er transaktionsgebyret, du kan betale, når gebyrestimeringer ikke er tilgængelige.</translation>
+    </message>
+    <message>
+        <source>This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit %s and cryptographic software written by Eric Young and UPnP software written by Thomas Bernard.</source>
+        <translation>Dette produkt indeholder software, der er udviklet af OpenSSL-projektet for brug i OpenSSL-værktøjskassen %s, samt kryptografisk software, der er skrevet af Eric Young, samt UPnP-software, der er skrevet af Thomas Bernard.</translation>
     </message>
     <message>
         <source>Total length of network version string (%i) exceeds maximum length (%i). Reduce the number or size of uacomments.</source>

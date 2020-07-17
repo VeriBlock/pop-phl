@@ -19,14 +19,14 @@ Expected balance is POW_PAYOUT * 10 + pop payout. (node0 has only 10 mature coin
 
 from test_framework.payout import POW_PAYOUT
 from test_framework.pop import POP_PAYOUT_DELAY, endorse_block
-from test_framework.test_framework import PlaceholdersTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import (
     connect_nodes,
     sync_mempools,
 )
 
 
-class PopPayouts(PlaceholdersTestFramework):
+class PopPayouts(BitcoinTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 2
@@ -84,7 +84,7 @@ class PopPayouts(PlaceholdersTestFramework):
         balance = self.nodes[0].getbalance()
 
         # node[0] has 10 mature coinbases and single pop payout
-        assert balance == POW_PAYOUT * 10 + outputs[1]['value'], "expected {}, got {}".format((POW_PAYOUT * 10 + outputs[1]['value']), balance)
+        assert balance == POW_PAYOUT * 10 + outputs[1]['value']
         self.log.warning("success! _case1_endorse_keystone_get_paid()")
 
     def run_test(self):

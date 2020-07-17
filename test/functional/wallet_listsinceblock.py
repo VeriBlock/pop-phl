@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-# Copyright (c) 2017-2019 The Placeholders Core developers
+# Copyright (c) 2017-2019 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
-"""Test the listsinceblock RPC."""
+"""Test the listsincelast RPC."""
 
-from test_framework.test_framework import PlaceholdersTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.messages import BIP125_SEQUENCE_NUMBER
 from test_framework.util import (
     assert_array_result,
@@ -15,7 +15,7 @@ from test_framework.util import (
 
 from decimal import Decimal
 
-class ListSinceBlockTest(PlaceholdersTestFramework):
+class ListSinceBlockTest(BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 4
         self.setup_clean_chain = True
@@ -38,7 +38,6 @@ class ListSinceBlockTest(PlaceholdersTestFramework):
         self.double_spends_filtered()
 
     def test_no_blockhash(self):
-        self.log.info("Test no blockhash")
         txid = self.nodes[2].sendtoaddress(self.nodes[0].getnewaddress(), 1)
         blockhash, = self.nodes[2].generate(1)
         blockheight = self.nodes[2].getblockheader(blockhash)['height']
@@ -64,7 +63,6 @@ class ListSinceBlockTest(PlaceholdersTestFramework):
              "transactions": txs})
 
     def test_invalid_blockhash(self):
-        self.log.info("Test invalid blockhash")
         assert_raises_rpc_error(-5, "Block not found", self.nodes[0].listsinceblock,
                                 "42759cde25462784395a337460bde75f58e73d3f08bd31fdc3507cbac856a2c4")
         assert_raises_rpc_error(-5, "Block not found", self.nodes[0].listsinceblock,
@@ -102,7 +100,6 @@ class ListSinceBlockTest(PlaceholdersTestFramework):
 
         This test only checks that [tx0] is present.
         '''
-        self.log.info("Test reorg")
 
         # Split network into two
         self.split_network()
@@ -111,21 +108,23 @@ class ListSinceBlockTest(PlaceholdersTestFramework):
         senttx = self.nodes[2].sendtoaddress(self.nodes[0].getnewaddress(), 1)
 
         # generate on both sides
-        nodes1_last_blockhash = self.nodes[1].generate(6)[-1]
-        nodes2_first_blockhash = self.nodes[2].generate(7)[0]
-        self.log.debug("nodes[1] last blockhash = {}".format(nodes1_last_blockhash))
-        self.log.debug("nodes[2] first blockhash = {}".format(nodes2_first_blockhash))
+        lastblockhash = self.nodes[1].generate(6)[5]
+        self.nodes[2].generate(7)
+        self.log.info('lastblockhash=%s' % (lastblockhash))
 
         self.sync_all(self.nodes[:2])
         self.sync_all(self.nodes[2:])
 
         self.join_network()
 
-        # listsinceblock(nodes1_last_blockhash) should now include tx as seen from nodes[0]
-        # and return the block height which listsinceblock now exposes since a5e7795.
-        transactions = self.nodes[0].listsinceblock(nodes1_last_blockhash)['transactions']
-        found = next(tx for tx in transactions if tx['txid'] == senttx)
-        assert_equal(found['blockheight'], self.nodes[0].getblockheader(nodes2_first_blockhash)['height'])
+        # listsinceblock(lastblockhash) should now include tx, as seen from nodes[0]
+        lsbres = self.nodes[0].listsinceblock(lastblockhash)
+        found = False
+        for tx in lsbres['transactions']:
+            if tx['txid'] == senttx:
+                found = True
+                break
+        assert found
 
     def test_double_spend(self):
         '''
@@ -156,7 +155,6 @@ class ListSinceBlockTest(PlaceholdersTestFramework):
         until the fork point, and to include all transactions that relate to the
         node wallet.
         '''
-        self.log.info("Test double spend")
 
         self.sync_all()
 
@@ -236,7 +234,6 @@ class ListSinceBlockTest(PlaceholdersTestFramework):
         3. It is listed with a confirmation count of 2 (bb3, bb4), not
            3 (aa1, aa2, aa3).
         '''
-        self.log.info("Test double send")
 
         self.sync_all()
 
@@ -305,7 +302,6 @@ class ListSinceBlockTest(PlaceholdersTestFramework):
         `listsinceblock` was returning conflicted transactions even if they
         occurred before the specified cutoff blockhash
         '''
-        self.log.info("Test spends filtered")
         spending_node = self.nodes[2]
         dest_address = spending_node.getnewaddress()
 

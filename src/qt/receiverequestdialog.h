@@ -1,9 +1,9 @@
-// Copyright (c) 2011-2019 The Placeholders Core developers
+// Copyright (c) 2011-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_QT_RECEIVEREQUESTDIALOG_H
-#define PHL_QT_RECEIVEREQUESTDIALOG_H
+#ifndef PLACEH_QT_RECEIVEREQUESTDIALOG_H
+#define PLACEH_QT_RECEIVEREQUESTDIALOG_H
 
 #include <qt/sendcoinsrecipient.h>
 
@@ -29,7 +29,8 @@ public:
 private Q_SLOTS:
     void on_btnCopyURI_clicked();
     void on_btnCopyAddress_clicked();
-    void updateDisplayUnit();
+
+    void update();
 
 private:
     Ui::ReceiveRequestDialog *ui;
@@ -37,4 +38,4 @@ private:
     SendCoinsRecipient info;
 };
 
-#endif // PHL_QT_RECEIVEREQUESTDIALOG_H
+#endif // PLACEH_QT_RECEIVEREQUESTDIALOG_H

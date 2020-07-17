@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2020 The Placeholders Core developers
+// Copyright (c) 2015-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -112,8 +112,7 @@ bool CZMQAbstractPublishNotifier::Initialize(void *pcontext)
 
 void CZMQAbstractPublishNotifier::Shutdown()
 {
-    // Early return if Initialize was not called
-    if (!psocket) return;
+    assert(psocket);
 
     int count = mapPublishNotifiers.count(address);
 

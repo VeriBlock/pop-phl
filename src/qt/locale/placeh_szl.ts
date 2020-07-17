@@ -160,8 +160,8 @@
         <translation>Przituplikuj szyfrowanie portmanyja</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PHLS&lt;/b&gt;!</source>
-        <translation>Pozōr: jeźli zaszyfrujesz swōj portmanyj i stracisz hasło &lt;b&gt;STRACISZ WSZYJSKE SWOJE PHLY&lt;/b&gt;!</translation>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PLACEHS&lt;/b&gt;!</source>
+        <translation>Pozōr: jeźli zaszyfrujesz swōj portmanyj i stracisz hasło &lt;b&gt;STRACISZ WSZYJSKE SWOJE PLACEHY&lt;/b&gt;!</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -220,7 +220,7 @@
     </message>
 </context>
 <context>
-    <name>PlaceholdersGUI</name>
+    <name>BitcoinGUI</name>
     <message>
         <source>Sign &amp;message...</source>
         <translation>Szkryftnij &amp;wiadōmość</translation>
@@ -323,7 +323,7 @@
     </message>
     <message>
         <source>Send coins to a Placeholders address</source>
-        <translation>Poślij mōnety na adresã Placeholders</translation>
+        <translation>Poślij mōnety na adresã Bitcoin</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -332,6 +332,14 @@
     <message>
         <source>Change the passphrase used for wallet encryption</source>
         <translation>Pōmiyń hasło użyte do szyfrowaniŏ portmanyja</translation>
+    </message>
+    <message>
+        <source>&amp;Debug window</source>
+        <translation>Ôkno &amp;debugowaniŏ</translation>
+    </message>
+    <message>
+        <source>Open debugging and diagnostic console</source>
+        <translation>Ôdewrzij kōnsolã debugowaniŏ i diagnostyki</translation>
     </message>
     <message>
         <source>&amp;Verify message...</source>
@@ -363,7 +371,7 @@
     </message>
     <message>
         <source>Verify messages to ensure they were signed with specified Placeholders addresses</source>
-        <translation>Zweryfikuj wiadōmość, coby wejzdrzeć sie, iże ôstała podpisanŏ podanōm adresōm Placeholders.</translation>
+        <translation>Zweryfikuj wiadōmość, coby wejzdrzeć sie, iże ôstała podpisanŏ podanōm adresōm Bitcoin.</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -394,12 +402,16 @@
         <translation>Pokŏż wykŏz adres i etyket użytych do ôdbiyraniŏ</translation>
     </message>
     <message>
+        <source>Open a placeh: URI or payment request</source>
+        <translation>Ôdewrzij URI placeh: abo żōndanie płatu</translation>
+    </message>
+    <message>
         <source>&amp;Command-line options</source>
         <translation>Ôp&amp;cyje piski nakŏzań</translation>
     </message>
     <message numerus="yes">
         <source>%n active connection(s) to Placeholders network</source>
-        <translation><numerusform>%n aktywne połōnczynie do necu Placeholders</numerusform><numerusform>%n aktywnych połōnczyń do necu Placeholders</numerusform><numerusform>%n aktywnych skuplowań do necu Placeholders</numerusform></translation>
+        <translation><numerusform>%n aktywne połōnczynie do necu Bitcoin</numerusform><numerusform>%n aktywnych połōnczyń do necu Bitcoin</numerusform><numerusform>%n aktywnych skuplowań do necu Bitcoin</numerusform></translation>
     </message>
     <message>
         <source>Indexing blocks on disk...</source>
@@ -727,7 +739,7 @@
     </message>
     <message>
         <source>The entered address "%1" is not a valid Placeholders address.</source>
-        <translation>Wkludzōnŏ adresa "%1" niyma nŏleżnōm adresōm Placeholders.</translation>
+        <translation>Wkludzōnŏ adresa "%1" niyma nŏleżnōm adresōm Bitcoin.</translation>
     </message>
     <message>
         <source>Address "%1" already exists as a receiving address with label "%2" and so cannot be added as a sending address.</source>
@@ -770,6 +782,10 @@
     <message>
         <source>version</source>
         <translation>wersyjŏ</translation>
+    </message>
+    <message>
+        <source>(%1-bit)</source>
+        <translation>(%1-bit)</translation>
     </message>
     <message>
         <source>About %1</source>
@@ -815,8 +831,8 @@
         <translation>Użyj ôbranego folderu datōw</translation>
     </message>
     <message>
-        <source>Placeholders</source>
-        <translation>Placeholders</translation>
+        <source>Bitcoin</source>
+        <translation>Bitcoin</translation>
     </message>
     <message>
         <source>At least %1 GB of data will be stored in this directory, and it will grow over time.</source>
@@ -828,7 +844,7 @@
     </message>
     <message>
         <source>%1 will download and store a copy of the Placeholders block chain.</source>
-        <translation>%1 sebiere i spamiyntŏ kopijõ kety blokōw Placeholders.</translation>
+        <translation>%1 sebiere i spamiyntŏ kopijõ kety blokōw Bitcoin.</translation>
     </message>
     <message>
         <source>The wallet will also be stored in this directory.</source>
@@ -901,8 +917,24 @@
 <context>
     <name>OpenURIDialog</name>
     <message>
+        <source>Open URI</source>
+        <translation>Ôdewrzij URI</translation>
+    </message>
+    <message>
+        <source>Open payment request from URI or file</source>
+        <translation>Ôdewrzij żōndanie płatu z URI abo zbioru</translation>
+    </message>
+    <message>
         <source>URI:</source>
         <translation>URI:</translation>
+    </message>
+    <message>
+        <source>Select payment request file</source>
+        <translation>Ôtwōrz żōndanie płatu ze zbioru</translation>
+    </message>
+    <message>
+        <source>Select payment request file to open</source>
+        <translation>Ôbier zbiōr żōndaniŏ płatu do ôdewrzyniŏ</translation>
     </message>
 </context>
 <context>
@@ -1140,7 +1172,27 @@
         <source>'placeh://' is not a valid URI. Use 'placeh:' instead.</source>
         <translation>'placeh://' to niyma nŏleżne URI. Użyj 'placeh:'.</translation>
     </message>
-    </context>
+    <message>
+        <source>Payment request network doesn't match client network.</source>
+        <translation>Nec żōndaniŏ płatu niy ôdpadŏ necu klijynta.</translation>
+    </message>
+    <message>
+        <source>Unverified payment requests to custom payment scripts are unsupported.</source>
+        <translation>Niyzweryfikowane żōndaniŏ płatu do włŏsnych skryptōw płatu sōm niypodpiyrane.</translation>
+    </message>
+    <message>
+        <source>Error communicating with %1: %2</source>
+        <translation>Feler kōmunikacyje z %1: %2</translation>
+    </message>
+    <message>
+        <source>Network request error</source>
+        <translation>Feler żōndaniŏ necu</translation>
+    </message>
+    <message>
+        <source>Payment acknowledged</source>
+        <translation>Płat przituplowany</translation>
+    </message>
+</context>
 <context>
     <name>PeerTableModel</name>
     <message>
@@ -1245,6 +1297,10 @@
         <translation>Wersyjŏ klijynta</translation>
     </message>
     <message>
+        <source>Debug window</source>
+        <translation>Ôkno debugowaniŏ</translation>
+    </message>
+    <message>
         <source>Using BerkeleyDB version</source>
         <translation>Używanie wersyje BerkeleyDB</translation>
     </message>
@@ -1282,7 +1338,7 @@
     </message>
     <message>
         <source>Wallet: </source>
-        <translation>Portmanyj:</translation>
+        <translation>Portmanyj: </translation>
     </message>
     <message>
         <source>Received</source>
@@ -1377,7 +1433,7 @@
     </message>
     <message>
         <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Placeholders network.</source>
-        <translation>Ôpcyjōnalnŏ wiadōmość do prziwstōniŏ do żōndaniŏ płatu, kerŏ bydzie wyświytlanŏ, kej żōndanie ôstanie ôdewrzōne. Napōmniynie: wiadōmość ta niy ôstanie wysłanŏ z płatym w nec Placeholders.</translation>
+        <translation>Ôpcyjōnalnŏ wiadōmość do prziwstōniŏ do żōndaniŏ płatu, kerŏ bydzie wyświytlanŏ, kej żōndanie ôstanie ôdewrzōne. Napōmniynie: wiadōmość ta niy ôstanie wysłanŏ z płatym w nec Bitcoin.</translation>
     </message>
     <message>
         <source>Clear</source>
@@ -1582,7 +1638,7 @@
     </message>
     <message>
         <source>Warning: Invalid Placeholders address</source>
-        <translation>Pozōr: niynŏleżnŏ adresa Placeholders</translation>
+        <translation>Pozōr: niynŏleżnŏ adresa Bitcoin</translation>
     </message>
     <message>
         <source>Warning: Unknown change address</source>
@@ -1600,8 +1656,12 @@
         <translation>&amp;Etyketa:</translation>
     </message>
     <message>
+        <source>This is a normal payment.</source>
+        <translation>To je normalny płat.</translation>
+    </message>
+    <message>
         <source>The Placeholders address to send the payment to</source>
-        <translation>Adresa Placeholders, na kerõ chcesz posłać płat</translation>
+        <translation>Adresa Bitcoin, na kerõ chcesz posłać płat</translation>
     </message>
     <message>
         <source>Alt+A</source>
@@ -1621,9 +1681,16 @@
     </message>
     <message>
         <source>A message that was attached to the placeh: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Placeholders network.</source>
-        <translation>Wiadōmość, kerŏ ôstała prziwstōnŏ do URI placeh:, kerŏ bydzie przechowowanŏ z transakcyjōm w cylach informacyjnych. Napōmniynie: Ta wiadōmość niy bydzie rozszyrzowanŏ w necu Placeholders.</translation>
+        <translation>Wiadōmość, kerŏ ôstała prziwstōnŏ do URI placeh:, kerŏ bydzie przechowowanŏ z transakcyjōm w cylach informacyjnych. Napōmniynie: Ta wiadōmość niy bydzie rozszyrzowanŏ w necu Bitcoin.</translation>
     </message>
     </context>
+<context>
+    <name>SendConfirmationDialog</name>
+    <message>
+        <source>Yes</source>
+        <translation>Ja</translation>
+    </message>
+</context>
 <context>
     <name>ShutdownWindow</name>
     </context>

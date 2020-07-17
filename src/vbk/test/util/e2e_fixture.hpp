@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_SRC_VBK_TEST_UTIL_E2E_FIXTURE_HPP
-#define BITCOIN_SRC_VBK_TEST_UTIL_E2E_FIXTURE_HPP
+#ifndef PLACEH_SRC_VBK_TEST_UTIL_E2E_FIXTURE_HPP
+#define PLACEH_SRC_VBK_TEST_UTIL_E2E_FIXTURE_HPP
 
 #include <boost/test/unit_test.hpp>
 
@@ -45,25 +45,6 @@ struct E2eFixture : public TestChain100Setup {
         altintegration::SetLogger<TestLogger>();
         altintegration::GetLogger().level = altintegration::LogLevel::debug;
         pop = &VeriBlock::getService<VeriBlock::PopService>();
-    }
-
-    void InvalidateTestBlock(CBlockIndex* pblock)
-    {
-        BlockValidationState state;
-        InvalidateBlock(state, Params(), pblock);
-        ActivateBestChain(state, Params());
-        mempool.clear();
-    }
-
-    void ReconsiderTestBlock(CBlockIndex* pblock)
-    {
-        BlockValidationState state;
-
-        {
-            LOCK(cs_main);
-            ResetBlockFailureFlags(pblock);
-        }
-        ActivateBestChain(state, Params(), std::shared_ptr<const CBlock>());
     }
 
     ATV endorseAltBlock(uint256 hash, const std::vector<VTB>& vtbs, const std::vector<uint8_t>& payoutInfo)
@@ -135,7 +116,7 @@ struct E2eFixture : public TestChain100Setup {
 
         auto btctx = popminer.createBtcTxEndorsingVbkBlock(*endorsed->header);
         auto* btccontaining = popminer.mineBtcBlocks(1);
-        auto vbktx = popminer.createVbkPopTxEndorsingVbkBlock(*btccontaining->header, btctx, *endorsed->header, getLastKnownBTCblock());
+        auto vbktx = popminer.createVbkPopTxEndorsingVbkBlock(*btccontaining->header, btctx, *endorsed->header, getLastKnownPHLblock());
         auto* vbkcontaining = popminer.mineVbkBlocks(1);
 
         auto vtbs = popminer.vbkPayloads[vbkcontaining->getHash()];
@@ -154,9 +135,9 @@ struct E2eFixture : public TestChain100Setup {
         return vtb;
     }
 
-    BtcBlock::hash_t getLastKnownBTCblock()
+    BtcBlock::hash_t getLastKnownPHLblock()
     {
-        auto blocks = pop->getLastKnownBTCBlocks(1);
+        auto blocks = pop->getLastKnownPHLBlocks(1);
         BOOST_CHECK(blocks.size() == 1);
         return blocks[0];
     }
@@ -191,4 +172,4 @@ struct E2eFixture : public TestChain100Setup {
     }
 };
 
-#endif //BITCOIN_SRC_VBK_TEST_UTIL_E2E_FIXTURE_HPP
+#endif //PLACEH_SRC_VBK_TEST_UTIL_E2E_FIXTURE_HPP

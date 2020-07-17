@@ -1,15 +1,18 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2020 The Placeholders Core developers
+// Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2019-2020 Xenios SEZC
+// https://www.veriblock.org
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_CHAINPARAMS_H
-#define PHL_CHAINPARAMS_H
+#ifndef PLACEH_CHAINPARAMS_H
+#define PLACEH_CHAINPARAMS_H
 
 #include <chainparamsbase.h>
 #include <consensus/params.h>
 #include <primitives/block.h>
 #include <protocol.h>
+#include <veriblock/config.hpp>
 
 #include <memory>
 #include <vector>
@@ -39,7 +42,7 @@ struct ChainTxData {
 
 /**
  * CChainParams defines various tweakable parameters of a given instance of the
- * Placeholders system. There are three: the main network on which people trade goods
+ * Bitcoin system. There are three: the main network on which people trade goods
  * and services, the public test network which gets reset from time to time and
  * a regression test mode which is intended for private networks only. It has
  * minimal difficulty to ensure that blocks can be found instantly.
@@ -68,8 +71,6 @@ public:
     bool RequireStandard() const { return fRequireStandard; }
     /** If this chain is exclusively used for testing */
     bool IsTestChain() const { return m_is_test_chain; }
-    /** If this chain allows time to be mocked */
-    bool IsMockableChain() const { return m_is_mockable_chain; }
     uint64_t PruneAfterHeight() const { return nPruneAfterHeight; }
     /** Minimum free space (in GB) needed for data directory */
     uint64_t AssumedBlockchainSize() const { return m_assumed_blockchain_size; }
@@ -86,13 +87,6 @@ public:
     const std::vector<SeedSpec6>& FixedSeeds() const { return vFixedSeeds; }
     const CCheckpointData& Checkpoints() const { return checkpointData; }
     const ChainTxData& TxData() const { return chainTxData; }
-
-    /** PHL START **/
-
-    unsigned int DGWActivationBlock() const { return nDGWActivationBlock; }
-    int AssetsDeactivationBlock() const { return nAssetsDeactivationBlock; }
-
-    /** PHL End **/
 
 protected:
     CChainParams() {}
@@ -112,16 +106,8 @@ protected:
     bool fDefaultConsistencyChecks;
     bool fRequireStandard;
     bool m_is_test_chain;
-    bool m_is_mockable_chain;
     CCheckpointData checkpointData;
     ChainTxData chainTxData;
-
-    /** PHL Start **/
-
-    unsigned int nDGWActivationBlock;
-    int nAssetsDeactivationBlock;
-
-    /** PHL End **/
 };
 
 /**
@@ -135,13 +121,12 @@ std::unique_ptr<const CChainParams> CreateChainParams(const std::string& chain);
  * Return the currently selected parameters. This won't change after app
  * startup, except for unit tests.
  */
-const CChainParams &Params();
+const CChainParams& Params();
 
 /**
  * Sets the params returned by Params() to those for the given chain name.
  * @throws std::runtime_error when the chain is not supported.
  */
-void SelectParams(const std::string& chain, bool fForceBlockNetwork = false);
+void SelectParams(const std::string& chain);
 
-
-#endif // PHL_CHAINPARAMS_H
+#endif // PLACEH_CHAINPARAMS_H

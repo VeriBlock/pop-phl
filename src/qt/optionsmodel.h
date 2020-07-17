@@ -1,12 +1,11 @@
-// Copyright (c) 2011-2020 The Placeholders Core developers
+// Copyright (c) 2011-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_QT_OPTIONSMODEL_H
-#define PHL_QT_OPTIONSMODEL_H
+#ifndef PLACEH_QT_OPTIONSMODEL_H
+#define PLACEH_QT_OPTIONSMODEL_H
 
 #include <amount.h>
-#include <qt/guiconstants.h>
 
 #include <QAbstractListModel>
 
@@ -17,17 +16,7 @@ class Node;
 extern const char *DEFAULT_GUI_PROXY_HOST;
 static constexpr unsigned short DEFAULT_GUI_PROXY_PORT = 9050;
 
-/**
- * Convert configured prune target MiB to displayed GB. Round up to avoid underestimating max disk usage.
- */
-static inline int PruneMiBtoGB(int64_t mib) { return (mib * 1024 * 1024 + GB_BYTES - 1) / GB_BYTES; }
-
-/**
- * Convert displayed prune target GB to configured MiB. Round down so roundtrip GB -> MiB -> GB conversion is stable.
- */
-static inline int64_t PruneGBtoMiB(int gb) { return gb * GB_BYTES / 1024 / 1024; }
-
-/** Interface from Qt to configuration data structure for Placeholders client.
+/** Interface from Qt to configuration data structure for Bitcoin client.
    To Qt, the options are presented as a list with the different options
    laid out vertically.
    This can be changed to a tree once the settings become sufficiently
@@ -52,7 +41,7 @@ public:
         ProxyUseTor,            // bool
         ProxyIPTor,             // QString
         ProxyPortTor,           // int
-        DisplayUnit,            // PlaceholdersUnits::Unit
+        DisplayUnit,            // BitcoinUnits::Unit
         ThirdPartyTxUrls,       // QString
         Language,               // QString
         CoinControlFeatures,    // bool
@@ -68,9 +57,9 @@ public:
     void Init(bool resetSettings = false);
     void Reset();
 
-    int rowCount(const QModelIndex & parent = QModelIndex()) const override;
-    QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const override;
-    bool setData(const QModelIndex & index, const QVariant & value, int role = Qt::EditRole) override;
+    int rowCount(const QModelIndex & parent = QModelIndex()) const;
+    QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
+    bool setData(const QModelIndex & index, const QVariant & value, int role = Qt::EditRole);
     /** Updates current unit in memory, settings and emits displayUnitChanged(newUnit) signal */
     void setDisplayUnit(const QVariant &value);
 
@@ -84,8 +73,7 @@ public:
     const QString& getOverriddenByCommandLine() { return strOverriddenByCommandLine; }
 
     /* Explicit setters */
-    void SetPruneEnabled(bool prune, bool force = false);
-    void SetPruneTargetGB(int prune_target_gb, bool force = false);
+    void SetPrune(bool prune, bool force = false);
 
     /* Restart flag helper */
     void setRestartRequired(bool fRequired);
@@ -117,4 +105,4 @@ Q_SIGNALS:
     void hideTrayIconChanged(bool);
 };
 
-#endif // PHL_QT_OPTIONSMODEL_H
+#endif // PLACEH_QT_OPTIONSMODEL_H

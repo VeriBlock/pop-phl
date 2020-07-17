@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_SRC_VBK_CONFIG_HPP
-#define BITCOIN_SRC_VBK_CONFIG_HPP
+#ifndef PLACEH_SRC_VBK_CONFIG_HPP
+#define PLACEH_SRC_VBK_CONFIG_HPP
 
 #include <cstdint>
 #include <string>
@@ -42,11 +42,10 @@ struct Config {
     altintegration::Config popconfig;
 
     /////// Pop Rewards section start
-    // TODO: Update for Placeholders
     uint32_t POP_REWARD_PERCENTAGE = 50;
-    int32_t POP_REWARD_COEFFICIENT = 5;
+    int32_t POP_REWARD_COEFFICIENT = 20;
 };
 
 } // namespace VeriBlock
 
-#endif //BITCOIN_SRC_VBK_CONFIG_HPP
+#endif //PLACEH_SRC_VBK_CONFIG_HPP

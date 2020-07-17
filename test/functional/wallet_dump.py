@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
-# Copyright (c) 2016-2020 The Placeholders Core developers
+# Copyright (c) 2016-2019 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test the dumpwallet RPC."""
-import datetime
 import os
-import time
 
-from test_framework.test_framework import PlaceholdersTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import (
     assert_equal,
     assert_raises_rpc_error,
@@ -20,7 +18,6 @@ def read_dump(file_name, addrs, script_addrs, hd_master_addr_old):
     Also check that the old hd_master is inactive
     """
     with open(file_name, encoding='utf8') as inputfile:
-        found_comments = []
         found_legacy_addr = 0
         found_p2sh_segwit_addr = 0
         found_bech32_addr = 0
@@ -29,12 +26,8 @@ def read_dump(file_name, addrs, script_addrs, hd_master_addr_old):
         found_addr_rsv = 0
         hd_master_addr_ret = None
         for line in inputfile:
-            line = line.strip()
-            if not line:
-                continue
-            if line[0] == '#':
-                found_comments.append(line)
-            else:
+            # only read non comment lines
+            if line[0] != "#" and len(line) > 10:
                 # split out some data
                 key_date_label, comment = line.split("#")
                 key_date_label = key_date_label.split(" ")
@@ -73,7 +66,7 @@ def read_dump(file_name, addrs, script_addrs, hd_master_addr_old):
                         elif addr.startswith('2'):
                             # P2SH-segwit address
                             found_p2sh_segwit_addr += 1
-                        elif addr.startswith('xcrt1'):
+                        elif addr.startswith('bcrt1'):
                             found_bech32_addr += 1
                         break
                     elif keytype == "change=1":
@@ -89,10 +82,10 @@ def read_dump(file_name, addrs, script_addrs, hd_master_addr_old):
                         found_script_addr += 1
                         break
 
-        return found_comments, found_legacy_addr, found_p2sh_segwit_addr, found_bech32_addr, found_script_addr, found_addr_chg, found_addr_rsv, hd_master_addr_ret
+        return found_legacy_addr, found_p2sh_segwit_addr, found_bech32_addr, found_script_addr, found_addr_chg, found_addr_rsv, hd_master_addr_ret
 
 
-class WalletDumpTest(PlaceholdersTestFramework):
+class WalletDumpTest(BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
         self.extra_args = [["-keypool=90", "-addresstype=legacy"]]
@@ -129,36 +122,12 @@ class WalletDumpTest(PlaceholdersTestFramework):
         # its capacity
         self.nodes[0].keypoolrefill()
 
-        self.log.info('Mine a block one second before the wallet is dumped')
-        dump_time = int(time.time())
-        self.nodes[0].setmocktime(dump_time - 1)
-        self.nodes[0].generate(1)
-        self.nodes[0].setmocktime(dump_time)
-        dump_time_str = '# * Created on {}Z'.format(
-            datetime.datetime.fromtimestamp(
-                dump_time,
-                tz=datetime.timezone.utc,
-            ).replace(tzinfo=None).isoformat())
-        dump_best_block_1 = '# * Best block at time of backup was {} ({}),'.format(
-            self.nodes[0].getblockcount(),
-            self.nodes[0].getbestblockhash(),
-        )
-        dump_best_block_2 = '#   mined on {}Z'.format(
-            datetime.datetime.fromtimestamp(
-                dump_time - 1,
-                tz=datetime.timezone.utc,
-            ).replace(tzinfo=None).isoformat())
-
-        self.log.info('Dump unencrypted wallet')
+        # dump unencrypted wallet
         result = self.nodes[0].dumpwallet(wallet_unenc_dump)
         assert_equal(result['filename'], wallet_unenc_dump)
 
-        found_comments, found_legacy_addr, found_p2sh_segwit_addr, found_bech32_addr, found_script_addr, found_addr_chg, found_addr_rsv, hd_master_addr_unenc = \
+        found_legacy_addr, found_p2sh_segwit_addr, found_bech32_addr, found_script_addr, found_addr_chg, found_addr_rsv, hd_master_addr_unenc = \
             read_dump(wallet_unenc_dump, addrs, [multisig_addr], None)
-        assert '# End of dump' in found_comments  # Check that file is not corrupt
-        assert_equal(dump_time_str, next(c for c in found_comments if c.startswith('# * Created on')))
-        assert_equal(dump_best_block_1, next(c for c in found_comments if c.startswith('# * Best block')))
-        assert_equal(dump_best_block_2, next(c for c in found_comments if c.startswith('#   mined on')))
         assert_equal(found_legacy_addr, test_addr_count)  # all keys must be in the dump
         assert_equal(found_p2sh_segwit_addr, test_addr_count)  # all keys must be in the dump
         assert_equal(found_bech32_addr, test_addr_count)  # all keys must be in the dump
@@ -168,17 +137,13 @@ class WalletDumpTest(PlaceholdersTestFramework):
 
         # encrypt wallet, restart, unlock and dump
         self.nodes[0].encryptwallet('test')
-        self.nodes[0].walletpassphrase('test', 100)
+        self.nodes[0].walletpassphrase('test', 10)
         # Should be a no-op:
         self.nodes[0].keypoolrefill()
         self.nodes[0].dumpwallet(wallet_enc_dump)
 
-        found_comments, found_legacy_addr, found_p2sh_segwit_addr, found_bech32_addr, found_script_addr, found_addr_chg, found_addr_rsv, _ = \
+        found_legacy_addr, found_p2sh_segwit_addr, found_bech32_addr, found_script_addr, found_addr_chg, found_addr_rsv, _ = \
             read_dump(wallet_enc_dump, addrs, [multisig_addr], hd_master_addr_unenc)
-        assert '# End of dump' in found_comments  # Check that file is not corrupt
-        assert_equal(dump_time_str, next(c for c in found_comments if c.startswith('# * Created on')))
-        assert_equal(dump_best_block_1, next(c for c in found_comments if c.startswith('# * Best block')))
-        assert_equal(dump_best_block_2, next(c for c in found_comments if c.startswith('#   mined on')))
         assert_equal(found_legacy_addr, test_addr_count)  # all keys must be in the dump
         assert_equal(found_p2sh_segwit_addr, test_addr_count)  # all keys must be in the dump
         assert_equal(found_bech32_addr, test_addr_count)  # all keys must be in the dump

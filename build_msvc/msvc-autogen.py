@@ -1,7 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2016-2019 The Placeholders Core developers
-# Distributed under the MIT software license, see the accompanying
-# file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 import os
 import re
@@ -36,7 +33,7 @@ def parse_makefile(makefile):
         for line in file.read().splitlines():
             if current_lib:
                 source = line.split()[0]
-                if source.endswith('.cpp') and not source.startswith('$') and source not in ignore_list:
+                if (source.endswith('.cpp') or source.endswith('.cc')) and not source.startswith('$') and source not in ignore_list:
                     source_filename = source.replace('/', '\\')
                     object_filename = source.replace('/', '_')[:-4] + ".obj"
                     lib_sources[current_lib].append((source_filename, object_filename))
@@ -58,7 +55,7 @@ def set_common_properties(toolset):
         wfile.write(s)
 
 def main():
-    parser = argparse.ArgumentParser(description='Placeholders-core msbuild configuration initialiser.')
+    parser = argparse.ArgumentParser(description='Bitcoin-core msbuild configuration initialiser.')
     parser.add_argument('-toolset', nargs='?',help='Optionally sets the msbuild platform toolset, e.g. v142 for Visual Studio 2019.'
          ' default is %s.'%DEFAULT_PLATFORM_TOOLSET)
     args = parser.parse_args()

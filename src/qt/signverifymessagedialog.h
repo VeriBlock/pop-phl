@@ -1,9 +1,9 @@
-// Copyright (c) 2011-2015 The Placeholders Core developers
+// Copyright (c) 2011-2015 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_QT_SIGNVERIFYMESSAGEDIALOG_H
-#define PHL_QT_SIGNVERIFYMESSAGEDIALOG_H
+#ifndef PLACEH_QT_SIGNVERIFYMESSAGEDIALOG_H
+#define PLACEH_QT_SIGNVERIFYMESSAGEDIALOG_H
 
 #include <QDialog>
 
@@ -30,7 +30,7 @@ public:
     void showTab_VM(bool fShow);
 
 protected:
-    bool eventFilter(QObject *object, QEvent *event) override;
+    bool eventFilter(QObject *object, QEvent *event);
 
 private:
     Ui::SignVerifyMessageDialog *ui;
@@ -50,4 +50,4 @@ private Q_SLOTS:
     void on_clearButton_VM_clicked();
 };
 
-#endif // PHL_QT_SIGNVERIFYMESSAGEDIALOG_H
+#endif // PLACEH_QT_SIGNVERIFYMESSAGEDIALOG_H

@@ -12,5 +12,3 @@ keyserver
 homogenous
 setban
 hist
-ser
-unselect

@@ -1,4 +1,6 @@
-# Copyright (c) 2015-2016 The Placeholders Core developers
+# Copyright (c) 2015-2016 The Bitcoin Core developers
+# Copyright (c) 2019-2020 Xenios SEZC
+# https://www.veriblock.org
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -12,7 +14,6 @@ GENERATED_BENCH_FILES = $(RAW_BENCH_FILES:.raw=.raw.h)
 
 bench_bench_placeh_SOURCES = \
   $(RAW_BENCH_FILES) \
-  bench/addrman.cpp \
   bench/bench_placeh.cpp \
   bench/bench.cpp \
   bench/bench.h \
@@ -29,7 +30,6 @@ bench_bench_placeh_SOURCES = \
   bench/crypto_hash.cpp \
   bench/ccoins_caching.cpp \
   bench/gcs_filter.cpp \
-  bench/hashpadding.cpp \
   bench/merkle_root.cpp \
   bench/mempool_eviction.cpp \
   bench/mempool_stress.cpp \
@@ -45,11 +45,12 @@ bench_bench_placeh_SOURCES = \
 
 nodist_bench_bench_placeh_SOURCES = $(GENERATED_BENCH_FILES)
 
-bench_bench_placeh_CPPFLAGS = $(AM_CPPFLAGS) $(PLACEH_INCLUDES) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS) -I$(builddir)/bench/
+bench_bench_placeh_CPPFLAGS = $(AM_CPPFLAGS) $(PLACEH_INCLUDES) $(EVENT_CLFAGS) $(EVENT_PTHREADS_CFLAGS) -I$(builddir)/bench/
 bench_bench_placeh_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 bench_bench_placeh_LDADD = \
   $(LIBPLACEH_SERVER) \
   $(LIBPLACEH_WALLET) \
+  $(LIBPLACEH_SERVER) \
   $(LIBPLACEH_COMMON) \
   $(LIBPLACEH_UTIL) \
   $(LIBPLACEH_CONSENSUS) \

@@ -1,10 +1,10 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2020 The Placeholders Core developers
+// Copyright (c) 2009-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_INIT_H
-#define PHL_INIT_H
+#ifndef PLACEH_INIT_H
+#define PLACEH_INIT_H
 
 #include <memory>
 #include <string>
@@ -14,9 +14,6 @@ struct NodeContext;
 namespace boost {
 class thread_group;
 } // namespace boost
-namespace util {
-class Ref;
-} // namespace util
 
 /** Interrupt threads */
 void Interrupt(NodeContext& node);
@@ -50,18 +47,18 @@ bool AppInitSanityChecks();
  */
 bool AppInitLockDataDirectory();
 /**
- * Placeholders core main initialization.
+ * Bitcoin core main initialization.
  * @note This should only be done after daemonization. Call Shutdown() if this function fails.
  * @pre Parameters should be parsed and config file should be read, AppInitLockDataDirectory should have been called.
  */
-bool AppInitMain(const util::Ref& context, NodeContext& node);
+bool AppInitMain(NodeContext& node);
 
 /**
- * Register all arguments with the ArgsManager
+ * Setup the arguments for gArgs
  */
-void SetupServerArgs(NodeContext& node);
+void SetupServerArgs();
 
 /** Returns licensing information (for -version) */
 std::string LicenseInfo();
 
-#endif // PHL_INIT_H
+#endif // PLACEH_INIT_H

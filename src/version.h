@@ -1,15 +1,15 @@
-// Copyright (c) 2012-2018 The Placeholders Core developers
+// Copyright (c) 2012-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_VERSION_H
-#define PHL_VERSION_H
+#ifndef PLACEH_VERSION_H
+#define PLACEH_VERSION_H
 
 /**
  * network protocol versioning
  */
 
-static const int PROTOCOL_VERSION = 70030;
+static const int PROTOCOL_VERSION = 70015;
 
 //! initial proto version, to be increased after version/verack negotiation
 static const int INIT_PROTO_VERSION = 209;
@@ -42,7 +42,4 @@ static const int SHORT_IDS_BLOCKS_VERSION = 70014;
 //! not banning for invalid compact blocks starts with this version
 static const int INVALID_CB_NO_BAN_VERSION = 70015;
 
-//! getassetdata reutrn asstnotfound, and assetdata doesn't have blockhash in the data
-static const int X16RV2_VERSION = 70025;
-
-#endif // PHL_VERSION_H
+#endif // PLACEH_VERSION_H

@@ -30,10 +30,6 @@
         <translation>ลบที่อยู่ที่เลือกไว้ออกจากรายการ</translation>
     </message>
     <message>
-        <source>Enter address or label to search</source>
-        <translation>ป้อนที่อยู่หรือฉลากเพื่อค้นหา</translation>
-    </message>
-    <message>
         <source>Export the data in the current tab to a file</source>
         <translation>ส่งออกข้อมูลที่อยู่ในแถบนี้ไปในไฟล์</translation>
     </message>
@@ -132,10 +128,6 @@
         <translation>ทำซ้ำข้อความรหัสใหม่</translation>
     </message>
     <message>
-        <source>Show passphrase</source>
-        <translation>ดูวลี</translation>
-    </message>
-    <message>
         <source>Encrypt wallet</source>
         <translation>กระเป๋าสตางค์ เข้ารหัส</translation>
     </message>
@@ -159,14 +151,6 @@
         <source>Change passphrase</source>
         <translation>เปลี่ยน ข้อความรหัสผ่าน</translation>
     </message>
-    <message>
-        <source>Confirm wallet encryption</source>
-        <translation>ยืนยันการเข้ารหัสกระเป๋าเงิน</translation>
-    </message>
-    <message>
-        <source>Are you sure you wish to encrypt your wallet?</source>
-        <translation>คุณแน่ใจหรือว่าต้องการเข้ารหัสกระเป๋าเงินของคุณ?</translation>
-    </message>
     </context>
 <context>
     <name>BanTableModel</name>
@@ -180,7 +164,7 @@
     </message>
 </context>
 <context>
-    <name>PlaceholdersGUI</name>
+    <name>BitcoinGUI</name>
     <message>
         <source>Sign &amp;message...</source>
         <translation>เซ็นต์ชื่อด้วย &amp;ข้อความ...</translation>
@@ -254,16 +238,12 @@
         <translation>เปิด &amp;URI</translation>
     </message>
     <message>
-        <source>Create Wallet...</source>
-        <translation>สร้าง Wallet</translation>
-    </message>
-    <message>
         <source>Reindexing blocks on disk...</source>
         <translation>กำลังทำดัชนี ที่เก็บบล็อก ใหม่ ในดิสก์...</translation>
     </message>
     <message>
         <source>Send coins to a Placeholders address</source>
-        <translation>ส่ง coins ไปยัง ที่เก็บ Placeholders</translation>
+        <translation>ส่ง coins ไปยัง ที่เก็บ Bitcoin</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -272,6 +252,14 @@
     <message>
         <source>Change the passphrase used for wallet encryption</source>
         <translation>เปลี่ยนรหัสผ่านที่ใช้สำหรับการเข้ารหัสกระเป๋าเงิน</translation>
+    </message>
+    <message>
+        <source>&amp;Debug window</source>
+        <translation>&amp;หน้าต่าง Debug</translation>
+    </message>
+    <message>
+        <source>Open debugging and diagnostic console</source>
+        <translation>เปิด แผลงควบคุม debugging และ diagnostic</translation>
     </message>
     <message>
         <source>&amp;Verify message...</source>
@@ -334,12 +322,16 @@
         <translation>แสดงรายการ ที่เก็บเงินที่จะรับ placeh เข้า และป้ายชื่อ ที่ใช้ไปแล้ว</translation>
     </message>
     <message>
+        <source>Open a placeh: URI or payment request</source>
+        <translation>เปิด placeh: URI หรือ การเรียกเก็บเงิน (การเรียกให้ชำระเงิน)</translation>
+    </message>
+    <message>
         <source>&amp;Command-line options</source>
         <translation>&amp;ตัวเลือก Command-line</translation>
     </message>
     <message numerus="yes">
         <source>%n active connection(s) to Placeholders network</source>
-        <translation><numerusform>%n ช่องการเชื่อมต่อที่ใช้งานได้ เพื่อเชื่อมกับเครือข่าย Placeholders</numerusform></translation>
+        <translation><numerusform>%n ช่องการเชื่อมต่อที่ใช้งานได้ เพื่อเชื่อมกับเครือข่าย Bitcoin</numerusform></translation>
     </message>
     <message>
         <source>Indexing blocks on disk...</source>
@@ -443,11 +435,7 @@
         <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;locked&lt;/b&gt;</source>
         <translation>กระเป๋าเงินถูก &lt;b&gt;เข้ารหัส&lt;/b&gt; และในปัจจุบัน &lt;b&gt;ล็อค &lt;/b&gt;</translation>
     </message>
-    <message>
-        <source>A fatal error occurred. Placeholders can no longer continue safely and will quit.</source>
-        <translation>เกิดข้อผิดพลาดร้ายแรง Placeholders ไม่สามารถดำเนินการต่อได้อย่างปลอดภัยอีกต่อไปและจะยกเลิก</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>CoinControlDialog</name>
     <message>
@@ -519,22 +507,6 @@
         <translation>ยืนยันแล้ว</translation>
     </message>
     <message>
-        <source>Copy address</source>
-        <translation>คัดลอกที่อยู่</translation>
-    </message>
-    <message>
-        <source>Copy label</source>
-        <translation>คัดลอกป้ายกำกับ</translation>
-    </message>
-    <message>
-        <source>Copy amount</source>
-        <translation>คัดลอกจำนวนเงิน</translation>
-    </message>
-    <message>
-        <source>Copy transaction ID</source>
-        <translation>คัดลอก ID ธุรกรรม</translation>
-    </message>
-    <message>
         <source>(no label)</source>
         <translation>(ไม่มีฉลาก)</translation>
     </message>
@@ -544,19 +516,7 @@
     </context>
 <context>
     <name>CreateWalletDialog</name>
-    <message>
-        <source>Encrypt Wallet</source>
-        <translation>เข้ารหัสกระเป๋าเงิน</translation>
-    </message>
-    <message>
-        <source>Make Blank Wallet</source>
-        <translation>ทำกระเป๋าเงินเปล่า</translation>
-    </message>
-    <message>
-        <source>Create</source>
-        <translation>สร้าง</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>EditAddressDialog</name>
     <message>
@@ -610,6 +570,10 @@
         <translation>เวอร์ชั่น</translation>
     </message>
     <message>
+        <source>(%1-bit)</source>
+        <translation>(%1-บิท)</translation>
+    </message>
+    <message>
         <source>About %1</source>
         <translation>เกี่ยวกับ %1</translation>
     </message>
@@ -641,16 +605,8 @@
         <translation>ใช้ไดเร็กทอรี่ข้อมูลที่ตั้งค่าเอง:</translation>
     </message>
     <message>
-        <source>Placeholders</source>
-        <translation>Placeholders</translation>
-    </message>
-    <message>
-        <source>Approximately %1 GB of data will be stored in this directory.</source>
-        <translation>ประมาณ %1 GB ของข้อมูลจะเก็บในไดเร็กทอรี่</translation>
-    </message>
-    <message>
-        <source>The wallet will also be stored in this directory.</source>
-        <translation>The wallet เก็บใว้ในไดเร็กทอรี่</translation>
+        <source>Bitcoin</source>
+        <translation>Bitcoin</translation>
     </message>
     <message>
         <source>Error: Specified data directory "%1" cannot be created.</source>
@@ -679,10 +635,22 @@
 <context>
     <name>OpenURIDialog</name>
     <message>
+        <source>Open URI</source>
+        <translation>เปิด URI</translation>
+    </message>
+    <message>
+        <source>Open payment request from URI or file</source>
+        <translation>เปิด การเรียกการชำระเงิน จาก URI หรือ ไฟล์</translation>
+    </message>
+    <message>
         <source>URI:</source>
         <translation>URI:</translation>
     </message>
-</context>
+    <message>
+        <source>Select payment request file</source>
+        <translation>เลือก ไฟล์การเรียกการชำระเงิน</translation>
+    </message>
+    </context>
 <context>
     <name>OpenWalletActivity</name>
     </context>
@@ -857,15 +825,7 @@
         <source>&amp;Label:</source>
         <translation>&amp;ชื่อ:</translation>
     </message>
-    <message>
-        <source>Copy label</source>
-        <translation>คัดลอกป้ายกำกับ</translation>
-    </message>
-    <message>
-        <source>Copy amount</source>
-        <translation>คัดลอกจำนวนเงิน</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>ReceiveRequestDialog</name>
     <message>
@@ -935,10 +895,6 @@
         <translation>เศษ:</translation>
     </message>
     <message>
-        <source>Copy amount</source>
-        <translation>คัดลอกจำนวนเงิน</translation>
-    </message>
-    <message>
         <source>(no label)</source>
         <translation>(ไม่มีฉลาก)</translation>
     </message>
@@ -949,6 +905,9 @@
         <source>&amp;Label:</source>
         <translation>&amp;ชื่อ:</translation>
     </message>
+    </context>
+<context>
+    <name>SendConfirmationDialog</name>
     </context>
 <context>
     <name>ShutdownWindow</name>
@@ -990,22 +949,6 @@
     </context>
 <context>
     <name>TransactionView</name>
-    <message>
-        <source>Copy address</source>
-        <translation>คัดลอกที่อยู่</translation>
-    </message>
-    <message>
-        <source>Copy label</source>
-        <translation>คัดลอกป้ายกำกับ</translation>
-    </message>
-    <message>
-        <source>Copy amount</source>
-        <translation>คัดลอกจำนวนเงิน</translation>
-    </message>
-    <message>
-        <source>Copy transaction ID</source>
-        <translation>คัดลอก ID ธุรกรรม</translation>
-    </message>
     <message>
         <source>Comma separated file (*.csv)</source>
         <translation>ไฟล์ที่คั่นด้วยจุลภาค (* .csv)</translation>

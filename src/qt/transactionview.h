@@ -1,9 +1,9 @@
-// Copyright (c) 2011-2019 The Placeholders Core developers
+// Copyright (c) 2011-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_QT_TRANSACTIONVIEW_H
-#define PHL_QT_TRANSACTIONVIEW_H
+#ifndef PLACEH_QT_TRANSACTIONVIEW_H
+#define PLACEH_QT_TRANSACTIONVIEW_H
 
 #include <qt/guiutil.h>
 
@@ -60,9 +60,9 @@ public:
     };
 
 private:
-    WalletModel *model{nullptr};
-    TransactionFilterProxy *transactionProxyModel{nullptr};
-    QTableView *transactionView{nullptr};
+    WalletModel *model;
+    TransactionFilterProxy *transactionProxyModel;
+    QTableView *transactionView;
 
     QComboBox *dateWidget;
     QComboBox *typeWidget;
@@ -75,18 +75,16 @@ private:
     QFrame *dateRangeWidget;
     QDateTimeEdit *dateFrom;
     QDateTimeEdit *dateTo;
-    QAction *abandonAction{nullptr};
-    QAction *bumpFeeAction{nullptr};
-    QAction *copyAddressAction{nullptr};
-    QAction *copyLabelAction{nullptr};
+    QAction *abandonAction;
+    QAction *bumpFeeAction;
 
     QWidget *createDateRangeWidget();
 
-    GUIUtil::TableViewLastColumnResizingFixer *columnResizingFixer{nullptr};
+    GUIUtil::TableViewLastColumnResizingFixer *columnResizingFixer;
 
-    virtual void resizeEvent(QResizeEvent* event) override;
+    virtual void resizeEvent(QResizeEvent* event);
 
-    bool eventFilter(QObject *obj, QEvent *event) override;
+    bool eventFilter(QObject *obj, QEvent *event);
 
 private Q_SLOTS:
     void contextualMenu(const QPoint &);
@@ -123,4 +121,4 @@ public Q_SLOTS:
     void focusTransaction(const uint256& txid);
 };
 
-#endif // PHL_QT_TRANSACTIONVIEW_H
+#endif // PLACEH_QT_TRANSACTIONVIEW_H

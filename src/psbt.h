@@ -1,9 +1,9 @@
-// Copyright (c) 2009-2020 The Placeholders Core developers
+// Copyright (c) 2009-2019 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_PSBT_H
-#define PHL_PSBT_H
+#ifndef PLACEH_PSBT_H
+#define PLACEH_PSBT_H
 
 #include <attributes.h>
 #include <node/transaction.h>
@@ -39,10 +39,6 @@ static constexpr uint8_t PSBT_OUT_BIP32_DERIVATION = 0x02;
 // The separator is 0x00. Reading this in means that the unserializer can interpret it
 // as a 0 length key which indicates that this is the separator. The separator has no value.
 static constexpr uint8_t PSBT_SEPARATOR = 0x00;
-
-// BIP 174 does not specify a maximum file size, but we set a limit anyway
-// to prevent reading a stream indefinitely and running out of memory.
-const std::streamsize MAX_FILE_SIZE_PSBT = 100000000; // 100 MiB
 
 /** A structure for PSBTs which contain per-input information */
 struct PSBTInput
@@ -399,7 +395,7 @@ struct PartiallySignedTransaction
     bool IsNull() const;
 
     /** Merge psbt into this. The two psbts must have the same underlying CTransaction (i.e. the
-      * same actual Placeholders transaction.) Returns true if the merge succeeded, false otherwise. */
+      * same actual Bitcoin transaction.) Returns true if the merge succeeded, false otherwise. */
     NODISCARD bool Merge(const PartiallySignedTransaction& psbt);
     bool IsSane() const;
     bool AddInput(const CTxIn& txin, PSBTInput& psbtin);
@@ -588,7 +584,7 @@ void UpdatePSBTOutput(const SigningProvider& provider, PartiallySignedTransactio
 /**
  * Finalizes a PSBT if possible, combining partial signatures.
  *
- * @param[in,out] psbtx PartiallySignedTransaction to finalize
+ * @param[in,out] &psbtx reference to PartiallySignedTransaction to finalize
  * return True if the PSBT is now complete, false otherwise
  */
 bool FinalizePSBT(PartiallySignedTransaction& psbtx);
@@ -596,7 +592,7 @@ bool FinalizePSBT(PartiallySignedTransaction& psbtx);
 /**
  * Finalizes a PSBT if possible, and extracts it to a CMutableTransaction if it could be finalized.
  *
- * @param[in]  psbtx PartiallySignedTransaction
+ * @param[in]  &psbtx reference to PartiallySignedTransaction
  * @param[out] result CMutableTransaction representing the complete transaction, if successful
  * @return True if we successfully extracted the transaction, false otherwise
  */
@@ -605,7 +601,7 @@ bool FinalizeAndExtractPSBT(PartiallySignedTransaction& psbtx, CMutableTransacti
 /**
  * Combines PSBTs with the same underlying transaction, resulting in a single PSBT with all partial signatures from each input.
  *
- * @param[out] out   the combined PSBT, if successful
+ * @param[out] &out   the combined PSBT, if successful
  * @param[in]  psbtxs the PSBTs to combine
  * @return error (OK if we successfully combined the transactions, other error if they were not compatible)
  */
@@ -616,4 +612,4 @@ NODISCARD bool DecodeBase64PSBT(PartiallySignedTransaction& decoded_psbt, const 
 //! Decode a raw (binary blob) PSBT into a PartiallySignedTransaction
 NODISCARD bool DecodeRawPSBT(PartiallySignedTransaction& decoded_psbt, const std::string& raw_psbt, std::string& error);
 
-#endif // PHL_PSBT_H
+#endif // PLACEH_PSBT_H

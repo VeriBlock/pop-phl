@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2020 The Placeholders Core developers
+# Copyright (c) 2014-2019 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test the abandontransaction RPC.
@@ -12,16 +12,17 @@
 """
 from decimal import Decimal
 
-from test_framework.test_framework import PlaceholdersTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import (
     assert_equal,
     assert_raises_rpc_error,
     connect_nodes,
     disconnect_nodes,
+    wait_until,
 )
 
 
-class AbandonConflictTest(PlaceholdersTestFramework):
+class AbandonConflictTest(BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 2
         self.extra_args = [["-minrelaytxfee=0.00001"], []]
@@ -97,7 +98,7 @@ class AbandonConflictTest(PlaceholdersTestFramework):
         # TODO: redo with eviction
         self.stop_node(0)
         self.start_node(0, extra_args=["-minrelaytxfee=0.0001"])
-        assert self.nodes[0].getmempoolinfo()['loaded']
+        wait_until(lambda: self.nodes[0].getmempoolinfo()['loaded'])
 
         # Verify txs no longer in either node's mempool
         assert_equal(len(self.nodes[0].getrawmempool()), 0)
@@ -109,8 +110,8 @@ class AbandonConflictTest(PlaceholdersTestFramework):
         assert_equal(newbalance, balance - signed3_change)
         # Unconfirmed received funds that are not in mempool, also shouldn't show
         # up in unconfirmed balance
-        balances = self.nodes[0].getbalances()['mine']
-        assert_equal(balances['untrusted_pending'] + balances['trusted'], newbalance)
+        unconfbalance = self.nodes[0].getunconfirmedbalance() + self.nodes[0].getbalance()
+        assert_equal(unconfbalance, newbalance)
         # Also shouldn't show up in listunspent
         assert not txABC2 in [utxo["txid"] for utxo in self.nodes[0].listunspent(0)]
         balance = newbalance
@@ -125,7 +126,7 @@ class AbandonConflictTest(PlaceholdersTestFramework):
         # Verify that even with a low min relay fee, the tx is not reaccepted from wallet on startup once abandoned
         self.stop_node(0)
         self.start_node(0, extra_args=["-minrelaytxfee=0.00001"])
-        assert self.nodes[0].getmempoolinfo()['loaded']
+        wait_until(lambda: self.nodes[0].getmempoolinfo()['loaded'])
 
         assert_equal(len(self.nodes[0].getrawmempool()), 0)
         assert_equal(self.nodes[0].getbalance(), balance)
@@ -147,7 +148,7 @@ class AbandonConflictTest(PlaceholdersTestFramework):
         # Remove using high relay fee again
         self.stop_node(0)
         self.start_node(0, extra_args=["-minrelaytxfee=0.0001"])
-        assert self.nodes[0].getmempoolinfo()['loaded']
+        wait_until(lambda: self.nodes[0].getmempoolinfo()['loaded'])
         assert_equal(len(self.nodes[0].getrawmempool()), 0)
         newbalance = self.nodes[0].getbalance()
         assert_equal(newbalance, balance - Decimal("24.9996"))

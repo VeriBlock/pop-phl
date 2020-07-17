@@ -1,9 +1,9 @@
-// Copyright (c) 2018 The Placeholders Core developers
+// Copyright (c) 2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_UTIL_BYTEVECTORHASH_H
-#define PHL_UTIL_BYTEVECTORHASH_H
+#ifndef PLACEH_UTIL_BYTEVECTORHASH_H
+#define PLACEH_UTIL_BYTEVECTORHASH_H
 
 #include <stdint.h>
 #include <vector>
@@ -23,4 +23,4 @@ public:
     size_t operator()(const std::vector<unsigned char>& input) const;
 };
 
-#endif // PHL_UTIL_BYTEVECTORHASH_H
+#endif // PLACEH_UTIL_BYTEVECTORHASH_H

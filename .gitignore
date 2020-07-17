@@ -9,13 +9,10 @@ src/vbk/grpc_integration/*.pb.h
 src/placeh
 src/placehd
 src/placeh-cli
-src/placeh-gui
-src/placeh-node
 src/placeh-tx
 src/placeh-wallet
-src/test/fuzz
-!src/test/fuzz/*.*
 src/test/test_placeh
+src/test/test_placeh_fuzzy
 src/qt/test/test_placeh-qt
 
 # autoreconf
@@ -35,7 +32,6 @@ build-aux/m4/ltversion.m4
 build-aux/missing
 build-aux/compile
 build-aux/test-driver
-config.cache
 config.log
 config.status
 configure
@@ -96,7 +92,7 @@ src/qt/placeh-qt.includes
 *.qm
 Makefile
 !depends/Makefile
-src/qt/placeh-qt
+placeh-qt
 Placeholders-Qt.app
 background.tiff*
 
@@ -114,9 +110,6 @@ qrc_*.cpp
 .DS_Store
 build
 
-# Previous releases
-releases
-
 #lcov
 *.gcno
 *.gcda
@@ -131,7 +124,6 @@ linux-build
 win32-build
 test/config.ini
 test/cache/*
-test/.mypy_cache/
 
 !src/leveldb*/Makefile
 
@@ -150,7 +142,13 @@ osx_volname
 dist/
 *.background.tiff
 
-.appdata
-
-placeh_state
-placeh_state_test
+*.tmp
+compile_commands.json
+.idea
+.scannerwork
+.project
+.cproject
+.settings
+configure.lineno
+*.pb.*
+placeh*

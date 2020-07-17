@@ -1,4 +1,4 @@
-// Copyright (c) 2019 The Placeholders Core developers
+// Copyright (c) 2019 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -59,9 +59,4 @@ bool CreateWalletDialog::isDisablePrivateKeysChecked() const
 bool CreateWalletDialog::isMakeBlankWalletChecked() const
 {
     return ui->blank_wallet_checkbox->isChecked();
-}
-
-bool CreateWalletDialog::isDescriptorWalletChecked() const
-{
-    return ui->descriptor_checkbox->isChecked();
 }

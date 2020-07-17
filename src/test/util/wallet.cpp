@@ -1,4 +1,4 @@
-// Copyright (c) 2019 The Placeholders Core developers
+// Copyright (c) 2019 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -27,7 +27,8 @@ std::string getnewaddress(CWallet& w)
 void importaddress(CWallet& wallet, const std::string& address)
 {
     auto spk_man = wallet.GetLegacyScriptPubKeyMan();
-    LOCK2(wallet.cs_wallet, spk_man->cs_KeyStore);
+    LOCK(wallet.cs_wallet);
+    AssertLockHeld(spk_man->cs_wallet);
     const auto dest = DecodeDestination(address);
     assert(IsValidDestination(dest));
     const auto script = GetScriptForDestination(dest);

@@ -18,7 +18,6 @@
 
 #include <vbk/service_locator.hpp>
 #include <vbk/test/util/mock.hpp>
-#include <vbk/test/util/e2e_fixture.hpp>
 
 #include <string>
 #include <vbk/init.hpp>
@@ -28,7 +27,7 @@
 
 UniValue CallRPC(std::string args);
 
-BOOST_AUTO_TEST_SUITE(rpc_service_tests)
+BOOST_FIXTURE_TEST_SUITE(rpc_service_tests, TestChain100Setup)
 
 BOOST_AUTO_TEST_CASE(getpopdata_test)
 {
@@ -81,9 +80,29 @@ BOOST_AUTO_TEST_CASE(submitpop_test)
     //    BOOST_CHECK(mempool.exists(popTxHash));
 }
 
-BOOST_FIXTURE_TEST_CASE(savepopstate_test, E2eFixture)
+static void InvalidateTestBlock(CBlockIndex* pblock)
 {
-    std::string file_name = "placeh_state_test";
+    BlockValidationState state;
+
+    InvalidateBlock(state, Params(), pblock);
+    ActivateBestChain(state, Params());
+}
+
+static void ReconsiderTestBlock(CBlockIndex* pblock)
+{
+    BlockValidationState state;
+
+    {
+        LOCK(cs_main);
+        ResetBlockFailureFlags(pblock);
+    }
+    ActivateBestChain(state, Params(), std::shared_ptr<const CBlock>());
+}
+
+BOOST_AUTO_TEST_CASE(savepopstate_test)
+{
+    CScript cbKey = CScript() << ToByteVector(coinbaseKey.GetPubKey()) << OP_CHECKSIG;
+    std::string file_name = "vbtc_state_test";
 
     auto* oldTip = ChainActive().Tip();
     InvalidateTestBlock(oldTip);
@@ -120,12 +139,12 @@ BOOST_FIXTURE_TEST_CASE(savepopstate_test, E2eFixture)
     std::vector<uint8_t> bytes(fsize);
     file.read((char*)bytes.data(), bytes.size());
 
-    altintegration::TestCase placeh_state = altintegration::TestCase::fromRaw(bytes);
+    altintegration::TestCase vbtc_state = altintegration::TestCase::fromRaw(bytes);
 
-    BOOST_CHECK_EQUAL(placeh_state.alt_tree.size(), 104);
+    BOOST_CHECK_EQUAL(vbtc_state.alt_tree.size(), 104);
 
     altintegration::AltBlock tip = VeriBlock::blockToAltBlock(*ChainActive().Tip());
-    BOOST_CHECK(tip == placeh_state.alt_tree.back().first);
+    BOOST_CHECK(tip == vbtc_state.alt_tree.back().first);
 
     file.close();
 }

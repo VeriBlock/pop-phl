@@ -1,9 +1,10 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2020 The Placeholders Core developers
+// Copyright (c) 2009-2019 The Bitcoin Core developers
+// Copyright (c) 2019-2020 Xenios SEZC
+// https://www.veriblock.org
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include <sync.h>
 #include <util/system.h>
 
 #include <chainparamsbase.h>
@@ -18,7 +19,7 @@
 #endif
 
 #ifndef WIN32
-// for posix_fallocate, in configure.ac we check if it is present after this
+// for posix_fallocate
 #ifdef __linux__
 
 #ifdef _POSIX_C_SOURCE
@@ -64,30 +65,28 @@
 #include <malloc.h>
 #endif
 
-#include <boost/algorithm/string/replace.hpp>
 #include <thread>
-#include <typeinfo>
 #include <univalue.h>
 
 // Application startup time (used for uptime calculation)
 const int64_t nStartupTime = GetTime();
 
-const char * const PHL_CONF_FILENAME = "placeh.conf";
+const char * const PLACEH_CONF_FILENAME = "placeh.conf";
 
 ArgsManager gArgs;
 
-/** Mutex to protect dir_locks. */
-static Mutex cs_dir_locks;
 /** A map that contains all the currently held directory locks. After
  * successful locking, these will be held here until the global destructor
  * cleans them up and thus automatically unlocks them, or ReleaseDirectoryLocks
  * is called.
  */
-static std::map<std::string, std::unique_ptr<fsbridge::FileLock>> dir_locks GUARDED_BY(cs_dir_locks);
+static std::map<std::string, std::unique_ptr<fsbridge::FileLock>> dir_locks;
+/** Mutex to protect dir_locks. */
+static std::mutex cs_dir_locks;
 
 bool LockDirectory(const fs::path& directory, const std::string lockfile_name, bool probe_only)
 {
-    LOCK(cs_dir_locks);
+    std::lock_guard<std::mutex> ulock(cs_dir_locks);
     fs::path pathLockFile = directory / lockfile_name;
 
     // If a lock for this directory already exists in the map, don't try to re-lock it
@@ -111,13 +110,13 @@ bool LockDirectory(const fs::path& directory, const std::string lockfile_name, b
 
 void UnlockDirectory(const fs::path& directory, const std::string& lockfile_name)
 {
-    LOCK(cs_dir_locks);
+    std::lock_guard<std::mutex> lock(cs_dir_locks);
     dir_locks.erase((directory / lockfile_name).string());
 }
 
 void ReleaseDirectoryLocks()
 {
-    LOCK(cs_dir_locks);
+    std::lock_guard<std::mutex> ulock(cs_dir_locks);
     dir_locks.clear();
 }
 
@@ -140,12 +139,6 @@ bool CheckDiskSpace(const fs::path& dir, uint64_t additional_bytes)
 
     uint64_t free_bytes_available = fs::space(dir).available;
     return free_bytes_available >= min_disk_space + additional_bytes;
-}
-
-std::streampos GetFileSize(const char* path, std::streamsize max) {
-    std::ifstream file(path, std::ios::binary);
-    file.ignore(max);
-    return file.gcount();
 }
 
 /**
@@ -233,11 +226,10 @@ static bool CheckValid(const std::string& key, const util::SettingsValue& val, u
     return true;
 }
 
-// Define default constructor and destructor that are not inline, so code instantiating this class doesn't need to
-// #include class definitions for all members.
-// For example, m_settings has an internal dependency on univalue.
-ArgsManager::ArgsManager() {}
-ArgsManager::~ArgsManager() {}
+ArgsManager::ArgsManager()
+{
+    // nothing to do
+}
 
 const std::set<std::string> ArgsManager::GetUnsuitableSectionOnlyArgs() const
 {
@@ -321,18 +313,21 @@ bool ArgsManager::ParseParameters(int argc, const char* const argv[], std::strin
         std::string section;
         util::SettingsValue value = InterpretOption(section, key, val);
         Optional<unsigned int> flags = GetArgFlags('-' + key);
-
-        // Unknown command line options and command line options with dot
-        // characters (which are returned from InterpretOption with nonempty
-        // section strings) are not valid.
-        if (!flags || !section.empty()) {
-            error = strprintf("Invalid parameter %s", argv[i]);
+        if (flags) {
+            if (!CheckValid(key, value, *flags, error)) {
+                return false;
+            }
+            // Weird behavior preserved for backwards compatibility: command
+            // line options with section prefixes are allowed but ignored. It
+            // would be better if these options triggered the Invalid parameter
+            // error below.
+            if (section.empty()) {
+                m_settings.command_line_options[key].push_back(value);
+            }
+        } else {
+            error = strprintf("Invalid parameter -%s", key);
             return false;
         }
-
-        if (!CheckValid(key, value, *flags, error)) return false;
-
-        m_settings.command_line_options[key].push_back(value);
     }
 
     // we do not allow -includeconf from command line
@@ -563,9 +558,9 @@ void PrintExceptionContinue(const std::exception* pex, const char* pszThread)
 
 fs::path GetDefaultDataDir()
 {
-    // Windows < Vista: C:\Documents and Settings\Username\Application Data\Placeholders
-    // Windows >= Vista: C:\Users\Username\AppData\Roaming\Placeholders
-    // Mac: ~/Library/Application Support/Placeholders
+    // Windows < Vista: C:\Documents and Settings\Username\Application Data\Bitcoin
+    // Windows >= Vista: C:\Users\Username\AppData\Roaming\Bitcoin
+    // Mac: ~/Library/Application Support/Bitcoin
     // Unix: ~/.placeh
 #ifdef WIN32
     // Windows
@@ -749,7 +744,7 @@ bool ArgsManager::ReadConfigFiles(std::string& error, bool ignore_invalid_keys)
         m_config_sections.clear();
     }
 
-    const std::string confPath = GetArg("-conf", PHL_CONF_FILENAME);
+    const std::string confPath = GetArg("-conf", PLACEH_CONF_FILENAME);
     fsbridge::ifstream stream(GetConfigFile(confPath));
 
     // ok to not have a config file
@@ -870,32 +865,6 @@ std::vector<util::SettingsValue> ArgsManager::GetSettingsList(const std::string&
     return util::GetSettingsList(m_settings, m_network, SettingName(arg), !UseDefaultSection(arg));
 }
 
-void ArgsManager::logArgsPrefix(
-    const std::string& prefix,
-    const std::string& section,
-    const std::map<std::string, std::vector<util::SettingsValue>>& args) const
-{
-    std::string section_str = section.empty() ? "" : "[" + section + "] ";
-    for (const auto& arg : args) {
-        for (const auto& value : arg.second) {
-            Optional<unsigned int> flags = GetArgFlags('-' + arg.first);
-            if (flags) {
-                std::string value_str = (*flags & SENSITIVE) ? "****" : value.write();
-                LogPrintf("%s %s%s=%s\n", prefix, section_str, arg.first, value_str);
-            }
-        }
-    }
-}
-// TODO: Update for Placeholders to remove pop config printing on init
-void ArgsManager::LogArgs() const
-{
-    LOCK(cs_args);
-    for (const auto& section : m_settings.ro_config) {
-        logArgsPrefix("Config file arg:", section.first, section.second);
-    }
-    logArgsPrefix("Command-line arg:", "", m_settings.command_line_options);
-}
-
 bool RenameOver(fs::path src, fs::path dest)
 {
 #ifdef WIN32
@@ -1006,21 +975,19 @@ void AllocateFileRange(FILE *file, unsigned int offset, unsigned int length) {
     SetEndOfFile(hFile);
 #elif defined(MAC_OSX)
     // OSX specific version
-    // NOTE: Contrary to other OS versions, the OSX version assumes that
-    // NOTE: offset is the size of the file.
     fstore_t fst;
     fst.fst_flags = F_ALLOCATECONTIG;
     fst.fst_posmode = F_PEOFPOSMODE;
     fst.fst_offset = 0;
-    fst.fst_length = length; // mac os fst_length takes the # of free bytes to allocate, not desired file size
+    fst.fst_length = (off_t)offset + length;
     fst.fst_bytesalloc = 0;
     if (fcntl(fileno(file), F_PREALLOCATE, &fst) == -1) {
         fst.fst_flags = F_ALLOCATEALL;
         fcntl(fileno(file), F_PREALLOCATE, &fst);
     }
-    ftruncate(fileno(file), static_cast<off_t>(offset) + length);
+    ftruncate(fileno(file), fst.fst_length);
 #else
-    #if defined(HAVE_POSIX_FALLOCATE)
+    #if defined(__linux__)
     // Version using posix_fallocate
     off_t nEndPos = (off_t)offset + length;
     if (0 == posix_fallocate(fileno(file), 0, nEndPos)) return;
@@ -1053,15 +1020,6 @@ fs::path GetSpecialFolderPath(int nFolder, bool fCreate)
 
     LogPrintf("SHGetSpecialFolderPathW() failed, could not obtain requested path.\n");
     return fs::path("");
-}
-#endif
-
-#ifndef WIN32
-std::string ShellEscape(const std::string& arg)
-{
-    std::string escaped = arg;
-    boost::replace_all(escaped, "'", "'\"'\"'");
-    return "'" + escaped + "'";
 }
 #endif
 
@@ -1138,9 +1096,9 @@ std::string CopyrightHolders(const std::string& strPrefix)
     const auto copyright_devs = strprintf(_(COPYRIGHT_HOLDERS).translated, COPYRIGHT_HOLDERS_SUBSTITUTION);
     std::string strCopyrightHolders = strPrefix + copyright_devs;
 
-    // Make sure Placeholders Core copyright is not removed by accident
-    if (copyright_devs.find("Placeholders Core") == std::string::npos) {
-        strCopyrightHolders += "\n" + strPrefix + "The Placeholders Core developers";
+    // Make sure Bitcoin Core copyright is not removed by accident
+    if (copyright_devs.find("Bitcoin Core") == std::string::npos) {
+        strCopyrightHolders += "\n" + strPrefix + "The Bitcoin Core developers";
     }
     return strCopyrightHolders;
 }

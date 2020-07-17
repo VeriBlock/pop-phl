@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2019 The Placeholders Core developers
+# Copyright (c) 2019 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -17,14 +17,14 @@ from decimal import Decimal
 import os
 import shutil
 
-from test_framework.test_framework import PlaceholdersTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import (
         assert_equal,
         connect_nodes,
         disconnect_nodes,
 )
 
-class ReorgsRestoreTest(PlaceholdersTestFramework):
+class ReorgsRestoreTest(BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 3
 
@@ -90,7 +90,7 @@ class ReorgsRestoreTest(PlaceholdersTestFramework):
         # Node0 wallet file is loaded on longest sync'ed node1
         self.stop_node(1)
         self.nodes[0].backupwallet(os.path.join(self.nodes[0].datadir, 'wallet.bak'))
-        shutil.copyfile(os.path.join(self.nodes[0].datadir, 'wallet.bak'), os.path.join(self.nodes[1].datadir, self.chain, 'wallet.dat'))
+        shutil.copyfile(os.path.join(self.nodes[0].datadir, 'wallet.bak'), os.path.join(self.nodes[1].datadir, 'regtest', 'wallet.dat'))
         self.start_node(1)
         tx_after_reorg = self.nodes[1].gettransaction(txid)
         # Check that normal confirmed tx is confirmed again but with different blockhash

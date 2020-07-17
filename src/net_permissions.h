@@ -1,4 +1,4 @@
-// Copyright (c) 2009-2020 The Placeholders Core developers
+// Copyright (c) 2009-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -6,8 +6,8 @@
 #include <vector>
 #include <netaddress.h>
 
-#ifndef PHL_NET_PERMISSIONS_H
-#define PHL_NET_PERMISSIONS_H
+#ifndef PLACEH_NET_PERMISSIONS_H
+#define PLACEH_NET_PERMISSIONS_H
 enum NetPermissionFlags
 {
     PF_NONE = 0,
@@ -15,7 +15,7 @@ enum NetPermissionFlags
     PF_BLOOMFILTER = (1U << 1),
     // Relay and accept transactions from this peer, even if -blocksonly is true
     PF_RELAY = (1U << 3),
-    // Always relay transactions from this peer, even if already in mempool
+    // Always relay transactions from this peer, even if already in mempool or rejected from policy
     // Keep parameter interaction: forcerelay implies relay
     PF_FORCERELAY = (1U << 2) | PF_RELAY,
     // Can't be banned for misbehavior
@@ -59,4 +59,4 @@ public:
     CSubNet m_subnet;
 };
 
-#endif // PHL_NET_PERMISSIONS_H
+#endif // PLACEH_NET_PERMISSIONS_H

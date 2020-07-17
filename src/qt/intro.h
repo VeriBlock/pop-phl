@@ -1,9 +1,9 @@
-// Copyright (c) 2011-2019 The Placeholders Core developers
+// Copyright (c) 2011-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_QT_INTRO_H
-#define PHL_QT_INTRO_H
+#ifndef PLACEH_QT_INTRO_H
+#define PLACEH_QT_INTRO_H
 
 #include <QDialog>
 #include <QMutex>
@@ -31,7 +31,7 @@ class Intro : public QDialog
 
 public:
     explicit Intro(QWidget *parent = nullptr,
-                   int64_t blockchain_size_gb = 0, int64_t chain_state_size_gb = 0);
+                   uint64_t blockchain_size = 0, uint64_t chain_state_size = 0);
     ~Intro();
 
     QString getDataDirectory();
@@ -67,20 +67,14 @@ private:
     QMutex mutex;
     bool signalled;
     QString pathToCheck;
-    const int64_t m_blockchain_size_gb;
-    const int64_t m_chain_state_size_gb;
-    //! Total required space (in GB) depending on user choice (prune or not prune).
-    int64_t m_required_space_gb{0};
-    uint64_t m_bytes_available{0};
-    const int64_t m_prune_target_gb;
+    uint64_t m_blockchain_size;
+    uint64_t m_chain_state_size;
 
     void startThread();
     void checkPath(const QString &dataDir);
     QString getPathToCheck();
-    void UpdatePruneLabels(bool prune_checked);
-    void UpdateFreeSpaceLabel();
 
     friend class FreespaceChecker;
 };
 
-#endif // PHL_QT_INTRO_H
+#endif // PLACEH_QT_INTRO_H

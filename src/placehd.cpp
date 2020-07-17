@@ -1,5 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2020 The Placeholders Core developers
+// Copyright (c) 2009-2019 The Bitcoin Core developers
+// Copyright (c) 2019-2020 Xenios SEZC
+// https://www.veriblock.org
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -16,26 +18,23 @@
 #include <noui.h>
 #include <shutdown.h>
 #include <ui_interface.h>
-#include <util/ref.h>
 #include <util/strencodings.h>
 #include <util/system.h>
 #include <util/threadnames.h>
 #include <util/translation.h>
-#include <util/url.h>
 
 #include <vbk/init.hpp>
 
-#include <bootstraps.h>
+#include "bootstraps.h"
 #include <functional>
 
 const std::function<std::string(const char*)> G_TRANSLATION_FUN = nullptr;
-UrlDecodeFn* const URL_DECODE = urlDecode;
 
 static void WaitForShutdown(NodeContext& node)
 {
     while (!ShutdownRequested())
     {
-        UninterruptibleSleep(std::chrono::milliseconds{200});
+        MilliSleep(200);
     }
     Interrupt(node);
 }
@@ -50,6 +49,7 @@ static bool AppInit(int argc, char* argv[])
     NodeContext node;
     node.chain = interfaces::MakeChain(node);
 
+
     bool fRet = false;
 
     util::ThreadSetInternalName("init");
@@ -58,10 +58,10 @@ static bool AppInit(int argc, char* argv[])
     // Parameters
     //
     // If Qt is used, parameters/placeh.conf are parsed in qt/placeh.cpp's main()
-    SetupServerArgs(node);
+    SetupServerArgs();
     std::string error;
     if (!gArgs.ParseParameters(argc, argv, error)) {
-        return InitError(Untranslated(strprintf("Error parsing command line arguments: %s\n", error)));
+        return InitError(strprintf("Error parsing command line arguments: %s\n", error));
     }
 
     // Process help and version before taking care about datadir
@@ -82,14 +82,13 @@ static bool AppInit(int argc, char* argv[])
         return true;
     }
 
-    util::Ref context{node};
     try
     {
         if (!CheckDataDirOption()) {
-            return InitError(Untranslated(strprintf("Specified data directory \"%s\" does not exist.\n", gArgs.GetArg("-datadir", ""))));
+            return InitError(strprintf("Specified data directory \"%s\" does not exist.\n", gArgs.GetArg("-datadir", "")));
         }
         if (!gArgs.ReadConfigFiles(error, true)) {
-            return InitError(Untranslated(strprintf("Error reading configuration file: %s\n", error)));
+            return InitError(strprintf("Error reading configuration file: %s\n", error));
         }
         // Check for -chain, -testnet or -regtest parameter (Params() calls are only valid after this clause)
         try {
@@ -99,13 +98,13 @@ static bool AppInit(int argc, char* argv[])
             SelectParams(gArgs.GetChainName());
             selectPopConfig(gArgs);
         } catch (const std::exception& e) {
-            return InitError(Untranslated(strprintf("%s\n", e.what())));
+            return InitError(strprintf("%s\n", e.what()));
         }
 
         // Error out when loose non-argument tokens are encountered on command line
         for (int i = 1; i < argc; i++) {
             if (!IsSwitchChar(argv[i][0])) {
-                return InitError(Untranslated(strprintf("Command line contains unexpected token '%s', see placehd -h for a list of options.\n", argv[i])));
+                return InitError(strprintf("Command line contains unexpected token '%s', see placehd -h for a list of options.\n", argv[i]));
             }
         }
 
@@ -114,6 +113,7 @@ static bool AppInit(int argc, char* argv[])
         // Set this early so that parameter interactions go to console
         InitLogging();
         InitParameterInteraction();
+
         if (!AppInitBasicSetup())
         {
             // InitError will have been called with detailed error, which ends up on console
@@ -140,13 +140,13 @@ static bool AppInit(int argc, char* argv[])
 
             // Daemonize
             if (daemon(1, 0)) { // don't chdir (1), do close FDs (0)
-                return InitError(Untranslated(strprintf("daemon() failed: %s\n", strerror(errno))));
+                return InitError(strprintf("daemon() failed: %s\n", strerror(errno)));
             }
 #if defined(MAC_OSX)
 #pragma GCC diagnostic pop
 #endif
 #else
-            return InitError(Untranslated("-daemon is not supported on this operating system\n"));
+            return InitError("-daemon is not supported on this operating system\n");
 #endif // HAVE_DECL_DAEMON
         }
         // Lock data directory after daemonization
@@ -155,7 +155,7 @@ static bool AppInit(int argc, char* argv[])
             // If locking the data directory failed, exit immediately
             return false;
         }
-        fRet = AppInitMain(context, node);
+        fRet = AppInitMain(node);
     }
     catch (const std::exception& e) {
         PrintExceptionContinue(&e, "AppInit()");

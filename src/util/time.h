@@ -1,16 +1,14 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2020 The Placeholders Core developers
+// Copyright (c) 2009-2019 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_UTIL_TIME_H
-#define PHL_UTIL_TIME_H
+#ifndef PLACEH_UTIL_TIME_H
+#define PLACEH_UTIL_TIME_H
 
 #include <stdint.h>
 #include <string>
 #include <chrono>
-
-void UninterruptibleSleep(const std::chrono::microseconds& n);
 
 /**
  * Helper to count the seconds of a duration.
@@ -38,6 +36,8 @@ void SetMockTime(int64_t nMockTimeIn);
 /** For testing */
 int64_t GetMockTime();
 
+void MilliSleep(int64_t n);
+
 /** Return system time (or mocked time, if set) */
 template <typename T>
 T GetTime();
@@ -50,4 +50,4 @@ std::string FormatISO8601DateTime(int64_t nTime);
 std::string FormatISO8601Date(int64_t nTime);
 int64_t ParseISO8601DateTime(const std::string& str);
 
-#endif // PHL_UTIL_TIME_H
+#endif // PLACEH_UTIL_TIME_H

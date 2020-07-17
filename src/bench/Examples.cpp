@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2020 The Placeholders Core developers
+// Copyright (c) 2015-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -10,7 +10,7 @@
 static void Sleep100ms(benchmark::State& state)
 {
     while (state.KeepRunning()) {
-        UninterruptibleSleep(std::chrono::milliseconds{100});
+        MilliSleep(100);
     }
 }
 

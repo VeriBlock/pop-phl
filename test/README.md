@@ -17,7 +17,7 @@ tests and lint scripts can be run as explained in the sections below.
 
 # Running tests locally
 
-Before tests can be run locally, Placeholders Core must be built.  See the [building instructions](/doc#building) for help.
+Before tests can be run locally, Bitcoin Core must be built.  See the [building instructions](/doc#building) for help.
 
 
 ### Functional tests
@@ -145,7 +145,7 @@ levels using the logger included in the test_framework, e.g.
   `test_framework.log` and no logs are output to the console.
 - when run directly, *all* logs are written to `test_framework.log` and INFO
   level and above are output to the console.
-- when run by [our CI (Continuous Integration)](/ci/README.md), no logs are output to the console. However, if a test
+- when run on Travis, no logs are output to the console. However, if a test
   fails, the `test_framework.log` and placehd `debug.log`s will all be dumped
   to the console to help troubleshooting.
 
@@ -224,10 +224,6 @@ gdb /home/example/placehd <pid>
 
 Note: gdb attach step may require ptrace_scope to be modified, or `sudo` preceding the `gdb`.
 See this link for considerations: https://www.kernel.org/doc/Documentation/security/Yama.txt
-
-Often while debugging rpc calls from functional tests, the test might reach timeout before
-process can return a response. Use `--timeout-factor 0` to disable all rpc timeouts for that partcular
-functional test. Ex: `test/functional/wallet_hd.py --timeout-factor 0`.
 
 ##### Profiling
 

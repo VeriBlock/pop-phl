@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2019-2020 The Placeholders Core developers
 # Copyright (c) 2019 The Bitcoin Core developers
 # Copyright (c) 2019-2020 Xenios SEZC
 # https://www.veriblock.org
@@ -22,12 +21,12 @@ from test_framework.mininode import (
     P2PInterface,
     mininode_lock,
 )
-from test_framework.test_framework import PlaceholdersTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import (
     assert_equal,
     wait_until,
 )
-from test_framework.address import ADDRESS_XCRT1_UNSPENDABLE
+from test_framework.address import ADDRESS_BCRT1_UNSPENDABLE
 from test_framework.payout import POW_PAYOUT
 
 import time
@@ -56,7 +55,7 @@ NUM_INBOUND = 10
 MAX_GETDATA_INBOUND_WAIT = GETDATA_TX_INTERVAL + MAX_GETDATA_RANDOM_DELAY + INBOUND_PEER_TX_DELAY
 
 
-class TxDownloadTest(PlaceholdersTestFramework):
+class TxDownloadTest(BitcoinTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = False
         self.num_nodes = 2
@@ -67,9 +66,10 @@ class TxDownloadTest(PlaceholdersTestFramework):
         txid = 0xdeadbeef
 
         self.log.info("Announce the txid from each incoming peer to node 0")
-        msg = msg_inv([CInv(t=MSG_TX, h=txid)])
+        msg = msg_inv([CInv(t=1, h=txid)])
         for p in self.nodes[0].p2ps:
-            p.send_and_ping(msg)
+            p.send_message(msg)
+            p.sync_with_ping()
 
         outstanding_peer_index = [i for i in range(len(self.nodes[0].p2ps))]
 
@@ -97,7 +97,7 @@ class TxDownloadTest(PlaceholdersTestFramework):
                 "txid": self.nodes[0].getblock(self.nodes[0].getblockhash(1))['tx'][0],
                 "vout": 0
             }],
-            outputs={ADDRESS_XCRT1_UNSPENDABLE: POW_PAYOUT - 0.00025},
+            outputs={ADDRESS_BCRT1_UNSPENDABLE: POW_PAYOUT - 0.00025},
         )
         tx = self.nodes[0].signrawtransactionwithkey(
             hexstring=tx,
@@ -108,9 +108,10 @@ class TxDownloadTest(PlaceholdersTestFramework):
 
         self.log.info(
             "Announce the transaction to all nodes from all {} incoming peers, but never send it".format(NUM_INBOUND))
-        msg = msg_inv([CInv(t=MSG_TX, h=txid)])
+        msg = msg_inv([CInv(t=1, h=txid)])
         for p in self.peers:
-            p.send_and_ping(msg)
+            p.send_message(msg)
+            p.sync_with_ping()
 
         self.log.info("Put the tx in node 0's mempool")
         self.nodes[0].sendrawtransaction(tx)
@@ -139,13 +140,13 @@ class TxDownloadTest(PlaceholdersTestFramework):
         with mininode_lock:
             p.tx_getdata_count = 0
 
-        p.send_message(msg_inv([CInv(t=MSG_TX, h=i) for i in txids]))
+        p.send_message(msg_inv([CInv(t=1, h=i) for i in txids]))
         wait_until(lambda: p.tx_getdata_count >= MAX_GETDATA_IN_FLIGHT, lock=mininode_lock)
         with mininode_lock:
             assert_equal(p.tx_getdata_count, MAX_GETDATA_IN_FLIGHT)
 
         self.log.info("Now check that if we send a NOTFOUND for a transaction, we'll get one more request")
-        p.send_message(msg_notfound(vec=[CInv(t=MSG_TX, h=txids[0])]))
+        p.send_message(msg_notfound(vec=[CInv(t=1, h=txids[0])]))
         wait_until(lambda: p.tx_getdata_count >= MAX_GETDATA_IN_FLIGHT + 1, timeout=10, lock=mininode_lock)
         with mininode_lock:
             assert_equal(p.tx_getdata_count, MAX_GETDATA_IN_FLIGHT + 1)
@@ -156,10 +157,6 @@ class TxDownloadTest(PlaceholdersTestFramework):
         wait_until(lambda: p.tx_getdata_count == MAX_GETDATA_IN_FLIGHT + 2)
         self.nodes[0].setmocktime(0)
 
-    def test_spurious_notfound(self):
-        self.log.info('Check that spurious notfound is ignored')
-        self.nodes[0].p2ps[0].send_message(msg_notfound(vec=[CInv(MSG_TX, 1)]))
-
     def run_test(self):
         # Setup the p2p connections
         self.peers = []
@@ -168,8 +165,6 @@ class TxDownloadTest(PlaceholdersTestFramework):
                 self.peers.append(node.add_p2p_connection(TestP2PConn()))
 
         self.log.info("Nodes are setup with {} incoming connections each".format(NUM_INBOUND))
-
-        self.test_spurious_notfound()
 
         # Test the in-flight max first, because we want no transactions in
         # flight ahead of this test.

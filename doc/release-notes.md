@@ -1,89 +1,118 @@
-(note: this is a temporary file, to be added-to by anybody, and moved to
-release-notes at release time)
+*After branching off for a major version release of Placeholders Core, use this
+template to create the initial release notes draft.*
 
-Placeholder Core version *version* is now available from:
+*The release notes draft is a temporary file that can be added to by anyone. See
+[/doc/developer-notes.md#release-notes](/doc/developer-notes.md#release-notes)
+for the process.*
 
-This is a new major version release, including new features, various bugfixes
-and performance improvements, as well as updated translations.
+*Create the draft, named* "*version* Release Notes Draft"
+*(e.g. "0.20.0 Release Notes Draft"), as a collaborative wiki in:*
+
+https://github.com/placeh-core/placeh-devwiki/wiki/
+
+*Before the final release, move the notes back to this git repository.*
+
+*version* Release Notes Draft
+===============================
+
+Placeholders Core version *version* is now available from:
+
+  <https://www.veriblock.org/>
+
+This release includes new features, various bug fixes and performance
+improvements, as well as updated translations.
 
 Please report bugs using the issue tracker at GitHub:
 
-  <https://github.com/PlacehProject/Placeholders/issues>
+  <https://github.com/veriblock/vbk-ri-btc/issues>
+
 
 How to Upgrade
 ==============
 
 If you are running an older version, shut it down. Wait until it has completely
-shut down (which might take a few minutes for older versions), then run the 
-installer (on Windows) or just copy over `/Applications/Placeh-Qt` (on Mac)
+shut down (which might take a few minutes for older versions), then run the
+installer (on Windows) or just copy over `/Applications/Placeholders-Qt` (on Mac)
 or `placehd`/`placeh-qt` (on Linux).
 
-The first time you run version 0.15.0, your chainstate database will be converted to a
-new format, which will take anywhere from a few minutes to half an hour,
-depending on the speed of your machine.
-
-Note that the block database format also changed in version 0.8.0 and there is no
-automatic upgrade code from before version 0.8 to version 0.15.0. Upgrading
-directly from 0.7.x and earlier without redownloading the blockchain is not supported.
-However, as usual, old wallet versions are still supported.
-
-Downgrading warning
--------------------
-
-The chainstate database for this release is not compatible with previous
-releases, so if you run 0.15 and then decide to switch back to any
-older version, you will need to run the old release with the `-reindex-chainstate`
-option to rebuild the chainstate data structures in the old format.
-
-If your node has pruning enabled, this will entail re-downloading and
-processing the entire blockchain.
+Upgrading directly from a version of Placeholders Core that has reached its EOL is
+possible, but it might take some time if the datadir needs to be migrated. Old
+wallet versions of Placeholders Core are generally supported.
 
 Compatibility
 ==============
 
-Placeholder Core is extensively tested on multiple operating systems using
-the Linux kernel, macOS 10.8+, and Windows Vista and later. Windows XP is not supported.
+Placeholders Core is supported and extensively tested on operating systems using
+the Linux kernel, macOS 10.12+, and Windows 7 and newer. It is not recommended
+to use Bitcoin Core on unsupported systems.
 
-Placeholder Core should also work on most other Unix-like systems but is not
-frequently tested on them.
+Placeholders Core should also work on most other Unix-like systems but is not
+as frequently tested on them.
+
+From Placeholders Core 0.20.0 onwards, macOS versions earlier than 10.12 are no
+longer supported. Additionally, Placeholders Core does not yet change appearance
+when macOS "dark mode" is activated.
+
+In addition to previously supported CPU platforms, this release's pre-compiled
+distribution provides binaries for the RISC-V platform.
 
 Notable changes
 ===============
 
-Miner block size limiting deprecated
-------------------------------------
+Build System
+------------
 
-Though blockmaxweight has been preferred for limiting the size of blocks returned by
-getblocktemplate since 0.13.0, blockmaxsize remained as an option for those who wished
-to limit their block size directly. Using this option resulted in a few UI issues as
-well as non-optimal fee selection and ever-so-slightly worse performance, and has thus
-now been deprecated. Further, the blockmaxsize option is now used only to calculate an
-implied blockmaxweight, instead of limiting block size directly. Any miners who wish
-to limit their blocks by size, instead of by weight, will have to do so manually by
-removing transactions from their block template directly.
+- OpenSSL is no longer used by Placeholders Core. The last usage of the library
+was removed in #17265.
 
-HD-wallets by default
----------------------
-Due to a backward-incompatible change in the wallet database, wallets created
-with version 0.16.0 will be rejected by previous versions. Also, version 0.16.0
-will only create hierarchical deterministic (HD) wallets.
+- glibc 2.17 or greater is now required to run the release binaries. This
+retains compatibility with RHEL 7, CentOS 7, Debian 8 and Ubuntu 14.04 LTS.
+Further details can be found in #17538.
 
-Low-level RPC changes
-----------------------
-- The "currentblocksize" value in getmininginfo has been removed.
-- The deprecated RPC `getinfo` was removed. It is recommended that the more specific RPCs are used:
-  * `getblockchaininfo`
-  * `getnetworkinfo`
-  * `getwalletinfo`
-  * `getmininginfo`
+New RPCs
+--------
 
-- `dumpwallet` no longer allows overwriting files. This is a security measure
-  as well as prevents dangerous user mistakes.
+New settings
+------------
+
+- RPC Whitelist system. It can give certain RPC users permissions to only some RPC calls.
+It can be set with two command line arguments (`rpcwhitelist` and `rpcwhitelistdefault`). (#12763)
+
+Updated settings
+----------------
+
+Updated RPCs
+------------
+
+Note: some low-level RPC changes mainly useful for testing are described in the
+Low-level Changes section below.
+
+GUI changes
+-----------
+
+- The "Start Bitcoin Core on system login" option has been removed on macOS.
+
+Wallet
+------
+
+- The wallet now by default uses bech32 addresses when using RPC, and creates native segwit change outputs.
+- The way that output trust was computed has been fixed in #16766, which impacts confirmed/unconfirmed balance status and coin selection.
+
+Low-level changes
+=================
+
+Tests
+-----
+
+- It is now an error to use an unqualified `walletdir=path` setting in the config file if running on testnet or regtest
+  networks. The setting now needs to be qualified as `chain.walletdir=path` or placed in the appropriate `[chain]`
+  section. (#17447)
+
+- `-fallbackfee` was 0 (disabled) by default for the main chain, but 0.0002 by default for the test chains. Now it is 0
+  by default for all chains. Testnet and regtest users will have to add `fallbackfee=0.0002` to their configuration if
+  they weren't setting it and they want it to keep working like before. (#16524)
 
 Credits
 =======
 
-Thanks to everyone who directly contributed to this release:
-
-
-As well as everyone that helped translating on [Transifex](https://www.transifex.com/projects/p/placeh/).
+Thanks to everyone who directly contributed to this release.

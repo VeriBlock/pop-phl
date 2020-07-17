@@ -1,9 +1,5 @@
-// Copyright (c) 2018-2019 The Placeholders Core developers
-// Distributed under the MIT software license, see the accompanying
-// file COPYING or http://www.opensource.org/licenses/mit-license.php.
-
-#ifndef PHL_QT_TEST_ADDRESSBOOKTESTS_H
-#define PHL_QT_TEST_ADDRESSBOOKTESTS_H
+#ifndef PLACEH_QT_TEST_ADDRESSBOOKTESTS_H
+#define PLACEH_QT_TEST_ADDRESSBOOKTESTS_H
 
 #include <QObject>
 #include <QTest>
@@ -24,4 +20,4 @@ private Q_SLOTS:
     void addressBookTests();
 };
 
-#endif // PHL_QT_TEST_ADDRESSBOOKTESTS_H
+#endif // PLACEH_QT_TEST_ADDRESSBOOKTESTS_H

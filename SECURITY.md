@@ -3,7 +3,7 @@
 ## Supported Versions
 
 See our website for versions of Placeholders Core that are currently supported with
-security updates: https://placehcore.org/en/lifecycle/#schedule
+security updates: https://veriblock.org
 
 ## Reporting a Vulnerability
 

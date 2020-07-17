@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2019 The Placeholders Core developers
+# Copyright (c) 2014-2019 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test BIP68 implementation."""
@@ -8,7 +8,7 @@ import time
 
 from test_framework.blocktools import create_block, create_coinbase, add_witness_commitment
 from test_framework.messages import COIN, COutPoint, CTransaction, CTxIn, CTxOut, FromHex, ToHex
-from test_framework.test_framework import PlaceholdersTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import (
     assert_equal,
     assert_greater_than,
@@ -26,7 +26,7 @@ SEQUENCE_LOCKTIME_MASK = 0x0000ffff
 # RPC error for non-BIP68 final transactions
 NOT_FINAL_ERROR = "non-BIP68-final"
 
-class BIP68Test(PlaceholdersTestFramework):
+class BIP68Test(BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 2
         self.extra_args = [
@@ -324,7 +324,7 @@ class BIP68Test(PlaceholdersTestFramework):
             block.solve()
             tip = block.sha256
             height += 1
-            assert_equal(None if i == 1 else 'inconclusive', self.nodes[0].submitblock(ToHex(block)))
+            self.nodes[0].submitblock(ToHex(block))
             cur_time += 1
 
         mempool = self.nodes[0].getrawmempool()
@@ -381,7 +381,7 @@ class BIP68Test(PlaceholdersTestFramework):
         add_witness_commitment(block)
         block.solve()
 
-        assert_equal(None, self.nodes[0].submitblock(block.serialize().hex()))
+        self.nodes[0].submitblock(block.serialize().hex())
         assert_equal(self.nodes[0].getbestblockhash(), block.hash)
 
     def activateCSV(self):

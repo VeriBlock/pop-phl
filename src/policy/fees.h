@@ -1,9 +1,9 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2020 The Placeholders Core developers
+// Copyright (c) 2009-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
-#ifndef PHL_POLICY_FEES_H
-#define PHL_POLICY_FEES_H
+#ifndef PLACEH_POLICY_FEES_H
+#define PLACEH_POLICY_FEES_H
 
 #include <amount.h>
 #include <policy/feerate.h>
@@ -223,7 +223,7 @@ public:
     unsigned int HighestTargetTracked(FeeEstimateHorizon horizon) const;
 
 private:
-    mutable RecursiveMutex m_cs_fee_estimator;
+    mutable CCriticalSection m_cs_fee_estimator;
 
     unsigned int nBestSeenHeight GUARDED_BY(m_cs_fee_estimator);
     unsigned int firstRecordedHeight GUARDED_BY(m_cs_fee_estimator);
@@ -288,4 +288,4 @@ private:
     FastRandomContext insecure_rand;
 };
 
-#endif // PHL_POLICY_FEES_H
+#endif // PLACEH_POLICY_FEES_H

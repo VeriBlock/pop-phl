@@ -1,18 +1,14 @@
 // Copyright (c) 2010 Satoshi Nakamoto
-// Copyright (c) 2009-2019 The Placeholders Core developers
+// Copyright (c) 2009-2019 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_RPC_REQUEST_H
-#define PHL_RPC_REQUEST_H
+#ifndef PLACEH_RPC_REQUEST_H
+#define PLACEH_RPC_REQUEST_H
 
 #include <string>
 
 #include <univalue.h>
-
-namespace util {
-class Ref;
-} // namespace util
 
 UniValue JSONRPCRequestObj(const std::string& strMethod, const UniValue& params, const UniValue& id);
 UniValue JSONRPCReplyObj(const UniValue& result, const UniValue& error, const UniValue& id);
@@ -26,7 +22,7 @@ bool GetAuthCookie(std::string *cookie_out);
 /** Delete RPC authentication cookie from disk */
 void DeleteAuthCookie();
 /** Parse JSON-RPC batch reply into a vector */
-std::vector<UniValue> JSONRPCProcessBatchReply(const UniValue& in);
+std::vector<UniValue> JSONRPCProcessBatchReply(const UniValue &in, size_t num);
 
 class JSONRPCRequest
 {
@@ -38,10 +34,9 @@ public:
     std::string URI;
     std::string authUser;
     std::string peerAddr;
-    const util::Ref& context;
 
-    JSONRPCRequest(const util::Ref& context) : id(NullUniValue), params(NullUniValue), fHelp(false), context(context) {}
+    JSONRPCRequest() : id(NullUniValue), params(NullUniValue), fHelp(false) {}
     void parse(const UniValue& valRequest);
 };
 
-#endif // PHL_RPC_REQUEST_H
+#endif // PLACEH_RPC_REQUEST_H

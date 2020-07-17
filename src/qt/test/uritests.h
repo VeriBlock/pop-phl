@@ -1,9 +1,9 @@
-// Copyright (c) 2009-2015 The Placeholders Core developers
+// Copyright (c) 2009-2015 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_QT_TEST_URITESTS_H
-#define PHL_QT_TEST_URITESTS_H
+#ifndef PLACEH_QT_TEST_URITESTS_H
+#define PLACEH_QT_TEST_URITESTS_H
 
 #include <QObject>
 #include <QTest>
@@ -16,4 +16,4 @@ private Q_SLOTS:
     void uriTests();
 };
 
-#endif // PHL_QT_TEST_URITESTS_H
+#endif // PLACEH_QT_TEST_URITESTS_H

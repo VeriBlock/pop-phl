@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2020 The Placeholders Core developers
+// Copyright (c) 2009-2019 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -13,6 +13,8 @@
 #ifndef WIN32
 #include <sys/stat.h>
 #endif
+
+#include <boost/thread.hpp>
 
 namespace {
 
@@ -42,7 +44,7 @@ void CheckUniqueFileid(const BerkeleyEnvironment& env, const std::string& filena
     }
 }
 
-RecursiveMutex cs_db;
+CCriticalSection cs_db;
 std::map<std::string, std::weak_ptr<BerkeleyEnvironment>> g_dbenvs GUARDED_BY(cs_db); //!< Map from directory name to db environment.
 } // namespace
 
@@ -266,14 +268,21 @@ BerkeleyEnvironment::BerkeleyEnvironment()
     fMockDb = true;
 }
 
-bool BerkeleyEnvironment::Verify(const std::string& strFile)
+BerkeleyEnvironment::VerifyResult BerkeleyEnvironment::Verify(const std::string& strFile, recoverFunc_type recoverFunc, std::string& out_backup_filename)
 {
     LOCK(cs_db);
     assert(mapFileUseCount.count(strFile) == 0);
 
     Db db(dbenv.get(), 0);
     int result = db.verify(strFile.c_str(), nullptr, nullptr, 0);
-    return result == 0;
+    if (result == 0)
+        return VerifyResult::VERIFY_OK;
+    else if (recoverFunc == nullptr)
+        return VerifyResult::RECOVER_FAIL;
+
+    // Try to recover:
+    bool fRecovered = (*recoverFunc)(fs::path(strPath) / strFile, out_backup_filename);
+    return (fRecovered ? VerifyResult::RECOVER_OK : VerifyResult::RECOVER_FAIL);
 }
 
 BerkeleyBatch::SafeDbt::SafeDbt()
@@ -315,24 +324,93 @@ BerkeleyBatch::SafeDbt::operator Dbt*()
     return &m_dbt;
 }
 
-bool BerkeleyBatch::VerifyEnvironment(const fs::path& file_path, bilingual_str& errorStr)
+bool BerkeleyBatch::Recover(const fs::path& file_path, void *callbackDataIn, bool (*recoverKVcallback)(void* callbackData, CDataStream ssKey, CDataStream ssValue), std::string& newFilename)
+{
+    std::string filename;
+    std::shared_ptr<BerkeleyEnvironment> env = GetWalletEnv(file_path, filename);
+
+    // Recovery procedure:
+    // move wallet file to walletfilename.timestamp.bak
+    // Call Salvage with fAggressive=true to
+    // get as much data as possible.
+    // Rewrite salvaged data to fresh wallet file
+    // Set -rescan so any missing transactions will be
+    // found.
+    int64_t now = GetTime();
+    newFilename = strprintf("%s.%d.bak", filename, now);
+
+    int result = env->dbenv->dbrename(nullptr, filename.c_str(), nullptr,
+                                       newFilename.c_str(), DB_AUTO_COMMIT);
+    if (result == 0)
+        LogPrintf("Renamed %s to %s\n", filename, newFilename);
+    else
+    {
+        LogPrintf("Failed to rename %s to %s\n", filename, newFilename);
+        return false;
+    }
+
+    std::vector<BerkeleyEnvironment::KeyValPair> salvagedData;
+    bool fSuccess = env->Salvage(newFilename, true, salvagedData);
+    if (salvagedData.empty())
+    {
+        LogPrintf("Salvage(aggressive) found no records in %s.\n", newFilename);
+        return false;
+    }
+    LogPrintf("Salvage(aggressive) found %u records\n", salvagedData.size());
+
+    std::unique_ptr<Db> pdbCopy = MakeUnique<Db>(env->dbenv.get(), 0);
+    int ret = pdbCopy->open(nullptr,               // Txn pointer
+                            filename.c_str(),   // Filename
+                            "main",             // Logical db name
+                            DB_BTREE,           // Database type
+                            DB_CREATE,          // Flags
+                            0);
+    if (ret > 0) {
+        LogPrintf("Cannot create database file %s\n", filename);
+        pdbCopy->close(0);
+        return false;
+    }
+
+    DbTxn* ptxn = env->TxnBegin();
+    for (BerkeleyEnvironment::KeyValPair& row : salvagedData)
+    {
+        if (recoverKVcallback)
+        {
+            CDataStream ssKey(row.first, SER_DISK, CLIENT_VERSION);
+            CDataStream ssValue(row.second, SER_DISK, CLIENT_VERSION);
+            if (!(*recoverKVcallback)(callbackDataIn, ssKey, ssValue))
+                continue;
+        }
+        Dbt datKey(&row.first[0], row.first.size());
+        Dbt datValue(&row.second[0], row.second.size());
+        int ret2 = pdbCopy->put(ptxn, &datKey, &datValue, DB_NOOVERWRITE);
+        if (ret2 > 0)
+            fSuccess = false;
+    }
+    ptxn->commit(0);
+    pdbCopy->close(0);
+
+    return fSuccess;
+}
+
+bool BerkeleyBatch::VerifyEnvironment(const fs::path& file_path, std::string& errorStr)
 {
     std::string walletFile;
     std::shared_ptr<BerkeleyEnvironment> env = GetWalletEnv(file_path, walletFile);
     fs::path walletDir = env->Directory();
 
-    LogPrintf("Using BerkeleyDB version %s\n", BerkeleyDatabaseVersion());
+    LogPrintf("Using BerkeleyDB version %s\n", DbEnv::version(nullptr, nullptr, nullptr));
     LogPrintf("Using wallet %s\n", file_path.string());
 
     if (!env->Open(true /* retry */)) {
-        errorStr = strprintf(_("Error initializing wallet database environment %s!"), walletDir);
+        errorStr = strprintf(_("Error initializing wallet database environment %s!").translated, walletDir);
         return false;
     }
 
     return true;
 }
 
-bool BerkeleyBatch::VerifyDatabaseFile(const fs::path& file_path, bilingual_str& errorStr)
+bool BerkeleyBatch::VerifyDatabaseFile(const fs::path& file_path, std::vector<std::string>& warnings, std::string& errorStr, BerkeleyEnvironment::recoverFunc_type recoverFunc)
 {
     std::string walletFile;
     std::shared_ptr<BerkeleyEnvironment> env = GetWalletEnv(file_path, walletFile);
@@ -340,14 +418,91 @@ bool BerkeleyBatch::VerifyDatabaseFile(const fs::path& file_path, bilingual_str&
 
     if (fs::exists(walletDir / walletFile))
     {
-        if (!env->Verify(walletFile)) {
-            errorStr = strprintf(_("%s corrupt. Try using the wallet tool placeh-wallet to salvage or restoring a backup."), walletFile);
+        std::string backup_filename;
+        BerkeleyEnvironment::VerifyResult r = env->Verify(walletFile, recoverFunc, backup_filename);
+        if (r == BerkeleyEnvironment::VerifyResult::RECOVER_OK)
+        {
+            warnings.push_back(strprintf(_("Warning: Wallet file corrupt, data salvaged!"
+                                     " Original %s saved as %s in %s; if"
+                                     " your balance or transactions are incorrect you should"
+                                     " restore from a backup.").translated,
+                walletFile, backup_filename, walletDir));
+        }
+        if (r == BerkeleyEnvironment::VerifyResult::RECOVER_FAIL)
+        {
+            errorStr = strprintf(_("%s corrupt, salvage failed").translated, walletFile);
             return false;
         }
     }
     // also return true if files does not exists
     return true;
 }
+
+/* End of headers, beginning of key/value data */
+static const char *HEADER_END = "HEADER=END";
+/* End of key/value data */
+static const char *DATA_END = "DATA=END";
+
+bool BerkeleyEnvironment::Salvage(const std::string& strFile, bool fAggressive, std::vector<BerkeleyEnvironment::KeyValPair>& vResult)
+{
+    LOCK(cs_db);
+    assert(mapFileUseCount.count(strFile) == 0);
+
+    u_int32_t flags = DB_SALVAGE;
+    if (fAggressive)
+        flags |= DB_AGGRESSIVE;
+
+    std::stringstream strDump;
+
+    Db db(dbenv.get(), 0);
+    int result = db.verify(strFile.c_str(), nullptr, &strDump, flags);
+    if (result == DB_VERIFY_BAD) {
+        LogPrintf("BerkeleyEnvironment::Salvage: Database salvage found errors, all data may not be recoverable.\n");
+        if (!fAggressive) {
+            LogPrintf("BerkeleyEnvironment::Salvage: Rerun with aggressive mode to ignore errors and continue.\n");
+            return false;
+        }
+    }
+    if (result != 0 && result != DB_VERIFY_BAD) {
+        LogPrintf("BerkeleyEnvironment::Salvage: Database salvage failed with result %d.\n", result);
+        return false;
+    }
+
+    // Format of bdb dump is ascii lines:
+    // header lines...
+    // HEADER=END
+    //  hexadecimal key
+    //  hexadecimal value
+    //  ... repeated
+    // DATA=END
+
+    std::string strLine;
+    while (!strDump.eof() && strLine != HEADER_END)
+        getline(strDump, strLine); // Skip past header
+
+    std::string keyHex, valueHex;
+    while (!strDump.eof() && keyHex != DATA_END) {
+        getline(strDump, keyHex);
+        if (keyHex != DATA_END) {
+            if (strDump.eof())
+                break;
+            getline(strDump, valueHex);
+            if (valueHex == DATA_END) {
+                LogPrintf("BerkeleyEnvironment::Salvage: WARNING: Number of keys in data does not match number of values.\n");
+                break;
+            }
+            vResult.push_back(make_pair(ParseHex(keyHex), ParseHex(valueHex)));
+        }
+    }
+
+    if (keyHex != DATA_END) {
+        LogPrintf("BerkeleyEnvironment::Salvage: WARNING: Unexpected end of file while reading salvage output.\n");
+        return false;
+    }
+
+    return (result == 0);
+}
+
 
 void BerkeleyEnvironment::CheckpointLSN(const std::string& strFile)
 {
@@ -495,7 +650,7 @@ void BerkeleyEnvironment::ReloadDbEnv()
 {
     // Make sure that no Db's are in use
     AssertLockNotHeld(cs_db);
-    std::unique_lock<RecursiveMutex> lock(cs_db);
+    std::unique_lock<CCriticalSection> lock(cs_db);
     m_db_in_use.wait(lock, [this](){
         for (auto& count : mapFileUseCount) {
             if (count.second > 0) return false;
@@ -601,7 +756,7 @@ bool BerkeleyBatch::Rewrite(BerkeleyDatabase& database, const char* pszSkip)
                 return fSuccess;
             }
         }
-        UninterruptibleSleep(std::chrono::milliseconds{100});
+        MilliSleep(100);
     }
 }
 
@@ -669,6 +824,7 @@ bool BerkeleyBatch::PeriodicFlush(BerkeleyDatabase& database)
 
         if (nRefCount == 0)
         {
+            boost::this_thread::interruption_point();
             std::map<std::string, int>::iterator mi = env->mapFileUseCount.find(strFile);
             if (mi != env->mapFileUseCount.end())
             {
@@ -694,7 +850,7 @@ bool BerkeleyDatabase::Rewrite(const char* pszSkip)
     return BerkeleyBatch::Rewrite(*this, pszSkip);
 }
 
-bool BerkeleyDatabase::Backup(const std::string& strDest) const
+bool BerkeleyDatabase::Backup(const std::string& strDest)
 {
     if (IsDummy()) {
         return false;
@@ -731,7 +887,7 @@ bool BerkeleyDatabase::Backup(const std::string& strDest) const
                 }
             }
         }
-        UninterruptibleSleep(std::chrono::milliseconds{100});
+        MilliSleep(100);
     }
 }
 
@@ -759,9 +915,4 @@ void BerkeleyDatabase::ReloadDbEnv()
     if (!IsDummy()) {
         env->ReloadDbEnv();
     }
-}
-
-std::string BerkeleyDatabaseVersion()
-{
-    return DbEnv::version(nullptr, nullptr, nullptr);
 }

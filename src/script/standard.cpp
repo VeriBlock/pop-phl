@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2019 The Placeholders Core developers
+// Copyright (c) 2009-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -8,8 +8,6 @@
 #include <crypto/sha256.h>
 #include <pubkey.h>
 #include <script/script.h>
-
-#include <string>
 
 typedef std::vector<unsigned char> valtype;
 
@@ -27,7 +25,7 @@ WitnessV0ScriptHash::WitnessV0ScriptHash(const CScript& in)
     CSHA256().Write(in.data(), in.size()).Finalize(begin());
 }
 
-std::string GetTxnOutputType(txnouttype t)
+const char* GetTxnOutputType(txnouttype t)
 {
     switch (t)
     {
@@ -41,7 +39,7 @@ std::string GetTxnOutputType(txnouttype t)
     case TX_WITNESS_V0_SCRIPTHASH: return "witness_v0_scripthash";
     case TX_WITNESS_UNKNOWN: return "witness_unknown";
     }
-    assert(false);
+    return nullptr;
 }
 
 static bool MatchPayToPubkey(const CScript& script, valtype& pubkey)

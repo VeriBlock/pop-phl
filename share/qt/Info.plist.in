@@ -16,7 +16,7 @@
   <key>CFBundlePackageType</key>
   <string>APPL</string>
 
-  <key>NSHumanReadableCopyright</key>
+  <key>CFBundleGetInfoString</key>
   <string>@CLIENT_VERSION_MAJOR@.@CLIENT_VERSION_MINOR@.@CLIENT_VERSION_REVISION@.@CLIENT_VERSION_BUILD@, Copyright © 2009-@COPYRIGHT_YEAR@ @COPYRIGHT_HOLDERS_FINAL@</string>
 
   <key>CFBundleShortVersionString</key>
@@ -38,7 +38,7 @@
   <true/>
 
   <key>CFBundleIdentifier</key>
-  <string>org.placehfoundation.Placeholders-Qt</string>
+  <string>org.veriblock.Placeholders-Qt</string>
 
   <key>CFBundleURLTypes</key>
   <array>
@@ -46,7 +46,7 @@
       <key>CFBundleTypeRole</key>
       <string>Editor</string>
       <key>CFBundleURLName</key>
-      <string>org.placeh.PlaceholdersPayment</string>
+      <string>org.veriblock.PlaceholdersPayment</string>
       <key>CFBundleURLSchemes</key>
       <array>
         <string>placeh</string>

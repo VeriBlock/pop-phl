@@ -1,5 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2020 The Placeholders Core developers
+// Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2019-2020 Xenios SEZC
+// https://www.veriblock.org
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -22,8 +24,8 @@ BCLog::Logger& LogInstance()
  * access the logger. When the shutdown sequence is fully audited and tested,
  * explicit destruction of these objects can be implemented by changing this
  * from a raw pointer to a std::unique_ptr.
- * Since the ~Logger() destructor is never called, the Logger class and all
- * its subclasses must have implicitly-defined destructors.
+ * Since the destructor is never called, the logger and all its members must
+ * have a trivial destructor.
  *
  * This method of initialization was originally introduced in
  * ee3374234c60aba2cc4c5cd5cac1c0aefc2d817c.
@@ -41,7 +43,7 @@ static int FileWriteStr(const std::string &str, FILE *fp)
 
 bool BCLog::Logger::StartLogging()
 {
-    StdLockGuard scoped_lock(m_cs);
+    std::lock_guard<std::mutex> scoped_lock(m_cs);
 
     assert(m_buffering);
     assert(m_fileout == nullptr);
@@ -80,7 +82,7 @@ bool BCLog::Logger::StartLogging()
 
 void BCLog::Logger::DisconnectTestLogger()
 {
-    StdLockGuard scoped_lock(m_cs);
+    std::lock_guard<std::mutex> scoped_lock(m_cs);
     m_buffering = true;
     if (m_fileout != nullptr) fclose(m_fileout);
     m_fileout = nullptr;
@@ -162,7 +164,6 @@ const CLogCategoryDesc LogCategories[] =
     {BCLog::COINDB, "coindb"},
     {BCLog::QT, "qt"},
     {BCLog::LEVELDB, "leveldb"},
-    {BCLog::VALIDATION, "validation"},
     {BCLog::POP, "pop"},
     {BCLog::ALL, "1"},
     {BCLog::ALL, "all"},
@@ -183,15 +184,30 @@ bool GetLogCategory(BCLog::LogFlags& flag, const std::string& str)
     return false;
 }
 
-std::vector<LogCategory> BCLog::Logger::LogCategoriesList()
+std::string ListLogCategories()
 {
-    std::vector<LogCategory> ret;
+    std::string ret;
+    int outcount = 0;
     for (const CLogCategoryDesc& category_desc : LogCategories) {
         // Omit the special cases.
         if (category_desc.flag != BCLog::NONE && category_desc.flag != BCLog::ALL) {
-            LogCategory catActive;
+            if (outcount != 0) ret += ", ";
+            ret += category_desc.category;
+            outcount++;
+        }
+    }
+    return ret;
+}
+
+std::vector<CLogCategoryActive> ListActiveLogCategories()
+{
+    std::vector<CLogCategoryActive> ret;
+    for (const CLogCategoryDesc& category_desc : LogCategories) {
+        // Omit the special cases.
+        if (category_desc.flag != BCLog::NONE && category_desc.flag != BCLog::ALL) {
+            CLogCategoryActive catActive;
             catActive.category = category_desc.category;
-            catActive.active = WillLogCategory(category_desc.flag);
+            catActive.active = LogAcceptCategory(category_desc.flag);
             ret.push_back(catActive);
         }
     }
@@ -247,7 +263,7 @@ namespace BCLog {
 
 void BCLog::Logger::LogPrintStr(const std::string& str)
 {
-    StdLockGuard scoped_lock(m_cs);
+    std::lock_guard<std::mutex> scoped_lock(m_cs);
     std::string str_prefixed = LogEscapeMessage(str);
 
     if (m_log_threadnames && m_started_new_line) {

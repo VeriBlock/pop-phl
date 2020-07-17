@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-# Copyright (c) 2018-2020 The Placeholders Core developers
+# Copyright (c) 2018-2019 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test the scantxoutset rpc call."""
-from test_framework.test_framework import PlaceholdersTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import assert_equal, assert_raises_rpc_error
 
 from decimal import Decimal
@@ -13,7 +13,7 @@ import os
 def descriptors(out):
     return sorted(u['desc'] for u in out['unspents'])
 
-class ScantxoutsetTest(PlaceholdersTestFramework):
+class ScantxoutsetTest(BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
         self.setup_clean_chain = True
@@ -54,7 +54,7 @@ class ScantxoutsetTest(PlaceholdersTestFramework):
 
         self.log.info("Stop node, remove wallet, mine again some blocks...")
         self.stop_node(0)
-        shutil.rmtree(os.path.join(self.nodes[0].datadir, self.chain, 'wallets'))
+        shutil.rmtree(os.path.join(self.nodes[0].datadir, "regtest", 'wallets'))
         self.start_node(0)
         self.nodes[0].generate(110)
 

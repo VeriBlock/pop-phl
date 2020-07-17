@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2018 The Placeholders Core developers
 # Copyright (c) 2014-2018 The Bitcoin Core developers
 # Copyright (c) 2019-2020 Xenios SEZC
 # https://www.veriblock.org
@@ -17,7 +16,7 @@
   transactions are still available, but that the unconfirmed transaction has
   been zapped.
 """
-from test_framework.test_framework import PlaceholdersTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import (
     assert_equal,
     assert_raises_rpc_error,
@@ -25,7 +24,7 @@ from test_framework.util import (
 )
 from test_framework.payout import POW_PAYOUT
 
-class ZapWalletTXesTest (PlaceholdersTestFramework):
+class ZapWalletTXesTest (BitcoinTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 2

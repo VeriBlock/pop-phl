@@ -120,7 +120,7 @@
     <name>BanTableModel</name>
     </context>
 <context>
-    <name>PlaceholdersGUI</name>
+    <name>BitcoinGUI</name>
     <message>
         <source>Error</source>
         <translation>نقص</translation>
@@ -155,7 +155,7 @@
     </message>
     <message>
         <source>&amp;Address</source>
-        <translation>پتہ</translation>
+        <translation> پتہ</translation>
     </message>
     </context>
 <context>
@@ -259,6 +259,9 @@
     </context>
 <context>
     <name>SendCoinsEntry</name>
+    </context>
+<context>
+    <name>SendConfirmationDialog</name>
     </context>
 <context>
     <name>ShutdownWindow</name>

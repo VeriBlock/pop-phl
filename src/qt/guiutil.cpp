@@ -1,4 +1,6 @@
-// Copyright (c) 2011-2020 The Placeholders Core developers
+// Copyright (c) 2011-2019 The Bitcoin Core developers
+// Copyright (c) 2019-2020 Xenios SEZC
+// https://www.veriblock.org
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -44,22 +46,14 @@
 #include <QFont>
 #include <QFontDatabase>
 #include <QFontMetrics>
-#include <QGuiApplication>
 #include <QKeyEvent>
 #include <QLineEdit>
-#include <QList>
-#include <QMenu>
 #include <QMouseEvent>
 #include <QProgressDialog>
-#include <QScreen>
 #include <QSettings>
-#include <QShortcut>
-#include <QSize>
-#include <QString>
 #include <QTextDocument> // for Qt::mightBeRichText
 #include <QThread>
 #include <QUrlQuery>
-#include <QtGlobal>
 
 #if defined(Q_OS_MAC)
 
@@ -112,11 +106,11 @@ void setupAddressWidget(QValidatedLineEdit *widget, QWidget *parent)
     // and this is the only place, where this address is supplied.
     widget->setPlaceholderText(QObject::tr("Enter a Placeholders address (e.g. %1)").arg(
         QString::fromStdString(DummyAddress(Params()))));
-    widget->setValidator(new PlaceholdersAddressEntryValidator(parent));
-    widget->setCheckValidator(new PlaceholdersAddressCheckValidator(parent));
+    widget->setValidator(new BitcoinAddressEntryValidator(parent));
+    widget->setCheckValidator(new BitcoinAddressCheckValidator(parent));
 }
 
-bool parsePlaceholdersURI(const QUrl &uri, SendCoinsRecipient *out)
+bool parseBitcoinURI(const QUrl &uri, SendCoinsRecipient *out)
 {
     // return if URI is not valid or is no placeh: URI
     if(!uri.isValid() || uri.scheme() != QString("placeh"))
@@ -155,7 +149,7 @@ bool parsePlaceholdersURI(const QUrl &uri, SendCoinsRecipient *out)
         {
             if(!i->second.isEmpty())
             {
-                if(!PlaceholdersUnits::parse(PlaceholdersUnits::PHL, i->second, &rv.amount))
+                if(!BitcoinUnits::parse(BitcoinUnits::vPHL, i->second, &rv.amount))
                 {
                     return false;
                 }
@@ -173,13 +167,13 @@ bool parsePlaceholdersURI(const QUrl &uri, SendCoinsRecipient *out)
     return true;
 }
 
-bool parsePlaceholdersURI(QString uri, SendCoinsRecipient *out)
+bool parseBitcoinURI(QString uri, SendCoinsRecipient *out)
 {
     QUrl uriInstance(uri);
-    return parsePlaceholdersURI(uriInstance, out);
+    return parseBitcoinURI(uriInstance, out);
 }
 
-QString formatPlaceholdersURI(const SendCoinsRecipient &info)
+QString formatBitcoinURI(const SendCoinsRecipient &info)
 {
     bool bech_32 = info.address.startsWith(QString::fromStdString(Params().Bech32HRP() + "1"));
 
@@ -188,7 +182,7 @@ QString formatPlaceholdersURI(const SendCoinsRecipient &info)
 
     if (info.amount)
     {
-        ret += QString("?amount=%1").arg(PlaceholdersUnits::format(PlaceholdersUnits::PHL, info.amount, false, PlaceholdersUnits::separatorNever));
+        ret += QString("?amount=%1").arg(BitcoinUnits::format(BitcoinUnits::vPHL, info.amount, false, BitcoinUnits::separatorNever));
         paramCount++;
     }
 
@@ -232,7 +226,7 @@ QString HtmlEscape(const std::string& str, bool fMultiLine)
     return HtmlEscape(QString::fromStdString(str), fMultiLine);
 }
 
-void copyEntryData(const QAbstractItemView *view, int column, int role)
+void copyEntryData(QAbstractItemView *view, int column, int role)
 {
     if(!view || !view->selectionModel())
         return;
@@ -245,18 +239,11 @@ void copyEntryData(const QAbstractItemView *view, int column, int role)
     }
 }
 
-QList<QModelIndex> getEntryData(const QAbstractItemView *view, int column)
+QList<QModelIndex> getEntryData(QAbstractItemView *view, int column)
 {
     if(!view || !view->selectionModel())
         return QList<QModelIndex>();
     return view->selectionModel()->selectedRows(column);
-}
-
-bool hasEntryData(const QAbstractItemView *view, int column, int role)
-{
-    QModelIndexList selection = getEntryData(view, column);
-    if (selection.isEmpty()) return false;
-    return !selection.at(0).data(role).toString().isEmpty();
 }
 
 QString getDefaultDataDirectory()
@@ -387,11 +374,6 @@ void bringToFront(QWidget* w)
     }
 }
 
-void handleCloseWindowShortcut(QWidget* w)
-{
-    QObject::connect(new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), w), &QShortcut::activated, w, &QWidget::close);
-}
-
 void openDebugLogfile()
 {
     fs::path pathDebug = GetDataDir() / "debug.log";
@@ -401,9 +383,9 @@ void openDebugLogfile()
         QDesktopServices::openUrl(QUrl::fromLocalFile(boostPathToQString(pathDebug)));
 }
 
-bool openPlaceholdersConf()
+bool openBitcoinConf()
 {
-    fs::path pathConfig = GetConfigFile(gArgs.GetArg("-conf", PHL_CONF_FILENAME));
+    fs::path pathConfig = GetConfigFile(gArgs.GetArg("-conf", PLACEH_CONF_FILENAME));
 
     /* Create the file */
     fsbridge::ofstream configFile(pathConfig, std::ios_base::app);
@@ -577,7 +559,7 @@ fs::path static StartupShortcutPath()
 
 bool GetStartOnSystemStartup()
 {
-    // check for Placeholders*.lnk
+    // check for Bitcoin*.lnk
     return fs::exists(StartupShortcutPath());
 }
 
@@ -751,12 +733,34 @@ QString formatDurationStr(int secs)
     return strList.join(" ");
 }
 
+QString serviceFlagToStr(const quint64 mask, const int bit)
+{
+    switch (ServiceFlags(mask)) {
+    case NODE_NONE: abort();  // impossible
+    case NODE_NETWORK:         return "NETWORK";
+    case NODE_GETUTXO:         return "GETUTXO";
+    case NODE_BLOOM:           return "BLOOM";
+    case NODE_WITNESS:         return "WITNESS";
+    case NODE_NETWORK_LIMITED: return "NETWORK_LIMITED";
+    // Not using default, so we get warned when a case is missing
+    }
+    if (bit < 8) {
+        return QString("%1[%2]").arg("UNKNOWN").arg(mask);
+    } else {
+        return QString("%1[2^%2]").arg("UNKNOWN").arg(bit);
+    }
+}
+
 QString formatServicesStr(quint64 mask)
 {
     QStringList strList;
 
-    for (const auto& flag : serviceFlagsToStr(mask)) {
-        strList.append(QString::fromStdString(flag));
+    for (int i = 0; i < 64; i++) {
+        uint64_t check = 1LL << i;
+        if (mask & check)
+        {
+            strList.append(serviceFlagToStr(check, i));
+        }
     }
 
     if (strList.size())
@@ -765,9 +769,9 @@ QString formatServicesStr(quint64 mask)
         return QObject::tr("None");
 }
 
-QString formatPingTime(int64_t ping_usec)
+QString formatPingTime(double dPingTime)
 {
-    return (ping_usec == std::numeric_limits<int64_t>::max() || ping_usec == 0) ? QObject::tr("N/A") : QString(QObject::tr("%1 ms")).arg(QString::number((int)(ping_usec / 1000), 10));
+    return (dPingTime == std::numeric_limits<int64_t>::max()/1e6 || dPingTime == 0) ? QObject::tr("N/A") : QString(QObject::tr("%1 ms")).arg(QString::number((int)(dPingTime * 1000), 10));
 }
 
 QString formatTimeOffset(int64_t nTimeOffset)
@@ -875,32 +879,6 @@ int TextWidth(const QFontMetrics& fm, const QString& text)
 #else
     return fm.width(text);
 #endif
-}
-
-void LogQtInfo()
-{
-#ifdef QT_STATIC
-    const std::string qt_link{"static"};
-#else
-    const std::string qt_link{"dynamic"};
-#endif
-#ifdef QT_STATICPLUGIN
-    const std::string plugin_link{"static"};
-#else
-    const std::string plugin_link{"dynamic"};
-#endif
-    LogPrintf("Qt %s (%s), plugin=%s (%s)\n", qVersion(), qt_link, QGuiApplication::platformName().toStdString(), plugin_link);
-    LogPrintf("System: %s, %s\n", QSysInfo::prettyProductName().toStdString(), QSysInfo::buildAbi().toStdString());
-    for (const QScreen* s : QGuiApplication::screens()) {
-        LogPrintf("Screen: %s %dx%d, pixel ratio=%.1f\n", s->name().toStdString(), s->size().width(), s->size().height(), s->devicePixelRatio());
-    }
-}
-
-void PopupMenu(QMenu* menu, const QPoint& point, QAction* at_action)
-{
-    // The qminimal plugin does not provide window system integration.
-    if (QApplication::platformName() == "minimal") return;
-    menu->popup(point, at_action);
 }
 
 } // namespace GUIUtil

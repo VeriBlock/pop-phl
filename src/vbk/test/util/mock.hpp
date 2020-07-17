@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_SRC_VBK_TEST_UTIL_MOCK_HPP
-#define BITCOIN_SRC_VBK_TEST_UTIL_MOCK_HPP
+#ifndef PLACEH_SRC_VBK_TEST_UTIL_MOCK_HPP
+#define PLACEH_SRC_VBK_TEST_UTIL_MOCK_HPP
 
 #include <chain.h>
 
@@ -19,7 +19,7 @@ namespace VeriBlockTest {
 //{
 //public:
 //    MOCK_METHOD(std::vector<VeriBlock::BlockBytes>, getLastKnownVBKBlocks, (size_t blocks), ());
-//    MOCK_METHOD(std::vector<VeriBlock::BlockBytes>, getLastKnownBTCBlocks, (size_t blocks), ());
+//    MOCK_METHOD(std::vector<VeriBlock::BlockBytes>, getLastKnownPHLBlocks, (size_t blocks), ());
 //    MOCK_METHOD(bool, checkVTBinternally, (const std::vector<uint8_t>& bytes), ());
 //    MOCK_METHOD(bool, checkATVinternally, (const std::vector<uint8_t>& bytes), ());
 //    MOCK_METHOD(int, compareTwoBranches,
@@ -31,7 +31,7 @@ namespace VeriBlockTest {
 //    MOCK_METHOD(bool, blockPopValidation,
 //      (const CBlock& block, const CBlockIndex& pindexPrev, const Consensus::Params& params,
 //        BlockValidationState& state), ());
-//    MOCK_METHOD(bool, determineATVPlausibilityWithBTCRules,
+//    MOCK_METHOD(bool, determineATVPlausibilityWithPHLRules,
 //      (VeriBlock::AltchainId altChainIdentifier, const CBlockHeader& popEndorsementHeader,
 //        const Consensus::Params& params, TxValidationState& state), ());
 //    MOCK_METHOD(bool, commitPayloads, (const CBlockIndex& blockIndex, const CBlock& block, TxValidationState& state), ());
@@ -70,7 +70,7 @@ namespace VeriBlockTest {
 //public:
 //    PopServiceImplMock() : VeriBlock::PopServiceImpl() {}
 //
-//    MOCK_METHOD(bool, determineATVPlausibilityWithBTCRules,
+//    MOCK_METHOD(bool, determineATVPlausibilityWithPHLRules,
 //      (VeriBlock::AltchainId altChainIdentifier, const CBlockHeader& popEndorsementHeader,
 //        const Consensus::Params& params, TxValidationState& state), (override));
 //    MOCK_METHOD(bool, commitPayloads,
@@ -91,7 +91,7 @@ namespace VeriBlockTest {
 //    ON_CALL(mock, checkATVinternally).WillByDefault(Return(true));
 //    ON_CALL(mock, compareTwoBranches).WillByDefault(Return(0));
 //    ON_CALL(mock, getLastKnownVBKBlocks).WillByDefault(Return(std::vector<VeriBlock::BlockBytes>()));
-//    ON_CALL(mock, getLastKnownBTCBlocks).WillByDefault(Return(std::vector<VeriBlock::BlockBytes>()));
+//    ON_CALL(mock, getLastKnownPHLBlocks).WillByDefault(Return(std::vector<VeriBlock::BlockBytes>()));
 //    ON_CALL(mock, blockPopValidation).WillByDefault(Return(true));
 //
 //    setServiceMock<VeriBlock::PopService>(mock);
@@ -129,4 +129,4 @@ namespace VeriBlockTest {
 
 } // namespace VeriBlockTest
 
-#endif //BITCOIN_SRC_VBK_TEST_UTIL_MOCK_HPP
+#endif //PLACEH_SRC_VBK_TEST_UTIL_MOCK_HPP

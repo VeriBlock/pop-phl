@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2020 The Placeholders Core developers
+// Copyright (c) 2011-2019 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 //
@@ -8,7 +8,6 @@
 #include <test/util/logging.h>
 #include <test/util/setup_common.h>
 #include <timedata.h>
-#include <util/string.h>
 #include <warnings.h>
 
 #include <string>
@@ -47,7 +46,7 @@ static void MultiAddTimeData(int n, int64_t offset)
     static int cnt = 0;
     for (int i = 0; i < n; ++i) {
         CNetAddr addr;
-        addr.SetInternal(ToString(++cnt));
+        addr.SetInternal(std::to_string(++cnt));
         AddTimeData(addr, offset);
     }
 }

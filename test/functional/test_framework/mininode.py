@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 # Copyright (c) 2010 ArtForz -- public domain half-a-node
 # Copyright (c) 2012 Jeff Garzik
-# Copyright (c) 2010-2020 The Placeholders Core developers
 # Copyright (c) 2010-2019 The Bitcoin Core developers
 # Copyright (c) 2019-2020 Xenios SEZC
 # https://www.veriblock.org
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
-"""Placeholders P2P network half-a-node.
+"""Bitcoin P2P network half-a-node.
 
 This python code was modified from ArtForz' public domain half-a-node, as
 found in the mini-node branch of http://github.com/jgarzik/pynode.
@@ -15,10 +14,7 @@ found in the mini-node branch of http://github.com/jgarzik/pynode.
 P2PConnection: A low-level connection object to a node's P2P interface
 P2PInterface: A high-level interface object for communicating to a node over P2P
 P2PDataStore: A p2p interface class that keeps a store of transactions and blocks
-              and can respond correctly to getdata and getheaders messages
-P2PTxInvStore: A p2p interface class that inherits from P2PDataStore, and keeps
-              a count of how many times each txid has been announced."""
-
+              and can respond correctly to getdata and getheaders messages"""
 import asyncio
 from collections import defaultdict
 from io import BytesIO
@@ -34,14 +30,8 @@ from test_framework.messages import (
     msg_block,
     MSG_BLOCK,
     msg_blocktxn,
-    msg_cfcheckpt,
-    msg_cfheaders,
-    msg_cfilter,
     msg_cmpctblock,
     msg_feefilter,
-    msg_filteradd,
-    msg_filterclear,
-    msg_filterload,
     msg_getaddr,
     msg_getblocks,
     msg_getblocktxn,
@@ -50,7 +40,6 @@ from test_framework.messages import (
     msg_headers,
     msg_inv,
     msg_mempool,
-    msg_merkleblock,
     msg_notfound,
     msg_ping,
     msg_pong,
@@ -73,14 +62,8 @@ MESSAGEMAP = {
     b"addr": msg_addr,
     b"block": msg_block,
     b"blocktxn": msg_blocktxn,
-    b"cfcheckpt": msg_cfcheckpt,
-    b"cfheaders": msg_cfheaders,
-    b"cfilter": msg_cfilter,
     b"cmpctblock": msg_cmpctblock,
     b"feefilter": msg_feefilter,
-    b"filteradd": msg_filteradd,
-    b"filterclear": msg_filterclear,
-    b"filterload": msg_filterload,
     b"getaddr": msg_getaddr,
     b"getblocks": msg_getblocks,
     b"getblocktxn": msg_getblocktxn,
@@ -89,7 +72,6 @@ MESSAGEMAP = {
     b"headers": msg_headers,
     b"inv": msg_inv,
     b"mempool": msg_mempool,
-    b"merkleblock": msg_merkleblock,
     b"notfound": msg_notfound,
     b"ping": msg_ping,
     b"pong": msg_pong,
@@ -100,12 +82,22 @@ MESSAGEMAP = {
     b"version": msg_version,
 }
 
+# Edit these parameters to match src/chainparams.cpp
+VBK_NETWORK = 0x4
+
+
+def calculate_network_magic(index):
+    return bytes([index, index, index, index + VBK_NETWORK])
+
+
 MAGIC_BYTES = {
-    "mainnet": b"\x50\x45\x58\x41",   # mainnet
-    "testnet6": b"\x50\x43\x54\x4e",  # testnet6
-    "regtest": b"\x50\x43\x52\x44",   # regtest
+    "mainnet": calculate_network_magic(1),   # mainnet
+    "testnet3": calculate_network_magic(2),  # testnet3
+    "regtest": calculate_network_magic(3),   # regtest
 }
 
+
+# VBK
 
 class P2PConnection(asyncio.Protocol):
     """A low-level connection object to a node's P2P interface.
@@ -129,16 +121,15 @@ class P2PConnection(asyncio.Protocol):
     def is_connected(self):
         return self._transport is not None
 
-    def peer_connect(self, dstaddr, dstport, *, net, timeout_factor):
+    def peer_connect(self, dstaddr, dstport, *, net):
         assert not self.is_connected
-        self.timeout_factor = timeout_factor
         self.dstaddr = dstaddr
         self.dstport = dstport
         # The initial message to send after the connection was made:
         self.on_connection_send_msg = None
         self.recvbuf = b""
         self.magic_bytes = MAGIC_BYTES[net]
-        logger.debug('Connecting to Placeholders Node: %s:%d' % (self.dstaddr, self.dstport))
+        logger.debug('Connecting to Bitcoin Node: %s:%d' % (self.dstaddr, self.dstport))
 
         loop = NetworkThread.network_event_loop
         conn_gen_unsafe = loop.create_connection(lambda: self, host=self.dstaddr, port=self.dstport)
@@ -193,7 +184,7 @@ class P2PConnection(asyncio.Protocol):
                     raise ValueError("magic bytes mismatch: {} != {}".format(repr(self.magic_bytes), repr(self.recvbuf)))
                 if len(self.recvbuf) < 4 + 12 + 4 + 4:
                     return
-                msgtype = self.recvbuf[4:4+12].split(b"\x00", 1)[0]
+                command = self.recvbuf[4:4+12].split(b"\x00", 1)[0]
                 msglen = struct.unpack("<i", self.recvbuf[4+12:4+12+4])[0]
                 checksum = self.recvbuf[4+12+4:4+12+4+4]
                 if len(self.recvbuf) < 4 + 12 + 4 + 4 + msglen:
@@ -204,10 +195,10 @@ class P2PConnection(asyncio.Protocol):
                 if checksum != h[:4]:
                     raise ValueError("got bad checksum " + repr(self.recvbuf))
                 self.recvbuf = self.recvbuf[4+12+4+4+msglen:]
-                if msgtype not in MESSAGEMAP:
-                    raise ValueError("Received unknown msgtype from %s:%d: '%s' %s" % (self.dstaddr, self.dstport, msgtype, repr(msg)))
+                if command not in MESSAGEMAP:
+                    raise ValueError("Received unknown command from %s:%d: '%s' %s" % (self.dstaddr, self.dstport, command, repr(msg)))
                 f = BytesIO(msg)
-                t = MESSAGEMAP[msgtype]()
+                t = MESSAGEMAP[command]()
                 t.deserialize(f)
                 self._log_message("receive", t)
                 self.on_message(t)
@@ -246,11 +237,11 @@ class P2PConnection(asyncio.Protocol):
 
     def build_message(self, message):
         """Build a serialized P2P message"""
-        msgtype = message.msgtype
+        command = message.command
         data = message.serialize()
         tmsg = self.magic_bytes
-        tmsg += msgtype
-        tmsg += b"\x00" * (12 - len(msgtype))
+        tmsg += command
+        tmsg += b"\x00" * (12 - len(command))
         tmsg += struct.pack("<I", len(data))
         th = sha256(data)
         h = sha256(th)
@@ -271,7 +262,7 @@ class P2PConnection(asyncio.Protocol):
 
 
 class P2PInterface(P2PConnection):
-    """A high-level P2P interface class for communicating with a Placeholders node.
+    """A high-level P2P interface class for communicating with a Bitcoin node.
 
     This class provides high-level callbacks for processing P2P message
     payloads, as well as convenience methods for interacting with the
@@ -317,10 +308,10 @@ class P2PInterface(P2PConnection):
         and the most recent message of each type."""
         with mininode_lock:
             try:
-                msgtype = message.msgtype.decode('ascii')
-                self.message_count[msgtype] += 1
-                self.last_message[msgtype] = message
-                getattr(self, 'on_' + msgtype)(message)
+                command = message.command.decode('ascii')
+                self.message_count[command] += 1
+                self.last_message[command] = message
+                getattr(self, 'on_' + command)(message)
             except:
                 print("ERROR delivering %s (%s)" % (repr(message), sys.exc_info()[0]))
                 raise
@@ -337,14 +328,8 @@ class P2PInterface(P2PConnection):
     def on_addr(self, message): pass
     def on_block(self, message): pass
     def on_blocktxn(self, message): pass
-    def on_cfcheckpt(self, message): pass
-    def on_cfheaders(self, message): pass
-    def on_cfilter(self, message): pass
     def on_cmpctblock(self, message): pass
     def on_feefilter(self, message): pass
-    def on_filteradd(self, message): pass
-    def on_filterclear(self, message): pass
-    def on_filterload(self, message): pass
     def on_getaddr(self, message): pass
     def on_getblocks(self, message): pass
     def on_getblocktxn(self, message): pass
@@ -352,9 +337,9 @@ class P2PInterface(P2PConnection):
     def on_getheaders(self, message): pass
     def on_headers(self, message): pass
     def on_mempool(self, message): pass
-    def on_merkleblock(self, message): pass
     def on_notfound(self, message): pass
     def on_pong(self, message): pass
+    def on_reject(self, message): pass
     def on_sendcmpct(self, message): pass
     def on_sendheaders(self, message): pass
     def on_tx(self, message): pass
@@ -380,12 +365,9 @@ class P2PInterface(P2PConnection):
 
     # Connection helper methods
 
-    def wait_until(self, test_function, timeout=60):
-        wait_until(test_function, timeout=timeout, lock=mininode_lock, timeout_factor=self.timeout_factor)
-
     def wait_for_disconnect(self, timeout=60):
         test_function = lambda: not self.is_connected
-        self.wait_until(test_function, timeout=timeout)
+        wait_until(test_function, timeout=timeout, lock=mininode_lock)
 
     # Message receiving helper methods
 
@@ -396,14 +378,14 @@ class P2PInterface(P2PConnection):
                 return False
             return self.last_message['tx'].tx.rehash() == txid
 
-        self.wait_until(test_function, timeout=timeout)
+        wait_until(test_function, timeout=timeout, lock=mininode_lock)
 
     def wait_for_block(self, blockhash, timeout=60):
         def test_function():
             assert self.is_connected
             return self.last_message.get("block") and self.last_message["block"].block.rehash() == blockhash
 
-        self.wait_until(test_function, timeout=timeout)
+        wait_until(test_function, timeout=timeout, lock=mininode_lock)
 
     def wait_for_header(self, blockhash, timeout=60):
         def test_function():
@@ -411,33 +393,23 @@ class P2PInterface(P2PConnection):
             last_headers = self.last_message.get('headers')
             if not last_headers:
                 return False
-            return last_headers.headers[0].rehash() == int(blockhash, 16)
+            return last_headers.headers[0].rehash() == blockhash
 
-        self.wait_until(test_function, timeout=timeout)
+        wait_until(test_function, timeout=timeout, lock=mininode_lock)
 
-    def wait_for_merkleblock(self, blockhash, timeout=60):
-        def test_function():
-            assert self.is_connected
-            last_filtered_block = self.last_message.get('merkleblock')
-            if not last_filtered_block:
-                return False
-            return last_filtered_block.merkleblock.header.rehash() == int(blockhash, 16)
-
-        self.wait_until(test_function, timeout=timeout)
-
-    def wait_for_getdata(self, hash_list, timeout=60):
+    def wait_for_getdata(self, timeout=60):
         """Waits for a getdata message.
 
-        The object hashes in the inventory vector must match the provided hash_list."""
+        Receiving any getdata message will satisfy the predicate. the last_message["getdata"]
+        value must be explicitly cleared before calling this method, or this will return
+        immediately with success. TODO: change this method to take a hash value and only
+        return true if the correct block/tx has been requested."""
 
         def test_function():
             assert self.is_connected
-            last_data = self.last_message.get("getdata")
-            if not last_data:
-                return False
-            return [x.hash for x in last_data.inv] == hash_list
+            return self.last_message.get("getdata")
 
-        self.wait_until(test_function, timeout=timeout)
+        wait_until(test_function, timeout=timeout, lock=mininode_lock)
 
     def wait_for_getheaders(self, timeout=60):
         """Waits for a getheaders message.
@@ -451,7 +423,7 @@ class P2PInterface(P2PConnection):
             assert self.is_connected
             return self.last_message.get("getheaders")
 
-        self.wait_until(test_function, timeout=timeout)
+        wait_until(test_function, timeout=timeout, lock=mininode_lock)
 
     def wait_for_inv(self, expected_inv, timeout=60):
         """Waits for an INV message and checks that the first inv object in the message was as expected."""
@@ -464,13 +436,13 @@ class P2PInterface(P2PConnection):
                                 self.last_message["inv"].inv[0].type == expected_inv[0].type and \
                                 self.last_message["inv"].inv[0].hash == expected_inv[0].hash
 
-        self.wait_until(test_function, timeout=timeout)
+        wait_until(test_function, timeout=timeout, lock=mininode_lock)
 
     def wait_for_verack(self, timeout=60):
         def test_function():
             return self.message_count["verack"]
 
-        self.wait_until(test_function, timeout=timeout)
+        wait_until(test_function, timeout=timeout, lock=mininode_lock)
 
     # Message sending helper functions
 
@@ -486,7 +458,7 @@ class P2PInterface(P2PConnection):
             assert self.is_connected
             return self.last_message.get("pong") and self.last_message["pong"].nonce == self.ping_counter
 
-        self.wait_until(test_function, timeout=timeout)
+        wait_until(test_function, timeout=timeout, lock=mininode_lock)
         self.ping_counter += 1
 
 
@@ -602,7 +574,7 @@ class P2PDataStore(P2PInterface):
                     self.send_message(msg_block(block=b))
             else:
                 self.send_message(msg_headers([CBlockHeader(block) for block in blocks]))
-                self.wait_until(lambda: blocks[-1].sha256 in self.getdata_requests, timeout=timeout)
+                wait_until(lambda: blocks[-1].sha256 in self.getdata_requests, timeout=timeout, lock=mininode_lock)
 
             if expect_disconnect:
                 self.wait_for_disconnect(timeout=timeout)
@@ -610,7 +582,7 @@ class P2PDataStore(P2PInterface):
                 self.sync_with_ping(timeout=timeout)
 
             if success:
-                self.wait_until(lambda: node.getbestblockhash() == blocks[-1].hash, timeout=timeout)
+                wait_until(lambda: node.getbestblockhash() == blocks[-1].hash, timeout=timeout)
             else:
                 assert node.getbestblockhash() != blocks[-1].hash
 
@@ -646,32 +618,3 @@ class P2PDataStore(P2PInterface):
                 # Check that none of the txs are now in the mempool
                 for tx in txs:
                     assert tx.hash not in raw_mempool, "{} tx found in mempool".format(tx.hash)
-
-class P2PTxInvStore(P2PInterface):
-    """A P2PInterface which stores a count of how many times each txid has been announced."""
-    def __init__(self):
-        super().__init__()
-        self.tx_invs_received = defaultdict(int)
-
-    def on_inv(self, message):
-        super().on_inv(message) # Send getdata in response.
-        # Store how many times invs have been received for each tx.
-        for i in message.inv:
-            if i.type == MSG_TX:
-                # save txid
-                self.tx_invs_received[i.hash] += 1
-
-        super().on_inv(message)
-
-    def get_invs(self):
-        with mininode_lock:
-            return list(self.tx_invs_received.keys())
-
-    def wait_for_broadcast(self, txns, timeout=60):
-        """Waits for the txns (list of txids) to complete initial broadcast.
-        The mempool should mark unbroadcast=False for these transactions.
-        """
-        # Wait until invs have been received (and getdatas sent) for each txid.
-        self.wait_until(lambda: set(self.get_invs()) == set([int(tx, 16) for tx in txns]), timeout)
-        # Flush messages and wait for the getdatas to be processed
-        self.sync_with_ping()

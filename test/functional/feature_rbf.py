@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2019 The Placeholders Core developers
 # Copyright (c) 2014-2019 The Bitcoin Core developers
 # Copyright (c) 2019-2020 Xenios SEZC
 # https://www.veriblock.org
@@ -11,9 +10,9 @@ from decimal import Decimal
 
 from test_framework.messages import COIN, COutPoint, CTransaction, CTxIn, CTxOut
 from test_framework.script import CScript, OP_DROP
-from test_framework.test_framework import PlaceholdersTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import assert_equal, assert_raises_rpc_error, satoshi_round
-from test_framework.script_util import DUMMY_P2WPKH_SCRIPT, DUMMY_2_P2WPKH_SCRIPT
+from test_framework.script_util import DUMMY_P2WPKH_SCRIPT
 from test_framework.payout import POW_PAYOUT
 
 MAX_REPLACEMENT_LIMIT = 100
@@ -67,7 +66,7 @@ def make_utxo(node, amount, confirmed=True, scriptPubKey=DUMMY_P2WPKH_SCRIPT):
     return COutPoint(int(txid, 16), 0)
 
 
-class ReplaceByFeeTest(PlaceholdersTestFramework):
+class ReplaceByFeeTest(BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
         self.extra_args = [
@@ -146,7 +145,7 @@ class ReplaceByFeeTest(PlaceholdersTestFramework):
         # Should fail because we haven't changed the fee
         tx1b = CTransaction()
         tx1b.vin = [CTxIn(tx0_outpoint, nSequence=0)]
-        tx1b.vout = [CTxOut(1 * COIN, DUMMY_2_P2WPKH_SCRIPT)]
+        tx1b.vout = [CTxOut(1 * COIN, DUMMY_P2WPKH_SCRIPT + b'a')]
         tx1b_hex = txToHex(tx1b)
 
         # This will raise an exception due to insufficient fee

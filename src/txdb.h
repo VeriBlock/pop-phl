@@ -1,10 +1,10 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2020 The Placeholders Core developers
+// Copyright (c) 2009-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_TXDB_H
-#define PHL_TXDB_H
+#ifndef PLACEH_TXDB_H
+#define PLACEH_TXDB_H
 
 #include <coins.h>
 #include <dbwrapper.h>
@@ -20,6 +20,8 @@ class CBlockIndex;
 class CCoinsViewDBCursor;
 class uint256;
 
+//! No need to periodic flush if at least this much space still available.
+static constexpr int MAX_BLOCK_COINSDB_USAGE = 10;
 //! -dbcache default (MiB)
 static const int64_t nDefaultDbCache = 450;
 //! -dbbatchsize default (bytes)
@@ -100,4 +102,4 @@ public:
     bool LoadBlockIndexGuts(const Consensus::Params& consensusParams, std::function<CBlockIndex*(const uint256&)> insertBlockIndex);
 };
 
-#endif // PHL_TXDB_H
+#endif // PLACEH_TXDB_H

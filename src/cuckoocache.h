@@ -2,10 +2,9 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_CUCKOOCACHE_H
-#define PHL_CUCKOOCACHE_H
+#ifndef PLACEH_CUCKOOCACHE_H
+#define PLACEH_CUCKOOCACHE_H
 
-#include <algorithm> // std::find
 #include <array>
 #include <atomic>
 #include <cmath>
@@ -480,4 +479,4 @@ public:
 };
 } // namespace CuckooCache
 
-#endif // PHL_CUCKOOCACHE_H
+#endif // PLACEH_CUCKOOCACHE_H

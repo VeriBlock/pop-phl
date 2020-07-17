@@ -1,11 +1,13 @@
-// Copyright (c) 2017-2019 The Placeholders Core developers
+// Copyright (c) 2017-2018 The Bitcoin Core developers
+// Copyright (c) 2019-2020 Xenios SEZC
+// https://www.veriblock.org
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <consensus/tx_check.h>
 
-#include <primitives/transaction.h>
 #include <consensus/validation.h>
+#include <primitives/transaction.h>
 #include <vbk/service_locator.hpp>
 #include <vbk/util.hpp>
 #include <vbk/pop_service.hpp>

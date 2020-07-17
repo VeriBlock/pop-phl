@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2020 The Placeholders Core developers
+// Copyright (c) 2011-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -42,7 +42,7 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
     ui->threadsScriptVerif->setMaximum(MAX_SCRIPTCHECK_THREADS);
     ui->pruneWarning->setVisible(false);
     ui->pruneWarning->setStyleSheet("QLabel { color: red; }");
-
+    
     ui->pruneSize->setEnabled(false);
     connect(ui->prune, &QPushButton::toggled, ui->pruneSize, &QWidget::setEnabled);
 
@@ -90,7 +90,7 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
     ui->placehAtStartup->setToolTip(ui->placehAtStartup->toolTip().arg(PACKAGE_NAME));
     ui->placehAtStartup->setText(ui->placehAtStartup->text().arg(PACKAGE_NAME));
 
-    ui->openPlaceholdersConfButton->setToolTip(ui->openPlaceholdersConfButton->toolTip().arg(PACKAGE_NAME));
+    ui->openBitcoinConfButton->setToolTip(ui->openBitcoinConfButton->toolTip().arg(PACKAGE_NAME));
 
     ui->lang->setToolTip(ui->lang->toolTip().arg(PACKAGE_NAME));
     ui->lang->addItem(QString("(") + tr("default") + QString(")"), QVariant(""));
@@ -110,7 +110,7 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
             ui->lang->addItem(locale.nativeLanguageName() + QString(" (") + langStr + QString(")"), QVariant(langStr));
         }
     }
-    ui->unit->setModel(new PlaceholdersUnits(this));
+    ui->unit->setModel(new BitcoinUnits(this));
 
     /* Widget-to-option mapper */
     mapper = new QDataWidgetMapper(this);
@@ -119,7 +119,9 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
 
     /* VBK */
     QString bfiendpoint = QString::fromStdString(gArgs.GetArg("-bfiendpoint",""));
-    ui->bfiDataSourceUrls->setText(bfiendpoint);
+    ui->bfiDataSourceUrls->setText(bfiendpoint); // = new QDataWidgetMapper(this);
+    //mapper->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
+    //mapper->setOrientation(Qt::Vertical);
 
     GUIUtil::ItemDelegate* delegate = new GUIUtil::ItemDelegate(mapper);
     connect(delegate, &GUIUtil::ItemDelegate::keyEscapePressed, this, &OptionsDialog::reject);
@@ -139,8 +141,6 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
         ui->minimizeToTray->setChecked(false);
         ui->minimizeToTray->setEnabled(false);
     }
-
-    GUIUtil::handleCloseWindowShortcut(this);
 }
 
 OptionsDialog::~OptionsDialog()
@@ -177,6 +177,7 @@ void OptionsDialog::setModel(OptionsModel *_model)
     /* warn when one of the following settings changes by user action (placed here so init via mapper doesn't trigger them) */
 
     /* Main */
+	
     connect(ui->prune, &QCheckBox::clicked, this, &OptionsDialog::showRestartWarning);
     connect(ui->prune, &QCheckBox::clicked, this, &OptionsDialog::togglePruneWarning);
     connect(ui->pruneSize, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &OptionsDialog::showRestartWarning);
@@ -191,6 +192,7 @@ void OptionsDialog::setModel(OptionsModel *_model)
     /* Display */
     connect(ui->lang, static_cast<void (QValueComboBox::*)()>(&QValueComboBox::valueChanged), [this]{ showRestartWarning(); });
     connect(ui->thirdPartyTxUrls, &QLineEdit::textChanged, [this]{ showRestartWarning(); });
+
 }
 
 void OptionsDialog::setCurrentTab(OptionsDialog::Tab tab)
@@ -266,7 +268,8 @@ void OptionsDialog::on_resetButton_clicked()
     }
 }
 
-void OptionsDialog::on_openPlaceholdersConfButton_clicked()
+
+void OptionsDialog::on_openBitcoinConfButton_clicked()
 {
     /* explain the purpose of the config file */
     QMessageBox::information(this, tr("Configuration options"),
@@ -274,7 +277,7 @@ void OptionsDialog::on_openPlaceholdersConfButton_clicked()
            "Additionally, any command-line options will override this configuration file."));
 
     /* show an error if there was some problem opening the file */
-    if (!GUIUtil::openPlaceholdersConf())
+    if (!GUIUtil::openBitcoinConf())
         QMessageBox::critical(this, tr("Error"), tr("The configuration file could not be opened."));
 }
 
@@ -381,7 +384,7 @@ QValidator::State ProxyAddressValidator::validate(QString &input, int &pos) cons
 {
     Q_UNUSED(pos);
     // Validate the proxy
-    CService serv(LookupNumeric(input.toStdString(), DEFAULT_GUI_PROXY_PORT));
+    CService serv(LookupNumeric(input.toStdString().c_str(), DEFAULT_GUI_PROXY_PORT));
     proxyType addrProxy = proxyType(serv, true);
     if (addrProxy.IsValid())
         return QValidator::Acceptable;

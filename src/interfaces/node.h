@@ -1,9 +1,9 @@
-// Copyright (c) 2018-2019 The Placeholders Core developers
+// Copyright (c) 2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_INTERFACES_NODE_H
-#define PHL_INTERFACES_NODE_H
+#ifndef PLACEH_INTERFACES_NODE_H
+#define PLACEH_INTERFACES_NODE_H
 
 #include <amount.h>     // For CAmount
 #include <net.h>        // For CConnman::NumConnections
@@ -27,16 +27,13 @@ class Coin;
 class RPCTimerInterface;
 class UniValue;
 class proxyType;
-enum class SynchronizationState;
-enum class WalletCreationStatus;
 struct CNodeStateStats;
 struct NodeContext;
-struct bilingual_str;
+enum class WalletCreationStatus;
 
 namespace interfaces {
 class Handler;
 class Wallet;
-struct BlockTip;
 
 //! Top-level interface for a placeh node (placehd process).
 class Node
@@ -127,10 +124,10 @@ public:
     virtual bool unban(const CSubNet& ip) = 0;
 
     //! Disconnect node by address.
-    virtual bool disconnectByAddress(const CNetAddr& net_addr) = 0;
+    virtual bool disconnect(const CNetAddr& net_addr) = 0;
 
     //! Disconnect node by id.
-    virtual bool disconnectById(NodeId id) = 0;
+    virtual bool disconnect(NodeId id) = 0;
 
     //! Get total bytes recv.
     virtual int64_t getTotalBytesRecv() = 0;
@@ -149,9 +146,6 @@ public:
 
     //! Get num blocks.
     virtual int getNumBlocks() = 0;
-
-    //! Get best block hash.
-    virtual uint256 getBestBlockHash() = 0;
 
     //! Get last block time.
     virtual int64_t getLastBlockTime() = 0;
@@ -207,10 +201,10 @@ public:
     //! Attempts to load a wallet from file or directory.
     //! The loaded wallet is also notified to handlers previously registered
     //! with handleLoadWallet.
-    virtual std::unique_ptr<Wallet> loadWallet(const std::string& name, bilingual_str& error, std::vector<bilingual_str>& warnings) = 0;
+    virtual std::unique_ptr<Wallet> loadWallet(const std::string& name, std::string& error, std::vector<std::string>& warnings) = 0;
 
     //! Create a wallet from file
-    virtual std::unique_ptr<Wallet> createWallet(const SecureString& passphrase, uint64_t wallet_creation_flags, const std::string& name, bilingual_str& error, std::vector<bilingual_str>& warnings, WalletCreationStatus& status) = 0;
+    virtual WalletCreationStatus createWallet(const SecureString& passphrase, uint64_t wallet_creation_flags, const std::string& name, std::string& error, std::vector<std::string>& warnings, std::unique_ptr<Wallet>& result) = 0;
 
     //! Register handler for init messages.
     using InitMessageFn = std::function<void(const std::string& message)>;
@@ -218,11 +212,11 @@ public:
 
     //! Register handler for message box messages.
     using MessageBoxFn =
-        std::function<bool(const bilingual_str& message, const std::string& caption, unsigned int style)>;
+        std::function<bool(const std::string& message, const std::string& caption, unsigned int style)>;
     virtual std::unique_ptr<Handler> handleMessageBox(MessageBoxFn fn) = 0;
 
     //! Register handler for question messages.
-    using QuestionFn = std::function<bool(const bilingual_str& message,
+    using QuestionFn = std::function<bool(const std::string& message,
         const std::string& non_interactive_message,
         const std::string& caption,
         unsigned int style)>;
@@ -254,12 +248,12 @@ public:
 
     //! Register handler for block tip messages.
     using NotifyBlockTipFn =
-        std::function<void(SynchronizationState, interfaces::BlockTip tip, double verification_progress)>;
+        std::function<void(bool initial_download, int height, int64_t block_time, double verification_progress)>;
     virtual std::unique_ptr<Handler> handleNotifyBlockTip(NotifyBlockTipFn fn) = 0;
 
     //! Register handler for header tip messages.
     using NotifyHeaderTipFn =
-        std::function<void(SynchronizationState, interfaces::BlockTip tip, double verification_progress)>;
+        std::function<void(bool initial_download, int height, int64_t block_time, double verification_progress)>;
     virtual std::unique_ptr<Handler> handleNotifyHeaderTip(NotifyHeaderTipFn fn) = 0;
 
     //! Return pointer to internal chain interface, useful for testing.
@@ -269,13 +263,6 @@ public:
 //! Return implementation of Node interface.
 std::unique_ptr<Node> MakeNode();
 
-//! Block tip (could be a header or not, depends on the subscribed signal).
-struct BlockTip {
-    int block_height;
-    int64_t block_time;
-    uint256 block_hash;
-};
-
 } // namespace interfaces
 
-#endif // PHL_INTERFACES_NODE_H
+#endif // PLACEH_INTERFACES_NODE_H

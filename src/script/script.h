@@ -1,10 +1,12 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2020 The Placeholders Core developers
+// Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2019-2020 Xenios SEZC
+// https://www.veriblock.org
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_SCRIPT_SCRIPT_H
-#define PHL_SCRIPT_SCRIPT_H
+#ifndef PLACEH_SCRIPT_SCRIPT_H
+#define PLACEH_SCRIPT_SCRIPT_H
 
 #include <crypto/common.h>
 #include <prevector.h>
@@ -189,7 +191,7 @@ enum opcodetype
     OP_CHECKATV = 0xba,
     OP_CHECKVTB = 0xbb,
     OP_CHECKPOP = 0xbc,
-    OP_POPBTCHEADER = 0xbd,
+    OP_POPPHLHEADER = 0xbd,
     OP_POPVBKHEADER = 0xbe,
 
     OP_INVALIDOPCODE = 0xff,
@@ -198,7 +200,7 @@ enum opcodetype
 // Maximum value that an opcode can be
 static const unsigned int MAX_OPCODE = OP_POPVBKHEADER;
 
-std::string GetOpName(opcodetype opcode);
+const char* GetOpName(opcodetype opcode);
 
 class scriptnum_error : public std::runtime_error
 {
@@ -334,7 +336,7 @@ public:
 
         std::vector<unsigned char> result;
         const bool neg = value < 0;
-        uint64_t absvalue = neg ? ~static_cast<uint64_t>(value) + 1 : static_cast<uint64_t>(value);
+        uint64_t absvalue = neg ? -value : value;
 
         while(absvalue)
         {
@@ -417,17 +419,35 @@ public:
     CScript(std::vector<unsigned char>::const_iterator pbegin, std::vector<unsigned char>::const_iterator pend) : CScriptBase(pbegin, pend) { }
     CScript(const unsigned char* pbegin, const unsigned char* pend) : CScriptBase(pbegin, pend) { }
 
-    SERIALIZE_METHODS(CScript, obj) { READWRITEAS(CScriptBase, obj); }
+    ADD_SERIALIZE_METHODS;
 
-    explicit CScript(int64_t b) { operator<<(b); }
+    template <typename Stream, typename Operation>
+    inline void SerializationOp(Stream& s, Operation ser_action) {
+        READWRITEAS(CScriptBase, *this);
+    }
+
+    CScript& operator+=(const CScript& b)
+    {
+        reserve(size() + b.size());
+        insert(end(), b.begin(), b.end());
+        return *this;
+    }
+
+    friend CScript operator+(const CScript& a, const CScript& b)
+    {
+        CScript ret = a;
+        ret += b;
+        return ret;
+    }
+
+    CScript(int64_t b)        { operator<<(b); }
+
     explicit CScript(opcodetype b)     { operator<<(b); }
     explicit CScript(const CScriptNum& b) { operator<<(b); }
     // delete non-existent constructor to defend against future introduction
     // e.g. via prevector
     explicit CScript(const std::vector<unsigned char>& b) = delete;
 
-    /** Delete non-existent operator to defend against future introduction */
-    CScript& operator<<(const CScript& b) = delete;
 
     CScript& operator<<(int64_t b) { return push_int64(b); }
 
@@ -474,6 +494,15 @@ public:
         return *this;
     }
 
+    CScript& operator<<(const CScript& b)
+    {
+        // I'm not sure if this should push the script or concatenate scripts.
+        // If there's ever a use for pushing a script onto a script, delete this member fn
+        assert(!"Warning: Pushing a CScript onto a CScript with << is probably not intended, use + to concatenate!");
+        return *this;
+    }
+
+
     bool GetOp(const_iterator& pc, opcodetype& opcodeRet, std::vector<unsigned char>& vchRet) const
     {
         return GetScriptOp(pc, end(), opcodeRet, &vchRet);
@@ -483,6 +512,7 @@ public:
     {
         return GetScriptOp(pc, end(), opcodeRet, nullptr);
     }
+
 
     /** Encode/decode small integers: */
     static int DecodeOP_N(opcodetype opcode)
@@ -501,7 +531,7 @@ public:
     }
 
     /**
-     * Pre-version-0.6, Placeholders always counted CHECKMULTISIGs
+     * Pre-version-0.6, Bitcoin always counted CHECKMULTISIGs
      * as 20 sigops. With pay-to-script-hash, that changed:
      * CHECKMULTISIGs serialized in scriptSigs are
      * counted more accurately, assuming they are of the form
@@ -560,4 +590,4 @@ struct CScriptWitness
     std::string ToString() const;
 };
 
-#endif // PHL_SCRIPT_SCRIPT_H
+#endif // PLACEH_SCRIPT_SCRIPT_H

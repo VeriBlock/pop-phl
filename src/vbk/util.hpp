@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_SRC_VBK_UTIL_HPP
-#define BITCOIN_SRC_VBK_UTIL_HPP
+#ifndef PLACEH_SRC_VBK_UTIL_HPP
+#define PLACEH_SRC_VBK_UTIL_HPP
 
 #include <primitives/block.h>
 #include <primitives/transaction.h>

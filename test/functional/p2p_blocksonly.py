@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2019 The Placeholders Core developers
 # Copyright (c) 2019 The Bitcoin Core developers
 # Copyright (c) 2019-2020 Xenios SEZC
 # https://www.veriblock.org
@@ -9,12 +8,12 @@
 
 from test_framework.messages import msg_tx, CTransaction, FromHex
 from test_framework.mininode import P2PInterface
-from test_framework.test_framework import PlaceholdersTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import assert_equal
 from test_framework.payout import POW_PAYOUT
 
 
-class P2PBlocksOnly(PlaceholdersTestFramework):
+class P2PBlocksOnly(BitcoinTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = False
         self.num_nodes = 1
@@ -61,29 +60,6 @@ class P2PBlocksOnly(PlaceholdersTestFramework):
             self.nodes[0].p2p.wait_for_tx(txid)
             assert_equal(self.nodes[0].getmempoolinfo()['size'], 1)
 
-        self.log.info('Check that txs from whitelisted peers are not rejected and relayed to others')
-        self.log.info("Restarting node 0 with whitelist permission and blocksonly")
-        self.restart_node(0, ["-persistmempool=0", "-whitelist=127.0.0.1", "-whitelistforcerelay", "-blocksonly"])
-        assert_equal(self.nodes[0].getrawmempool(),[])
-        first_peer = self.nodes[0].add_p2p_connection(P2PInterface())
-        second_peer = self.nodes[0].add_p2p_connection(P2PInterface())
-        peer_1_info = self.nodes[0].getpeerinfo()[0]
-        assert_equal(peer_1_info['whitelisted'], True)
-        assert_equal(peer_1_info['permissions'], ['noban', 'forcerelay', 'relay', 'mempool'])
-        peer_2_info = self.nodes[0].getpeerinfo()[1]
-        assert_equal(peer_2_info['whitelisted'], True)
-        assert_equal(peer_2_info['permissions'], ['noban', 'forcerelay', 'relay', 'mempool'])
-        assert_equal(self.nodes[0].testmempoolaccept([sigtx])[0]['allowed'], True)
-        txid = self.nodes[0].testmempoolaccept([sigtx])[0]['txid']
-
-        self.log.info('Check that the tx from whitelisted first_peer is relayed to others (ie.second_peer)')
-        with self.nodes[0].assert_debug_log(["received getdata"]):
-            first_peer.send_message(msg_tx(FromHex(CTransaction(), sigtx)))
-            self.log.info('Check that the whitelisted peer is still connected after sending the transaction')
-            assert_equal(first_peer.is_connected, True)
-            second_peer.wait_for_tx(txid)
-            assert_equal(self.nodes[0].getmempoolinfo()['size'], 1)
-        self.log.info("Whitelisted peer's transaction is accepted and relayed")
 
 if __name__ == '__main__':
     P2PBlocksOnly().main()

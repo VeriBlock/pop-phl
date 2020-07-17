@@ -1,9 +1,9 @@
-// Copyright (c) 2009-2019 The Placeholders Core developers
+// Copyright (c) 2009-2019 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_NODE_PSBT_H
-#define PHL_NODE_PSBT_H
+#ifndef PLACEH_NODE_PSBT_H
+#define PLACEH_NODE_PSBT_H
 
 #include <psbt.h>
 
@@ -51,4 +51,4 @@ struct PSBTAnalysis {
  */
 PSBTAnalysis AnalyzePSBT(PartiallySignedTransaction psbtx);
 
-#endif // PHL_NODE_PSBT_H
+#endif // PLACEH_NODE_PSBT_H

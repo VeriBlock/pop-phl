@@ -1,13 +1,13 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2020 The Placeholders Core developers
+// Copyright (c) 2009-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 /**
  * Utilities for converting data from/to strings.
  */
-#ifndef PHL_UTIL_STRENCODINGS_H
-#define PHL_UTIL_STRENCODINGS_H
+#ifndef PLACEH_UTIL_STRENCODINGS_H
+#define PLACEH_UTIL_STRENCODINGS_H
 
 #include <attributes.h>
 
@@ -16,10 +16,6 @@
 #include <string>
 #include <vector>
 
-#define BEGIN(a)            ((char*)&(a))
-#define END(a)              ((char*)&((&(a))[1]))
-#define UBEGIN(a)           ((unsigned char*)&(a))
-#define UEND(a)             ((unsigned char*)&((&(a))[1]))
 #define ARRAYLEN(array)     (sizeof(array)/sizeof((array)[0]))
 
 /** Used by SanitizeString() */
@@ -58,7 +54,9 @@ std::string DecodeBase32(const std::string& str, bool* pf_invalid = nullptr);
 std::string EncodeBase32(const unsigned char* pch, size_t len);
 std::string EncodeBase32(const std::string& str);
 
-void SplitHostPort(std::string in, int& portOut, std::string& hostOut);
+void SplitHostPort(std::string in, int &portOut, std::string &hostOut);
+std::string i64tostr(int64_t n);
+std::string itostr(int n);
 int64_t atoi64(const char* psz);
 int64_t atoi64(const std::string& str);
 int atoi(const std::string& str);
@@ -260,4 +258,4 @@ std::string ToUpper(const std::string& str);
  */
 std::string Capitalize(std::string str);
 
-#endif // PHL_UTIL_STRENCODINGS_H
+#endif // PLACEH_UTIL_STRENCODINGS_H

@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2020 The Placeholders Core developers
+// Copyright (c) 2011-2019 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -13,7 +13,7 @@
 #include <QHBoxLayout>
 #include <QLabel>
 
-WalletFrame::WalletFrame(const PlatformStyle *_platformStyle, PlaceholdersGUI *_gui) :
+WalletFrame::WalletFrame(const PlatformStyle *_platformStyle, BitcoinGUI *_gui) :
     QFrame(_gui),
     gui(_gui),
     platformStyle(_platformStyle)
@@ -37,23 +37,19 @@ WalletFrame::~WalletFrame()
 void WalletFrame::setClientModel(ClientModel *_clientModel)
 {
     this->clientModel = _clientModel;
-
-    for (auto i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i) {
-        i.value()->setClientModel(_clientModel);
-    }
 }
 
-bool WalletFrame::addWallet(WalletModel *walletModel)
+void WalletFrame::addWallet(WalletModel *walletModel)
 {
-    if (!gui || !clientModel || !walletModel) return false;
+    if (!gui || !clientModel || !walletModel) return;
 
-    if (mapWalletViews.count(walletModel) > 0) return false;
+    if (mapWalletViews.count(walletModel) > 0) return;
 
     WalletView *walletView = new WalletView(platformStyle, this);
+    walletView->setBitcoinGUI(gui);
     walletView->setClientModel(clientModel);
     walletView->setWalletModel(walletModel);
     walletView->showOutOfSyncWarning(bOutOfSync);
-    walletView->setPrivacy(gui->isPrivacyModeActivated());
 
     WalletView* current_wallet_view = currentWalletView();
     if (current_wallet_view) {
@@ -66,17 +62,6 @@ bool WalletFrame::addWallet(WalletModel *walletModel)
     mapWalletViews[walletModel] = walletView;
 
     connect(walletView, &WalletView::outOfSyncWarningClicked, this, &WalletFrame::outOfSyncWarningClicked);
-    connect(walletView, &WalletView::transactionClicked, gui, &PlaceholdersGUI::gotoHistoryPage);
-    connect(walletView, &WalletView::coinsSent, gui, &PlaceholdersGUI::gotoHistoryPage);
-    connect(walletView, &WalletView::message, [this](const QString& title, const QString& message, unsigned int style) {
-        gui->message(title, message, style);
-    });
-    connect(walletView, &WalletView::encryptionStatusChanged, gui, &PlaceholdersGUI::updateWalletStatus);
-    connect(walletView, &WalletView::incomingTransaction, gui, &PlaceholdersGUI::incomingTransaction);
-    connect(walletView, &WalletView::hdEnabledStatusChanged, gui, &PlaceholdersGUI::updateWalletStatus);
-    connect(gui, &PlaceholdersGUI::setPrivacy, walletView, &WalletView::setPrivacy);
-
-    return true;
 }
 
 void WalletFrame::setCurrentWallet(WalletModel* wallet_model)
@@ -163,14 +148,6 @@ void WalletFrame::gotoVerifyMessageTab(QString addr)
     WalletView *walletView = currentWalletView();
     if (walletView)
         walletView->gotoVerifyMessageTab(addr);
-}
-
-void WalletFrame::gotoLoadPSBT()
-{
-    WalletView *walletView = currentWalletView();
-    if (walletView) {
-        walletView->gotoLoadPSBT();
-    }
 }
 
 void WalletFrame::encryptWallet(bool status)

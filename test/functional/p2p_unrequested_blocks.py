@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-# Copyright (c) 2015-2020 The Placeholders Core developers
+# Copyright (c) 2015-2019 The Bitcoin Core developers
+# Copyright (c) 2019-2020 Xenios SEZC
+# https://www.veriblock.org
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test processing of unrequested blocks.
@@ -54,9 +56,9 @@ Node1 is unused in tests 3-7:
 import time
 
 from test_framework.blocktools import create_block, create_coinbase, create_tx_with_script
-from test_framework.messages import CBlockHeader, CInv, MSG_BLOCK, msg_block, msg_headers, msg_inv
+from test_framework.messages import CBlockHeader, CInv, msg_block, msg_headers, msg_inv
 from test_framework.mininode import mininode_lock, P2PInterface
-from test_framework.test_framework import PlaceholdersTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import (
     assert_equal,
     assert_raises_rpc_error,
@@ -64,7 +66,7 @@ from test_framework.util import (
 )
 
 
-class AcceptBlockTest(PlaceholdersTestFramework):
+class AcceptBlockTest(BitcoinTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 2
@@ -97,9 +99,11 @@ class AcceptBlockTest(PlaceholdersTestFramework):
             blocks_h2.append(create_block(self.nodes[0], tips[i], create_coinbase(2), block_time))
             blocks_h2[i].solve()
             block_time += 1
-        test_node.send_and_ping(msg_block(blocks_h2[0]))
-        min_work_node.send_and_ping(msg_block(blocks_h2[1]))
+        test_node.send_message(msg_block(blocks_h2[0]))
+        min_work_node.send_message(msg_block(blocks_h2[1]))
 
+        for x in [test_node, min_work_node]:
+            x.sync_with_ping()
         assert_equal(self.nodes[0].getblockcount(), 2)
         assert_equal(self.nodes[1].getblockcount(), 1)
         self.log.info("First height 2 block accepted by node0; correctly rejected by node1")
@@ -108,8 +112,9 @@ class AcceptBlockTest(PlaceholdersTestFramework):
         block_h1f = create_block(self.nodes[0], int("0x" + self.nodes[0].getblockhash(0), 0), create_coinbase(1), block_time)
         block_time += 1
         block_h1f.solve()
-        test_node.send_and_ping(msg_block(block_h1f))
+        test_node.send_message(msg_block(block_h1f))
 
+        test_node.sync_with_ping()
         tip_entry_found = False
         for x in self.nodes[0].getchaintips():
             if x['hash'] == block_h1f.hash:
@@ -122,8 +127,9 @@ class AcceptBlockTest(PlaceholdersTestFramework):
         block_h2f = create_block(self.nodes[0], block_h1f.sha256, create_coinbase(2), block_time)
         block_time += 1
         block_h2f.solve()
-        test_node.send_and_ping(msg_block(block_h2f))
+        test_node.send_message(msg_block(block_h2f))
 
+        test_node.sync_with_ping()
         # Since the earlier block was not processed by node, the new block
         # can't be fully validated.
         tip_entry_found = False
@@ -140,8 +146,9 @@ class AcceptBlockTest(PlaceholdersTestFramework):
         # 4b. Now send another block that builds on the forking chain.
         block_h3 = create_block(self.nodes[0], block_h2f.sha256, create_coinbase(3), block_h2f.nTime+1)
         block_h3.solve()
-        test_node.send_and_ping(msg_block(block_h3))
+        test_node.send_message(msg_block(block_h3))
 
+        test_node.sync_with_ping()
         # Since the earlier block was not processed by node, the new block
         # can't be fully validated.
         tip_entry_found = False
@@ -167,7 +174,8 @@ class AcceptBlockTest(PlaceholdersTestFramework):
             tip = next_block
 
         # Now send the block at height 5 and check that it wasn't accepted (missing header)
-        test_node.send_and_ping(msg_block(all_blocks[1]))
+        test_node.send_message(msg_block(all_blocks[1]))
+        test_node.sync_with_ping()
         assert_raises_rpc_error(-5, "Block not found", self.nodes[0].getblock, all_blocks[1].hash)
         assert_raises_rpc_error(-5, "Block not found", self.nodes[0].getblockheader, all_blocks[1].hash)
 
@@ -175,7 +183,8 @@ class AcceptBlockTest(PlaceholdersTestFramework):
         headers_message = msg_headers()
         headers_message.headers.append(CBlockHeader(all_blocks[0]))
         test_node.send_message(headers_message)
-        test_node.send_and_ping(msg_block(all_blocks[1]))
+        test_node.send_message(msg_block(all_blocks[1]))
+        test_node.sync_with_ping()
         self.nodes[0].getblock(all_blocks[1].hash)
 
         # Now send the blocks in all_blocks
@@ -200,7 +209,9 @@ class AcceptBlockTest(PlaceholdersTestFramework):
 
         test_node = self.nodes[0].add_p2p_connection(P2PInterface())
 
-        test_node.send_and_ping(msg_block(block_h1f))
+        test_node.send_message(msg_block(block_h1f))
+
+        test_node.sync_with_ping()
         assert_equal(self.nodes[0].getblockcount(), 2)
         self.log.info("Unrequested block that would complete more-work chain was ignored")
 
@@ -210,7 +221,7 @@ class AcceptBlockTest(PlaceholdersTestFramework):
         with mininode_lock:
             # Clear state so we can check the getdata request
             test_node.last_message.pop("getdata", None)
-            test_node.send_message(msg_inv([CInv(MSG_BLOCK, block_h3.sha256)]))
+            test_node.send_message(msg_inv([CInv(2, block_h3.sha256)]))
 
         test_node.sync_with_ping()
         with mininode_lock:
@@ -221,7 +232,9 @@ class AcceptBlockTest(PlaceholdersTestFramework):
         self.log.info("Inv at tip triggered getdata for unprocessed block")
 
         # 7. Send the missing block for the third time (now it is requested)
-        test_node.send_and_ping(msg_block(block_h1f))
+        test_node.send_message(msg_block(block_h1f))
+
+        test_node.sync_with_ping()
         assert_equal(self.nodes[0].getblockcount(), 290)
         self.nodes[0].getblock(all_blocks[286].hash)
         assert_equal(self.nodes[0].getbestblockhash(), all_blocks[286].hash)
@@ -248,8 +261,9 @@ class AcceptBlockTest(PlaceholdersTestFramework):
         headers_message.headers.append(CBlockHeader(block_290f))
         headers_message.headers.append(CBlockHeader(block_291))
         headers_message.headers.append(CBlockHeader(block_292))
-        test_node.send_and_ping(headers_message)
+        test_node.send_message(headers_message)
 
+        test_node.sync_with_ping()
         tip_entry_found = False
         for x in self.nodes[0].getchaintips():
             if x['hash'] == block_292.hash:
@@ -259,8 +273,9 @@ class AcceptBlockTest(PlaceholdersTestFramework):
         assert_raises_rpc_error(-1, "Block not found on disk", self.nodes[0].getblock, block_292.hash)
 
         test_node.send_message(msg_block(block_289f))
-        test_node.send_and_ping(msg_block(block_290f))
+        test_node.send_message(msg_block(block_290f))
 
+        test_node.sync_with_ping()
         self.nodes[0].getblock(block_289f.hash)
         self.nodes[0].getblock(block_290f.hash)
 

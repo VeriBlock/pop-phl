@@ -70,10 +70,6 @@
         <translation>Tohle jsou tvé placehové adresy pro posílání plateb. Před odesláním mincí si vždy zkontroluj částku a cílovou adresu.</translation>
     </message>
     <message>
-        <source>These are your Placeholders addresses for receiving payments. Use the 'Create new receiving address' button in the receive tab to create new addresses.</source>
-        <translation>Tohle jsou tvé placehové adresy pro příjem plateb. Použij 'Vytvoř novou přijímací adresu' v záložce Přijmi pro vytvoření nové adresy.</translation>
-    </message>
-    <message>
         <source>&amp;Copy Address</source>
         <translation>&amp;Kopíruj adresu</translation>
     </message>
@@ -136,10 +132,6 @@
         <translation>Totéž heslo ještě jednou</translation>
     </message>
     <message>
-        <source>Show passphrase</source>
-        <translation>Ukaž heslo</translation>
-    </message>
-    <message>
         <source>Encrypt wallet</source>
         <translation>Zašifruj peněženku</translation>
     </message>
@@ -168,8 +160,8 @@
         <translation>Potvrď zašifrování peněženky</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PHLS&lt;/b&gt;!</source>
-        <translation>Upozornění: Pokud si zašifruješ peněženku a ztratíš či zapomeneš heslo, &lt;b&gt;PŘIJDEŠ O VŠECHNY PHLY&lt;/b&gt;!</translation>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PLACEHS&lt;/b&gt;!</source>
+        <translation>Upozornění: Pokud si zašifruješ peněženku a ztratíš či zapomeneš heslo, &lt;b&gt;PŘIJDEŠ O VŠECHNY PLACEHY&lt;/b&gt;!</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -178,30 +170,6 @@
     <message>
         <source>Wallet encrypted</source>
         <translation>Peněženka je zašifrována</translation>
-    </message>
-    <message>
-        <source>Enter the new passphrase for the wallet.&lt;br/&gt;Please use a passphrase of &lt;b&gt;ten or more random characters&lt;/b&gt;, or &lt;b&gt;eight or more words&lt;/b&gt;.</source>
-        <translation>Zadej nové heslo k peněžence.&lt;br/&gt;Použij &lt;b&gt;alespoň deset náhodných znaků&lt;/b&gt; nebo &lt;b&gt;alespoň osm slov&lt;/b&gt;.</translation>
-    </message>
-    <message>
-        <source>Enter the old passphrase and new passphrase for the wallet.</source>
-        <translation>Zadej staré a nové heslo k peněžence.</translation>
-    </message>
-    <message>
-        <source>Remember that encrypting your wallet cannot fully protect your placehs from being stolen by malware infecting your computer.</source>
-        <translation>Pamatujte, že zašifrování peněženky nemůže plně ochránit vaše placehy před krádeží, pokud by byl váš počítač napadem malwarem.</translation>
-    </message>
-    <message>
-        <source>Wallet to be encrypted</source>
-        <translation>Peněženka k zašifrování</translation>
-    </message>
-    <message>
-        <source>Your wallet is about to be encrypted. </source>
-        <translation>Vaše peněženka bude zašifrována.</translation>
-    </message>
-    <message>
-        <source>Your wallet is now encrypted. </source>
-        <translation>Vaše peněženka je zašifrovaná.</translation>
     </message>
     <message>
         <source>IMPORTANT: Any previous backups you have made of your wallet file should be replaced with the newly generated, encrypted wallet file. For security reasons, previous backups of the unencrypted wallet file will become useless as soon as you start using the new, encrypted wallet.</source>
@@ -252,7 +220,7 @@
     </message>
 </context>
 <context>
-    <name>PlaceholdersGUI</name>
+    <name>BitcoinGUI</name>
     <message>
         <source>Sign &amp;message...</source>
         <translation>Po&amp;depiš zprávu...</translation>
@@ -326,14 +294,6 @@
         <translation>Načíst &amp;URI...</translation>
     </message>
     <message>
-        <source>Create Wallet...</source>
-        <translation>Vytvoř peněženku...</translation>
-    </message>
-    <message>
-        <source>Create a new wallet</source>
-        <translation>Vytvoř novou peněženku</translation>
-    </message>
-    <message>
         <source>Wallet:</source>
         <translation>Peněženka:</translation>
     </message>
@@ -372,6 +332,14 @@
     <message>
         <source>Change the passphrase used for wallet encryption</source>
         <translation>Změň heslo k šifrování peněženky</translation>
+    </message>
+    <message>
+        <source>&amp;Debug window</source>
+        <translation>&amp;Ladicí okno</translation>
+    </message>
+    <message>
+        <source>Open debugging and diagnostic console</source>
+        <translation>Otevři ladicí a diagnostickou konzoli</translation>
     </message>
     <message>
         <source>&amp;Verify message...</source>
@@ -432,6 +400,10 @@
     <message>
         <source>Show the list of used receiving addresses and labels</source>
         <translation>Ukaž seznam použitých přijímacích adres a jejich označení</translation>
+    </message>
+    <message>
+        <source>Open a placeh: URI or payment request</source>
+        <translation>Načti placeh: URI nebo platební požadavek</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -507,7 +479,7 @@
     </message>
     <message>
         <source>Show the %1 help message to get a list with possible Placeholders command-line options</source>
-        <translation>Seznam argumentů Placeholdersu pro příkazovou řádku získáš v nápovědě %1</translation>
+        <translation>Seznam argumentů Bitcoinu pro příkazovou řádku získáš v nápovědě %1</translation>
     </message>
     <message>
         <source>default wallet</source>
@@ -860,6 +832,10 @@
         <translation>verze</translation>
     </message>
     <message>
+        <source>(%1-bit)</source>
+        <translation>(%1-bit)</translation>
+    </message>
+    <message>
         <source>About %1</source>
         <translation>O %1</translation>
     </message>
@@ -903,8 +879,8 @@
         <translation>Použij tento adresář pro data:</translation>
     </message>
     <message>
-        <source>Placeholders</source>
-        <translation>Placeholders</translation>
+        <source>Bitcoin</source>
+        <translation>Bitcoin</translation>
     </message>
     <message>
         <source>At least %1 GB of data will be stored in this directory, and it will grow over time.</source>
@@ -993,8 +969,24 @@
 <context>
     <name>OpenURIDialog</name>
     <message>
+        <source>Open URI</source>
+        <translation>Načíst URI</translation>
+    </message>
+    <message>
+        <source>Open payment request from URI or file</source>
+        <translation>Načíst platební požadavek z URI nebo ze souboru</translation>
+    </message>
+    <message>
         <source>URI:</source>
         <translation>URI:</translation>
+    </message>
+    <message>
+        <source>Select payment request file</source>
+        <translation>Vyber soubor platebního požadavku</translation>
+    </message>
+    <message>
+        <source>Select payment request file to open</source>
+        <translation>Vyber soubor platebního požadavku k načtení</translation>
     </message>
 </context>
 <context>
@@ -1377,6 +1369,18 @@
         <translation>'placeh://' není platné URI. Místo toho použij 'placeh:'.</translation>
     </message>
     <message>
+        <source>You are using a BIP70 URL which will be unsupported in the future.</source>
+        <translation>Používáte BIP70 URL, která nebude v budoucnosti podporovaná.</translation>
+    </message>
+    <message>
+        <source>Payment request fetch URL is invalid: %1</source>
+        <translation>Zdrojová URL platebního požadavku není platná: %1</translation>
+    </message>
+    <message>
+        <source>Cannot process payment request because BIP70 support was not compiled in.</source>
+        <translation>Není možné zpracovat platební požadavek, protože podpora pro BIP70 platby nebyla přikompilována.</translation>
+    </message>
+    <message>
         <source>Invalid payment address %1</source>
         <translation>Neplatná platební adresa %1</translation>
     </message>
@@ -1387,6 +1391,66 @@
     <message>
         <source>Payment request file handling</source>
         <translation>Zpracování souboru platebního požadavku</translation>
+    </message>
+    <message>
+        <source>Payment request file cannot be read! This can be caused by an invalid payment request file.</source>
+        <translation>Soubor platebního požadavku nejde přečíst nebo zpracovat! Příčinou může být špatný soubor platebního požadavku.</translation>
+    </message>
+    <message>
+        <source>Payment request rejected</source>
+        <translation>Platební požadavek byl odmítnut</translation>
+    </message>
+    <message>
+        <source>Payment request network doesn't match client network.</source>
+        <translation>Síť platebního požadavku neodpovídá síti klienta.</translation>
+    </message>
+    <message>
+        <source>Payment request expired.</source>
+        <translation>Platební požadavek vypršel.</translation>
+    </message>
+    <message>
+        <source>Payment request is not initialized.</source>
+        <translation>Platební požadavek není zahájený.</translation>
+    </message>
+    <message>
+        <source>Unverified payment requests to custom payment scripts are unsupported.</source>
+        <translation>Neověřené platební požadavky k uživatelským platebním skriptům nejsou podporované.</translation>
+    </message>
+    <message>
+        <source>Invalid payment request.</source>
+        <translation>Neplatný platební požadavek.</translation>
+    </message>
+    <message>
+        <source>Requested payment amount of %1 is too small (considered dust).</source>
+        <translation>Požadovaná platební částka %1 je příliš malá (je považována za prach).</translation>
+    </message>
+    <message>
+        <source>Refund from %1</source>
+        <translation>Vrácení peněz od %1</translation>
+    </message>
+    <message>
+        <source>Payment request %1 is too large (%2 bytes, allowed %3 bytes).</source>
+        <translation>Platební požadavek %1 je moc velký (%2 bajtů, povoleno %3 bajtů).</translation>
+    </message>
+    <message>
+        <source>Error communicating with %1: %2</source>
+        <translation>Chyba při komunikaci s %1: %2</translation>
+    </message>
+    <message>
+        <source>Payment request cannot be parsed!</source>
+        <translation>Platební požadavek je nečitelný!</translation>
+    </message>
+    <message>
+        <source>Bad response from server %1</source>
+        <translation>Chybná odpověď ze serveru %1</translation>
+    </message>
+    <message>
+        <source>Network request error</source>
+        <translation>Chyba síťového požadavku</translation>
+    </message>
+    <message>
+        <source>Payment acknowledged</source>
+        <translation>Platba potvrzena</translation>
     </message>
 </context>
 <context>
@@ -1559,6 +1623,10 @@
     <message>
         <source>&amp;Information</source>
         <translation>&amp;Informace</translation>
+    </message>
+    <message>
+        <source>Debug window</source>
+        <translation>Ladicí okno</translation>
     </message>
     <message>
         <source>General</source>
@@ -2097,6 +2165,10 @@
         <translation>Upozornění: teď není možné poplatek odhadnout.</translation>
     </message>
     <message>
+        <source>collapse fee-settings</source>
+        <translation>sbal nastavení poplatků</translation>
+    </message>
+    <message>
         <source>Specify a custom fee per kB (1,000 bytes) of the transaction's virtual size.
 
 Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis per kB" for a transaction size of 500 bytes (half of 1 kB) would ultimately yield a fee of only 50 satoshis.</source>
@@ -2245,10 +2317,6 @@ Poznámka: Jelikož je poplatek počítaný za bajt, poplatek o hodnotě "100 sa
         <translation>Potvrď odeslání mincí</translation>
     </message>
     <message>
-        <source>Send</source>
-        <translation>Pošli</translation>
-    </message>
-    <message>
         <source>The recipient address is not valid. Please recheck.</source>
         <translation>Adresa příjemce je neplatná – překontroluj ji prosím.</translation>
     </message>
@@ -2271,6 +2339,10 @@ Poznámka: Jelikož je poplatek počítaný za bajt, poplatek o hodnotě "100 sa
     <message>
         <source>Transaction creation failed!</source>
         <translation>Vytvoření transakce selhalo!</translation>
+    </message>
+    <message>
+        <source>The transaction was rejected with the following reason: %1</source>
+        <translation>Transakce byla zamítnuta s tímto odůvodněním: %1</translation>
     </message>
     <message>
         <source>A fee higher than %1 is considered an absurdly high fee.</source>
@@ -2324,8 +2396,12 @@ Poznámka: Jelikož je poplatek počítaný za bajt, poplatek o hodnotě "100 sa
         <translation>Vyber již použitou adresu</translation>
     </message>
     <message>
+        <source>This is a normal payment.</source>
+        <translation>Tohle je normální platba.</translation>
+    </message>
+    <message>
         <source>The Placeholders address to send the payment to</source>
-        <translation>Placeholdersová adresa příjemce</translation>
+        <translation>Bitcoinová adresa příjemce</translation>
     </message>
     <message>
         <source>Alt+A</source>
@@ -2383,6 +2459,17 @@ Poznámka: Jelikož je poplatek počítaný za bajt, poplatek o hodnotě "100 sa
         <source>Memo:</source>
         <translation>Poznámka:</translation>
     </message>
+    <message>
+        <source>Enter a label for this address to add it to your address book</source>
+        <translation>Zadej označení této adresy; obojí se ti pak uloží do adresáře</translation>
+    </message>
+</context>
+<context>
+    <name>SendConfirmationDialog</name>
+    <message>
+        <source>Yes</source>
+        <translation>Ano</translation>
+    </message>
 </context>
 <context>
     <name>ShutdownWindow</name>
@@ -2406,12 +2493,12 @@ Poznámka: Jelikož je poplatek počítaný za bajt, poplatek o hodnotě "100 sa
         <translation>&amp;Podepiš zprávu</translation>
     </message>
     <message>
-        <source>You can sign messages/agreements with your addresses to prove you can receive placehs sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
+        <source>You can sign messages/agreements with your addresses to prove you can receive Placeholderss sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
         <translation>Podepsáním zprávy/smlouvy svými adresami můžeš prokázat, že jsi na ně schopen přijmout placehy. Buď opatrný a nepodepisuj nic vágního nebo náhodného; například při phishingových útocích můžeš být lákán, abys něco takového podepsal. Podepisuj pouze naprosto úplná a detailní prohlášení, se kterými souhlasíš.</translation>
     </message>
     <message>
         <source>The Placeholders address to sign the message with</source>
-        <translation>Placeholdersová adresa, kterou se zpráva podepíše</translation>
+        <translation>Bitcoinová adresa, kterou se zpráva podepíše</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -2467,7 +2554,7 @@ Poznámka: Jelikož je poplatek počítaný za bajt, poplatek o hodnotě "100 sa
     </message>
     <message>
         <source>The Placeholders address the message was signed with</source>
-        <translation>Placeholdersová adresa, kterou je zpráva podepsána</translation>
+        <translation>Bitcoinová adresa, kterou je zpráva podepsána</translation>
     </message>
     <message>
         <source>Verify the message to ensure it was signed with the specified Placeholders address</source>
@@ -3111,6 +3198,10 @@ Poznámka: Jelikož je poplatek počítaný za bajt, poplatek o hodnotě "100 sa
         <translation>Prořezávání: poslední synchronizace peněženky proběhla před už prořezanými daty. Je třeba provést -reindex (tedy v případě prořezávacího režimu stáhnout znovu celý blockchain)</translation>
     </message>
     <message>
+        <source>Rescans are not possible in pruned mode. You will need to use -reindex which will download the whole blockchain again.</source>
+        <translation>V prořezávacím režimu není možné blockchain přeskenovávat. Musíš provést -reindex, což jej znovu celý stáhne.</translation>
+    </message>
+    <message>
         <source>Error: A fatal internal error occurred, see debug.log for details</source>
         <translation>Chyba: Přihodila se závažná vnitřní chyba, podrobnosti viz v debug.log</translation>
     </message>
@@ -3475,6 +3566,10 @@ Poznámka: Jelikož je poplatek počítaný za bajt, poplatek o hodnotě "100 sa
     <message>
         <source>This is the transaction fee you may pay when fee estimates are not available.</source>
         <translation>Toto je transakční poplatek, který se platí, pokud náhodou není k dispozici odhad poplatků.</translation>
+    </message>
+    <message>
+        <source>This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit %s and cryptographic software written by Eric Young and UPnP software written by Thomas Bernard.</source>
+        <translation>Tento produkt zahrnuje programy vyvinuté OpenSSL Projektem pro použití v OpenSSL Toolkitu %s a kryptografický program od Erika Younga a program UPnP od Thomase Bernarda.</translation>
     </message>
     <message>
         <source>Total length of network version string (%i) exceeds maximum length (%i). Reduce the number or size of uacomments.</source>

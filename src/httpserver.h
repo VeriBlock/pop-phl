@@ -1,9 +1,9 @@
-// Copyright (c) 2015-2020 The Placeholders Core developers
+// Copyright (c) 2015-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_HTTPSERVER_H
-#define PHL_HTTPSERVER_H
+#ifndef PLACEH_HTTPSERVER_H
+#define PLACEH_HTTPSERVER_H
 
 #include <string>
 #include <functional>
@@ -60,7 +60,7 @@ private:
     bool replySent;
 
 public:
-    explicit HTTPRequest(struct evhttp_request* req, bool replySent = false);
+    explicit HTTPRequest(struct evhttp_request* req);
     ~HTTPRequest();
 
     enum RequestMethod {
@@ -147,4 +147,4 @@ private:
     struct event* ev;
 };
 
-#endif // PHL_HTTPSERVER_H
+#endif // PLACEH_HTTPSERVER_H

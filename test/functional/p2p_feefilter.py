@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2016-2019 The Placeholders Core developers
+# Copyright (c) 2016-2019 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test processing of feefilter messages."""
@@ -7,9 +7,9 @@
 from decimal import Decimal
 import time
 
-from test_framework.messages import MSG_TX, msg_feefilter
+from test_framework.messages import msg_feefilter
 from test_framework.mininode import mininode_lock, P2PInterface
-from test_framework.test_framework import PlaceholdersTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 
 
 def hashToHex(hash):
@@ -31,14 +31,14 @@ class TestP2PConn(P2PInterface):
 
     def on_inv(self, message):
         for i in message.inv:
-            if (i.type == MSG_TX):
+            if (i.type == 1):
                 self.txinvs.append(hashToHex(i.hash))
 
     def clear_invs(self):
         with mininode_lock:
             self.txinvs = []
 
-class FeeFilterTest(PlaceholdersTestFramework):
+class FeeFilterTest(BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 2
         # We lower the various required feerates for this test

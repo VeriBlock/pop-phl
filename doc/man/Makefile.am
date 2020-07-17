@@ -15,3 +15,9 @@ endif
 if BUILD_PLACEH_TX
   dist_man1_MANS+=placeh-tx.1
 endif
+
+if ENABLE_WALLET
+if BUILD_PLACEH_WALLET
+  dist_man1_MANS+=placeh-wallet.1
+endif
+endif

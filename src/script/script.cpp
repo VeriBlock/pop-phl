@@ -1,5 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2019 The Placeholders Core developers
+// Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2019-2020 Xenios SEZC
+// https://www.veriblock.org
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -7,9 +9,7 @@
 
 #include <util/strencodings.h>
 
-#include <string>
-
-std::string GetOpName(opcodetype opcode)
+const char* GetOpName(opcodetype opcode)
 {
     switch (opcode)
     {
@@ -144,7 +144,7 @@ std::string GetOpName(opcodetype opcode)
     case OP_CHECKATV               : return "OP_CHECKATV";
     case OP_CHECKVTB               : return "OP_CHECKVTB";
     case OP_CHECKPOP               : return "OP_CHECKPOP";
-    case OP_POPBTCHEADER           : return "OP_POPBTCHEADER";
+    case OP_POPPHLHEADER           : return "OP_POPPHLHEADER";
     case OP_POPVBKHEADER           : return "OP_POPVBKHEADER";
     // <-- VBK
             

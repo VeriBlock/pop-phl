@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
-# Copyright (c) 2019-2020 The Placeholders Core developers
+# Copyright (c) 2019 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test the generation of UTXO snapshots using `dumptxoutset`.
 """
-from test_framework.test_framework import PlaceholdersTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import assert_equal, assert_raises_rpc_error
 
 import hashlib
 from pathlib import Path
 
 
-class DumptxoutsetTest(PlaceholdersTestFramework):
+class DumptxoutsetTest(BitcoinTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 1
@@ -25,7 +25,7 @@ class DumptxoutsetTest(PlaceholdersTestFramework):
 
         FILENAME = 'txoutset.dat'
         out = node.dumptxoutset(FILENAME)
-        expected_path = Path(node.datadir) / self.chain / FILENAME
+        expected_path = Path(node.datadir) / 'regtest' / FILENAME
 
         assert expected_path.is_file()
 

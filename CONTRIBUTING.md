@@ -14,42 +14,17 @@ purposes. As such there are repository "maintainers" who are responsible for
 merging pull requests as well as a "lead maintainer" who is responsible for the
 release cycle, overall merging, moderation and appointment of maintainers.
 
-Getting Started
----------------
-
-New contributors are very welcome and needed.
-
-Reviewing and testing is the most effective way you can contribute as a new
-contributor, and it also will teach you much more about the code and process
-than opening PRs. Please refer to the section [peer review](#peer-review) later
-in this document.
-
-Before you start contributing, familiarize yourself with the Bitcoin Core build
-system and tests. Refer to the documentation in the repository on how to build
-Bitcoin Core and how to run the unit and functional tests.
-
-There are many open issues of varying difficulty waiting to be fixed.
 If you're looking for somewhere to start contributing, check out the
-[good first issue](https://github.com/placeh/placeh/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22)
-list or participate in a weekly [Placeholders Core PR Review Club](https://placehcore.reviews/) meeting.
+[good first issue](https://github.com/VeriBlock/vbk-ri-btc/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22)
+
 
 Communication Channels
 ----------------------
 
-Most communication about Placeholders Core development happens on IRC, in the
-#placeh-core-dev channel on Freenode. The easiest way to participate on IRC is
-with the web client, [webchat.freenode.net](https://webchat.freenode.net/). Chat
-history logs can be found
-on [http://www.erisian.com.au/placeh-core-dev/](http://www.erisian.com.au/placeh-core-dev/)
-and [http://gnusha.org/placeh-core-dev/](http://gnusha.org/placeh-core-dev/).
 
+Most communication about Placeholders Core development happens on Discord (https://discord.gg/wJZEjry), in the
 Discussion about code base improvements happens in GitHub issues and on pull
 requests.
-
-The developer
-[mailing list](https://lists.linuxfoundation.org/mailman/listinfo/placeh-dev)
-should be used to discuss complicated or controversial changes before working on
-a patch set.
 
 
 Contributor Workflow
@@ -61,17 +36,15 @@ facilitates social contribution, easy testing and peer review.
 
 To contribute a patch, the workflow is as follows:
 
-  1. Fork repository ([only for the first time](https://help.github.com/en/articles/fork-a-repo))
+  1. Fork repository ([only the first time](https://help.github.com/en/articles/fork-a-repo)).
   1. Create topic branch
   1. Commit patches
 
 The project coding conventions in the [developer notes](doc/developer-notes.md)
-must be followed.
+must be adhered to.
 
-### Committing Patches
-
-In general, [commits should be atomic](https://en.wikipedia.org/wiki/Atomic_commit#Atomic_commit_convention)
-and diffs should be easy to read. For this reason, do not mix any formatting
+In general [commits should be atomic](https://en.wikipedia.org/wiki/Atomic_commit#Atomic_commit_convention)
+and diffs should be easy to read. For this reason do not mix any formatting
 fixes or code moves with actual code changes.
 
 Commit messages should be verbose by default consisting of a short subject line
@@ -93,8 +66,6 @@ about Git.
   - Push changes to your fork
   - Create pull request
 
-### Creating the Pull Request
-
 The title of the pull request should be prefixed by the component or area that
 the pull request affects. Valid areas as:
 
@@ -107,10 +78,10 @@ the pull request affects. Valid areas as:
   - `refactor` for structural changes that do not change behavior
   - `rpc`, `rest` or `zmq` for changes to the RPC, REST or ZMQ APIs
   - `script` for changes to the scripts and tools
-  - `test`, `qa` or `ci` for changes to the unit tests, QA tests or CI code
+  - `test` for changes to the placeh unit tests or QA tests
   - `util` or `lib` for changes to the utils or libraries
   - `wallet` for changes to the wallet code
-  - `build` for changes to the GNU Autotools or reproducible builds
+  - `build` for changes to the GNU Autotools, reproducible builds or CI code
 
 Examples:
 
@@ -119,35 +90,29 @@ Examples:
     qt: Add feed bump button
     log: Fix typo in log message
 
-The body of the pull request should contain enough description about what the
-patch does together with any justification/reasoning. You should include
-references to any discussions (for example other tickets or mailing list
-discussions).
-
-### Translation changes
-
-Note that translations should not be submitted as pull requests. Please see
+Note that translations should not be submitted as pull requests, please see
 [Translation Process](https://github.com/placeh/placeh/blob/master/doc/translation_process.md)
 for more information on helping with translations.
-
-### Work in Progress Changes and Requests for Comments
 
 If a pull request is not to be considered for merging (yet), please
 prefix the title with [WIP] or use [Tasks Lists](https://help.github.com/articles/basic-writing-and-formatting-syntax/#task-lists)
 in the body of the pull request to indicate tasks are pending.
 
-### Address Feedback
+The body of the pull request should contain enough description about what the
+patch does together with any justification/reasoning. You should include
+references to any discussions (for example other tickets or mailing list
+discussions).
 
-At this stage, one should expect comments and review from other contributors. You
+At this stage one should expect comments and review from other contributors. You
 can add more commits to your pull request by committing them locally and pushing
 to your fork until you have satisfied all feedback.
 
-Note: Code review is a burdensome but important part of the development process, and as such, certain types of pull requests are rejected. In general, if the **improvements** do not warrant the **review effort** required, the PR has a high chance of being rejected. It is up to the PR author to convince the reviewers that the changes warrant the review effort, and if reviewers are "Concept NACK'ing" the PR, the author may need to present arguments and/or do research backing their suggested changes.
+Note: Code review is a burdensome but important part of the development process, and as such, certain types of pull requests are rejected. In general, if the **improvements** do not warrant the **review effort** required, the PR has a high chance of being rejected. It is up to the PR author to convince the reviewers that the changes warrant the review effort, and if reviewers are "Concept NAK'ing" the PR, the author may need to present arguments and/or do research backing their suggested changes.
 
-### Squashing Commits
-
-If your pull request contains fixup commits (commits that change the same line of code repeatedly) or too fine-grained
-commits, you may be asked to [squash](https://git-scm.com/docs/git-rebase#_interactive_mode) your commits
+Squashing Commits
+---------------------------
+If your pull request is accepted for merging, you may be asked by a maintainer
+to squash and or [rebase](https://git-scm.com/docs/git-rebase) your commits
 before it will be merged. The basic squashing workflow is shown below.
 
     git checkout your_branch_name
@@ -158,8 +123,8 @@ before it will be merged. The basic squashing workflow is shown below.
     # Save and quit.
     git push -f # (force push to GitHub)
 
-Please update the resulting commit message if needed. It should read as a
-coherent message. In most cases, this means that you should not just list the
+Please update the resulting commit message if needed, it should read as a
+coherent message. In most cases this means that you should not just list the
 interim commits.
 
 If you have problems with squashing (or other workflows with `git`), you can
@@ -174,20 +139,6 @@ the respective change set.
 The length of time required for peer review is unpredictable and will vary from
 pull request to pull request.
 
-### Rebasing Changes
-
-When a pull request conflicts with the target branch, you may be asked to rebase it on top of the current target branch.
-The `git rebase` command will take care of rebuilding your commits on top of the new base.
-
-This project aims to have a clean git history, where code changes are only made in non-merge commits. This simplifies
-auditability because merge commits can be assumed to not contain arbitrary code changes. Merge commits should be signed,
-and the resulting git tree hash must be deterministic and reproducible. The script in
-[/contrib/verify-commits](/contrib/verify-commits) checks that.
-
-After a rebase, reviewers are encouraged to sign off on the force push. This should be relatively straightforward with
-the `git range-diff` tool explained in the [productivity
-notes](/doc/productivity.md#diff-the-diffs-with-git-range-diff). To avoid needless review churn, maintainers will
-generally merge pull requests that received the most review attention first.
 
 Pull Request Philosophy
 -----------------------
@@ -212,9 +163,9 @@ in the future, they may be removed by the Repository Maintainer.
 Refactoring is a necessary part of any software project's evolution. The
 following guidelines cover refactoring pull requests for the project.
 
-There are three categories of refactoring: code-only moves, code style fixes, and
-code refactoring. In general, refactoring pull requests should not mix these
-three kinds of activities in order to make refactoring pull requests easy to
+There are three categories of refactoring, code only moves, code style fixes,
+code refactoring. In general refactoring pull requests should not mix these
+three kinds of activity in order to make refactoring pull requests easy to
 review and uncontroversial. In all cases, refactoring PRs must not change the
 behaviour of code within the pull request (bugs must be preserved as is).
 
@@ -233,8 +184,8 @@ workload on reviewing.
 "Decision Making" Process
 -------------------------
 
-The following applies to code changes to the Placeholders Core project (and related
-projects such as libsecp256k1), and is not to be confused with overall Placeholders
+The following applies to code changes to the Bitcoin Core project (and related
+projects such as libsecp256k1), and is not to be confused with overall Bitcoin
 Network Protocol consensus changes.
 
 Whether a pull request is merged into Placeholders Core rests with the project merge
@@ -311,7 +262,7 @@ higher in terms of discussion and peer review requirements, keeping in mind that
 mistakes could be very costly to the wider community. This includes refactoring
 of consensus critical code.
 
-Where a patch set proposes to change the Placeholders consensus, it must have been
+Where a patch set proposes to change the Bitcoin consensus, it must have been
 discussed extensively on the mailing list and IRC, be accompanied by a widely
 discussed BIP and have a generally widely perceived technical consensus of being
 a worthwhile change based on the judgement of the maintainers.
@@ -347,31 +298,6 @@ about:
     no particular reason (few lines changed, etc), this is totally fine. Try to return the favor
     when someone else is asking for feedback on their code, and universe balances out.
 
-
-Backporting
------------
-
-Security and bug fixes can be backported from `master` to release
-branches.
-If the backport is non-trivial, it may be appropriate to open an
-additional PR, to backport the change, only after the original PR
-has been merged.
-Otherwise, backports will be done in batches and
-the maintainers will use the proper `Needs backport (...)` labels
-when needed (the original author does not need to worry).
-
-A backport should contain the following metadata in the commit body:
-
-```
-Github-Pull: #<PR number>
-Rebased-From: <commit hash of the original commit>
-```
-
-Have a look at [an example backport PR](
-https://github.com/placeh/placeh/pull/16189).
-
-Also see the [backport.py script](
-https://github.com/placeh-core/placeh-maintainer-tools#backport).
 
 Release Policy
 --------------

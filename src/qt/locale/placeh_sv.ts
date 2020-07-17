@@ -67,11 +67,7 @@
     </message>
     <message>
         <source>These are your Placeholders addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Detta är dina Placeholders-adresser för att skicka betalningar. Kontrollera alltid belopp och mottagaradress innan du skickar placeh.</translation>
-    </message>
-    <message>
-        <source>These are your Placeholders addresses for receiving payments. Use the 'Create new receiving address' button in the receive tab to create new addresses.</source>
-        <translation>Detta är dina Placeholdersadresser för att ta emot betalningar. Använd knappen 'Skapa ny mottagaradress' på fliken ta emot för att skapa nya adresser .</translation>
+        <translation>Detta är dina Bitcoin-adresser för att skicka betalningar. Kontrollera alltid belopp och mottagaradress innan du skickar placeh.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -137,10 +133,6 @@ Försök igen.</translation>
         <translation>Upprepa ny lösenfras</translation>
     </message>
     <message>
-        <source>Show passphrase</source>
-        <translation>Visa lösenfras</translation>
-    </message>
-    <message>
         <source>Encrypt wallet</source>
         <translation>Kryptera plånbok</translation>
     </message>
@@ -169,8 +161,8 @@ Försök igen.</translation>
         <translation>Bekräfta kryptering av plånbok</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PHLS&lt;/b&gt;!</source>
-        <translation>VARNING: Om du krypterar din plånbok och glömmer din lösenfras, &lt;b&gt;FÖRLORAR DU ALLA DINA PHL&lt;/b&gt;!</translation>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PLACEHS&lt;/b&gt;!</source>
+        <translation>VARNING: Om du krypterar din plånbok och glömmer din lösenfras, &lt;b&gt;FÖRLORAR DU ALLA DINA PLACEH&lt;/b&gt;!</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -181,28 +173,8 @@ Försök igen.</translation>
         <translation>Plånbok krypterad</translation>
     </message>
     <message>
-        <source>Enter the new passphrase for the wallet.&lt;br/&gt;Please use a passphrase of &lt;b&gt;ten or more random characters&lt;/b&gt;, or &lt;b&gt;eight or more words&lt;/b&gt;.</source>
-        <translation>Ange den nya lösenfrasen för plånboken. &lt;br/&gt; Använd en lösenfras på &lt;b&gt;tio eller fler slumpmässiga tecken&lt;/b&gt;, eller &lt;b&gt;åtta eller fler ord&lt;/b&gt;.</translation>
-    </message>
-    <message>
-        <source>Enter the old passphrase and new passphrase for the wallet.</source>
-        <translation>Ange den gamla lösenfrasen och den nya lösenfrasen för plånboken.</translation>
-    </message>
-    <message>
         <source>Remember that encrypting your wallet cannot fully protect your placehs from being stolen by malware infecting your computer.</source>
         <translation>Kom ihåg att kryptering av din plånbok inte helt kan skydda dig från stöld av dina placehs om skadlig kod infekterat din dator.</translation>
-    </message>
-    <message>
-        <source>Wallet to be encrypted</source>
-        <translation>Plånbok som ska krypteras</translation>
-    </message>
-    <message>
-        <source>Your wallet is about to be encrypted. </source>
-        <translation>Din plånbok kommer att krypteras.</translation>
-    </message>
-    <message>
-        <source>Your wallet is now encrypted. </source>
-        <translation>Din plånbok är nu krypterad.</translation>
     </message>
     <message>
         <source>IMPORTANT: Any previous backups you have made of your wallet file should be replaced with the newly generated, encrypted wallet file. For security reasons, previous backups of the unencrypted wallet file will become useless as soon as you start using the new, encrypted wallet.</source>
@@ -253,7 +225,7 @@ Försök igen.</translation>
     </message>
 </context>
 <context>
-    <name>PlaceholdersGUI</name>
+    <name>BitcoinGUI</name>
     <message>
         <source>Sign &amp;message...</source>
         <translation>Signera &amp;meddelande...</translation>
@@ -327,14 +299,6 @@ Försök igen.</translation>
         <translation>Öppna &amp;URI...</translation>
     </message>
     <message>
-        <source>Create Wallet...</source>
-        <translation>Skapa plånbok...</translation>
-    </message>
-    <message>
-        <source>Create a new wallet</source>
-        <translation>Skapa ny plånbok</translation>
-    </message>
-    <message>
         <source>Wallet:</source>
         <translation>Plånbok:</translation>
     </message>
@@ -364,7 +328,7 @@ Försök igen.</translation>
     </message>
     <message>
         <source>Send coins to a Placeholders address</source>
-        <translation>Skicka placeh till en Placeholders-adress</translation>
+        <translation>Skicka placeh till en Bitcoin-adress</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -373,6 +337,14 @@ Försök igen.</translation>
     <message>
         <source>Change the passphrase used for wallet encryption</source>
         <translation>Byt lösenfras för kryptering av plånbok</translation>
+    </message>
+    <message>
+        <source>&amp;Debug window</source>
+        <translation>&amp;Felsökningsfönster</translation>
+    </message>
+    <message>
+        <source>Open debugging and diagnostic console</source>
+        <translation>Öppna felsöknings- och diagnostikkonsolen</translation>
     </message>
     <message>
         <source>&amp;Verify message...</source>
@@ -400,11 +372,11 @@ Försök igen.</translation>
     </message>
     <message>
         <source>Sign messages with your Placeholders addresses to prove you own them</source>
-        <translation>Signera meddelanden med dina Placeholders-adresser för att bevisa att du äger dem</translation>
+        <translation>Signera meddelanden med dina Bitcoin-adresser för att bevisa att du äger dem</translation>
     </message>
     <message>
         <source>Verify messages to ensure they were signed with specified Placeholders addresses</source>
-        <translation>Verifiera meddelanden för att vara säker på att de signerades med angivna Placeholders-adresser</translation>
+        <translation>Verifiera meddelanden för att vara säker på att de signerades med angivna Bitcoin-adresser</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -435,12 +407,16 @@ Försök igen.</translation>
         <translation>Visa listan med använda mottagaradresser och etiketter</translation>
     </message>
     <message>
+        <source>Open a placeh: URI or payment request</source>
+        <translation>Öppna en placeh: URI eller betalningsbegäran</translation>
+    </message>
+    <message>
         <source>&amp;Command-line options</source>
         <translation>&amp;Kommandoradsalternativ</translation>
     </message>
     <message numerus="yes">
         <source>%n active connection(s) to Placeholders network</source>
-        <translation><numerusform>%n aktiva anslutningar till Placeholders-nätverket.</numerusform><numerusform>%n aktiva anslutningar till Placeholders-nätverket.</numerusform></translation>
+        <translation><numerusform>%n aktiva anslutningar till Bitcoin-nätverket.</numerusform><numerusform>%n aktiva anslutningar till Bitcoin-nätverket.</numerusform></translation>
     </message>
     <message>
         <source>Indexing blocks on disk...</source>
@@ -549,10 +525,6 @@ Försök igen.</translation>
     <message>
         <source>Error: %1</source>
         <translation>Fel: %1</translation>
-    </message>
-    <message>
-        <source>Warning: %1</source>
-        <translation>Varning: %1</translation>
     </message>
     <message>
         <source>Date: %1
@@ -776,38 +748,10 @@ Försök igen.</translation>
 </context>
 <context>
     <name>CreateWalletActivity</name>
-    <message>
-        <source>Creating Wallet &lt;b&gt;%1&lt;/b&gt;...</source>
-        <translation>Skapar plånboken &lt;b&gt;%1&lt;/b&gt;...</translation>
-    </message>
-    <message>
-        <source>Create wallet failed</source>
-        <translation>Plånboken kunde inte skapas</translation>
-    </message>
     </context>
 <context>
     <name>CreateWalletDialog</name>
-    <message>
-        <source>Create Wallet</source>
-        <translation>Skapa plånbok</translation>
-    </message>
-    <message>
-        <source>Wallet Name</source>
-        <translation>Namn på plånboken</translation>
-    </message>
-    <message>
-        <source>Encrypt the wallet. The wallet will be encrypted with a passphrase of your choice.</source>
-        <translation>Kryptera plånboken. Plånboken krypteras med en lösenfras som du själv väljer.</translation>
-    </message>
-    <message>
-        <source>Encrypt Wallet</source>
-        <translation>Kryptera plånbok</translation>
-    </message>
-    <message>
-        <source>Create</source>
-        <translation>Skapa</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>EditAddressDialog</name>
     <message>
@@ -844,7 +788,7 @@ Försök igen.</translation>
     </message>
     <message>
         <source>The entered address "%1" is not a valid Placeholders address.</source>
-        <translation>Den angivna adressen "%1" är inte en giltig Placeholders-adress.</translation>
+        <translation>Den angivna adressen "%1" är inte en giltig Bitcoin-adress.</translation>
     </message>
     <message>
         <source>Address "%1" already exists as a receiving address with label "%2" and so cannot be added as a sending address.</source>
@@ -893,6 +837,10 @@ Försök igen.</translation>
         <translation>version</translation>
     </message>
     <message>
+        <source>(%1-bit)</source>
+        <translation>(%1-bit)</translation>
+    </message>
+    <message>
         <source>About %1</source>
         <translation>Om %1</translation>
     </message>
@@ -936,8 +884,8 @@ Försök igen.</translation>
         <translation>Använd en anpassad datakatalog:</translation>
     </message>
     <message>
-        <source>Placeholders</source>
-        <translation>Placeholders</translation>
+        <source>Bitcoin</source>
+        <translation>Bitcoin</translation>
     </message>
     <message>
         <source>At least %1 GB of data will be stored in this directory, and it will grow over time.</source>
@@ -949,7 +897,7 @@ Försök igen.</translation>
     </message>
     <message>
         <source>%1 will download and store a copy of the Placeholders block chain.</source>
-        <translation>%1 kommer att ladda ner och lagra en kopia av Placeholderss blockkedja.</translation>
+        <translation>%1 kommer att ladda ner och lagra en kopia av Bitcoins blockkedja.</translation>
     </message>
     <message>
         <source>The wallet will also be stored in this directory.</source>
@@ -965,17 +913,13 @@ Försök igen.</translation>
     </message>
     <message numerus="yes">
         <source>%n GB of free space available</source>
-        <translation><numerusform>%n GB fritt utrymme kvar</numerusform><numerusform>%n GB ledigt utrymme kvar</numerusform></translation>
+        <translation><numerusform>%n GB fritt utrymme kvar</numerusform><numerusform>%n GB fritt utrymme kvar</numerusform></translation>
     </message>
     <message numerus="yes">
         <source>(of %n GB needed)</source>
-        <translation><numerusform>(av %n GB behövs)</numerusform><numerusform>(av de %n GB som behövs)</numerusform></translation>
+        <translation><numerusform>(av %n GB behövs)</numerusform><numerusform>(av %n GB behövs)</numerusform></translation>
     </message>
-    <message numerus="yes">
-        <source>(%n GB needed for full chain)</source>
-        <translation><numerusform>(%n GB behövs för hela kedjan)</numerusform><numerusform>(%n GB behövs för hela kedjan)</numerusform></translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>ModalOverlay</name>
     <message>
@@ -984,11 +928,11 @@ Försök igen.</translation>
     </message>
     <message>
         <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the placeh network, as detailed below.</source>
-        <translation>Nyligen gjorda transaktioner visas inte korrekt och därför kan din plånboks saldo visas felaktigt. Denna information kommer att visas korrekt så snart din plånbok har synkroniserats med Placeholders-nätverket enligt informationen nedan.</translation>
+        <translation>Nyligen gjorda transaktioner visas inte korrekt och därför kan din plånboks saldo visas felaktigt. Denna information kommer att visas korrekt så snart din plånbok har synkroniserats med Bitcoin-nätverket enligt informationen nedan.</translation>
     </message>
     <message>
         <source>Attempting to spend placehs that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
-        <translation>Att försöka spendera placeh som påverkas av transaktioner som ännu inte visas kommer inte accepteras av nätverket.</translation>
+        <translation>Att försöka spendera placeh som påverkas av transaktioner som ännu inte visas kommer inte accepteras av nätverket. </translation>
     </message>
     <message>
         <source>Number of blocks left</source>
@@ -1030,16 +974,28 @@ Försök igen.</translation>
 <context>
     <name>OpenURIDialog</name>
     <message>
+        <source>Open URI</source>
+        <translation>Öppna URI</translation>
+    </message>
+    <message>
+        <source>Open payment request from URI or file</source>
+        <translation>Öppna betalningsbegäran från URI eller fil</translation>
+    </message>
+    <message>
         <source>URI:</source>
         <translation>URI:</translation>
+    </message>
+    <message>
+        <source>Select payment request file</source>
+        <translation>Välj betalningsbegäransfil</translation>
+    </message>
+    <message>
+        <source>Select payment request file to open</source>
+        <translation>Välj betalningsbegäransfil som ska öppnas</translation>
     </message>
 </context>
 <context>
     <name>OpenWalletActivity</name>
-    <message>
-        <source>Open wallet failed</source>
-        <translation>Det gick inte att öppna plånboken</translation>
-    </message>
     <message>
         <source>default wallet</source>
         <translation>Standardplånbok</translation>
@@ -1169,7 +1125,7 @@ Försök igen.</translation>
     </message>
     <message>
         <source>Automatically open the Placeholders client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Öppna automatiskt Placeholders-klientens port på routern. Detta fungerar endast om din router stödjer UPnP och det är är aktiverat.</translation>
+        <translation>Öppna automatiskt Bitcoin-klientens port på routern. Detta fungerar endast om din router stödjer UPnP och det är är aktiverat.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
@@ -1185,7 +1141,7 @@ Försök igen.</translation>
     </message>
     <message>
         <source>Connect to the Placeholders network through a SOCKS5 proxy.</source>
-        <translation>Anslut till Placeholders-nätverket genom en SOCKS5-proxy.</translation>
+        <translation>Anslut till Bitcoin-nätverket genom en SOCKS5-proxy.</translation>
     </message>
     <message>
         <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
@@ -1193,11 +1149,11 @@ Försök igen.</translation>
     </message>
     <message>
         <source>Proxy &amp;IP:</source>
-        <translation>Proxy-&amp;IP:</translation>
+        <translation>Proxy-&amp;IP: </translation>
     </message>
     <message>
         <source>&amp;Port:</source>
-        <translation>&amp;Port:</translation>
+        <translation>&amp;Port: </translation>
     </message>
     <message>
         <source>Port of the proxy (e.g. 9050)</source>
@@ -1221,7 +1177,7 @@ Försök igen.</translation>
     </message>
     <message>
         <source>Connect to the Placeholders network through a separate SOCKS5 proxy for Tor hidden services.</source>
-        <translation>Anslut till Placeholders-nätverket genom en separat SOCKS5-proxy för dolda tjänster i Tor.</translation>
+        <translation>Anslut till Bitcoin-nätverket genom en separat SOCKS5-proxy för dolda tjänster i Tor.</translation>
     </message>
     <message>
         <source>&amp;Window</source>
@@ -1245,7 +1201,7 @@ Försök igen.</translation>
     </message>
     <message>
         <source>User Interface &amp;language:</source>
-        <translation>Användargränssnittets &amp;språk:</translation>
+        <translation>Användargränssnittets &amp;språk: </translation>
     </message>
     <message>
         <source>The user interface language can be set here. This setting will take effect after restarting %1.</source>
@@ -1253,7 +1209,7 @@ Försök igen.</translation>
     </message>
     <message>
         <source>&amp;Unit to show amounts in:</source>
-        <translation>&amp;Måttenhet att visa belopp i:</translation>
+        <translation>&amp;Måttenhet att visa belopp i: </translation>
     </message>
     <message>
         <source>Choose the default subdivision unit to show in the interface and when sending coins.</source>
@@ -1332,7 +1288,7 @@ Försök igen.</translation>
     </message>
     <message>
         <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Placeholders network after a connection is established, but this process has not completed yet.</source>
-        <translation>Den visade informationen kan vara inaktuell. Plånboken synkroniseras automatiskt med Placeholders-nätverket efter att anslutningen är upprättad, men denna process har inte slutförts ännu.</translation>
+        <translation>Den visade informationen kan vara inaktuell. Plånboken synkroniseras automatiskt med Bitcoin-nätverket efter att anslutningen är upprättad, men denna process har inte slutförts ännu.</translation>
     </message>
     <message>
         <source>Watch-only:</source>
@@ -1418,16 +1374,88 @@ Försök igen.</translation>
         <translation>'placeh://' är inte en accepterad URI. Använd 'placeh:' istället.</translation>
     </message>
     <message>
+        <source>You are using a BIP70 URL which will be unsupported in the future.</source>
+        <translation>Du använder en URL enligt BIP70, vilket inte kommer att stödjas i framtiden.</translation>
+    </message>
+    <message>
+        <source>Payment request fetch URL is invalid: %1</source>
+        <translation>Hämtningsadressen för betalningsbegäran är ogiltig: %1</translation>
+    </message>
+    <message>
+        <source>Cannot process payment request because BIP70 support was not compiled in.</source>
+        <translation>Det går inte att behandla betalningsbegäran eftersom stöd för BIP70 inte var aktiverat vid kompilering.</translation>
+    </message>
+    <message>
         <source>Invalid payment address %1</source>
         <translation>Ogiltig betalningsadress %1</translation>
     </message>
     <message>
         <source>URI cannot be parsed! This can be caused by an invalid Placeholders address or malformed URI parameters.</source>
-        <translation>URI kan inte parsas! Detta kan orsakas av en ogiltig Placeholders-adress eller felaktiga URI-parametrar.</translation>
+        <translation>URI kan inte parsas! Detta kan orsakas av en ogiltig Bitcoin-adress eller felaktiga URI-parametrar.</translation>
     </message>
     <message>
         <source>Payment request file handling</source>
         <translation>Hantering av betalningsbegäransfil</translation>
+    </message>
+    <message>
+        <source>Payment request file cannot be read! This can be caused by an invalid payment request file.</source>
+        <translation>Betalningsbegäransfilen kan inte läsas! Detta kan orsakas av en ogiltig betalningsbegäransfil.</translation>
+    </message>
+    <message>
+        <source>Payment request rejected</source>
+        <translation>Betalningsbegäran avslogs</translation>
+    </message>
+    <message>
+        <source>Payment request network doesn't match client network.</source>
+        <translation>Betalningsbegärans nätverk matchar inte klientens nätverk.</translation>
+    </message>
+    <message>
+        <source>Payment request expired.</source>
+        <translation>Betalningsbegäran löpte ut.</translation>
+    </message>
+    <message>
+        <source>Payment request is not initialized.</source>
+        <translation>Betalningsbegäran är inte initierad.</translation>
+    </message>
+    <message>
+        <source>Unverified payment requests to custom payment scripts are unsupported.</source>
+        <translation>Overifierade betalningsbegäranden till anpassade betalningsskript stöds inte.</translation>
+    </message>
+    <message>
+        <source>Invalid payment request.</source>
+        <translation>Ogiltig betalningsbegäran.</translation>
+    </message>
+    <message>
+        <source>Requested payment amount of %1 is too small (considered dust).</source>
+        <translation>Begärt belopp på %1 är för litet (betraktas som damm).</translation>
+    </message>
+    <message>
+        <source>Refund from %1</source>
+        <translation>Återbetalning från %1</translation>
+    </message>
+    <message>
+        <source>Payment request %1 is too large (%2 bytes, allowed %3 bytes).</source>
+        <translation>Betalningsbegäran %1 är för stor (%2 byte, tillåts %3 byte).</translation>
+    </message>
+    <message>
+        <source>Error communicating with %1: %2</source>
+        <translation>Kommunikationsfel med %1: %2</translation>
+    </message>
+    <message>
+        <source>Payment request cannot be parsed!</source>
+        <translation>Betalningsbegäran kan inte parsas!</translation>
+    </message>
+    <message>
+        <source>Bad response from server %1</source>
+        <translation>Felaktigt svar från server %1</translation>
+    </message>
+    <message>
+        <source>Network request error</source>
+        <translation>Fel vid nätverksbegäran</translation>
+    </message>
+    <message>
+        <source>Payment acknowledged</source>
+        <translation>Betalningen bekräftad</translation>
     </message>
 </context>
 <context>
@@ -1465,7 +1493,7 @@ Försök igen.</translation>
     </message>
     <message>
         <source>Enter a Placeholders address (e.g. %1)</source>
-        <translation>Ange en Placeholders-adress (t.ex. %1)</translation>
+        <translation>Ange en Bitcoin-adress (t.ex. %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -1600,6 +1628,10 @@ Försök igen.</translation>
     <message>
         <source>&amp;Information</source>
         <translation>&amp;Information</translation>
+    </message>
+    <message>
+        <source>Debug window</source>
+        <translation>Felsökningsfönster</translation>
     </message>
     <message>
         <source>General</source>
@@ -1918,7 +1950,7 @@ Försök igen.</translation>
     </message>
     <message>
         <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Placeholders network.</source>
-        <translation>Ett valfritt meddelande att bifoga betalningsbegäran, vilket visas när begäran öppnas. Obs: Meddelandet kommer inte att sändas med betalningen över Placeholders-nätverket.</translation>
+        <translation>Ett valfritt meddelande att bifoga betalningsbegäran, vilket visas när begäran öppnas. Obs: Meddelandet kommer inte att sändas med betalningen över Bitcoin-nätverket.</translation>
     </message>
     <message>
         <source>An optional label to associate with the new receiving address.</source>
@@ -1931,10 +1963,6 @@ Försök igen.</translation>
     <message>
         <source>An optional amount to request. Leave this empty or zero to not request a specific amount.</source>
         <translation>Ett valfritt belopp att begära. Lämna tomt eller ange noll för att inte begära ett specifikt belopp.</translation>
-    </message>
-    <message>
-        <source>&amp;Create new receiving address</source>
-        <translation>S&amp;kapa ny mottagaradress</translation>
     </message>
     <message>
         <source>Clear all fields of the form.</source>
@@ -2142,6 +2170,10 @@ Försök igen.</translation>
         <translation>Varning: Avgiftsuppskattning är för närvarande inte möjlig.</translation>
     </message>
     <message>
+        <source>collapse fee-settings</source>
+        <translation>Fäll ihop avgiftsinställningarna</translation>
+    </message>
+    <message>
         <source>Specify a custom fee per kB (1,000 bytes) of the transaction's virtual size.
 
 Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis per kB" for a transaction size of 500 bytes (half of 1 kB) would ultimately yield a fee of only 50 satoshis.</source>
@@ -2254,10 +2286,6 @@ Notera: Då avgiften beräknas per byte kommer en avgift på 50 satoshi tas ut f
         <translation>%1 (%2 block)</translation>
     </message>
     <message>
-        <source> from wallet '%1'</source>
-        <translation>från plånbok: '%1'</translation>
-    </message>
-    <message>
         <source>%1 to %2</source>
         <translation>%1 till %2</translation>
     </message>
@@ -2318,6 +2346,10 @@ Notera: Då avgiften beräknas per byte kommer en avgift på 50 satoshi tas ut f
         <translation>Transaktionen gick inte att skapa!</translation>
     </message>
     <message>
+        <source>The transaction was rejected with the following reason: %1</source>
+        <translation>Transaktionen avvisades med följande orsak: %1</translation>
+    </message>
+    <message>
         <source>A fee higher than %1 is considered an absurdly high fee.</source>
         <translation>En avgift högre än %1 anses vara en absurd hög avgift.</translation>
     </message>
@@ -2331,7 +2363,7 @@ Notera: Då avgiften beräknas per byte kommer en avgift på 50 satoshi tas ut f
     </message>
     <message>
         <source>Warning: Invalid Placeholders address</source>
-        <translation>Varning: Ogiltig Placeholders-adress</translation>
+        <translation>Varning: Ogiltig Bitcoin-adress</translation>
     </message>
     <message>
         <source>Warning: Unknown change address</source>
@@ -2369,8 +2401,12 @@ Notera: Då avgiften beräknas per byte kommer en avgift på 50 satoshi tas ut f
         <translation>Välj tidigare använda adresser</translation>
     </message>
     <message>
+        <source>This is a normal payment.</source>
+        <translation>Detta är en normal betalning.</translation>
+    </message>
+    <message>
         <source>The Placeholders address to send the payment to</source>
-        <translation>Placeholders-adress att sända betalning till</translation>
+        <translation>Bitcoin-adress att sända betalning till</translation>
     </message>
     <message>
         <source>Alt+A</source>
@@ -2418,7 +2454,7 @@ Notera: Då avgiften beräknas per byte kommer en avgift på 50 satoshi tas ut f
     </message>
     <message>
         <source>A message that was attached to the placeh: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Placeholders network.</source>
-        <translation>Ett meddelande som bifogades placeh: -URIn och som sparas med transaktionen som referens. Obs: Meddelandet sänds inte över Placeholders-nätverket.</translation>
+        <translation>Ett meddelande som bifogades placeh: -URIn och som sparas med transaktionen som referens. Obs: Meddelandet sänds inte över Bitcoin-nätverket.</translation>
     </message>
     <message>
         <source>Pay To:</source>
@@ -2427,6 +2463,17 @@ Notera: Då avgiften beräknas per byte kommer en avgift på 50 satoshi tas ut f
     <message>
         <source>Memo:</source>
         <translation>PM:</translation>
+    </message>
+    <message>
+        <source>Enter a label for this address to add it to your address book</source>
+        <translation>Ange en etikett för denna adress för att lägga till den i din adressbok</translation>
+    </message>
+</context>
+<context>
+    <name>SendConfirmationDialog</name>
+    <message>
+        <source>Yes</source>
+        <translation>Ja</translation>
     </message>
 </context>
 <context>
@@ -2451,12 +2498,12 @@ Notera: Då avgiften beräknas per byte kommer en avgift på 50 satoshi tas ut f
         <translation>&amp;Signera meddelande</translation>
     </message>
     <message>
-        <source>You can sign messages/agreements with your addresses to prove you can receive placehs sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
+        <source>You can sign messages/agreements with your addresses to prove you can receive Placeholderss sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
         <translation>Du kan signera meddelanden/avtal med dina adresser för att bevisa att du kan ta emot placeh som skickats till dem. Var försiktig så du inte signerar något oklart eller konstigt, eftersom phishing-angrepp kan försöka få dig att signera över din identitet till dem. Signera endast väldetaljerade meddelanden som du godkänner.</translation>
     </message>
     <message>
         <source>The Placeholders address to sign the message with</source>
-        <translation>Placeholders-adress att signera meddelandet med</translation>
+        <translation>Bitcoin-adress att signera meddelandet med</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -2488,7 +2535,7 @@ Notera: Då avgiften beräknas per byte kommer en avgift på 50 satoshi tas ut f
     </message>
     <message>
         <source>Sign the message to prove you own this Placeholders address</source>
-        <translation>Signera meddelandet för att bevisa att du äger denna Placeholders-adress</translation>
+        <translation>Signera meddelandet för att bevisa att du äger denna Bitcoin-adress</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -2512,11 +2559,11 @@ Notera: Då avgiften beräknas per byte kommer en avgift på 50 satoshi tas ut f
     </message>
     <message>
         <source>The Placeholders address the message was signed with</source>
-        <translation>Placeholders-adress som meddelandet signerades med</translation>
+        <translation>Bitcoin-adress som meddelandet signerades med</translation>
     </message>
     <message>
         <source>Verify the message to ensure it was signed with the specified Placeholders address</source>
-        <translation>Verifiera meddelandet för att vara säker på att det signerades med angiven Placeholders-adress</translation>
+        <translation>Verifiera meddelandet för att vara säker på att det signerades med angiven Bitcoin-adress</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>
@@ -3059,7 +3106,7 @@ Notera: Då avgiften beräknas per byte kommer en avgift på 50 satoshi tas ut f
     <name>WalletModel</name>
     <message>
         <source>Send Coins</source>
-        <translation>Skicka Placeholderss</translation>
+        <translation>Skicka Bitcoins</translation>
     </message>
     <message>
         <source>Fee bump error</source>
@@ -3154,6 +3201,10 @@ Notera: Då avgiften beräknas per byte kommer en avgift på 50 satoshi tas ut f
     <message>
         <source>Prune: last wallet synchronisation goes beyond pruned data. You need to -reindex (download the whole blockchain again in case of pruned node)</source>
         <translation>Gallring: senaste plånbokssynkroniseringen ligger utanför gallrade data. Du måste använda -reindex (ladda ner hela blockkedjan igen om noden gallrats)</translation>
+    </message>
+    <message>
+        <source>Rescans are not possible in pruned mode. You will need to use -reindex which will download the whole blockchain again.</source>
+        <translation>Omskanningar kan inte göras i gallrat läge. Du måste använda -reindex vilket kommer ladda ner hela blockkedjan igen.</translation>
     </message>
     <message>
         <source>Error: A fatal internal error occurred, see debug.log for details</source>
@@ -3336,10 +3387,6 @@ Notera: Då avgiften beräknas per byte kommer en avgift på 50 satoshi tas ut f
         <translation>Läser in P2P-adresser...</translation>
     </message>
     <message>
-        <source>Error: Disk space is too low!</source>
-        <translation>Fel: Diskutrymmet är för lågt!</translation>
-    </message>
-    <message>
         <source>Loading banlist...</source>
         <translation>Läser in listan över bannlysningar …</translation>
     </message>
@@ -3448,10 +3495,6 @@ Notera: Då avgiften beräknas per byte kommer en avgift på 50 satoshi tas ut f
         <translation>Port måste anges med -whitelist: '%s'</translation>
     </message>
     <message>
-        <source>Prune mode is incompatible with -blockfilterindex.</source>
-        <translation>Gallringsläge är inkompatibelt med -blockfilterindex.</translation>
-    </message>
-    <message>
         <source>Reducing -maxconnections from %d to %d, because of system limitations.</source>
         <translation>Minskar -maxconnections från %d till %d, på grund av systembegränsningar.</translation>
     </message>
@@ -3530,6 +3573,10 @@ Notera: Då avgiften beräknas per byte kommer en avgift på 50 satoshi tas ut f
         <translation>Detta är transaktionsavgiften du kan komma att betala om avgiftsuppskattning inte är tillgänglig.</translation>
     </message>
     <message>
+        <source>This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit %s and cryptographic software written by Eric Young and UPnP software written by Thomas Bernard.</source>
+        <translation>Denna produkt innehåller mjukvara utvecklad av OpenSSL Project för användning i OpenSSL Toolkit %s och kryptografisk mjukvara utvecklad av Eric Young samt UPnP-mjukvara skriven av Thomas Bernard.</translation>
+    </message>
+    <message>
         <source>Total length of network version string (%i) exceeds maximum length (%i). Reduce the number or size of uacomments.</source>
         <translation>Total längd på strängen för nätverksversion (%i) överskrider maxlängden (%i). Minska numret eller storleken på uacomments.</translation>
     </message>
@@ -3555,11 +3602,11 @@ Notera: Då avgiften beräknas per byte kommer en avgift på 50 satoshi tas ut f
     </message>
     <message>
         <source>This is the minimum transaction fee you pay on every transaction.</source>
-        <translation>Det här är minimiavgiften du kommer betala för varje transaktion.</translation>
+        <translation>Det här är minimiavgiften du kommer betala för varje transaktion. </translation>
     </message>
     <message>
         <source>This is the transaction fee you will pay if you send a transaction.</source>
-        <translation>Det här är transaktionsavgiften du kommer betala om du skickar en transaktion.</translation>
+        <translation>Det här är transaktionsavgiften du kommer betala om du skickar en transaktion. </translation>
     </message>
     <message>
         <source>Transaction amounts must not be negative</source>
@@ -3615,7 +3662,7 @@ Notera: Då avgiften beräknas per byte kommer en avgift på 50 satoshi tas ut f
     </message>
     <message>
         <source>Done loading</source>
-        <translation>Inläsning klar</translation>
+        <translation>Klar med laddning</translation>
     </message>
 </context>
 </TS>

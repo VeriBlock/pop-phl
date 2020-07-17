@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_SRC_VBK_MERKLE_HPP
-#define BITCOIN_SRC_VBK_MERKLE_HPP
+#ifndef PLACEH_SRC_VBK_MERKLE_HPP
+#define PLACEH_SRC_VBK_MERKLE_HPP
 
 #include "chainparams.h"
 #include "vbk/config.hpp"
@@ -159,4 +159,4 @@ inline CTxOut addPopTransactionRootIntoCoinbaseCommitment(const CBlock& block)
 
 } // namespace VeriBlock
 
-#endif //BITCOIN_SRC_VBK_MERKLE_HPP
+#endif //PLACEH_SRC_VBK_MERKLE_HPP

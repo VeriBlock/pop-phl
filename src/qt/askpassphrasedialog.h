@@ -1,9 +1,9 @@
-// Copyright (c) 2011-2019 The Placeholders Core developers
+// Copyright (c) 2011-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_QT_ASKPASSPHRASEDIALOG_H
-#define PHL_QT_ASKPASSPHRASEDIALOG_H
+#ifndef PLACEH_QT_ASKPASSPHRASEDIALOG_H
+#define PLACEH_QT_ASKPASSPHRASEDIALOG_H
 
 #include <QDialog>
 
@@ -32,7 +32,7 @@ public:
     explicit AskPassphraseDialog(Mode mode, QWidget *parent, SecureString* passphrase_out = nullptr);
     ~AskPassphraseDialog();
 
-    void accept() override;
+    void accept();
 
     void setModel(WalletModel *model);
 
@@ -49,8 +49,8 @@ private Q_SLOTS:
     void toggleShowPassword(bool);
 
 protected:
-    bool event(QEvent *event) override;
-    bool eventFilter(QObject *object, QEvent *event) override;
+    bool event(QEvent *event);
+    bool eventFilter(QObject *object, QEvent *event);
 };
 
-#endif // PHL_QT_ASKPASSPHRASEDIALOG_H
+#endif // PLACEH_QT_ASKPASSPHRASEDIALOG_H

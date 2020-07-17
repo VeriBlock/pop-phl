@@ -1,18 +1,15 @@
-// Copyright (c) 2015-2019 The Placeholders Core developers
+// Copyright (c) 2015-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_HTTPRPC_H
-#define PHL_HTTPRPC_H
+#ifndef PLACEH_HTTPRPC_H
+#define PLACEH_HTTPRPC_H
 
-namespace util {
-class Ref;
-} // namespace util
 
 /** Start HTTP RPC subsystem.
  * Precondition; HTTP and RPC has been started.
  */
-bool StartHTTPRPC(const util::Ref& context);
+bool StartHTTPRPC();
 /** Interrupt HTTP RPC subsystem.
  */
 void InterruptHTTPRPC();
@@ -24,7 +21,7 @@ void StopHTTPRPC();
 /** Start HTTP REST subsystem.
  * Precondition; HTTP and RPC has been started.
  */
-void StartREST(const util::Ref& context);
+void StartREST();
 /** Interrupt RPC REST subsystem.
  */
 void InterruptREST();

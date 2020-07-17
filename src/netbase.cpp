@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2020 The Placeholders Core developers
+// Copyright (c) 2009-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -7,9 +7,8 @@
 
 #include <sync.h>
 #include <tinyformat.h>
-#include <util/strencodings.h>
-#include <util/string.h>
 #include <util/system.h>
+#include <util/strencodings.h>
 
 #include <atomic>
 
@@ -28,7 +27,7 @@
 #endif
 
 // Settings
-static RecursiveMutex cs_proxyInfos;
+static CCriticalSection cs_proxyInfos;
 static proxyType proxyInfo[NET_MAX] GUARDED_BY(cs_proxyInfos);
 static proxyType nameProxy GUARDED_BY(cs_proxyInfos);
 int nConnectTimeout = DEFAULT_CONNECT_TIMEOUT;
@@ -60,13 +59,9 @@ std::string GetNetworkName(enum Network net) {
     }
 }
 
-bool static LookupIntern(const std::string& name, std::vector<CNetAddr>& vIP, unsigned int nMaxSolutions, bool fAllowLookup)
+bool static LookupIntern(const char *pszName, std::vector<CNetAddr>& vIP, unsigned int nMaxSolutions, bool fAllowLookup)
 {
     vIP.clear();
-
-    if (!ValidAsCString(name)) {
-        return false;
-    }
 
     {
         CNetAddr addr;
@@ -76,7 +71,7 @@ bool static LookupIntern(const std::string& name, std::vector<CNetAddr>& vIP, un
         // getaddrinfo to decode them and it wouldn't make sense to resolve
         // them, we return a network address representing it instead. See
         // CNetAddr::SetSpecial(const std::string&) for more details.
-        if (addr.SetSpecial(name)) {
+        if (addr.SetSpecial(std::string(pszName))) {
             vIP.push_back(addr);
             return true;
         }
@@ -98,7 +93,7 @@ bool static LookupIntern(const std::string& name, std::vector<CNetAddr>& vIP, un
     // hostname lookups.
     aiHint.ai_flags = fAllowLookup ? AI_ADDRCONFIG : AI_NUMERICHOST;
     struct addrinfo *aiRes = nullptr;
-    int nErr = getaddrinfo(name.c_str(), nullptr, &aiHint, &aiRes);
+    int nErr = getaddrinfo(pszName, nullptr, &aiHint, &aiRes);
     if (nErr)
         return false;
 
@@ -136,7 +131,7 @@ bool static LookupIntern(const std::string& name, std::vector<CNetAddr>& vIP, un
 /**
  * Resolve a host string to its corresponding network addresses.
  *
- * @param name    The string representing a host. Could be a name or a numerical
+ * @param pszName The string representing a host. Could be a name or a numerical
  *                IP address (IPv6 addresses in their bracketed form are
  *                allowed).
  * @param[out] vIP The resulting network addresses to which the specified host
@@ -148,34 +143,28 @@ bool static LookupIntern(const std::string& name, std::vector<CNetAddr>& vIP, un
  * @see Lookup(const char *, std::vector<CService>&, int, bool, unsigned int)
  *      for additional parameter descriptions.
  */
-bool LookupHost(const std::string& name, std::vector<CNetAddr>& vIP, unsigned int nMaxSolutions, bool fAllowLookup)
+bool LookupHost(const char *pszName, std::vector<CNetAddr>& vIP, unsigned int nMaxSolutions, bool fAllowLookup)
 {
-    if (!ValidAsCString(name)) {
-        return false;
-    }
-    std::string strHost = name;
+    std::string strHost(pszName);
     if (strHost.empty())
         return false;
     if (strHost.front() == '[' && strHost.back() == ']') {
         strHost = strHost.substr(1, strHost.size() - 2);
     }
 
-    return LookupIntern(strHost, vIP, nMaxSolutions, fAllowLookup);
+    return LookupIntern(strHost.c_str(), vIP, nMaxSolutions, fAllowLookup);
 }
 
  /**
  * Resolve a host string to its first corresponding network address.
  *
- * @see LookupHost(const std::string&, std::vector<CNetAddr>&, unsigned int, bool) for
+ * @see LookupHost(const char *, std::vector<CNetAddr>&, unsigned int, bool) for
  *      additional parameter descriptions.
  */
-bool LookupHost(const std::string& name, CNetAddr& addr, bool fAllowLookup)
+bool LookupHost(const char *pszName, CNetAddr& addr, bool fAllowLookup)
 {
-    if (!ValidAsCString(name)) {
-        return false;
-    }
     std::vector<CNetAddr> vIP;
-    LookupHost(name, vIP, 1, fAllowLookup);
+    LookupHost(pszName, vIP, 1, fAllowLookup);
     if(vIP.empty())
         return false;
     addr = vIP.front();
@@ -185,7 +174,7 @@ bool LookupHost(const std::string& name, CNetAddr& addr, bool fAllowLookup)
 /**
  * Resolve a service string to its corresponding service.
  *
- * @param name    The string representing a service. Could be a name or a
+ * @param pszName The string representing a service. Could be a name or a
  *                numerical IP address (IPv6 addresses should be in their
  *                disambiguated bracketed form), optionally followed by a port
  *                number. (e.g. example.com:8333 or
@@ -202,17 +191,16 @@ bool LookupHost(const std::string& name, CNetAddr& addr, bool fAllowLookup)
  * @returns Whether or not the service string successfully resolved to any
  *          resulting services.
  */
-bool Lookup(const std::string& name, std::vector<CService>& vAddr, int portDefault, bool fAllowLookup, unsigned int nMaxSolutions)
+bool Lookup(const char *pszName, std::vector<CService>& vAddr, int portDefault, bool fAllowLookup, unsigned int nMaxSolutions)
 {
-    if (name.empty() || !ValidAsCString(name)) {
+    if (pszName[0] == 0)
         return false;
-    }
     int port = portDefault;
     std::string hostname;
-    SplitHostPort(name, port, hostname);
+    SplitHostPort(std::string(pszName), port, hostname);
 
     std::vector<CNetAddr> vIP;
-    bool fRet = LookupIntern(hostname, vIP, nMaxSolutions, fAllowLookup);
+    bool fRet = LookupIntern(hostname.c_str(), vIP, nMaxSolutions, fAllowLookup);
     if (!fRet)
         return false;
     vAddr.resize(vIP.size());
@@ -227,13 +215,10 @@ bool Lookup(const std::string& name, std::vector<CService>& vAddr, int portDefau
  * @see Lookup(const char *, std::vector<CService>&, int, bool, unsigned int)
  *      for additional parameter descriptions.
  */
-bool Lookup(const std::string& name, CService& addr, int portDefault, bool fAllowLookup)
+bool Lookup(const char *pszName, CService& addr, int portDefault, bool fAllowLookup)
 {
-    if (!ValidAsCString(name)) {
-        return false;
-    }
     std::vector<CService> vService;
-    bool fRet = Lookup(name, vService, portDefault, fAllowLookup, 1);
+    bool fRet = Lookup(pszName, vService, portDefault, fAllowLookup, 1);
     if (!fRet)
         return false;
     addr = vService[0];
@@ -250,15 +235,12 @@ bool Lookup(const std::string& name, CService& addr, int portDefault, bool fAllo
  * @see Lookup(const char *, CService&, int, bool) for additional parameter
  *      descriptions.
  */
-CService LookupNumeric(const std::string& name, int portDefault)
+CService LookupNumeric(const char *pszName, int portDefault)
 {
-    if (!ValidAsCString(name)) {
-        return {};
-    }
     CService addr;
     // "1.2:345" will fail to resolve the ip, but will still set the port.
     // If the ip fails to resolve, re-init the result.
-    if(!Lookup(name, addr, portDefault, false))
+    if(!Lookup(pszName, addr, portDefault, false))
         addr = CService();
     return addr;
 }
@@ -781,16 +763,17 @@ bool IsProxy(const CNetAddr &addr) {
  * @param hSocket The socket on which to connect to the SOCKS5 proxy.
  * @param nTimeout Wait this many milliseconds for the connection to the SOCKS5
  *                 proxy to be established.
- * @param[out] outProxyConnectionFailed Whether or not the connection to the
+ * @param outProxyConnectionFailed[out] Whether or not the connection to the
  *                                      SOCKS5 proxy failed.
  *
  * @returns Whether or not the operation succeeded.
  */
-bool ConnectThroughProxy(const proxyType &proxy, const std::string& strDest, int port, const SOCKET& hSocket, int nTimeout, bool& outProxyConnectionFailed)
+bool ConnectThroughProxy(const proxyType &proxy, const std::string& strDest, int port, const SOCKET& hSocket, int nTimeout, bool *outProxyConnectionFailed)
 {
     // first connect to proxy server
     if (!ConnectSocketDirectly(proxy.proxy, hSocket, nTimeout, true)) {
-        outProxyConnectionFailed = true;
+        if (outProxyConnectionFailed)
+            *outProxyConnectionFailed = true;
         return false;
     }
     // do socks negotiation
@@ -813,25 +796,23 @@ bool ConnectThroughProxy(const proxyType &proxy, const std::string& strDest, int
  * Parse and resolve a specified subnet string into the appropriate internal
  * representation.
  *
- * @param strSubnet A string representation of a subnet of the form `network
+ * @param pszName A string representation of a subnet of the form `network
  *                address [ "/", ( CIDR-style suffix | netmask ) ]`(e.g.
  *                `2001:db8::/32`, `192.0.2.0/255.255.255.0`, or `8.8.8.8`).
  * @param ret The resulting internal representation of a subnet.
  *
  * @returns Whether the operation succeeded or not.
  */
-bool LookupSubNet(const std::string& strSubnet, CSubNet& ret)
+bool LookupSubNet(const char* pszName, CSubNet& ret)
 {
-    if (!ValidAsCString(strSubnet)) {
-        return false;
-    }
+    std::string strSubnet(pszName);
     size_t slash = strSubnet.find_last_of('/');
     std::vector<CNetAddr> vIP;
 
     std::string strAddress = strSubnet.substr(0, slash);
-    // TODO: Use LookupHost(const std::string&, CNetAddr&, bool) instead to just get
+    // TODO: Use LookupHost(const char *, CNetAddr&, bool) instead to just get
     //       one CNetAddr.
-    if (LookupHost(strAddress, vIP, 1, false))
+    if (LookupHost(strAddress.c_str(), vIP, 1, false))
     {
         CNetAddr network = vIP[0];
         if (slash != strSubnet.npos)
@@ -846,7 +827,7 @@ bool LookupSubNet(const std::string& strSubnet, CSubNet& ret)
             else // If not a valid number, try full netmask syntax
             {
                 // Never allow lookup for netmask
-                if (LookupHost(strNetmask, vIP, 1, false)) {
+                if (LookupHost(strNetmask.c_str(), vIP, 1, false)) {
                     ret = CSubNet(network, vIP[0]);
                     return ret.IsValid();
                 }

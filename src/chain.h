@@ -1,10 +1,10 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2020 The Placeholders Core developers
+// Copyright (c) 2009-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_CHAIN_H
-#define PHL_CHAIN_H
+#ifndef PLACEH_CHAIN_H
+#define PLACEH_CHAIN_H
 
 #include <arith_uint256.h>
 #include <consensus/params.h>
@@ -19,8 +19,7 @@
  * Maximum amount of time that a block timestamp is allowed to exceed the
  * current network-adjusted time before the block will be accepted.
  */
-static const int64_t MAX_FUTURE_BLOCK_TIME = 2 * 60 * 60;
-static const int64_t MAX_FUTURE_BLOCK_TIME_DGW = MAX_FUTURE_BLOCK_TIME / 10;
+static constexpr int64_t MAX_FUTURE_BLOCK_TIME = 2 * 60 * 60;
 
 /**
  * Timestamp window used as a grace period by code that compares external
@@ -49,15 +48,17 @@ public:
     uint64_t nTimeFirst;       //!< earliest time of block in file
     uint64_t nTimeLast;        //!< latest time of block in file
 
-    SERIALIZE_METHODS(CBlockFileInfo, obj)
-    {
-        READWRITE(VARINT(obj.nBlocks));
-        READWRITE(VARINT(obj.nSize));
-        READWRITE(VARINT(obj.nUndoSize));
-        READWRITE(VARINT(obj.nHeightFirst));
-        READWRITE(VARINT(obj.nHeightLast));
-        READWRITE(VARINT(obj.nTimeFirst));
-        READWRITE(VARINT(obj.nTimeLast));
+    ADD_SERIALIZE_METHODS;
+
+    template <typename Stream, typename Operation>
+    inline void SerializationOp(Stream& s, Operation ser_action) {
+        READWRITE(VARINT(nBlocks));
+        READWRITE(VARINT(nSize));
+        READWRITE(VARINT(nUndoSize));
+        READWRITE(VARINT(nHeightFirst));
+        READWRITE(VARINT(nHeightLast));
+        READWRITE(VARINT(nTimeFirst));
+        READWRITE(VARINT(nTimeLast));
     }
 
      void SetNull() {
@@ -336,25 +337,31 @@ public:
         hashPrev = (pprev ? pprev->GetBlockHash() : uint256());
     }
 
-    SERIALIZE_METHODS(CDiskBlockIndex, obj)
-    {
-        int _nVersion = s.GetVersion();
-        if (!(s.GetType() & SER_GETHASH)) READWRITE(VARINT_MODE(_nVersion, VarIntMode::NONNEGATIVE_SIGNED));
+    ADD_SERIALIZE_METHODS;
 
-        READWRITE(VARINT_MODE(obj.nHeight, VarIntMode::NONNEGATIVE_SIGNED));
-        READWRITE(VARINT(obj.nStatus));
-        READWRITE(VARINT(obj.nTx));
-        if (obj.nStatus & (BLOCK_HAVE_DATA | BLOCK_HAVE_UNDO)) READWRITE(VARINT_MODE(obj.nFile, VarIntMode::NONNEGATIVE_SIGNED));
-        if (obj.nStatus & BLOCK_HAVE_DATA) READWRITE(VARINT(obj.nDataPos));
-        if (obj.nStatus & BLOCK_HAVE_UNDO) READWRITE(VARINT(obj.nUndoPos));
+    template <typename Stream, typename Operation>
+    inline void SerializationOp(Stream& s, Operation ser_action) {
+        int _nVersion = s.GetVersion();
+        if (!(s.GetType() & SER_GETHASH))
+            READWRITE(VARINT(_nVersion, VarIntMode::NONNEGATIVE_SIGNED));
+
+        READWRITE(VARINT(nHeight, VarIntMode::NONNEGATIVE_SIGNED));
+        READWRITE(VARINT(nStatus));
+        READWRITE(VARINT(nTx));
+        if (nStatus & (BLOCK_HAVE_DATA | BLOCK_HAVE_UNDO))
+            READWRITE(VARINT(nFile, VarIntMode::NONNEGATIVE_SIGNED));
+        if (nStatus & BLOCK_HAVE_DATA)
+            READWRITE(VARINT(nDataPos));
+        if (nStatus & BLOCK_HAVE_UNDO)
+            READWRITE(VARINT(nUndoPos));
 
         // block header
-        READWRITE(obj.nVersion);
-        READWRITE(obj.hashPrev);
-        READWRITE(obj.hashMerkleRoot);
-        READWRITE(obj.nTime);
-        READWRITE(obj.nBits);
-        READWRITE(obj.nNonce);
+        READWRITE(this->nVersion);
+        READWRITE(hashPrev);
+        READWRITE(hashMerkleRoot);
+        READWRITE(nTime);
+        READWRITE(nBits);
+        READWRITE(nNonce);
     }
 
     uint256 GetBlockHash() const
@@ -441,4 +448,4 @@ public:
     CBlockIndex* FindEarliestAtLeast(int64_t nTime, int height) const;
 };
 
-#endif // PHL_CHAIN_H
+#endif // PLACEH_CHAIN_H

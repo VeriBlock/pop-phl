@@ -3,15 +3,15 @@ Shared Libraries
 
 ## placehconsensus
 
-The purpose of this library is to make the verification functionality that is critical to Placeh's consensus available to other applications, e.g. to language bindings.
+The purpose of this library is to make the verification functionality that is critical to Bitcoin's consensus available to other applications, e.g. to language bindings.
 
 ### API
 
-The interface is defined in the C header `placehconsensus.h` located in  `src/script/placehconsensus.h`.
+The interface is defined in the C header `placehconsensus.h` located in `src/script/placehconsensus.h`.
 
 #### Version
 
-`placehconsensus_version` returns an `unsigned int` with the API version *(currently at an experimental `0`)*.
+`placehconsensus_version` returns an `unsigned int` with the API version *(currently `1`)*.
 
 #### Script Validation
 
@@ -43,7 +43,7 @@ The interface is defined in the C header `placehconsensus.h` located in  `src/sc
 - `placehconsensus_ERR_AMOUNT_REQUIRED` - Input amount is required if WITNESS is used
 
 ### Example Implementations
-- [NPlaceh](https://github.com/NicolasDorier/NPlaceh/blob/master/NPlaceh/Script.cs#L814) (.NET Bindings)
+- [NBitcoin](https://github.com/NicolasDorier/NBitcoin/blob/master/NBitcoin/Script.cs#L814) (.NET Bindings)
 - [node-libplacehconsensus](https://github.com/bitpay/node-libplacehconsensus) (Node.js Bindings)
 - [java-libplacehconsensus](https://github.com/dexX7/java-libplacehconsensus) (Java Bindings)
 - [placehconsensus-php](https://github.com/Bit-Wasp/placehconsensus-php) (PHP Bindings)

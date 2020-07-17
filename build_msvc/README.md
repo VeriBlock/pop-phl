@@ -1,26 +1,25 @@
-Building Placeholders Core with Visual Studio
+Building Bitcoin Core with Visual Studio
 ========================================
 
 Introduction
 ---------------------
-Solution and project files to build the Placeholders Core applications `msbuild` or Visual Studio can be found in the build_msvc directory. The build has been tested with Visual Studio 2017 and 2019.
+Solution and project files to build the Bitcoin Core applications `msbuild` or Visual Studio can be found in the build_msvc directory. The build has been tested with Visual Studio 2017 and 2019.
 
 Building with Visual Studio is an alternative to the Linux based [cross-compiler build](https://github.com/placeh/placeh/blob/master/doc/build-windows.md).
 
 Quick Start
 ---------------------
-The minimal steps required to build Placeholders Core with the msbuild toolchain are below. More detailed instructions are contained in the following sections.
+The minimal steps required to build Bitcoin Core with the msbuild toolchain are below. More detailed instructions are contained in the following sections.
 
 ```
-vcpkg install --triplet x64-windows-static berkeleydb boost-filesystem boost-multi-index boost-signals2 boost-test boost-thread libevent[thread] zeromq double-conversion
-vcpkg integrate install
+vcpkg install --triplet x64-windows-static boost-filesystem boost-multi-index boost-signals2 boost-test boost-thread libevent zeromq berkeleydb rapidcheck double-conversion gtest
 py -3 build_msvc\msvc-autogen.py
 msbuild /m build_msvc\placeh.sln /p:Platform=x64 /p:Configuration=Release /t:build
 ```
 
 Dependencies
 ---------------------
-A number of [open source libraries](https://github.com/placeh/placeh/blob/master/doc/dependencies.md) are required in order to be able to build Placeholders Core.
+A number of [open source libraries](https://github.com/placeh/placeh/blob/master/doc/dependencies.md) are required in order to be able to build Bitcoin Core.
 
 Options for installing the dependencies in a Visual Studio compatible manner are:
 
@@ -35,17 +34,16 @@ The [external dependencies](https://github.com/placeh/placeh/blob/master/doc/dep
 - DoubleConversion
 - libevent
 - Qt5
+- RapidCheck
 - ZeroMQ
 
 Qt
 ---------------------
-In order to build the Placeholders Core a static build of Qt is required. The runtime library version (e.g. v141, v142) and platform type (x86 or x64) must also match.
+In order to build the Bitcoin Core a static build of Qt is required. The runtime library version (e.g. v141, v142) and platform type (x86 or x64) must also match.
 
-Some prebuilt x64 versions of Qt can be downloaded from [here](https://github.com/sipsorcery/qt_win_binary/releases). Please be aware these downloads are NOT officially sanctioned by Placeholders Core and are provided for developer convenience only. They should NOT be used for builds that will be used in a production environment or with real funds.
+A prebuilt version of Qt can be downloaded from [here](https://github.com/sipsorcery/qt_win_binary/releases). Please be aware this download is NOT an officially sanctioned Bitcoin Core distribution and is provided for developer convenience. It should NOT be used for builds that will be used in a production environment or with real funds.
 
-To determine which Qt prebuilt version to download open the `.appveyor.yml` file and note the `QT_DOWNLOAD_URL`. When extracting the zip file the destination path must be set to `C:\`. This is due to the way that Qt includes, libraries and tools use internal paths.
-
-To build Placeholders Core without Qt unload or disable the `placeh-qt`, `libplaceh_qt` and `test_placeh-qt` projects.
+To build Bitcoin Core without Qt unload or disable the `placeh-qt`, `libplaceh_qt` and `test_placeh-qt` projects.
 
 Building
 ---------------------
@@ -56,7 +54,6 @@ The instructions below use `vcpkg` to install the dependencies.
 
 ```
 PS >.\vcpkg install --triplet x64-windows-static $(Get-Content -Path build_msvc\vcpkg-packages.txt).split()
-PS >.\vcpkg integrate install
 ```
 
 - Use Python to generate `*.vcxproj` from Makefile
@@ -67,25 +64,23 @@ PS >py -3 msvc-autogen.py
 
 - An optional step is to adjust the settings in the build_msvc directory and the common.init.vcxproj file. This project file contains settings that are common to all projects such as the runtime library version and target Windows SDK version. The Qt directories can also be set.
 
-- To build from the command line with the Visual Studio 2017 toolchain use:
+- Build with Visual Studio 2017 or msbuild.
 
 ```
 msbuild /m placeh.sln /p:Platform=x64 /p:Configuration=Release /p:PlatformToolset=v141 /t:build
 ```
 
-- To build from the command line with the Visual Studio 2019 toolchain use:
+- Build with Visual Studio 2019 or msbuild.
 
 ```
 msbuild /m placeh.sln /p:Platform=x64 /p:Configuration=Release /t:build
 ```
 
-- Alternatively open the `build_msvc\placeh.sln` file in Visual Studio.
-
 AppVeyor
 ---------------------
-The .appveyor.yml in the root directory is suitable to perform builds on [AppVeyor](https://www.appveyor.com/) Continuous Integration servers. The simplest way to perform an AppVeyor build is to fork Placeholders Core and then configure a new AppVeyor Project pointing to the forked repository.
+The .appveyor.yml in the root directory is suitable to perform builds on [AppVeyor](https://www.appveyor.com/) Continuous Integration servers. The simplest way to perform an AppVeyor build is to fork Bitcoin Core and then configure a new AppVeyor Project pointing to the forked repository.
 
-For safety reasons the Placeholders Core .appveyor.yml file has the artifact options disabled. The build will be performed but no executable files will be available. To enable artifacts on a forked repository uncomment the lines shown below:
+For safety reasons the Bitcoin Core .appveyor.yml file has the artifact options disabled. The build will be performed but no executable files will be available. To enable artifacts on a forked repository uncomment the lines shown below:
 
 ```
     #- 7z a placeh-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\build_msvc\%platform%\%configuration%\*.exe

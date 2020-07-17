@@ -30,10 +30,6 @@
         <translation>Dileu'r cyfeiriad presennol wedi ei ddewis o'r rhestr</translation>
     </message>
     <message>
-        <source>Enter address or label to search</source>
-        <translation>Cyfeiriad neu label i chwilio</translation>
-    </message>
-    <message>
         <source>Export the data in the current tab to a file</source>
         <translation>Allforio'r data yn y tab presennol i ffeil</translation>
     </message>
@@ -47,7 +43,7 @@
     </message>
     <message>
         <source>Choose the address to send coins to</source>
-        <translation>Dewis y cyfeiriad i yrru'r arian</translation>
+        <translation>Dewis y cyfeiriad i yrru'r arian </translation>
     </message>
     <message>
         <source>Choose the address to receive coins with</source>
@@ -156,8 +152,8 @@
         <translation>Cadarnhau amgryptio'r waled</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PHLS&lt;/b&gt;!</source>
-        <translation>Rhybudd: Os ydych yn amgryptio'r waled ag yn colli'r cyfrinair, byddwch yn &lt;b&gt; COLLI EICH PHLS I GYD &lt;b&gt; !</translation>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PLACEHS&lt;/b&gt;!</source>
+        <translation>Rhybudd: Os ydych yn amgryptio'r waled ag yn colli'r cyfrinair, byddwch yn &lt;b&gt; COLLI EICH PLACEHS I GYD &lt;b&gt; !</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -165,11 +161,7 @@
     </message>
     <message>
         <source>Wallet encrypted</source>
-        <translation>Waled wedi amgryptio</translation>
-    </message>
-    <message>
-        <source>Wallet to be encrypted</source>
-        <translation>Waled i'w amgryptio</translation>
+        <translation>Waled Wedi Amgryptio</translation>
     </message>
     <message>
         <source>IMPORTANT: Any previous backups you have made of your wallet file should be replaced with the newly generated, encrypted wallet file. For security reasons, previous backups of the unencrypted wallet file will become useless as soon as you start using the new, encrypted wallet.</source>
@@ -201,7 +193,7 @@
     </message>
     <message>
         <source>Wallet passphrase was successfully changed.</source>
-        <translation>Newid cyfrinair waled yn llwyddiannus.</translation>
+        <translation>Newid cyfrinair waled yn llwyddiannus. </translation>
     </message>
     <message>
         <source>Warning: The Caps Lock key is on!</source>
@@ -220,7 +212,7 @@
     </message>
 </context>
 <context>
-    <name>PlaceholdersGUI</name>
+    <name>BitcoinGUI</name>
     <message>
         <source>Sign &amp;message...</source>
         <translation>Arwyddo &amp;neges...</translation>
@@ -319,7 +311,7 @@
     </message>
     <message>
         <source>Send coins to a Placeholders address</source>
-        <translation>Anfon arian i gyfeiriad Placeholders</translation>
+        <translation>Anfon arian i gyfeiriad Bitcoin</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -328,6 +320,10 @@
     <message>
         <source>Change the passphrase used for wallet encryption</source>
         <translation>Newid y cyfrinair ddefnyddiwyd ar gyfer amgryptio'r waled</translation>
+    </message>
+    <message>
+        <source>&amp;Debug window</source>
+        <translation>&amp;Di fygio'r ffenest</translation>
     </message>
     <message>
         <source>&amp;Verify message...</source>
@@ -388,6 +384,10 @@
     <message>
         <source>Show the list of used receiving addresses and labels</source>
         <translation>Dangos rhestr o gyfeiriadau derbyn a labelau wedi eu defnyddio</translation>
+    </message>
+    <message>
+        <source>Open a placeh: URI or payment request</source>
+        <translation>Agor Bitcoin: URI neu ofyn taliad</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -458,14 +458,6 @@
         <translation>Dal i fyny...</translation>
     </message>
     <message>
-        <source>Error: %1</source>
-        <translation> Gwall: %1</translation>
-    </message>
-    <message>
-        <source>Warning: %1</source>
-        <translation>Rhybudd: %1</translation>
-    </message>
-    <message>
         <source>Date: %1
 </source>
         <translation>Dyddiad: %1
@@ -475,12 +467,6 @@
         <source>Amount: %1
 </source>
         <translation>Cyfanswm: %1
-</translation>
-    </message>
-    <message>
-        <source>Wallet: %1
-</source>
-        <translation>Waled: %1
 </translation>
     </message>
     <message>
@@ -542,23 +528,23 @@
     </message>
     <message>
         <source>Bytes:</source>
-        <translation>Maint:</translation>
+        <translation>Maint</translation>
     </message>
     <message>
         <source>Amount:</source>
-        <translation>Cyfanswm:</translation>
+        <translation>Cyfanswm</translation>
     </message>
     <message>
         <source>Fee:</source>
-        <translation>Ffî:</translation>
+        <translation>Ffî</translation>
     </message>
     <message>
         <source>Dust:</source>
-        <translation>Llwch:</translation>
+        <translation>Llwch</translation>
     </message>
     <message>
         <source>After Fee:</source>
-        <translation>Ar Ôl Ffî:</translation>
+        <translation>Ar Ôl Ffî</translation>
     </message>
     <message>
         <source>Change:</source>
@@ -598,17 +584,13 @@
     </message>
     <message>
         <source>Copy amount</source>
-        <translation>Copïo cyfanswm</translation>
+        <translation>Copïo Cyfanswm</translation>
     </message>
     <message>
         <source>(no label)</source>
         <translation>(dim label)</translation>
     </message>
-    <message>
-        <source>(change)</source>
-        <translation>(newid)</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>CreateWalletActivity</name>
     </context>
@@ -629,27 +611,7 @@
         <source>&amp;Address</source>
         <translation>&amp;Cyfeiriad</translation>
     </message>
-    <message>
-        <source>New sending address</source>
-        <translation>Cyfeiriad anfon newydd</translation>
-    </message>
-    <message>
-        <source>Edit receiving address</source>
-        <translation>Golygu'r cyfeiriad derbyn</translation>
-    </message>
-    <message>
-        <source>Edit sending address</source>
-        <translation>Golygu'r cyfeiriad anfon</translation>
-    </message>
-    <message>
-        <source>Could not unlock wallet.</source>
-        <translation>Methodd ddatgloi'r waled.</translation>
-    </message>
-    <message>
-        <source>New key generation failed.</source>
-        <translation>Methodd gynhyrchu allwedd newydd.</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>FreespaceChecker</name>
     <message>
@@ -667,8 +629,8 @@
         <translation>Croeso</translation>
     </message>
     <message>
-        <source>Placeholders</source>
-        <translation>Placeholders</translation>
+        <source>Bitcoin</source>
+        <translation>Bitcoin</translation>
     </message>
     <message>
         <source>Error</source>
@@ -685,10 +647,14 @@
 <context>
     <name>OpenURIDialog</name>
     <message>
+        <source>Open URI</source>
+        <translation>Agor URI</translation>
+    </message>
+    <message>
         <source>URI:</source>
         <translation>URI:</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>OpenWalletActivity</name>
     </context>
@@ -754,10 +720,6 @@
         <source>%1 and %2</source>
         <translation>%1 a %2</translation>
     </message>
-    <message>
-        <source>Error: %1</source>
-        <translation> Gwall: %1</translation>
-    </message>
     </context>
 <context>
     <name>QRImageWidget</name>
@@ -811,10 +773,6 @@
         <translation>Label</translation>
     </message>
     <message>
-        <source>Message</source>
-        <translation>Neges</translation>
-    </message>
-    <message>
         <source>Wallet</source>
         <translation>Waled</translation>
     </message>
@@ -828,10 +786,6 @@
     <message>
         <source>Label</source>
         <translation>Label</translation>
-    </message>
-    <message>
-        <source>Message</source>
-        <translation>Neges</translation>
     </message>
     <message>
         <source>(no label)</source>
@@ -889,10 +843,6 @@
         <translation>Copïo Cyfanswm</translation>
     </message>
     <message>
-        <source>%1 to %2</source>
-        <translation>%1 i %2</translation>
-    </message>
-    <message>
         <source>(no label)</source>
         <translation>(dim label)</translation>
     </message>
@@ -925,6 +875,9 @@
     </message>
     </context>
 <context>
+    <name>SendConfirmationDialog</name>
+    </context>
+<context>
     <name>ShutdownWindow</name>
     </context>
 <context>
@@ -948,16 +901,8 @@
 <context>
     <name>TransactionDesc</name>
     <message>
-        <source>Open until %1</source>
-        <translation>Agor tan %1</translation>
-    </message>
-    <message>
         <source>Date</source>
         <translation>Dyddiad</translation>
-    </message>
-    <message>
-        <source>Message</source>
-        <translation>Neges</translation>
     </message>
     <message>
         <source>Amount</source>
@@ -980,10 +925,6 @@
     <message>
         <source>Label</source>
         <translation>Label</translation>
-    </message>
-    <message>
-        <source>Open until %1</source>
-        <translation>Agor tan %1</translation>
     </message>
     <message>
         <source>(no label)</source>

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2019 The Placeholders Core developers
+# Copyright (c) 2014-2019 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test wallet import RPCs.
@@ -19,7 +19,7 @@ importing nodes pick up the new transactions regardless of whether rescans
 happened previously.
 """
 
-from test_framework.test_framework import PlaceholdersTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.address import AddressType
 from test_framework.util import (
     connect_nodes,
@@ -40,6 +40,7 @@ Rescan = enum.Enum("Rescan", "no yes late_timestamp")
 
 class Variant(collections.namedtuple("Variant", "call data address_type rescan prune")):
     """Helper for importing one key and verifying scanned transactions."""
+
     def do_import(self, timestamp):
         """Call one key import RPC."""
         rescan = self.rescan == Rescan.yes
@@ -141,11 +142,10 @@ def get_rand_amount():
     return Decimal(str(round(r, 8)))
 
 
-class ImportRescanTest(PlaceholdersTestFramework):
+class ImportRescanTest(BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 2 + len(IMPORT_NODES)
         self.supports_cli = False
-        self.rpc_timeout = 120
 
     def skip_test_if_missing_module(self):
         self.skip_if_no_wallet()
@@ -225,7 +225,6 @@ class ImportRescanTest(PlaceholdersTestFramework):
             variant.expected_balance += variant.sent_amount
             variant.expected_txs += 1
             variant.check(variant.sent_txid, variant.sent_amount, variant.confirmation_height)
-
 
 if __name__ == "__main__":
     ImportRescanTest().main()

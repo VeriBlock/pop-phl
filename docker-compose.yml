@@ -1,29 +1,17 @@
 version: '3'
 
+# usage:
+# - docker-compose up -d
+# - docker-compose exec dev bash
+
 services:
-  placehd:
-    image: placehcoin/core:latest
-    build: .
-    restart: always
+  dev:
+    image: veriblock/btcdev
+    tty: true
+    stdin_open: true
+    working_dir: /app
+    cap_add:
+      - SYS_PTRACE
     volumes:
-       - ./.appdata/.placeh:/home/placeh/.placeh
-    command: [
-      "placehd",
-      "-printtoconsole",
-      "-rpcuser=root",
-      "-rpcpassword=x",
-      "-rpcallowip=0.0.0.0/0",
-      "-rpcport=2300",
-      "-rpcbind=0.0.0.0",
-      "-server",
-      "-listen",
-      "-addnode=174.138.55.214",
-    ]
-    ports:
-      - "2300:2300"
-    expose:
-      - 2300
-    networks:
-      default:
-        aliases:
-          - placehd.internal
+      - .:/app:rw
+    command: bash

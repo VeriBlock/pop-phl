@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2018 The Placeholders Core developers
+// Copyright (c) 2015-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -20,7 +20,9 @@
 struct nontrivial_t {
     int x;
     nontrivial_t() :x(-1) {}
-    SERIALIZE_METHODS(nontrivial_t, obj) { READWRITE(obj.x); }
+    ADD_SERIALIZE_METHODS
+    template <typename Stream, typename Operation>
+    inline void SerializationOp(Stream& s, Operation ser_action) {READWRITE(x);}
 };
 static_assert(!IS_TRIVIALLY_CONSTRUCTIBLE<nontrivial_t>::value,
               "expected nontrivial_t to not be trivially constructible");

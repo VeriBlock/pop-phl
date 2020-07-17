@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2020 The Placeholders Core developers
 # Copyright (c) 2014-2019 The Bitcoin Core developers
 # Copyright (c) 2019-2020 Xenios SEZC
 # https://www.veriblock.org
@@ -8,7 +7,7 @@
 """Test the fundrawtransaction RPC."""
 
 from decimal import Decimal
-from test_framework.test_framework import PlaceholdersTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import (
     assert_equal,
     assert_fee_amount,
@@ -28,13 +27,13 @@ def get_unspent(listunspent, amount):
             return utx
     raise AssertionError('Could not find unspent with amount={}'.format(amount))
 
-class RawTransactionsTest(PlaceholdersTestFramework):
+class RawTransactionsTest(BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 4
         self.setup_clean_chain = True
         # This test isn't testing tx relay. Set whitelist on the peers for
         # instant tx relay.
-        self.extra_args = [['-whitelist=noban@127.0.0.1']] * self.num_nodes
+        self.extra_args = [['-whitelist=127.0.0.1']] * self.num_nodes
 
     def skip_test_if_missing_module(self):
         self.skip_if_no_wallet()
@@ -504,16 +503,11 @@ class RawTransactionsTest(PlaceholdersTestFramework):
         self.nodes[1].getnewaddress()
         self.nodes[1].getrawchangeaddress()
         inputs = []
-        outputs = {self.nodes[0].getnewaddress():1.09999500}
-        rawtx = self.nodes[1].createrawtransaction(inputs, outputs)
-        # fund a transaction that does not require a new key for the change output
-        self.nodes[1].fundrawtransaction(rawtx)
-
-        # fund a transaction that requires a new key for the change output
-        # creating the key must be impossible because the wallet is locked
         outputs = {self.nodes[0].getnewaddress():1.1}
         rawtx = self.nodes[1].createrawtransaction(inputs, outputs)
-        assert_raises_rpc_error(-4, "Transaction needs a change address, but we can't generate it. Please call keypoolrefill first.", self.nodes[1].fundrawtransaction, rawtx)
+        # fund a transaction that requires a new key for the change output
+        # creating the key must be impossible because the wallet is locked
+        assert_raises_rpc_error(-4, "Keypool ran out, please call keypoolrefill first", self.nodes[1].fundrawtransaction, rawtx)
 
         # Refill the keypool.
         self.nodes[1].walletpassphrase("test", 100)
@@ -592,6 +586,7 @@ class RawTransactionsTest(PlaceholdersTestFramework):
         self.nodes[1].sendrawtransaction(fundedAndSignedTx['hex'])
         self.nodes[1].generate(1)
         self.sync_all()
+
         assert_equal(oldBalance+Decimal(str(POW_PAYOUT + 0.19)), self.nodes[0].getbalance()) #0.19+block reward
 
     def test_op_return(self):

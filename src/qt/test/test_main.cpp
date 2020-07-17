@@ -1,4 +1,4 @@
-// Copyright (c) 2009-2019 The Placeholders Core developers
+// Copyright (c) 2009-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -37,8 +37,6 @@ Q_IMPORT_PLUGIN(QCocoaIntegrationPlugin);
 #endif
 #endif
 
-const std::function<void(const std::string&)> G_TEST_LOG_FUN{};
-
 // This is all you need to run all the tests
 int main(int argc, char *argv[])
 {
@@ -67,8 +65,8 @@ int main(int argc, char *argv[])
 
     // Don't remove this, it's needed to access
     // QApplication:: and QCoreApplication:: in the tests
-    PlaceholdersApplication app(*node);
-    app.setApplicationName("Placeholders-Qt-test");
+    BitcoinApplication app(*node);
+    app.setApplicationName("Bitcoin-Qt-test");
 
     AppTests app_tests(app);
     if (QTest::qExec(&app_tests) != 0) {

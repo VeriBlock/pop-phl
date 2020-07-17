@@ -1,9 +1,9 @@
-// Copyright (c) 2016-2019 The Placeholders Core developers
+// Copyright (c) 2016-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_VERSIONBITS_H
-#define PHL_VERSIONBITS_H
+#ifndef PLACEH_VERSIONBITS_H
+#define PLACEH_VERSIONBITS_H
 
 #include <chain.h>
 #include <map>
@@ -12,8 +12,6 @@
 static const int32_t VERSIONBITS_LAST_OLD_BLOCK_VERSION = 4;
 /** What bits to set in version for versionbits blocks */
 static const int32_t VERSIONBITS_TOP_BITS = 0x20000000UL;
-/** What bits to set in the version for versionbits blocks after assets is active */
-static const int32_t VERSIONBITS_TOP_BITS_ASSETS = 0x30000000UL;
 /** What bitmask determines whether versionbits is in use */
 static const int32_t VERSIONBITS_TOP_MASK = 0xE0000000UL;
 /** Total bits available for versionbits */
@@ -86,4 +84,4 @@ BIP9Stats VersionBitsStatistics(const CBlockIndex* pindexPrev, const Consensus::
 int VersionBitsStateSinceHeight(const CBlockIndex* pindexPrev, const Consensus::Params& params, Consensus::DeploymentPos pos, VersionBitsCache& cache);
 uint32_t VersionBitsMask(const Consensus::Params& params, Consensus::DeploymentPos pos);
 
-#endif // PHL_VERSIONBITS_H
+#endif // PLACEH_VERSIONBITS_H

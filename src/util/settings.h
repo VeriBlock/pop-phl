@@ -1,9 +1,9 @@
-// Copyright (c) 2019-2020 The Placeholders Core developers
+// Copyright (c) 2019 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_UTIL_SETTINGS_H
-#define PHL_UTIL_SETTINGS_H
+#ifndef PLACEH_UTIL_SETTINGS_H
+#define PLACEH_UTIL_SETTINGS_H
 
 #include <map>
 #include <string>
@@ -71,11 +71,11 @@ struct SettingsSpan {
     explicit SettingsSpan(const SettingsValue& value) noexcept : SettingsSpan(&value, 1) {}
     explicit SettingsSpan(const SettingsValue* data, size_t size) noexcept : data(data), size(size) {}
     explicit SettingsSpan(const std::vector<SettingsValue>& vec) noexcept;
-    const SettingsValue* begin() const; //!< Pointer to first non-negated value.
-    const SettingsValue* end() const;   //!< Pointer to end of values.
-    bool empty() const;                 //!< True if there are any non-negated values.
-    bool last_negated() const;          //!< True if the last value is negated.
-    size_t negated() const;             //!< Number of negated values.
+    const SettingsValue* begin() const; //<! Pointer to first non-negated value.
+    const SettingsValue* end() const;   //<! Pointer to end of values.
+    bool empty() const;                 //<! True if there are any non-negated values.
+    bool last_negated() const;          //<! True if the last value is negated.
+    size_t negated() const;             //<! Number of negated values.
 
     const SettingsValue* data = nullptr;
     size_t size = 0;
@@ -91,4 +91,4 @@ auto FindKey(Map&& map, Key&& key) -> decltype(&map.at(key))
 
 } // namespace util
 
-#endif // PHL_UTIL_SETTINGS_H
+#endif // PLACEH_UTIL_SETTINGS_H

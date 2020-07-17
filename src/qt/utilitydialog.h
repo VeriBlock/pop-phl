@@ -1,16 +1,14 @@
-// Copyright (c) 2011-2020 The Placeholders Core developers
+// Copyright (c) 2011-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_QT_UTILITYDIALOG_H
-#define PHL_QT_UTILITYDIALOG_H
+#ifndef PLACEH_QT_UTILITYDIALOG_H
+#define PLACEH_QT_UTILITYDIALOG_H
 
 #include <QDialog>
-#include <QWidget>
+#include <QObject>
 
-QT_BEGIN_NAMESPACE
-class QMainWindow;
-QT_END_NAMESPACE
+class BitcoinGUI;
 
 namespace interfaces {
     class Node;
@@ -48,10 +46,10 @@ class ShutdownWindow : public QWidget
 
 public:
     explicit ShutdownWindow(QWidget *parent=nullptr, Qt::WindowFlags f=Qt::Widget);
-    static QWidget* showShutdownWindow(QMainWindow* window);
+    static QWidget *showShutdownWindow(BitcoinGUI *window);
 
 protected:
-    void closeEvent(QCloseEvent *event) override;
+    void closeEvent(QCloseEvent *event);
 };
 
-#endif // PHL_QT_UTILITYDIALOG_H
+#endif // PLACEH_QT_UTILITYDIALOG_H

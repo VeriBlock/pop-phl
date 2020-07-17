@@ -44,7 +44,7 @@
     <name>BanTableModel</name>
     </context>
 <context>
-    <name>PlaceholdersGUI</name>
+    <name>BitcoinGUI</name>
     <message>
         <source>Warning</source>
         <translation>අවවාදය</translation>
@@ -136,7 +136,7 @@
         <source>URI:</source>
         <translation>URI:</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>OpenWalletActivity</name>
     </context>
@@ -235,6 +235,9 @@
 </context>
 <context>
     <name>SendCoinsEntry</name>
+    </context>
+<context>
+    <name>SendConfirmationDialog</name>
     </context>
 <context>
     <name>ShutdownWindow</name>

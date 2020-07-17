@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef __BOOTSTRAPS_BTC_VBK
-#define __BOOTSTRAPS_BTC_VBK
+#ifndef __BOOTSTRAPS_PHL_VBK
+#define __BOOTSTRAPS_PHL_VBK
 
 #include <string>
 #include <vector>
@@ -17,15 +17,15 @@
 extern int testnetVBKstartHeight;
 extern std::vector<std::string> testnetVBKblocks;
 
-extern int testnetBTCstartHeight;
-extern std::vector<std::string> testnetBTCblocks;
+extern int testnetPHLstartHeight;
+extern std::vector<std::string> testnetPHLblocks;
 
-struct AltChainParamsPHL : public altintegration::AltChainParams {
-    ~AltChainParamsPHL() override = default;
+struct AltChainParamsVPHL : public altintegration::AltChainParams {
+    ~AltChainParamsVPHL() override = default;
 
-    AltChainParamsPHL(const CBlock& genesis)
+    AltChainParamsVPHL(const CBlock& genesis)
     {
-        auto hash = genesis.GetX16RV2Hash();
+        auto hash = genesis.GetHash();
         bootstrap.hash = std::vector<uint8_t>{hash.begin(), hash.end()};
         bootstrap.height = 0; // pop is enabled starting at genesis
         bootstrap.timestamp = genesis.GetBlockTime();
@@ -38,7 +38,7 @@ struct AltChainParamsPHL : public altintegration::AltChainParams {
 
     uint32_t getIdentifier() const noexcept override
     {
-        return 0x304fa45;
+        return 0x3ae6ca;
     }
 
     altintegration::AltBlock bootstrap;

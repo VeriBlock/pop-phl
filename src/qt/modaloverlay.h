@@ -1,12 +1,11 @@
-// Copyright (c) 2016-2019 The Placeholders Core developers
+// Copyright (c) 2016-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_QT_MODALOVERLAY_H
-#define PHL_QT_MODALOVERLAY_H
+#ifndef PLACEH_QT_MODALOVERLAY_H
+#define PLACEH_QT_MODALOVERLAY_H
 
 #include <QDateTime>
-#include <QPropertyAnimation>
 #include <QWidget>
 
 //! The required delta of headers to the estimated number of available headers until we show the IBD progress
@@ -36,8 +35,8 @@ public Q_SLOTS:
     bool isLayerVisible() const { return layerIsVisible; }
 
 protected:
-    bool eventFilter(QObject * obj, QEvent * ev) override;
-    bool event(QEvent* ev) override;
+    bool eventFilter(QObject * obj, QEvent * ev);
+    bool event(QEvent* ev);
 
 private:
     Ui::ModalOverlay *ui;
@@ -46,8 +45,7 @@ private:
     QVector<QPair<qint64, double> > blockProcessTime;
     bool layerIsVisible;
     bool userClosed;
-    QPropertyAnimation m_animation;
     void UpdateHeaderSyncLabel();
 };
 
-#endif // PHL_QT_MODALOVERLAY_H
+#endif // PLACEH_QT_MODALOVERLAY_H

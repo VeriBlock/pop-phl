@@ -1,10 +1,10 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2019 The Placeholders Core developers
+// Copyright (c) 2009-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_POLICY_FEERATE_H
-#define PHL_POLICY_FEERATE_H
+#ifndef PLACEH_POLICY_FEERATE_H
+#define PLACEH_POLICY_FEERATE_H
 
 #include <amount.h>
 #include <serialize.h>
@@ -48,7 +48,12 @@ public:
     CFeeRate& operator+=(const CFeeRate& a) { nSatoshisPerK += a.nSatoshisPerK; return *this; }
     std::string ToString() const;
 
-    SERIALIZE_METHODS(CFeeRate, obj) { READWRITE(obj.nSatoshisPerK); }
+    ADD_SERIALIZE_METHODS;
+
+    template <typename Stream, typename Operation>
+    inline void SerializationOp(Stream& s, Operation ser_action) {
+        READWRITE(nSatoshisPerK);
+    }
 };
 
-#endif //  PHL_POLICY_FEERATE_H
+#endif //  PLACEH_POLICY_FEERATE_H

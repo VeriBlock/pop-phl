@@ -1,9 +1,9 @@
-// Copyright (c) 2016-2018 The Placeholders Core developers
+// Copyright (c) 2016-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_VERSIONBITSINFO_H
-#define PHL_VERSIONBITSINFO_H
+#ifndef PLACEH_VERSIONBITSINFO_H
+#define PLACEH_VERSIONBITSINFO_H
 
 struct VBDeploymentInfo {
     /** Deployment name */
@@ -14,4 +14,4 @@ struct VBDeploymentInfo {
 
 extern const struct VBDeploymentInfo VersionBitsDeploymentInfo[];
 
-#endif // PHL_VERSIONBITSINFO_H
+#endif // PLACEH_VERSIONBITSINFO_H

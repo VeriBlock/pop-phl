@@ -1,4 +1,6 @@
-// Copyright (c) 2011-2020 The Placeholders Core developers
+// Copyright (c) 2011-2019 The Bitcoin Core developers
+// Copyright (c) 2019-2020 Xenios SEZC
+// https://www.veriblock.org
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -7,6 +9,7 @@
 #endif
 
 #include <vbk/init.hpp>
+#include <node/context.h>
 
 #include <qt/placeh.h>
 #include <qt/placehgui.h>
@@ -36,7 +39,6 @@
 #include <uint256.h>
 #include <util/system.h>
 #include <util/threadnames.h>
-#include <validation.h>
 
 #include <memory>
 
@@ -64,25 +66,7 @@ Q_IMPORT_PLUGIN(QCocoaIntegrationPlugin);
 // Declare meta types used for QMetaObject::invokeMethod
 Q_DECLARE_METATYPE(bool*)
 Q_DECLARE_METATYPE(CAmount)
-Q_DECLARE_METATYPE(SynchronizationState)
 Q_DECLARE_METATYPE(uint256)
-
-static void RegisterMetaTypes()
-{
-    // Register meta types used for QMetaObject::invokeMethod and Qt::QueuedConnection
-    qRegisterMetaType<bool*>();
-    qRegisterMetaType<SynchronizationState>();
-  #ifdef ENABLE_WALLET
-    qRegisterMetaType<WalletModel*>();
-  #endif
-    // Register typedefs (see http://qt-project.org/doc/qt-5/qmetatype.html#qRegisterMetaType)
-    // IMPORTANT: if CAmount is no longer a typedef use the normal variant above (see https://doc.qt.io/qt-5/qmetatype.html#qRegisterMetaType-1)
-    qRegisterMetaType<CAmount>("CAmount");
-    qRegisterMetaType<size_t>("size_t");
-
-    qRegisterMetaType<std::function<void()>>("std::function<void()>");
-    qRegisterMetaType<QMessageBox::Icon>("QMessageBox::Icon");
-}
 
 static QString GetLangTerritory()
 {
@@ -148,18 +132,18 @@ void DebugMessageHandler(QtMsgType type, const QMessageLogContext& context, cons
     }
 }
 
-PlaceholdersCore::PlaceholdersCore(interfaces::Node& node) :
+BitcoinCore::BitcoinCore(interfaces::Node& node) :
     QObject(), m_node(node)
 {
 }
 
-void PlaceholdersCore::handleRunawayException(const std::exception *e)
+void BitcoinCore::handleRunawayException(const std::exception *e)
 {
     PrintExceptionContinue(e, "Runaway exception");
     Q_EMIT runawayException(QString::fromStdString(m_node.getWarnings()));
 }
 
-void PlaceholdersCore::initialize()
+void BitcoinCore::initialize()
 {
     try
     {
@@ -174,7 +158,7 @@ void PlaceholdersCore::initialize()
     }
 }
 
-void PlaceholdersCore::shutdown()
+void BitcoinCore::shutdown()
 {
     try
     {
@@ -192,7 +176,7 @@ void PlaceholdersCore::shutdown()
 static int qt_argc = 1;
 static const char* qt_argv = "placeh-qt";
 
-PlaceholdersApplication::PlaceholdersApplication(interfaces::Node& node):
+BitcoinApplication::BitcoinApplication(interfaces::Node& node):
     QApplication(qt_argc, const_cast<char **>(&qt_argv)),
     coreThread(nullptr),
     m_node(node),
@@ -203,24 +187,23 @@ PlaceholdersApplication::PlaceholdersApplication(interfaces::Node& node):
     returnValue(0),
     platformStyle(nullptr)
 {
-    RegisterMetaTypes();
     setQuitOnLastWindowClosed(false);
 }
 
-void PlaceholdersApplication::setupPlatformStyle()
+void BitcoinApplication::setupPlatformStyle()
 {
     // UI per-platform customization
-    // This must be done inside the PlaceholdersApplication constructor, or after it, because
+    // This must be done inside the BitcoinApplication constructor, or after it, because
     // PlatformStyle::instantiate requires a QApplication
     std::string platformName;
-    platformName = gArgs.GetArg("-uiplatform", PlaceholdersGUI::DEFAULT_UIPLATFORM);
+    platformName = gArgs.GetArg("-uiplatform", BitcoinGUI::DEFAULT_UIPLATFORM);
     platformStyle = PlatformStyle::instantiate(QString::fromStdString(platformName));
     if (!platformStyle) // Fall back to "other" if specified name not found
         platformStyle = PlatformStyle::instantiate("other");
     assert(platformStyle);
 }
 
-PlaceholdersApplication::~PlaceholdersApplication()
+BitcoinApplication::~BitcoinApplication()
 {
     if(coreThread)
     {
@@ -232,66 +215,68 @@ PlaceholdersApplication::~PlaceholdersApplication()
 
     delete window;
     window = nullptr;
+    delete optionsModel;
+    optionsModel = nullptr;
     delete platformStyle;
     platformStyle = nullptr;
 }
 
 #ifdef ENABLE_WALLET
-void PlaceholdersApplication::createPaymentServer()
+void BitcoinApplication::createPaymentServer()
 {
     paymentServer = new PaymentServer(this);
 }
 #endif
 
-void PlaceholdersApplication::createOptionsModel(bool resetSettings)
+void BitcoinApplication::createOptionsModel(bool resetSettings)
 {
-    optionsModel = new OptionsModel(m_node, this, resetSettings);
+    optionsModel = new OptionsModel(m_node, nullptr, resetSettings);
 }
 
-void PlaceholdersApplication::createWindow(const NetworkStyle *networkStyle)
+void BitcoinApplication::createWindow(const NetworkStyle *networkStyle)
 {
-    window = new PlaceholdersGUI(m_node, platformStyle, networkStyle, nullptr);
+    window = new BitcoinGUI(m_node, platformStyle, networkStyle, nullptr);
 
     pollShutdownTimer = new QTimer(window);
-    connect(pollShutdownTimer, &QTimer::timeout, window, &PlaceholdersGUI::detectShutdown);
+    connect(pollShutdownTimer, &QTimer::timeout, window, &BitcoinGUI::detectShutdown);
 }
 
-void PlaceholdersApplication::createSplashScreen(const NetworkStyle *networkStyle)
+void BitcoinApplication::createSplashScreen(const NetworkStyle *networkStyle)
 {
     SplashScreen *splash = new SplashScreen(m_node, nullptr, networkStyle);
     // We don't hold a direct pointer to the splash screen after creation, but the splash
     // screen will take care of deleting itself when finish() happens.
     splash->show();
-    connect(this, &PlaceholdersApplication::splashFinished, splash, &SplashScreen::finish);
-    connect(this, &PlaceholdersApplication::requestedShutdown, splash, &QWidget::close);
+    connect(this, &BitcoinApplication::splashFinished, splash, &SplashScreen::finish);
+    connect(this, &BitcoinApplication::requestedShutdown, splash, &QWidget::close);
 }
 
-bool PlaceholdersApplication::baseInitialize()
+bool BitcoinApplication::baseInitialize()
 {
     return m_node.baseInitialize();
 }
 
-void PlaceholdersApplication::startThread()
+void BitcoinApplication::startThread()
 {
     if(coreThread)
         return;
     coreThread = new QThread(this);
-    PlaceholdersCore *executor = new PlaceholdersCore(m_node);
+    BitcoinCore *executor = new BitcoinCore(m_node);
     executor->moveToThread(coreThread);
 
     /*  communication to and from thread */
-    connect(executor, &PlaceholdersCore::initializeResult, this, &PlaceholdersApplication::initializeResult);
-    connect(executor, &PlaceholdersCore::shutdownResult, this, &PlaceholdersApplication::shutdownResult);
-    connect(executor, &PlaceholdersCore::runawayException, this, &PlaceholdersApplication::handleRunawayException);
-    connect(this, &PlaceholdersApplication::requestedInitialize, executor, &PlaceholdersCore::initialize);
-    connect(this, &PlaceholdersApplication::requestedShutdown, executor, &PlaceholdersCore::shutdown);
+    connect(executor, &BitcoinCore::initializeResult, this, &BitcoinApplication::initializeResult);
+    connect(executor, &BitcoinCore::shutdownResult, this, &BitcoinApplication::shutdownResult);
+    connect(executor, &BitcoinCore::runawayException, this, &BitcoinApplication::handleRunawayException);
+    connect(this, &BitcoinApplication::requestedInitialize, executor, &BitcoinCore::initialize);
+    connect(this, &BitcoinApplication::requestedShutdown, executor, &BitcoinCore::shutdown);
     /*  make sure executor object is deleted in its own thread */
     connect(coreThread, &QThread::finished, executor, &QObject::deleteLater);
 
     coreThread->start();
 }
 
-void PlaceholdersApplication::parameterSetup()
+void BitcoinApplication::parameterSetup()
 {
     // Default printtoconsole to false for the GUI. GUI programs should not
     // print to the console unnecessarily.
@@ -301,21 +286,18 @@ void PlaceholdersApplication::parameterSetup()
     m_node.initParameterInteraction();
 }
 
-void PlaceholdersApplication::InitializePruneSetting(bool prune)
-{
-    // If prune is set, intentionally override existing prune size with
-    // the default size since this is called when choosing a new datadir.
-    optionsModel->SetPruneTargetGB(prune ? DEFAULT_PRUNE_TARGET_GB : 0, true);
+void BitcoinApplication::SetPrune(bool prune, bool force) {
+     optionsModel->SetPrune(prune, force);
 }
 
-void PlaceholdersApplication::requestInitialize()
+void BitcoinApplication::requestInitialize()
 {
     qDebug() << __func__ << ": Requesting initialize";
     startThread();
     Q_EMIT requestedInitialize();
 }
 
-void PlaceholdersApplication::requestShutdown()
+void BitcoinApplication::requestShutdown()
 {
     // Show a simple window indicating shutdown status
     // Do this first as some of the steps may take some time below,
@@ -343,7 +325,7 @@ void PlaceholdersApplication::requestShutdown()
     Q_EMIT requestedShutdown();
 }
 
-void PlaceholdersApplication::initializeResult(bool success)
+void BitcoinApplication::initializeResult(bool success)
 {
     qDebug() << __func__ << ": Initialization result: " << success;
     // Set exit result.
@@ -356,7 +338,7 @@ void PlaceholdersApplication::initializeResult(bool success)
         window->setClientModel(clientModel);
 #ifdef ENABLE_WALLET
         if (WalletModel::isWalletEnabled()) {
-            m_wallet_controller = new WalletController(*clientModel, platformStyle, this);
+            m_wallet_controller = new WalletController(m_node, platformStyle, optionsModel, this);
             window->setWalletController(m_wallet_controller);
             if (paymentServer) {
                 paymentServer->setOptionsModel(optionsModel);
@@ -379,8 +361,8 @@ void PlaceholdersApplication::initializeResult(bool success)
         // Now that initialization/startup is done, process any command-line
         // placeh: URIs or payment requests:
         if (paymentServer) {
-            connect(paymentServer, &PaymentServer::receivedPaymentRequest, window, &PlaceholdersGUI::handlePaymentRequest);
-            connect(window, &PlaceholdersGUI::receivedURI, paymentServer, &PaymentServer::handleURIOrFile);
+            connect(paymentServer, &PaymentServer::receivedPaymentRequest, window, &BitcoinGUI::handlePaymentRequest);
+            connect(window, &BitcoinGUI::receivedURI, paymentServer, &PaymentServer::handleURIOrFile);
             connect(paymentServer, &PaymentServer::message, [this](const QString& title, const QString& message, unsigned int style) {
                 window->message(title, message, style);
             });
@@ -394,18 +376,18 @@ void PlaceholdersApplication::initializeResult(bool success)
     }
 }
 
-void PlaceholdersApplication::shutdownResult()
+void BitcoinApplication::shutdownResult()
 {
     quit(); // Exit second main loop invocation after shutdown finished
 }
 
-void PlaceholdersApplication::handleRunawayException(const QString &message)
+void BitcoinApplication::handleRunawayException(const QString &message)
 {
-    QMessageBox::critical(nullptr, "Runaway exception", PlaceholdersGUI::tr("A fatal error occurred. %1 can no longer continue safely and will quit.").arg(PACKAGE_NAME) + QString("\n\n") + message);
+    QMessageBox::critical(nullptr, "Runaway exception", BitcoinGUI::tr("A fatal error occurred. Bitcoin can no longer continue safely and will quit.") + QString("\n\n") + message);
     ::exit(EXIT_FAILURE);
 }
 
-WId PlaceholdersApplication::getMainWinId() const
+WId BitcoinApplication::getMainWinId() const
 {
     if (!window)
         return 0;
@@ -420,7 +402,7 @@ static void SetupUIArgs()
     gArgs.AddArg("-min", "Start minimized", ArgsManager::ALLOW_ANY, OptionsCategory::GUI);
     gArgs.AddArg("-resetguisettings", "Reset all settings changed in the GUI", ArgsManager::ALLOW_ANY, OptionsCategory::GUI);
     gArgs.AddArg("-splash", strprintf("Show splash screen on startup (default: %u)", DEFAULT_SPLASHSCREEN), ArgsManager::ALLOW_ANY, OptionsCategory::GUI);
-    gArgs.AddArg("-uiplatform", strprintf("Select platform to customize UI for (one of windows, macosx, other; default: %s)", PlaceholdersGUI::DEFAULT_UIPLATFORM), ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::GUI);
+    gArgs.AddArg("-uiplatform", strprintf("Select platform to customize UI for (one of windows, macosx, other; default: %s)", BitcoinGUI::DEFAULT_UIPLATFORM), ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::GUI);
 }
 
 int GuiMain(int argc, char* argv[])
@@ -452,7 +434,20 @@ int GuiMain(int argc, char* argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
 
-    PlaceholdersApplication app(*node);
+    BitcoinApplication app(*node);
+
+    // Register meta types used for QMetaObject::invokeMethod and Qt::QueuedConnection
+    qRegisterMetaType<bool*>();
+#ifdef ENABLE_WALLET
+    qRegisterMetaType<WalletModel*>();
+#endif
+    // Register typedefs (see http://qt-project.org/doc/qt-5/qmetatype.html#qRegisterMetaType)
+    // IMPORTANT: if CAmount is no longer a typedef use the normal variant above (see https://doc.qt.io/qt-5/qmetatype.html#qRegisterMetaType-1)
+    qRegisterMetaType<CAmount>("CAmount");
+    qRegisterMetaType<size_t>("size_t");
+
+    qRegisterMetaType<std::function<void()>>("std::function<void()>");
+    qRegisterMetaType<QMessageBox::Icon>("QMessageBox::Icon");
 
     /// 2. Parse command-line options. We do this after qt in order to show an error if there are problems parsing these
     // Command-line options take precedence:
@@ -567,13 +562,12 @@ int GuiMain(int argc, char* argv[])
     qInstallMessageHandler(DebugMessageHandler);
     // Allow parameter interaction before we create the options model
     app.parameterSetup();
-    GUIUtil::LogQtInfo();
     // Load GUI settings from QSettings
     app.createOptionsModel(gArgs.GetBoolArg("-resetguisettings", false));
 
     if (did_show_intro) {
         // Store intro dialog settings other than datadir (network specific)
-        app.InitializePruneSetting(prune);
+        app.SetPrune(prune, true);
     }
 
     if (gArgs.GetBoolArg("-splash", DEFAULT_SPLASHSCREEN) && !gArgs.GetBoolArg("-min", false))

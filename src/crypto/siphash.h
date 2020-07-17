@@ -1,9 +1,9 @@
-// Copyright (c) 2016-2018 The Placeholders Core developers
+// Copyright (c) 2016-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_CRYPTO_SIPHASH_H
-#define PHL_CRYPTO_SIPHASH_H
+#ifndef PLACEH_CRYPTO_SIPHASH_H
+#define PLACEH_CRYPTO_SIPHASH_H
 
 #include <stdint.h>
 
@@ -44,16 +44,4 @@ public:
 uint64_t SipHashUint256(uint64_t k0, uint64_t k1, const uint256& val);
 uint64_t SipHashUint256Extra(uint64_t k0, uint64_t k1, const uint256& val, uint32_t extra);
 
-inline int GetHashSelection(const uint256 PrevBlockHash, int index) {
-    assert(index >= 0);
-    assert(index < 16);
-
-    #define START_OF_LAST_16_NIBBLES_OF_HASH 48
-    int hashSelection = PrevBlockHash.GetNibble(START_OF_LAST_16_NIBBLES_OF_HASH + index);
-    return(hashSelection);
-}
-
-extern double algoHashTotal[16];
-extern int algoHashHits[16];
-
-#endif // PHL_CRYPTO_SIPHASH_H
+#endif // PLACEH_CRYPTO_SIPHASH_H

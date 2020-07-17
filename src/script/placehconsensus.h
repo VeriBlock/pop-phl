@@ -1,14 +1,14 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2018 The Placeholders Core developers
+// Copyright (c) 2009-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_SCRIPT_PHLCONSENSUS_H
-#define PHL_SCRIPT_PHLCONSENSUS_H
+#ifndef PLACEH_SCRIPT_PLACEHCONSENSUS_H
+#define PLACEH_SCRIPT_PLACEHCONSENSUS_H
 
 #include <stdint.h>
 
-#if defined(BUILD_PHL_INTERNAL) && defined(HAVE_CONFIG_H)
+#if defined(BUILD_PLACEH_INTERNAL) && defined(HAVE_CONFIG_H)
 #include <config/placeh-config.h>
   #if defined(_WIN32)
     #if defined(DLL_EXPORT)
@@ -21,7 +21,7 @@
   #elif defined(HAVE_FUNC_ATTRIBUTE_VISIBILITY)
     #define EXPORT_SYMBOL __attribute__ ((visibility ("default")))
   #endif
-#elif defined(MSC_VER) && !defined(STATIC_LIBPHLCONSENSUS)
+#elif defined(MSC_VER) && !defined(STATIC_LIBPLACEHCONSENSUS)
   #define EXPORT_SYMBOL __declspec(dllimport)
 #endif
 
@@ -33,7 +33,7 @@
 extern "C" {
 #endif
 
-#define PHLCONSENSUS_API_VER 1
+#define PLACEHCONSENSUS_API_VER 1
 
 typedef enum placehconsensus_error_t
 {
@@ -80,4 +80,4 @@ EXPORT_SYMBOL unsigned int placehconsensus_version();
 
 #undef EXPORT_SYMBOL
 
-#endif // PHL_SCRIPT_PHLCONSENSUS_H
+#endif // PLACEH_SCRIPT_PLACEHCONSENSUS_H

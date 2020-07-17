@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2019 The Placeholders Core developers
 # Copyright (c) 2014-2018 The Bitcoin Core developers
 # Copyright (c) 2019-2020 Xenios SEZC
 # https://www.veriblock.org
@@ -8,11 +7,11 @@
 """Test gettxoutproof and verifytxoutproof RPCs."""
 
 from test_framework.messages import CMerkleBlock, FromHex, ToHex
-from test_framework.test_framework import PlaceholdersTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import assert_equal, assert_raises_rpc_error, connect_nodes
 from test_framework.payout import POW_PAYOUT
 
-class MerkleBlockTest(PlaceholdersTestFramework):
+class MerkleBlockTest(BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 4
         self.setup_clean_chain = True
@@ -43,6 +42,7 @@ class MerkleBlockTest(PlaceholdersTestFramework):
         node0utxos = self.nodes[0].listunspent(1)
         tx1 = self.nodes[0].createrawtransaction([node0utxos.pop()], {self.nodes[1].getnewaddress(): (POW_PAYOUT - 0.01)})
         txid1 = self.nodes[0].sendrawtransaction(self.nodes[0].signrawtransactionwithwallet(tx1)["hex"])
+
         tx2 = self.nodes[0].createrawtransaction([node0utxos.pop()], {self.nodes[1].getnewaddress(): (POW_PAYOUT - 0.01)})
         txid2 = self.nodes[0].sendrawtransaction(self.nodes[0].signrawtransactionwithwallet(tx2)["hex"])
         # This will raise an exception because the transaction is not yet in a block
@@ -58,6 +58,7 @@ class MerkleBlockTest(PlaceholdersTestFramework):
         txlist.append(blocktxn[2])
 
         assert_equal(self.nodes[2].verifytxoutproof(self.nodes[2].gettxoutproof([txid1])), [txid1])
+
         assert_equal(self.nodes[2].verifytxoutproof(self.nodes[2].gettxoutproof([txid1, txid2])), txlist)
         assert_equal(self.nodes[2].verifytxoutproof(self.nodes[2].gettxoutproof([txid1, txid2], blockhash)), txlist)
 

@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2020 The Placeholders Core developers
+// Copyright (c) 2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -47,7 +47,7 @@ void TestRpcCommand(RPCConsole* console)
 }
 } // namespace
 
-//! Entry point for PlaceholdersApplication tests.
+//! Entry point for BitcoinApplication tests.
 void AppTests::appTests()
 {
 #ifdef Q_OS_MAC
@@ -71,7 +71,7 @@ void AppTests::appTests()
     QScopedPointer<const NetworkStyle> style(NetworkStyle::instantiate(Params().NetworkIDString()));
     m_app.setupPlatformStyle();
     m_app.createWindow(style.data());
-    connect(&m_app, &PlaceholdersApplication::windowShown, this, &AppTests::guiTests);
+    connect(&m_app, &BitcoinApplication::windowShown, this, &AppTests::guiTests);
     expectCallback("guiTests");
     m_app.baseInitialize();
     m_app.requestInitialize();
@@ -82,14 +82,13 @@ void AppTests::appTests()
     // Reset global state to avoid interfering with later tests.
     AbortShutdown();
     UnloadBlockIndex();
-    WITH_LOCK(::cs_main, g_chainman.Reset());
 }
 
-//! Entry point for PlaceholdersGUI tests.
-void AppTests::guiTests(PlaceholdersGUI* window)
+//! Entry point for BitcoinGUI tests.
+void AppTests::guiTests(BitcoinGUI* window)
 {
     HandleCallback callback{"guiTests", *this};
-    connect(window, &PlaceholdersGUI::consoleShown, this, &AppTests::consoleTests);
+    connect(window, &BitcoinGUI::consoleShown, this, &AppTests::consoleTests);
     expectCallback("consoleTests");
     QAction* action = window->findChild<QAction*>("openRPCConsoleAction");
     action->activate(QAction::Trigger);

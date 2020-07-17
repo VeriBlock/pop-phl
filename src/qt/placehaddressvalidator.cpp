@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2018 The Placeholders Core developers
+// Copyright (c) 2011-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -15,12 +15,12 @@
   - All lower-case letters except for 'l'
 */
 
-PlaceholdersAddressEntryValidator::PlaceholdersAddressEntryValidator(QObject *parent) :
+BitcoinAddressEntryValidator::BitcoinAddressEntryValidator(QObject *parent) :
     QValidator(parent)
 {
 }
 
-QValidator::State PlaceholdersAddressEntryValidator::validate(QString &input, int &pos) const
+QValidator::State BitcoinAddressEntryValidator::validate(QString &input, int &pos) const
 {
     Q_UNUSED(pos);
 
@@ -80,15 +80,15 @@ QValidator::State PlaceholdersAddressEntryValidator::validate(QString &input, in
     return state;
 }
 
-PlaceholdersAddressCheckValidator::PlaceholdersAddressCheckValidator(QObject *parent) :
+BitcoinAddressCheckValidator::BitcoinAddressCheckValidator(QObject *parent) :
     QValidator(parent)
 {
 }
 
-QValidator::State PlaceholdersAddressCheckValidator::validate(QString &input, int &pos) const
+QValidator::State BitcoinAddressCheckValidator::validate(QString &input, int &pos) const
 {
     Q_UNUSED(pos);
-    // Validate the passed Placeholders address
+    // Validate the passed Bitcoin address
     if (IsValidDestinationString(input.toStdString())) {
         return QValidator::Acceptable;
     }

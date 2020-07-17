@@ -1,4 +1,4 @@
-// Copyright (c) 2017-2020 The Placeholders Core developers
+// Copyright (c) 2017-2019 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -34,7 +34,7 @@ BOOST_FIXTURE_TEST_CASE(txindex_initial_sync, TestChain100Setup)
     int64_t time_start = GetTimeMillis();
     while (!txindex.BlockUntilSyncedToCurrentChain()) {
         BOOST_REQUIRE(time_start + timeout_ms > GetTimeMillis());
-        UninterruptibleSleep(std::chrono::milliseconds{100});
+        MilliSleep(100);
     }
 
     // Check that txindex excludes genesis block transactions.
@@ -70,8 +70,10 @@ BOOST_FIXTURE_TEST_CASE(txindex_initial_sync, TestChain100Setup)
     // shutdown sequence (c.f. Shutdown() in init.cpp)
     txindex.Stop();
 
-    // Let scheduler events finish running to avoid accessing any memory related to txindex after it is destructed
-    SyncWithValidationInterfaceQueue();
+    threadGroup.interrupt_all();
+    threadGroup.join_all();
+
+    // Rest of shutdown sequence and destructors happen in ~TestingSetup()
 }
 
 BOOST_AUTO_TEST_SUITE_END()

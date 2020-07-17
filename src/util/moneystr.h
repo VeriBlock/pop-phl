@@ -1,13 +1,13 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2020 The Placeholders Core developers
+// Copyright (c) 2009-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 /**
  * Money parsing/formatting utilities.
  */
-#ifndef PHL_UTIL_MONEYSTR_H
-#define PHL_UTIL_MONEYSTR_H
+#ifndef PLACEH_UTIL_MONEYSTR_H
+#define PLACEH_UTIL_MONEYSTR_H
 
 #include <amount.h>
 #include <attributes.h>
@@ -18,7 +18,7 @@
  * JSON but use AmountFromValue and ValueFromAmount for that.
  */
 std::string FormatMoney(const CAmount& n);
-/** Parse an amount denoted in full coins. E.g. "0.0034" supplied on the command line. **/
 NODISCARD bool ParseMoney(const std::string& str, CAmount& nRet);
+NODISCARD bool ParseMoney(const char* pszIn, CAmount& nRet);
 
-#endif // PHL_UTIL_MONEYSTR_H
+#endif // PLACEH_UTIL_MONEYSTR_H

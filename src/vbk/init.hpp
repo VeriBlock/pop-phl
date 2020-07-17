@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_SRC_VBK_INIT_HPP
-#define BITCOIN_SRC_VBK_INIT_HPP
+#ifndef PLACEH_SRC_VBK_INIT_HPP
+#define PLACEH_SRC_VBK_INIT_HPP
 
 #include "pop_service_impl.hpp"
 #include "vbk/config.hpp"
@@ -50,4 +50,4 @@ inline Config& InitConfig()
 
 } // namespace VeriBlock
 
-#endif //BITCOIN_SRC_VBK_INIT_HPP
+#endif //PLACEH_SRC_VBK_INIT_HPP

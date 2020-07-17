@@ -160,8 +160,8 @@
         <translation>Confirmaţi criptarea portofelului</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PHLS&lt;/b&gt;!</source>
-        <translation>Atenţie: Dacă va criptati portofelul si ulterior pierdeti parola, &lt;b&gt;VEŢI PIERDE TOTI PHLII&lt;/b&gt;!</translation>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PLACEHS&lt;/b&gt;!</source>
+        <translation>Atenţie: Dacă va criptati portofelul si ulterior pierdeti parola, &lt;b&gt;VEŢI PIERDE TOTI PLACEHII&lt;/b&gt;!</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -220,7 +220,7 @@
     </message>
 </context>
 <context>
-    <name>PlaceholdersGUI</name>
+    <name>BitcoinGUI</name>
     <message>
         <source>Sign &amp;message...</source>
         <translation>Semnează &amp;mesaj...</translation>
@@ -323,7 +323,7 @@
     </message>
     <message>
         <source>Send coins to a Placeholders address</source>
-        <translation>Trimite monede către o adresă Placeholders</translation>
+        <translation>Trimite monede către o adresă Bitcoin</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -332,6 +332,14 @@
     <message>
         <source>Change the passphrase used for wallet encryption</source>
         <translation>Schimbă fraza de acces folosită pentru criptarea portofelului</translation>
+    </message>
+    <message>
+        <source>&amp;Debug window</source>
+        <translation>Fereastra de &amp;depanare</translation>
+    </message>
+    <message>
+        <source>Open debugging and diagnostic console</source>
+        <translation>Deschide consola de depanare şi diagnosticare</translation>
     </message>
     <message>
         <source>&amp;Verify message...</source>
@@ -394,12 +402,16 @@
         <translation>Arată lista de adrese pentru primire şi etichetele</translation>
     </message>
     <message>
+        <source>Open a placeh: URI or payment request</source>
+        <translation>Deschidere placeh: o adresa URI sau o cerere de plată</translation>
+    </message>
+    <message>
         <source>&amp;Command-line options</source>
         <translation>Opţiuni linie de &amp;comandă</translation>
     </message>
     <message numerus="yes">
         <source>%n active connection(s) to Placeholders network</source>
-        <translation><numerusform>%n conexiune activă către reţeaua Placeholders</numerusform><numerusform>%n conexiuni active către reţeaua Placeholders</numerusform><numerusform>%n de conexiuni active către reţeaua Placeholders</numerusform></translation>
+        <translation><numerusform>%n conexiune activă către reţeaua Bitcoin</numerusform><numerusform>%n conexiuni active către reţeaua Bitcoin</numerusform><numerusform>%n de conexiuni active către reţeaua Bitcoin</numerusform></translation>
     </message>
     <message>
         <source>Indexing blocks on disk...</source>
@@ -443,7 +455,7 @@
     </message>
     <message>
         <source>Show the %1 help message to get a list with possible Placeholders command-line options</source>
-        <translation>Arată mesajul de ajutor %1 pentru a obţine o listă cu opţiunile posibile de linii de comandă Placeholders</translation>
+        <translation>Arată mesajul de ajutor %1 pentru a obţine o listă cu opţiunile posibile de linii de comandă Bitcoin</translation>
     </message>
     <message>
         <source>default wallet</source>
@@ -780,6 +792,10 @@
         <translation>versiunea</translation>
     </message>
     <message>
+        <source>(%1-bit)</source>
+        <translation>(%1-bit)</translation>
+    </message>
+    <message>
         <source>About %1</source>
         <translation>Despre %1</translation>
     </message>
@@ -823,8 +839,8 @@
         <translation>Foloseşte un dosar de date personalizat:</translation>
     </message>
     <message>
-        <source>Placeholders</source>
-        <translation>Placeholders</translation>
+        <source>Bitcoin</source>
+        <translation>Bitcoin</translation>
     </message>
     <message>
         <source>At least %1 GB of data will be stored in this directory, and it will grow over time.</source>
@@ -836,7 +852,7 @@
     </message>
     <message>
         <source>%1 will download and store a copy of the Placeholders block chain.</source>
-        <translation>%1 va descarca si stoca o copie a blockchainului Placeholders</translation>
+        <translation>%1 va descarca si stoca o copie a blockchainului Bitcoin</translation>
     </message>
     <message>
         <source>The wallet will also be stored in this directory.</source>
@@ -867,7 +883,7 @@
     </message>
     <message>
         <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the placeh network, as detailed below.</source>
-        <translation>Tranzactiile recente pot sa nu fie inca vizibile, de aceea balanta portofelului poate fi incorecta. Aceasta informatie va fi corecta de indata ce portofelul va fi complet sincronizat cu reteaua Placeholders, asa cum este detaliat mai jos.</translation>
+        <translation>Tranzactiile recente pot sa nu fie inca vizibile, de aceea balanta portofelului poate fi incorecta. Aceasta informatie va fi corecta de indata ce portofelul va fi complet sincronizat cu reteaua Bitcoin, asa cum este detaliat mai jos.</translation>
     </message>
     <message>
         <source>Attempting to spend placehs that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
@@ -909,8 +925,24 @@
 <context>
     <name>OpenURIDialog</name>
     <message>
+        <source>Open URI</source>
+        <translation>Deschide URI</translation>
+    </message>
+    <message>
+        <source>Open payment request from URI or file</source>
+        <translation>Deschideţi cerere de plată prin intermediul adresei URI sau a fişierului</translation>
+    </message>
+    <message>
         <source>URI:</source>
         <translation>URI:</translation>
+    </message>
+    <message>
+        <source>Select payment request file</source>
+        <translation>Selectaţi fişierul cerere de plată</translation>
+    </message>
+    <message>
+        <source>Select payment request file to open</source>
+        <translation>Selectati care fisier de cerere de plata va fi deschis</translation>
     </message>
 </context>
 <context>
@@ -1000,7 +1032,7 @@
     </message>
     <message>
         <source>Prune &amp;block storage to</source>
-        <translation>Reductie &amp;block storage la</translation>
+        <translation>Reductie &amp;block storage la  </translation>
     </message>
     <message>
         <source>GB</source>
@@ -1008,7 +1040,7 @@
     </message>
     <message>
         <source>Reverting this setting requires re-downloading the entire blockchain.</source>
-        <translation>Inversarea acestei setari necesita re-descarcarea intregului blockchain.</translation>
+        <translation> Inversarea acestei setari necesita re-descarcarea intregului blockchain.</translation>
     </message>
     <message>
         <source>(0 = auto, &lt;0 = leave that many cores free)</source>
@@ -1036,7 +1068,7 @@
     </message>
     <message>
         <source>Automatically open the Placeholders client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Deschide automat în router portul aferent clientului Placeholders. Funcţionează doar dacă routerul duportă UPnP şi e activat.</translation>
+        <translation>Deschide automat în router portul aferent clientului Bitcoin. Funcţionează doar dacă routerul duportă UPnP şi e activat.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
@@ -1168,7 +1200,7 @@
     </message>
     <message>
         <source>The configuration file is used to specify advanced user options which override GUI settings. Additionally, any command-line options will override this configuration file.</source>
-        <translation>Fisierul de configurare e folosit pentru a specifica optiuni utilizator avansate care modifica setarile din GUI. In plus orice optiune din linia de comanda va modifica acest fisier de configurare.</translation>
+        <translation>Fisierul de configurare e folosit pentru a specifica optiuni utilizator avansate care modifica setarile din GUI. In plus orice optiune din linia de comanda va modifica acest fisier de configurare. </translation>
     </message>
     <message>
         <source>Error</source>
@@ -1270,7 +1302,7 @@
     </message>
     <message>
         <source>Cannot start placeh: click-to-pay handler</source>
-        <translation>Placeholders nu poate porni: click-to-pay handler</translation>
+        <translation>Bitcoin nu poate porni: click-to-pay handler</translation>
     </message>
     <message>
         <source>URI handling</source>
@@ -1279,6 +1311,10 @@
     <message>
         <source>'placeh://' is not a valid URI. Use 'placeh:' instead.</source>
         <translation>'placeh://' nu este un URI valid. Folositi 'placeh:' in loc.</translation>
+    </message>
+    <message>
+        <source>Payment request fetch URL is invalid: %1</source>
+        <translation>URL-ul cererii de plată preluat nu este valid: %1</translation>
     </message>
     <message>
         <source>Invalid payment address %1</source>
@@ -1291,6 +1327,66 @@
     <message>
         <source>Payment request file handling</source>
         <translation>Manipulare fişier cerere de plată</translation>
+    </message>
+    <message>
+        <source>Payment request file cannot be read! This can be caused by an invalid payment request file.</source>
+        <translation>Fişierul cerere de plată nu poate fi citit! Cauza poate fi un fişier cerere de plată nevalid.</translation>
+    </message>
+    <message>
+        <source>Payment request rejected</source>
+        <translation>Cerere de plată refuzată</translation>
+    </message>
+    <message>
+        <source>Payment request network doesn't match client network.</source>
+        <translation>Cererea de plată din reţea nu se potriveşte cu clientul din reţea</translation>
+    </message>
+    <message>
+        <source>Payment request expired.</source>
+        <translation>Cerere de plată expirata</translation>
+    </message>
+    <message>
+        <source>Payment request is not initialized.</source>
+        <translation>Cererea de plată nu este iniţializată.</translation>
+    </message>
+    <message>
+        <source>Unverified payment requests to custom payment scripts are unsupported.</source>
+        <translation>Cererile nesecurizate către scripturi personalizate de plăți nu sunt suportate</translation>
+    </message>
+    <message>
+        <source>Invalid payment request.</source>
+        <translation>Cerere de plată invalidă.</translation>
+    </message>
+    <message>
+        <source>Requested payment amount of %1 is too small (considered dust).</source>
+        <translation>Suma cerută de plată de %1 este prea mică (considerată praf).</translation>
+    </message>
+    <message>
+        <source>Refund from %1</source>
+        <translation>Rambursare de la %1</translation>
+    </message>
+    <message>
+        <source>Payment request %1 is too large (%2 bytes, allowed %3 bytes).</source>
+        <translation>Cererea de plată %1 este prea mare (%2 octeţi, permis %3 octeţi).</translation>
+    </message>
+    <message>
+        <source>Error communicating with %1: %2</source>
+        <translation>Eroare la comunicarea cu %1: %2</translation>
+    </message>
+    <message>
+        <source>Payment request cannot be parsed!</source>
+        <translation>Cererea de plată nu poate fi analizată!</translation>
+    </message>
+    <message>
+        <source>Bad response from server %1</source>
+        <translation>Răspuns greşit de la server %1</translation>
+    </message>
+    <message>
+        <source>Network request error</source>
+        <translation>Eroare în cererea de reţea</translation>
+    </message>
+    <message>
+        <source>Payment acknowledged</source>
+        <translation>Plată acceptată</translation>
     </message>
 </context>
 <context>
@@ -1463,6 +1559,10 @@
     <message>
         <source>&amp;Information</source>
         <translation>&amp;Informaţii</translation>
+    </message>
+    <message>
+        <source>Debug window</source>
+        <translation>Fereastra de depanare</translation>
     </message>
     <message>
         <source>General</source>
@@ -1769,7 +1869,7 @@
     </message>
     <message>
         <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Placeholders network.</source>
-        <translation>Un mesaj opţional de ataşat la cererea de plată, care va fi afişat cînd cererea este deschisă. Notă: Acest mesaj nu va fi trimis cu plata către reţeaua Placeholders.</translation>
+        <translation>Un mesaj opţional de ataşat la cererea de plată, care va fi afişat cînd cererea este deschisă. Notă: Acest mesaj nu va fi trimis cu plata către reţeaua Bitcoin.</translation>
     </message>
     <message>
         <source>An optional label to associate with the new receiving address.</source>
@@ -1989,6 +2089,10 @@
         <translation>Avertisment: Estimarea comisionului nu s-a putut efectua.</translation>
     </message>
     <message>
+        <source>collapse fee-settings</source>
+        <translation>inchide setarile de taxare</translation>
+    </message>
+    <message>
         <source>Specify a custom fee per kB (1,000 bytes) of the transaction's virtual size.
 
 Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis per kB" for a transaction size of 500 bytes (half of 1 kB) would ultimately yield a fee of only 50 satoshis.</source>
@@ -2153,8 +2257,12 @@ Nota: Cum taxa este calculata per byte, o taxa de "100 satoshi per kB" pentru o 
         <translation>Creare tranzacţie nereuşită!</translation>
     </message>
     <message>
+        <source>The transaction was rejected with the following reason: %1</source>
+        <translation>Tranzactia a fost refuzata pentru urmatorul motiv: %1</translation>
+    </message>
+    <message>
         <source>A fee higher than %1 is considered an absurdly high fee.</source>
-        <translation>O taxă mai mare de %1 este considerată o taxă absurd de mare</translation>
+        <translation> O taxă mai mare de %1 este considerată o taxă absurd de mare </translation>
     </message>
     <message>
         <source>Payment request expired.</source>
@@ -2202,6 +2310,10 @@ Nota: Cum taxa este calculata per byte, o taxa de "100 satoshi per kB" pentru o 
     <message>
         <source>Choose previously used address</source>
         <translation>Alegeţi adrese folosite anterior</translation>
+    </message>
+    <message>
+        <source>This is a normal payment.</source>
+        <translation>Aceasta este o tranzacţie normală.</translation>
     </message>
     <message>
         <source>The Placeholders address to send the payment to</source>
@@ -2263,6 +2375,17 @@ Nota: Cum taxa este calculata per byte, o taxa de "100 satoshi per kB" pentru o 
         <source>Memo:</source>
         <translation>Memo:</translation>
     </message>
+    <message>
+        <source>Enter a label for this address to add it to your address book</source>
+        <translation>Introduceţi o etichetă pentru această adresă pentru a fi adăugată în lista dvs. de adrese</translation>
+    </message>
+</context>
+<context>
+    <name>SendConfirmationDialog</name>
+    <message>
+        <source>Yes</source>
+        <translation>Da</translation>
+    </message>
 </context>
 <context>
     <name>ShutdownWindow</name>
@@ -2286,7 +2409,7 @@ Nota: Cum taxa este calculata per byte, o taxa de "100 satoshi per kB" pentru o 
         <translation>&amp;Semnează mesaj</translation>
     </message>
     <message>
-        <source>You can sign messages/agreements with your addresses to prove you can receive placehs sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
+        <source>You can sign messages/agreements with your addresses to prove you can receive Placeholderss sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
         <translation>Puteţi semna mesaje/contracte cu adresele dvs. pentru a demostra ca puteti primi placehi trimisi la ele. Aveţi grijă să nu semnaţi nimic vag sau aleator, deoarece atacurile de tip phishing vă pot păcăli să le transferaţi identitatea. Semnaţi numai declaraţiile detaliate cu care sînteti de acord.</translation>
     </message>
     <message>
@@ -2323,7 +2446,7 @@ Nota: Cum taxa este calculata per byte, o taxa de "100 satoshi per kB" pentru o 
     </message>
     <message>
         <source>Sign the message to prove you own this Placeholders address</source>
-        <translation>Semnează mesajul pentru a dovedi ca deţineţi acestă adresă Placeholders</translation>
+        <translation>Semnează mesajul pentru a dovedi ca deţineţi acestă adresă Bitcoin</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -2347,7 +2470,7 @@ Nota: Cum taxa este calculata per byte, o taxa de "100 satoshi per kB" pentru o 
     </message>
     <message>
         <source>The Placeholders address the message was signed with</source>
-        <translation>Introduceţi o adresă Placeholders</translation>
+        <translation>Introduceţi o adresă Bitcoin</translation>
     </message>
     <message>
         <source>Verify the message to ensure it was signed with the specified Placeholders address</source>
@@ -2411,7 +2534,7 @@ Nota: Cum taxa este calculata per byte, o taxa de "100 satoshi per kB" pentru o 
     </message>
     <message>
         <source>Message verified.</source>
-        <translation>Mesaj verificat.</translation>
+        <translation>Mesaj verificat. </translation>
     </message>
 </context>
 <context>
@@ -2983,6 +3106,10 @@ Nota: Cum taxa este calculata per byte, o taxa de "100 satoshi per kB" pentru o 
         <translation>Reductie: ultima sincronizare merge dincolo de datele reductiei. Trebuie sa faceti -reindex (sa descarcati din nou intregul blockchain in cazul unui nod redus)</translation>
     </message>
     <message>
+        <source>Rescans are not possible in pruned mode. You will need to use -reindex which will download the whole blockchain again.</source>
+        <translation>Rescanarile nu sunt posibile in modul redus. Va trebui sa folositi -reindex, ceea ce va descarca din nou intregul blockchain.</translation>
+    </message>
+    <message>
         <source>Error: A fatal internal error occurred, see debug.log for details</source>
         <translation>Eroare: S-a produs o eroare interna fatala, vedeti debug.log pentru detalii</translation>
     </message>
@@ -3323,8 +3450,12 @@ Nota: Cum taxa este calculata per byte, o taxa de "100 satoshi per kB" pentru o 
         <translation>Aceasta este taxa de tranzactie pe care este posibil sa o platiti daca estimarile de taxe nu sunt disponibile.</translation>
     </message>
     <message>
+        <source>This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit %s and cryptographic software written by Eric Young and UPnP software written by Thomas Bernard.</source>
+        <translation>Acest produs include software dezvoltat de OpenSSL Project pentru a fi folosit in Toolkitul OpenSSL %s, software criptografic scris de Eric Young si software UPnP scris de Thomas Bernard. </translation>
+    </message>
+    <message>
         <source>Total length of network version string (%i) exceeds maximum length (%i). Reduce the number or size of uacomments.</source>
-        <translation>Lungimea totala a sirului versiunii retelei (%i) depaseste lungimea maxima (%i). Reduceti numarul sa dimensiunea uacomments.</translation>
+        <translation>Lungimea totala a sirului versiunii retelei (%i) depaseste lungimea maxima (%i). Reduceti numarul sa dimensiunea uacomments. </translation>
     </message>
     <message>
         <source>Warning: Wallet file corrupt, data salvaged! Original %s saved as %s in %s; if your balance or transactions are incorrect you should restore from a backup.</source>

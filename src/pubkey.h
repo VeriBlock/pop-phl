@@ -1,11 +1,11 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2019 The Placeholders Core developers
+// Copyright (c) 2009-2018 The Bitcoin Core developers
 // Copyright (c) 2017 The Zcash developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_PUBKEY_H
-#define PHL_PUBKEY_H
+#ifndef PLACEH_PUBKEY_H
+#define PLACEH_PUBKEY_H
 
 #include <hash.h>
 #include <serialize.h>
@@ -219,11 +219,6 @@ struct CExtPubKey {
             a.pubkey == b.pubkey;
     }
 
-    friend bool operator!=(const CExtPubKey &a, const CExtPubKey &b)
-    {
-        return !(a == b);
-    }
-
     void Encode(unsigned char code[BIP32_EXTKEY_SIZE]) const;
     void Decode(const unsigned char code[BIP32_EXTKEY_SIZE]);
     bool Derive(CExtPubKey& out, unsigned int nChild) const;
@@ -240,4 +235,4 @@ public:
     ~ECCVerifyHandle();
 };
 
-#endif // PHL_PUBKEY_H
+#endif // PLACEH_PUBKEY_H

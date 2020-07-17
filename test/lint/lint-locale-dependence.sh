@@ -1,7 +1,4 @@
 #!/usr/bin/env bash
-# Copyright (c) 2018-2020 The Placeholders Core developers
-# Distributed under the MIT software license, see the accompanying
-# file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 export LC_ALL=C
 KNOWN_VIOLATIONS=(
@@ -14,7 +11,6 @@ KNOWN_VIOLATIONS=(
     "src/qt/rpcconsole.cpp:.*atoi"
     "src/rest.cpp:.*strtol"
     "src/test/dbwrapper_tests.cpp:.*snprintf"
-    "src/test/fuzz/locale.cpp"
     "src/test/fuzz/parse_numbers.cpp:.*atoi"
     "src/torcontrol.cpp:.*atoi"
     "src/torcontrol.cpp:.*strtol"
@@ -97,7 +93,6 @@ LOCALE_DEPENDENT_FUNCTIONS=(
     snprintf
     sprintf
     sscanf
-    std::to_string
     stod
     stof
     stoi

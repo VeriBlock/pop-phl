@@ -1,9 +1,9 @@
-// Copyright (c) 2018-2019 The Placeholders Core developers
+// Copyright (c) 2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_UTIL_THREADNAMES_H
-#define PHL_UTIL_THREADNAMES_H
+#ifndef PLACEH_UTIL_THREADNAMES_H
+#define PLACEH_UTIL_THREADNAMES_H
 
 #include <string>
 
@@ -23,4 +23,4 @@ const std::string& ThreadGetInternalName();
 
 } // namespace util
 
-#endif // PHL_UTIL_THREADNAMES_H
+#endif // PLACEH_UTIL_THREADNAMES_H

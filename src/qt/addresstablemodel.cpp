@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2020 The Placeholders Core developers
+// Copyright (c) 2011-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -11,7 +11,6 @@
 #include <wallet/wallet.h>
 
 #include <algorithm>
-#include <typeinfo>
 
 #include <QFont>
 #include <QDebug>
@@ -56,7 +55,7 @@ struct AddressTableEntryLessThan
 static AddressTableEntry::Type translateTransactionType(const QString &strPurpose, bool isMine)
 {
     AddressTableEntry::Type addressType = AddressTableEntry::Hidden;
-    // "refund" addresses aren't shown, and change addresses aren't returned by getAddresses at all.
+    // "refund" addresses aren't shown, and change addresses aren't in mapAddressBook at all.
     if (strPurpose == "send")
         addressType = AddressTableEntry::Sending;
     else if (strPurpose == "receive")
@@ -76,14 +75,12 @@ public:
     explicit AddressTablePriv(AddressTableModel *_parent):
         parent(_parent) {}
 
-    void refreshAddressTable(interfaces::Wallet& wallet, bool pk_hash_only = false)
+    void refreshAddressTable(interfaces::Wallet& wallet)
     {
         cachedAddressTable.clear();
         {
             for (const auto& address : wallet.getAddresses())
             {
-                if (pk_hash_only && address.dest.type() != typeid(PKHash))
-                    continue;
                 AddressTableEntry::Type addressType = translateTransactionType(
                         QString::fromStdString(address.purpose), address.is_mine);
                 cachedAddressTable.append(AddressTableEntry(addressType,
@@ -162,12 +159,12 @@ public:
     }
 };
 
-AddressTableModel::AddressTableModel(WalletModel *parent, bool pk_hash_only) :
+AddressTableModel::AddressTableModel(WalletModel *parent) :
     QAbstractTableModel(parent), walletModel(parent)
 {
     columns << tr("Label") << tr("Address");
     priv = new AddressTablePriv(this);
-    priv->refreshAddressTable(parent->wallet(), pk_hash_only);
+    priv->refreshAddressTable(parent->wallet());
 }
 
 AddressTableModel::~AddressTableModel()
@@ -336,7 +333,7 @@ QModelIndex AddressTableModel::index(int row, int column, const QModelIndex &par
 void AddressTableModel::updateEntry(const QString &address,
         const QString &label, bool isMine, const QString &purpose, int status)
 {
-    // Update address book model from Placeholders core
+    // Update address book model from Bitcoin core
     priv->updateEntry(address, label, isMine, purpose, status);
 }
 

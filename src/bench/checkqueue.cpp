@@ -1,18 +1,14 @@
-// Copyright (c) 2015-2020 The Placeholders Core developers
+// Copyright (c) 2015-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <bench/bench.h>
-#include <checkqueue.h>
-#include <key.h>
-#include <prevector.h>
-#include <pubkey.h>
-#include <random.h>
 #include <util/system.h>
-
-#include <boost/thread/thread.hpp>
-
+#include <checkqueue.h>
+#include <prevector.h>
 #include <vector>
+#include <boost/thread/thread.hpp>
+#include <random.h>
 
 
 static const int MIN_CORES = 2;
@@ -26,9 +22,6 @@ static const unsigned int QUEUE_BATCH_SIZE = 128;
 // and there is a little bit of work done between calls to Add.
 static void CCheckQueueSpeedPrevectorJob(benchmark::State& state)
 {
-    const ECCVerifyHandle verify_handle;
-    ECC_Start();
-
     struct PrevectorJob {
         prevector<PREVECTOR_SIZE, uint8_t> p;
         PrevectorJob(){
@@ -64,6 +57,5 @@ static void CCheckQueueSpeedPrevectorJob(benchmark::State& state)
     }
     tg.interrupt_all();
     tg.join_all();
-    ECC_Stop();
 }
 BENCHMARK(CCheckQueueSpeedPrevectorJob, 1400);

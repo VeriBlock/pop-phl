@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2017-2020 The Placeholders Core developers
 # Copyright (c) 2017-2019 The Bitcoin Core developers
 # Copyright (c) 2019-2020 Xenios SEZC
 # https://www.veriblock.org
@@ -19,11 +18,13 @@ import sys
 import tempfile
 import urllib
 
-from test_framework.test_framework import PlaceholdersTestFramework
-from test_framework.util import assert_equal
+from test_framework.test_framework import (
+    BitcoinTestFramework,
+)
+from test_framework.util import assert_equal, wait_until
 
 
-class LoadblockTest(PlaceholdersTestFramework):
+class LoadblockTest(BitcoinTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 2
@@ -39,7 +40,7 @@ class LoadblockTest(PlaceholdersTestFramework):
         cfg_file = os.path.join(data_dir, "linearize.cfg")
         bootstrap_file = os.path.join(self.options.tmpdir, "bootstrap.dat")
         genesis_block = self.nodes[0].getblockhash(0)
-        blocks_dir = os.path.join(data_dir, self.chain, "blocks")
+        blocks_dir = os.path.join(data_dir, "regtest", "blocks")
         hash_list = tempfile.NamedTemporaryFile(dir=data_dir,
                                                 mode='w',
                                                 delete=False,
@@ -54,7 +55,7 @@ class LoadblockTest(PlaceholdersTestFramework):
             cfg.write("host={}\n".format(node_url.hostname))
             cfg.write("output_file={}\n".format(bootstrap_file))
             cfg.write("max_height=100\n")
-            cfg.write("netmagic=50435244\n")
+            cfg.write("netmagic=03030307\n")
             cfg.write("input={}\n".format(blocks_dir))
             cfg.write("genesis={}\n".format(genesis_block))
             cfg.write("hashlist={}\n".format(hash_list.name))
@@ -76,7 +77,7 @@ class LoadblockTest(PlaceholdersTestFramework):
         self.log.info("Restart second, unsynced node with bootstrap file")
         self.stop_node(1)
         self.start_node(1, ["-loadblock=" + bootstrap_file])
-        assert_equal(self.nodes[1].getblockcount(), 100)  # start_node is blocking on all block files being imported
+        wait_until(lambda: self.nodes[1].getblockcount() == 100)
 
         assert_equal(self.nodes[1].getblockchaininfo()['blocks'], 100)
         assert_equal(self.nodes[0].getbestblockhash(), self.nodes[1].getbestblockhash())

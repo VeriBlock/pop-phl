@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_SRC_VBK_GENESIS_HPP
-#define BITCOIN_SRC_VBK_GENESIS_HPP
+#ifndef PLACEH_SRC_VBK_GENESIS_HPP
+#define PLACEH_SRC_VBK_GENESIS_HPP
 
 #include "vbk/merkle.hpp"
 #include <chainparams.h>
@@ -84,7 +84,7 @@ inline CBlock MineGenesisBlock(
     CBlock genesis = CreateGenesisBlock(nTime, nNonce, nBits, nVersion, genesisReward, initialPubkeyHex, pszTimestamp);
 
     printf("started genesis block mining...\n");
-    while (!CheckProofOfWork(genesis.GetX16RHash(), genesis.nBits, Params().GetConsensus())) {
+    while (!CheckProofOfWork(genesis.GetHash(), genesis.nBits, Params().GetConsensus())) {
         ++genesis.nNonce;
         if (genesis.nNonce > 4294967294LL) {
             ++genesis.nTime;
@@ -93,11 +93,11 @@ inline CBlock MineGenesisBlock(
         }
     }
 
-    assert(CheckProofOfWork(genesis.GetX16RHash(), genesis.nBits, Params().GetConsensus()));
+    assert(CheckProofOfWork(genesis.GetHash(), genesis.nBits, Params().GetConsensus()));
 
     return genesis;
 }
 
 } // namespace VeriBlock
 
-#endif //BITCOIN_SRC_VBK_GENESIS_HPP
+#endif //PLACEH_SRC_VBK_GENESIS_HPP

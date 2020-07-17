@@ -229,7 +229,7 @@ bool PopServiceImpl::acceptBlock(const CBlockIndex& indexNew, BlockValidationSta
     return true;
 }
 
-bool PopServiceImpl::addAllBlockPayloads(const CBlockIndex* indexPrev, const CBlock& connecting, BlockValidationState& state) EXCLUSIVE_LOCKS_REQUIRED(cs_main)
+bool PopServiceImpl::addAllBlockPayloads(const CBlockIndex& indexPrev, const CBlock& connecting, BlockValidationState& state) EXCLUSIVE_LOCKS_REQUIRED(cs_main)
 {
     AssertLockHeld(cs_main);
     return addAllPayloadsToBlockImpl(*altTree, indexPrev, connecting, state);
@@ -246,7 +246,7 @@ std::vector<BlockBytes> PopServiceImpl::getLastKnownVBKBlocks(size_t blocks)
     return altintegration::getLastKnownBlocks(altTree->vbk(), blocks);
 }
 
-std::vector<BlockBytes> PopServiceImpl::getLastKnownBTCBlocks(size_t blocks)
+std::vector<BlockBytes> PopServiceImpl::getLastKnownPHLBlocks(size_t blocks)
 {
     LOCK(cs_main);
     return altintegration::getLastKnownBlocks(altTree->btc(), blocks);
@@ -263,12 +263,6 @@ int PopServiceImpl::compareForks(const CBlockIndex& leftForkTip, const CBlockInd
     auto left = blockToAltBlock(leftForkTip);
     auto right = blockToAltBlock(rightForkTip);
     auto state = altintegration::ValidationState();
-
-    if (!altTree->setState(left.hash, state))
-    {
-        return -1;
-    }
-
     return altTree->comparePopScore(left.hash, right.hash);
 }
 
@@ -496,31 +490,23 @@ bool parseTxPopPayloadsImpl(const CTransaction& tx, const Consensus::Params& par
     return true;
 }
 
-bool addAllPayloadsToBlockImpl(altintegration::AltTree& tree, const CBlockIndex* indexPrev, const CBlock& block, BlockValidationState& state) EXCLUSIVE_LOCKS_REQUIRED(cs_main)
+bool addAllPayloadsToBlockImpl(altintegration::AltTree& tree, const CBlockIndex& indexPrev, const CBlock& block, BlockValidationState& state) EXCLUSIVE_LOCKS_REQUIRED(cs_main)
 {
     AssertLockHeld(cs_main);
-    int height = 0;
-    if (indexPrev != nullptr) {
-        height = indexPrev->nHeight + 1;
-    }
-
-    auto containing = VeriBlock::blockToAltBlock(height, block.GetBlockHeader());
+    auto containing = VeriBlock::blockToAltBlock(indexPrev.nHeight + 1, block.GetBlockHeader());
 
     altintegration::ValidationState instate;
+    std::vector<altintegration::AltPayloads> payloads;
+    if (!parseBlockPopPayloadsImpl(block, indexPrev, Params().GetConsensus(), state, &payloads)) {
+        return error("[%s] block %s failed stateless validation: %s", __func__, block.GetHash().ToString(), instate.toString());
+    }
 
     if (!tree.acceptBlock(containing, instate)) {
         return error("[%s] block %s is not accepted by altTree: %s", __func__, block.GetHash().ToString(), instate.toString());
     }
 
-    if (indexPrev != nullptr) {
-        std::vector<altintegration::AltPayloads> payloads;
-        if (!parseBlockPopPayloadsImpl(block, *indexPrev, Params().GetConsensus(), state, &payloads)) {
-            return error("[%s] block %s failed stateless validation: %s", __func__, block.GetHash().ToString(), instate.toString());
-        }
-
-        if (!payloads.empty() && !tree.addPayloads(containing, payloads, instate)) {
-            return error("[%s] block %s failed stateful pop validation: %s", __func__, block.GetHash().ToString(), instate.toString());
-        }
+    if (!payloads.empty() && !tree.addPayloads(containing, payloads, instate)) {
+        return error("[%s] block %s failed stateful pop validation: %s", __func__, block.GetHash().ToString(), instate.toString());
     }
 
     return true;

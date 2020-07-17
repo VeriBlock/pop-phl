@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2020 The Placeholders Core developers
+# Copyright (c) 2014-2019 The Bitcoin Core developers
+# Copyright (c) 2019-2020 Xenios SEZC
+# https://www.veriblock.org
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test behavior of headers messages to announce blocks.
@@ -92,7 +94,6 @@ from test_framework.mininode import (
     NODE_WITNESS,
     P2PInterface,
     mininode_lock,
-    MSG_BLOCK,
     msg_block,
     msg_getblocks,
     msg_getdata,
@@ -101,13 +102,14 @@ from test_framework.mininode import (
     msg_inv,
     msg_sendheaders,
 )
-from test_framework.test_framework import PlaceholdersTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import (
     assert_equal,
     wait_until,
 )
 
 DIRECT_FETCH_RESPONSE_TIME = 0.05
+
 
 class BaseNode(P2PInterface):
     def __init__(self):
@@ -121,7 +123,7 @@ class BaseNode(P2PInterface):
         """Request data for a list of block hashes."""
         msg = msg_getdata()
         for x in block_hashes:
-            msg.inv.append(CInv(MSG_BLOCK, x))
+            msg.inv.append(CInv(2, x))
         self.send_message(msg)
 
     def send_get_headers(self, locator, hashstop):
@@ -132,7 +134,7 @@ class BaseNode(P2PInterface):
 
     def send_block_inv(self, blockhash):
         msg = msg_inv()
-        msg.inv = [CInv(MSG_BLOCK, blockhash)]
+        msg.inv = [CInv(2, blockhash)]
         self.send_message(msg)
 
     def send_header_for_blocks(self, new_blocks):
@@ -144,6 +146,14 @@ class BaseNode(P2PInterface):
         getblocks_message = msg_getblocks()
         getblocks_message.locator.vHave = locator
         self.send_message(getblocks_message)
+
+    def wait_for_getdata(self, hash_list, timeout=60):
+        if hash_list == []:
+            return
+
+        test_function = lambda: "getdata" in self.last_message and [x.hash for x in
+                                                                    self.last_message["getdata"].inv] == hash_list
+        wait_until(test_function, timeout=timeout, lock=mininode_lock)
 
     def wait_for_block_announcement(self, block_hash, timeout=60):
         test_function = lambda: self.last_blockhash_announced == block_hash
@@ -168,7 +178,6 @@ class BaseNode(P2PInterface):
             self.last_message.pop("inv", None)
             self.last_message.pop("headers", None)
             self.recent_headers_announced = []
-
 
     def check_last_headers_announcement(self, headers):
         """Test whether the last headers announcements received are right.
@@ -196,7 +205,8 @@ class BaseNode(P2PInterface):
             self.block_announced = False
             self.last_message.pop("inv", None)
 
-class SendHeadersTest(PlaceholdersTestFramework):
+
+class SendHeadersTest(BitcoinTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 2
@@ -226,7 +236,8 @@ class SendHeadersTest(PlaceholdersTestFramework):
         tip_height = self.nodes[1].getblockcount()
         hash_to_invalidate = self.nodes[1].getblockhash(tip_height - (length - 1))
         self.nodes[1].invalidateblock(hash_to_invalidate)
-        all_hashes = self.nodes[1].generatetoaddress(length + 1, self.nodes[1].get_deterministic_priv_key().address)  # Must be longer than the orig chain
+        all_hashes = self.nodes[1].generatetoaddress(length + 1, self.nodes[
+            1].get_deterministic_priv_key().address)  # Must be longer than the orig chain
         self.sync_blocks(self.nodes, wait=0.1)
         return [int(x, 16) for x in all_hashes]
 
@@ -237,11 +248,16 @@ class SendHeadersTest(PlaceholdersTestFramework):
         # will occur outside of direct fetching
         test_node = self.nodes[0].add_p2p_connection(BaseNode(), services=NODE_WITNESS)
 
+        # Ensure verack's have been processed by our peer
+        inv_node.sync_with_ping()
+        test_node.sync_with_ping()
+
         self.test_null_locators(test_node, inv_node)
         self.test_nonnull_locators(test_node, inv_node)
 
     def test_null_locators(self, test_node, inv_node):
-        tip = self.nodes[0].getblockheader(self.nodes[0].generatetoaddress(1, self.nodes[0].get_deterministic_priv_key().address)[0])
+        tip = self.nodes[0].getblockheader(
+            self.nodes[0].generatetoaddress(1, self.nodes[0].get_deterministic_priv_key().address)[0])
         tip_hash = int(tip["hash"], 16)
 
         inv_node.check_last_inv_announcement(inv=[tip_hash])
@@ -253,7 +269,8 @@ class SendHeadersTest(PlaceholdersTestFramework):
         test_node.check_last_headers_announcement(headers=[tip_hash])
 
         self.log.info("Verify getheaders with null locator and invalid hashstop does not return headers.")
-        block = create_block(int(tip["hash"], 16), create_coinbase(tip["height"] + 1), tip["mediantime"] + 1)
+        block = create_block(self.nodes[0], int(tip["hash"], 16), create_coinbase(tip["height"] + 1),
+                             tip["mediantime"] + 1)
         block.solve()
         test_node.send_header_for_blocks([block])
         test_node.clear_block_announcements()
@@ -293,11 +310,12 @@ class SendHeadersTest(PlaceholdersTestFramework):
                 height = self.nodes[0].getblockcount()
                 last_time = self.nodes[0].getblock(self.nodes[0].getbestblockhash())['time']
                 block_time = last_time + 1
-                new_block = create_block(tip, create_coinbase(height + 1), block_time)
+                new_block = create_block(self.nodes[0], tip, create_coinbase(height + 1), block_time, prevheight=height)
                 new_block.solve()
                 test_node.send_header_for_blocks([new_block])
                 test_node.wait_for_getdata([new_block.sha256])
-                test_node.send_and_ping(msg_block(new_block))  # make sure this block is processed
+                test_node.send_message(msg_block(new_block))
+                test_node.sync_with_ping()  # make sure this block is processed
                 wait_until(lambda: inv_node.block_announced, timeout=60, lock=mininode_lock)
                 inv_node.clear_block_announcements()
                 test_node.clear_block_announcements()
@@ -329,7 +347,8 @@ class SendHeadersTest(PlaceholdersTestFramework):
                 self.log.debug("Part 2.{}.{}: starting...".format(i, j))
                 blocks = []
                 for b in range(i + 1):
-                    blocks.append(create_block(tip, create_coinbase(height), block_time))
+                    blocks.append(
+                        create_block(self.nodes[0], tip, create_coinbase(height), block_time, prevheight=height - 1))
                     blocks[-1].solve()
                     tip = blocks[-1].sha256
                     block_time += 1
@@ -368,7 +387,8 @@ class SendHeadersTest(PlaceholdersTestFramework):
 
         self.log.info("Part 2: success!")
 
-        self.log.info("Part 3: headers announcements can stop after large reorg, and resume after headers/inv from peer...")
+        self.log.info(
+            "Part 3: headers announcements can stop after large reorg, and resume after headers/inv from peer...")
 
         # PART 3.  Headers announcements can stop after large reorg, and resume after
         # getheaders or inv from peer.
@@ -444,7 +464,7 @@ class SendHeadersTest(PlaceholdersTestFramework):
         # Create 2 blocks.  Send the blocks, then send the headers.
         blocks = []
         for b in range(2):
-            blocks.append(create_block(tip, create_coinbase(height), block_time))
+            blocks.append(create_block(self.nodes[0], tip, create_coinbase(height), block_time, prevheight=height - 1))
             blocks[-1].solve()
             tip = blocks[-1].sha256
             block_time += 1
@@ -462,7 +482,7 @@ class SendHeadersTest(PlaceholdersTestFramework):
         # This time, direct fetch should work
         blocks = []
         for b in range(3):
-            blocks.append(create_block(tip, create_coinbase(height), block_time))
+            blocks.append(create_block(self.nodes[0], tip, create_coinbase(height), block_time, prevheight=height - 1))
             blocks[-1].solve()
             tip = blocks[-1].sha256
             block_time += 1
@@ -483,7 +503,7 @@ class SendHeadersTest(PlaceholdersTestFramework):
 
         # Create extra blocks for later
         for b in range(20):
-            blocks.append(create_block(tip, create_coinbase(height), block_time))
+            blocks.append(create_block(self.nodes[0], tip, create_coinbase(height), block_time, prevheight=height-1))
             blocks[-1].solve()
             tip = blocks[-1].sha256
             block_time += 1
@@ -530,7 +550,7 @@ class SendHeadersTest(PlaceholdersTestFramework):
             blocks = []
             # Create two more blocks.
             for j in range(2):
-                blocks.append(create_block(tip, create_coinbase(height), block_time))
+                blocks.append(create_block(self.nodes[0], tip, create_coinbase(height), block_time, prevheight=height-1))
                 blocks[-1].solve()
                 tip = blocks[-1].sha256
                 block_time += 1
@@ -551,7 +571,7 @@ class SendHeadersTest(PlaceholdersTestFramework):
         # don't go into an infinite loop trying to get them to connect.
         MAX_UNCONNECTING_HEADERS = 10
         for j in range(MAX_UNCONNECTING_HEADERS + 1):
-            blocks.append(create_block(tip, create_coinbase(height), block_time))
+            blocks.append(create_block(self.nodes[0], tip, create_coinbase(height), block_time, prevheight=height - 1))
             blocks[-1].solve()
             tip = blocks[-1].sha256
             block_time += 1
@@ -590,6 +610,7 @@ class SendHeadersTest(PlaceholdersTestFramework):
         # Finally, check that the inv node never received a getdata request,
         # throughout the test
         assert "getdata" not in inv_node.last_message
+
 
 if __name__ == '__main__':
     SendHeadersTest().main()

@@ -1,9 +1,9 @@
-// Copyright (c) 2016-2018 The Placeholders Core developers
+// Copyright (c) 2016-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_SUPPORT_EVENTS_H
-#define PHL_SUPPORT_EVENTS_H
+#ifndef PLACEH_SUPPORT_EVENTS_H
+#define PLACEH_SUPPORT_EVENTS_H
 
 #include <ios>
 #include <memory>
@@ -53,4 +53,4 @@ inline raii_evhttp_connection obtain_evhttp_connection_base(struct event_base* b
     return result;
 }
 
-#endif // PHL_SUPPORT_EVENTS_H
+#endif // PLACEH_SUPPORT_EVENTS_H

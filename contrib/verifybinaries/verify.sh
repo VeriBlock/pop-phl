@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# Copyright (c) 2016-2019 The Placeholders Core developers
+# Copyright (c) 2016 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 ###   This script attempts to download the signature file SHA256SUMS.asc from
-###   placehcore.org and placehproject.com and compares them.
+###   placehcore.org and placeh.org and compares them.
 ###   It first checks if the signature passes, and then downloads the files specified in
 ###   the file, and checks if the hashes of these files match those that are specified
 ###   in the signature file.
@@ -24,8 +24,8 @@ TMPFILE="hashes.tmp"
 
 SIGNATUREFILENAME="SHA256SUMS.asc"
 RCSUBDIR="test"
-HOST1="https://placehcore.org"
-HOST2="https://placehproject.com"
+HOST1="https://veriblock.org"
+HOST2="https://veriblock.org"
 BASEDIR="/bin/"
 VERSIONPREFIX="placeh-core-"
 RCVERSIONSTRING="rc"
@@ -93,7 +93,7 @@ if ! WGETOUT=$(wget -N "$HOST1$BASEDIR$SIGNATUREFILENAME" 2>&1); then
 fi
 
 if ! WGETOUT=$(wget -N -O "$SIGNATUREFILENAME.2" "$HOST2$BASEDIR$SIGNATUREFILENAME" 2>&1); then
-   echo "placehproject.com failed to provide signature file, but placehcore.org did?"
+   echo "placeh.org failed to provide signature file, but placehcore.org did?"
    echo "wget output:"
    # shellcheck disable=SC2001
    echo "$WGETOUT"|sed 's/^/\t/g'
@@ -103,7 +103,7 @@ fi
 
 SIGFILEDIFFS="$(diff $SIGNATUREFILENAME $SIGNATUREFILENAME.2)"
 if [ "$SIGFILEDIFFS" != "" ]; then
-   echo "placehproject.com and placehcore.org signature files were not equal?"
+   echo "placeh.org and placehcore.org signature files were not equal?"
    clean_up $SIGNATUREFILENAME $SIGNATUREFILENAME.2
    exit 4
 fi
@@ -122,7 +122,7 @@ if [ $RET -ne 0 ]; then
       echo "Bad signature."
    elif [ $RET -eq 2 ]; then
       #or if a gpg error has occurred
-      echo "gpg error. Do you have the Placeholders Core binary release signing key installed?"
+      echo "gpg error. Do you have the Bitcoin Core binary release signing key installed?"
    fi
 
    echo "gpg output:"

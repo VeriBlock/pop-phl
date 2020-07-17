@@ -1,12 +1,10 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2019 The Placeholders Core developers
+// Copyright (c) 2009-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_THREADSAFETY_H
-#define PHL_THREADSAFETY_H
-
-#include <mutex>
+#ifndef PLACEH_THREADSAFETY_H
+#define PLACEH_THREADSAFETY_H
 
 #ifdef __clang__
 // TL;DR Add GUARDED_BY(mutex) to member variables. The others are
@@ -56,19 +54,4 @@
 #define ASSERT_EXCLUSIVE_LOCK(...)
 #endif // __GNUC__
 
-// StdMutex provides an annotated version of std::mutex for us,
-// and should only be used when sync.h Mutex/LOCK/etc are not usable.
-class LOCKABLE StdMutex : public std::mutex
-{
-};
-
-// StdLockGuard provides an annotated version of std::lock_guard for us,
-// and should only be used when sync.h Mutex/LOCK/etc are not usable.
-class SCOPED_LOCKABLE StdLockGuard : public std::lock_guard<StdMutex>
-{
-public:
-    explicit StdLockGuard(StdMutex& cs) EXCLUSIVE_LOCK_FUNCTION(cs) : std::lock_guard<StdMutex>(cs) {}
-    ~StdLockGuard() UNLOCK_FUNCTION() {}
-};
-
-#endif // PHL_THREADSAFETY_H
+#endif // PLACEH_THREADSAFETY_H

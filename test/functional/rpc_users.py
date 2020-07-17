@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-# Copyright (c) 2015-2019 The Placeholders Core developers
+# Copyright (c) 2015-2018 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test multiple RPC users."""
 
-from test_framework.test_framework import PlaceholdersTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import (
     assert_equal,
     get_datadir_path,
@@ -20,7 +20,6 @@ import string
 import configparser
 import sys
 
-
 def call_with_auth(node, user, password):
     url = urllib.parse.urlparse(node.url)
     headers = {"Authorization": "Basic " + str_to_b64str('{}:{}'.format(user, password))}
@@ -33,7 +32,7 @@ def call_with_auth(node, user, password):
     return resp
 
 
-class HTTPBasicsTest(PlaceholdersTestFramework):
+class HTTPBasicsTest(BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 2
         self.supports_cli = False
@@ -65,9 +64,9 @@ class HTTPBasicsTest(PlaceholdersTestFramework):
         self.password = lines[3]
 
         with open(os.path.join(get_datadir_path(self.options.tmpdir, 0), "placeh.conf"), 'a', encoding='utf8') as f:
-            f.write(rpcauth + "\n")
-            f.write(rpcauth2 + "\n")
-            f.write(rpcauth3 + "\n")
+            f.write(rpcauth+"\n")
+            f.write(rpcauth2+"\n")
+            f.write(rpcauth3+"\n")
         with open(os.path.join(get_datadir_path(self.options.tmpdir, 1), "placeh.conf"), 'a', encoding='utf8') as f:
             f.write("rpcuser={}\n".format(self.rpcuser))
             f.write("rpcpassword={}\n".format(self.rpcpassword))
@@ -77,16 +76,19 @@ class HTTPBasicsTest(PlaceholdersTestFramework):
         assert_equal(200, call_with_auth(node, user, password).status)
 
         self.log.info('Wrong...')
-        assert_equal(401, call_with_auth(node, user, password + 'wrong').status)
+        assert_equal(401, call_with_auth(node, user, password+'wrong').status)
 
         self.log.info('Wrong...')
-        assert_equal(401, call_with_auth(node, user + 'wrong', password).status)
+        assert_equal(401, call_with_auth(node, user+'wrong', password).status)
 
         self.log.info('Wrong...')
-        assert_equal(401, call_with_auth(node, user + 'wrong', password + 'wrong').status)
+        assert_equal(401, call_with_auth(node, user+'wrong', password+'wrong').status)
 
     def run_test(self):
-        self.log.info('Check correctness of the rpcauth config option')
+
+        ##################################################
+        # Check correctness of the rpcauth config option #
+        ##################################################
         url = urllib.parse.urlparse(self.nodes[0].url)
 
         self.test_auth(self.nodes[0], url.username, url.password)
@@ -94,18 +96,12 @@ class HTTPBasicsTest(PlaceholdersTestFramework):
         self.test_auth(self.nodes[0], 'rt2', self.rt2password)
         self.test_auth(self.nodes[0], self.user, self.password)
 
-        self.log.info('Check correctness of the rpcuser/rpcpassword config options')
+        ###############################################################
+        # Check correctness of the rpcuser/rpcpassword config options #
+        ###############################################################
         url = urllib.parse.urlparse(self.nodes[1].url)
 
         self.test_auth(self.nodes[1], self.rpcuser, self.rpcpassword)
 
-        self.log.info('Check that failure to write cookie file will abort the node gracefully')
-        self.stop_node(0)
-        cookie_file = os.path.join(get_datadir_path(self.options.tmpdir, 0), self.chain, '.cookie.tmp')
-        os.mkdir(cookie_file)
-        init_error = 'Error: Unable to start HTTP server. See debug log for details.'
-        self.nodes[0].assert_start_raises_init_error(expected_msg=init_error)
-
-
 if __name__ == '__main__':
-    HTTPBasicsTest().main()
+    HTTPBasicsTest ().main ()

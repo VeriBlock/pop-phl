@@ -1,10 +1,10 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2020 The Placeholders Core developers
+// Copyright (c) 2009-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_LOGGING_TIMER_H
-#define PHL_LOGGING_TIMER_H
+#ifndef PLACEH_LOGGING_TIMER_H
+#define PLACEH_LOGGING_TIMER_H
 
 #include <logging.h>
 #include <util/macros.h>
@@ -85,7 +85,7 @@ private:
     const std::string m_title{};
 
     //! Forwarded on to LogPrint if specified - has the effect of only
-    //! outputting the timing log when a particular debug= category is specified.
+    //! outputing the timing log when a particular debug= category is specified.
     const BCLog::LogFlags m_log_category{};
 
 };
@@ -93,10 +93,12 @@ private:
 } // namespace BCLog
 
 
-#define LOG_TIME_MILLIS_WITH_CATEGORY(end_msg, log_category) \
-    BCLog::Timer<std::chrono::milliseconds> PASTE2(logging_timer, __COUNTER__)(__func__, end_msg, log_category)
-#define LOG_TIME_SECONDS(end_msg) \
-    BCLog::Timer<std::chrono::seconds> PASTE2(logging_timer, __COUNTER__)(__func__, end_msg)
+#define LOG_TIME_MICROS(end_msg, ...) \
+    BCLog::Timer<std::chrono::microseconds> PASTE2(logging_timer, __COUNTER__)(__func__, end_msg, ## __VA_ARGS__)
+#define LOG_TIME_MILLIS(end_msg, ...) \
+    BCLog::Timer<std::chrono::milliseconds> PASTE2(logging_timer, __COUNTER__)(__func__, end_msg, ## __VA_ARGS__)
+#define LOG_TIME_SECONDS(end_msg, ...) \
+    BCLog::Timer<std::chrono::seconds> PASTE2(logging_timer, __COUNTER__)(__func__, end_msg, ## __VA_ARGS__)
 
 
-#endif // PHL_LOGGING_TIMER_H
+#endif // PLACEH_LOGGING_TIMER_H

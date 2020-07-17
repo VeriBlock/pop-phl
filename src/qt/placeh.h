@@ -1,9 +1,9 @@
-// Copyright (c) 2011-2020 The Placeholders Core developers
+// Copyright (c) 2011-2016 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_QT_PHL_H
-#define PHL_QT_PHL_H
+#ifndef PLACEH_QT_PLACEH_H
+#define PLACEH_QT_PLACEH_H
 
 #if defined(HAVE_CONFIG_H)
 #include <config/placeh-config.h>
@@ -12,7 +12,7 @@
 #include <QApplication>
 #include <memory>
 
-class PlaceholdersGUI;
+class BitcoinGUI;
 class ClientModel;
 class NetworkStyle;
 class OptionsModel;
@@ -26,14 +26,14 @@ class Handler;
 class Node;
 } // namespace interfaces
 
-/** Class encapsulating Placeholders Core startup and shutdown.
+/** Class encapsulating Bitcoin Core startup and shutdown.
  * Allows running startup and shutdown in a different thread from the UI thread.
  */
-class PlaceholdersCore: public QObject
+class BitcoinCore: public QObject
 {
     Q_OBJECT
 public:
-    explicit PlaceholdersCore(interfaces::Node& node);
+    explicit BitcoinCore(interfaces::Node& node);
 
 public Q_SLOTS:
     void initialize();
@@ -51,13 +51,13 @@ private:
     interfaces::Node& m_node;
 };
 
-/** Main Placeholders application object */
-class PlaceholdersApplication: public QApplication
+/** Main Bitcoin application object */
+class BitcoinApplication: public QApplication
 {
     Q_OBJECT
 public:
-    explicit PlaceholdersApplication(interfaces::Node& node);
-    ~PlaceholdersApplication();
+    explicit BitcoinApplication(interfaces::Node& node);
+    ~BitcoinApplication();
 
 #ifdef ENABLE_WALLET
     /// Create payment server
@@ -67,8 +67,8 @@ public:
     void parameterSetup();
     /// Create options model
     void createOptionsModel(bool resetSettings);
-    /// Initialize prune setting
-    void InitializePruneSetting(bool prune);
+    /// Update prune value
+    void SetPrune(bool prune, bool force = false);
     /// Create main window
     void createWindow(const NetworkStyle *networkStyle);
     /// Create splash screen
@@ -84,7 +84,7 @@ public:
     /// Get process return value
     int getReturnValue() const { return returnValue; }
 
-    /// Get window identifier of QMainWindow (PlaceholdersGUI)
+    /// Get window identifier of QMainWindow (BitcoinGUI)
     WId getMainWinId() const;
 
     /// Setup platform style
@@ -100,14 +100,14 @@ Q_SIGNALS:
     void requestedInitialize();
     void requestedShutdown();
     void splashFinished();
-    void windowShown(PlaceholdersGUI* window);
+    void windowShown(BitcoinGUI* window);
 
 private:
     QThread *coreThread;
     interfaces::Node& m_node;
     OptionsModel *optionsModel;
     ClientModel *clientModel;
-    PlaceholdersGUI *window;
+    BitcoinGUI *window;
     QTimer *pollShutdownTimer;
 #ifdef ENABLE_WALLET
     PaymentServer* paymentServer{nullptr};
@@ -122,4 +122,4 @@ private:
 
 int GuiMain(int argc, char* argv[]);
 
-#endif // PHL_QT_PHL_H
+#endif // PLACEH_QT_PLACEH_H

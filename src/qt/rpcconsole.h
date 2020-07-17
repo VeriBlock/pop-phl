@@ -1,9 +1,9 @@
-// Copyright (c) 2011-2019 The Placeholders Core developers
+// Copyright (c) 2011-2019 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_QT_RPCCONSOLE_H
-#define PHL_QT_RPCCONSOLE_H
+#ifndef PLACEH_QT_RPCCONSOLE_H
+#define PLACEH_QT_RPCCONSOLE_H
 
 #include <qt/guiutil.h>
 #include <qt/peertablemodel.h>
@@ -32,7 +32,7 @@ class QMenu;
 class QItemSelection;
 QT_END_NAMESPACE
 
-/** Local Placeholders RPC console. */
+/** Local Bitcoin RPC console. */
 class RPCConsole: public QWidget
 {
     Q_OBJECT
@@ -71,8 +71,8 @@ public:
     QKeySequence tabShortcut(TabTypes tab_type) const;
 
 protected:
-    virtual bool eventFilter(QObject* obj, QEvent *event) override;
-    void keyPressEvent(QKeyEvent *) override;
+    virtual bool eventFilter(QObject* obj, QEvent *event);
+    void keyPressEvent(QKeyEvent *);
 
 private Q_SLOTS:
     void on_lineEdit_returnPressed();
@@ -83,9 +83,9 @@ private Q_SLOTS:
     void on_sldGraphRange_valueChanged(int value);
     /** update traffic statistics */
     void updateTrafficStats(quint64 totalBytesIn, quint64 totalBytesOut);
-    void resizeEvent(QResizeEvent *event) override;
-    void showEvent(QShowEvent *event) override;
-    void hideEvent(QHideEvent *event) override;
+    void resizeEvent(QResizeEvent *event);
+    void showEvent(QShowEvent *event);
+    void hideEvent(QHideEvent *event);
     /** Show custom context menu on Peers tab */
     void showPeersTableContextMenu(const QPoint& point);
     /** Show custom context menu on Bans tab */
@@ -173,4 +173,4 @@ private Q_SLOTS:
     void updateAlerts(const QString& warnings);
 };
 
-#endif // PHL_QT_RPCCONSOLE_H
+#endif // PLACEH_QT_RPCCONSOLE_H

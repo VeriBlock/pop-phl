@@ -1,4 +1,4 @@
-// Copyright (c) 2009-2019 The Placeholders Core developers
+// Copyright (c) 2009-2019 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -7,6 +7,10 @@
 #endif
 
 #include <cstddef>
+
+#if defined(HAVE_SYS_SELECT_H)
+bool sanity_test_fdelt();
+#endif
 
 extern "C" void* memcpy(void* a, const void* b, size_t c);
 void* memcpy_int(void* a, const void* b, size_t c)
@@ -41,5 +45,9 @@ bool sanity_test_memcpy()
 
 bool glibc_sanity_test()
 {
+#if defined(HAVE_SYS_SELECT_H)
+    if (!sanity_test_fdelt())
+        return false;
+#endif
     return sanity_test_memcpy<1025>();
 }

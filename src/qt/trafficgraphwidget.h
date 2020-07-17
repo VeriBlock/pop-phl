@@ -1,9 +1,9 @@
-// Copyright (c) 2011-2020 The Placeholders Core developers
+// Copyright (c) 2011-2015 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_QT_TRAFFICGRAPHWIDGET_H
-#define PHL_QT_TRAFFICGRAPHWIDGET_H
+#ifndef PLACEH_QT_TRAFFICGRAPHWIDGET_H
+#define PLACEH_QT_TRAFFICGRAPHWIDGET_H
 
 #include <QWidget>
 #include <QQueue>
@@ -25,7 +25,7 @@ public:
     int getGraphRangeMins() const;
 
 protected:
-    void paintEvent(QPaintEvent *) override;
+    void paintEvent(QPaintEvent *);
 
 public Q_SLOTS:
     void updateRates();
@@ -45,4 +45,4 @@ private:
     ClientModel *clientModel;
 };
 
-#endif // PHL_QT_TRAFFICGRAPHWIDGET_H
+#endif // PLACEH_QT_TRAFFICGRAPHWIDGET_H

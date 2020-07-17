@@ -1,4 +1,6 @@
-# Copyright (c) 2013-2016 The Placeholders Core developers
+# Copyright (c) 2013-2016 The Bitcoin Core developers
+# Copyright (c) 2019-2020 Xenios SEZC
+# https://www.veriblock.org
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -9,6 +11,8 @@ AM_CXXFLAGS = $(DEBUG_CXXFLAGS) $(HARDENED_CXXFLAGS) $(WARN_CXXFLAGS) $(NOWARN_C
 AM_CPPFLAGS = $(DEBUG_CPPFLAGS) $(HARDENED_CPPFLAGS)
 AM_LIBTOOLFLAGS = --preserve-dup-deps
 EXTRA_LIBRARIES =
+
+
 
 if EMBEDDED_UNIVALUE
 LIBUNIVALUE = univalue/libunivalue.la
@@ -85,10 +89,6 @@ if BUILD_PLACEHD
   bin_PROGRAMS += placehd
 endif
 
-if BUILD_PLACEH_NODE
-  bin_PROGRAMS += placeh-node
-endif
-
 if BUILD_PLACEH_CLI
   bin_PROGRAMS += placeh-cli
 endif
@@ -100,6 +100,7 @@ if BUILD_PLACEH_WALLET
   bin_PROGRAMS += placeh-wallet
 endif
 endif
+
 
 ### VeriBlock section start
 VBK_H = \
@@ -116,6 +117,7 @@ VBK_H = \
   vbk/util.hpp
 ### VeriBlock section end
 
+
 .PHONY: FORCE check-symbols check-security
 # placeh core #
 PLACEH_CORE_H = \
@@ -124,51 +126,6 @@ PLACEH_CORE_H = \
   addrman.h \
   attributes.h \
   banman.h \
-  algo/sph_groestl.h \
-  algo/sph_types.h \
-  algo/sph_blake.h \
-  algo/sph_bmw.h \
-  algo/sph_jh.h \
-  algo/sph_keccak.h \
-  algo/sph_skein.h \
-  algo/sph_luffa.h \
-  algo/sph_cubehash.h \
-  algo/sph_simd.h \
-  algo/sph_echo.h \
-  algo/sph_shavite.h \
-  algo/sph_sha2.h \
-  algo/sph_haval.h \
-  algo/sph_tiger.h \
-  algo/lyra2.h \
-  algo/sponge.h \
-  algo/gost_streebog.h \
-  algo/hash_algos.h \
-  algo/aes_helper.c \
-  algo/groestl.c \
-  algo/blake.c \
-  algo/bmw.c \
-  algo/cubehash.c \
-  algo/echo.c \
-  algo/jh.c \
-  algo/keccak.c \
-  algo/luffa.c \
-  algo/shavite.c \
-  algo/simd.c \
-  algo/skein.c \
-  algo/hamsi.c \
-  algo/whirlpool.c \
-  algo/shabal.c \
-  algo/fugue.c \
-  algo/sha2.c \
-  algo/extra.c \
-  algo/extra.h \
-  algo/sph_sha2big.c \
-  algo/haval.c \
-  algo/tiger.cpp \
-  algo/lyra2.cpp \
-  algo/sponge.cpp \
-  algo/sph_sha2.c \
-  algo/gost_streebog.c \
   base58.h \
   bech32.h \
   bloom.h \
@@ -244,6 +201,7 @@ PLACEH_CORE_H = \
   random.h \
   randomenv.h \
   reverse_iterator.h \
+  reverselock.h \
   rpc/blockchain.h \
   rpc/client.h \
   rpc/protocol.h \
@@ -275,27 +233,24 @@ PLACEH_CORE_H = \
   txmempool.h \
   ui_interface.h \
   undo.h \
-  util/asmap.h \
   util/bip32.h \
   util/bytevectorhash.h \
   util/check.h \
   util/error.h \
   util/fees.h \
-  util/golombrice.h \
   util/spanparsing.h \
   util/system.h \
   util/macros.h \
   util/memory.h \
-  util/message.h \
   util/moneystr.h \
   util/rbf.h \
-  util/ref.h \
   util/settings.h \
   util/string.h \
   util/threadnames.h \
   util/time.h \
   util/translation.h \
   util/url.h \
+  util/validation.h \
   util/vector.h \
   validation.h \
   validationinterface.h \
@@ -309,8 +264,8 @@ PLACEH_CORE_H = \
   wallet/fees.h \
   wallet/ismine.h \
   wallet/load.h \
+  wallet/psbtwallet.h \
   wallet/rpcwallet.h \
-  wallet/salvage.h \
   wallet/scriptpubkeyman.h \
   wallet/wallet.h \
   wallet/walletdb.h \
@@ -324,12 +279,12 @@ PLACEH_CORE_H = \
   zmq/zmqpublishnotifier.h \
   zmq/zmqrpc.h
 
-
 obj/build.h: FORCE
 	@$(MKDIR_P) $(builddir)/obj
 	@$(top_srcdir)/share/genbuild.sh "$(abs_top_builddir)/src/obj/build.h" \
 	  "$(abs_top_srcdir)"
 libplaceh_util_a-clientversion.$(OBJEXT): obj/build.h
+
 
 # server: shared between placehd and placeh-qt
 # Contains code accessing mempool and chain state that is meant to be separated
@@ -421,9 +376,9 @@ libplaceh_wallet_a_SOURCES = \
   wallet/feebumper.cpp \
   wallet/fees.cpp \
   wallet/load.cpp \
+  wallet/psbtwallet.cpp \
   wallet/rpcdump.cpp \
   wallet/rpcwallet.cpp \
-  wallet/salvage.cpp \
   wallet/scriptpubkeyman.cpp \
   wallet/wallet.cpp \
   wallet/walletdb.cpp \
@@ -503,7 +458,6 @@ libplaceh_consensus_a_SOURCES = \
   consensus/validation.h \
   hash.cpp \
   hash.h \
-  algo/hashx21s.h \
   prevector.h \
   primitives/block.cpp \
   primitives/block.h \
@@ -525,8 +479,7 @@ libplaceh_consensus_a_SOURCES = \
   uint256.h \
   util/strencodings.cpp \
   util/strencodings.h \
-  version.h \
-  $(PLACEH_CORE_H)
+  version.h
 
 # common: shared between placehd, and placeh-qt and non-server tools
 libplaceh_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(PLACEH_INCLUDES)
@@ -572,6 +525,7 @@ libplaceh_util_a_SOURCES = \
   support/lockedpool.cpp \
   chainparamsbase.cpp \
   clientversion.cpp \
+  compat/glibc_sanity_fdelt.cpp \
   compat/glibc_sanity.cpp \
   compat/glibcxx_sanity.cpp \
   compat/strnlen.cpp \
@@ -584,13 +538,11 @@ libplaceh_util_a_SOURCES = \
   support/cleanse.cpp \
   sync.cpp \
   threadinterrupt.cpp \
-  util/asmap.cpp \
   util/bip32.cpp \
   util/bytevectorhash.cpp \
   util/error.cpp \
   util/fees.cpp \
   util/system.cpp \
-  util/message.cpp \
   util/moneystr.cpp \
   util/rbf.cpp \
   util/settings.cpp \
@@ -599,11 +551,9 @@ libplaceh_util_a_SOURCES = \
   util/strencodings.cpp \
   util/string.cpp \
   util/time.cpp \
+  util/url.cpp \
+  util/validation.cpp \
   $(PLACEH_CORE_H)
-
-if USE_LIBEVENT
-libplaceh_util_a_SOURCES += util/url.cpp
-endif
 
 if GLIBC_BACK_COMPAT
 libplaceh_util_a_SOURCES += compat/glibc_compat.cpp
@@ -622,21 +572,25 @@ libplaceh_cli_a_SOURCES = \
 nodist_libplaceh_util_a_SOURCES = $(srcdir)/obj/build.h
 #
 
-# placehd & placeh-node binaries #
-placeh_daemon_sources = placehd.cpp
-placeh_bin_cppflags = $(AM_CPPFLAGS) $(PLACEH_INCLUDES)
-placeh_bin_cxxflags = $(AM_CXXFLAGS) $(PIE_FLAGS)
-placeh_bin_ldflags = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+# placehd binary #
+placehd_SOURCES = placehd.cpp
+placehd_CPPFLAGS = $(AM_CPPFLAGS) $(PLACEH_INCLUDES)
+placehd_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+placehd_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-placeh_daemon_sources += placehd-res.rc
+placehd_SOURCES += placehd-res.rc
 endif
 
-placeh_bin_ldadd = \
+# Libraries below may be listed more than once to resolve circular dependencies (see
+# https://eli.thegreenplace.net/2013/07/09/library-order-in-static-linking#circular-dependency)
+placehd_LDADD = \
+  $(VERIBLOCK_POP_CPP_LIBS) \
+  $(LIBPLACEH_SERVER) \
   $(LIBPLACEH_WALLET) \
   $(LIBPLACEH_COMMON) \
-  $(LIBPLACEH_UTIL) \
   $(LIBUNIVALUE) \
+  $(LIBPLACEH_UTIL) \
   $(LIBPLACEH_ZMQ) \
   $(LIBPLACEH_CONSENSUS) \
   $(LIBPLACEH_CRYPTO) \
@@ -645,19 +599,7 @@ placeh_bin_ldadd = \
   $(LIBMEMENV) \
   $(LIBSECP256K1)
 
-placeh_bin_ldadd += $(BOOST_LIBS) $(BDB_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS) $(VERIBLOCK_POP_CPP_LIBS)
-
-placehd_SOURCES = $(placeh_daemon_sources)
-placehd_CPPFLAGS = $(placeh_bin_cppflags)
-placehd_CXXFLAGS = $(placeh_bin_cxxflags)
-placehd_LDFLAGS = $(placeh_bin_ldflags)
-placehd_LDADD = $(LIBPLACEH_SERVER) $(placeh_bin_ldadd)
-
-placeh_node_SOURCES = $(placeh_daemon_sources)
-placeh_node_CPPFLAGS = $(placeh_bin_cppflags)
-placeh_node_CXXFLAGS = $(placeh_bin_cxxflags)
-placeh_node_LDFLAGS = $(placeh_bin_ldflags)
-placeh_node_LDADD = $(LIBPLACEH_SERVER) $(placeh_bin_ldadd)
+placehd_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS) $(VERIBLOCK_POP_CPP_LIBS)
 
 # placeh-cli binary #
 placeh_cli_SOURCES = placeh-cli.cpp
@@ -702,14 +644,30 @@ placeh_tx_LDADD += $(BOOST_LIBS) $(VERIBLOCK_POP_CPP_LIBS)
 
 # placeh-wallet binary #
 placeh_wallet_SOURCES = placeh-wallet.cpp
-placeh_wallet_CPPFLAGS = $(placeh_bin_cppflags)
-placeh_wallet_CXXFLAGS = $(placeh_bin_cxxflags)
-placeh_wallet_LDFLAGS = $(placeh_bin_ldflags)
-placeh_wallet_LDADD = $(LIBPLACEH_WALLET_TOOL) $(placeh_bin_ldadd)
+placeh_wallet_CPPFLAGS = $(AM_CPPFLAGS) $(PLACEH_INCLUDES)
+placeh_wallet_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+placeh_wallet_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
 placeh_wallet_SOURCES += placeh-wallet-res.rc
 endif
+
+placeh_wallet_LDADD = \
+  $(LIBPLACEH_WALLET_TOOL) \
+  $(LIBPLACEH_WALLET) \
+  $(LIBPLACEH_COMMON) \
+  $(LIBPLACEH_CONSENSUS) \
+  $(LIBPLACEH_UTIL) \
+  $(LIBPLACEH_CRYPTO) \
+  $(LIBPLACEH_ZMQ) \
+  $(LIBLEVELDB) \
+  $(LIBLEVELDB_SSE42) \
+  $(LIBMEMENV) \
+  $(LIBSECP256K1) \
+  $(LIBUNIVALUE) \
+  $(VERIBLOCK_POP_CPP_LIBS)
+
+placeh_wallet_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(MINIUPNPC_LIBS) $(ZMQ_LIBS)
 #
 
 # placehconsensus library #
@@ -774,37 +732,26 @@ clean-local:
 	$(AM_V_GEN) $(WINDRES) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(CPPFLAGS) -DWINDRES_PREPROC -i $< -o $@
 
 check-symbols: $(bin_PROGRAMS)
-if TARGET_DARWIN
-	@echo "Checking macOS dynamic libraries..."
-	$(AM_V_at) OTOOL=$(OTOOL) $(PYTHON) $(top_srcdir)/contrib/devtools/symbol-check.py $(bin_PROGRAMS)
-endif
-
-if TARGET_WINDOWS
-	@echo "Checking Windows dynamic libraries..."
-	$(AM_V_at) OBJDUMP=$(OBJDUMP) $(PYTHON) $(top_srcdir)/contrib/devtools/symbol-check.py $(bin_PROGRAMS)
-endif
-
 if GLIBC_BACK_COMPAT
 	@echo "Checking glibc back compat..."
-	$(AM_V_at) READELF=$(READELF) CPPFILT=$(CPPFILT) $(PYTHON) $(top_srcdir)/contrib/devtools/symbol-check.py $(bin_PROGRAMS)
+	$(AM_V_at) READELF=$(READELF) CPPFILT=$(CPPFILT) $(PYTHON) $(top_srcdir)/contrib/devtools/symbol-check.py < $(bin_PROGRAMS)
 endif
 
 check-security: $(bin_PROGRAMS)
 if HARDEN
 	@echo "Checking binary security..."
-	$(AM_V_at) READELF=$(READELF) OBJDUMP=$(OBJDUMP) OTOOL=$(OTOOL) $(PYTHON) $(top_srcdir)/contrib/devtools/security-check.py $(bin_PROGRAMS)
+	$(AM_V_at) READELF=$(READELF) OBJDUMP=$(OBJDUMP) $(PYTHON) $(top_srcdir)/contrib/devtools/security-check.py < $(bin_PROGRAMS)
 endif
 
 if EMBEDDED_LEVELDB
-include Makefile.crc32c.include
 include Makefile.leveldb.include
 endif
 
 include Makefile.test_util.include
-include Makefile.test_fuzz.include
 
 if ENABLE_TESTS
 include Makefile.test.include
+include vbk/test/integration/Makefile.include
 endif
 
 if ENABLE_BENCH

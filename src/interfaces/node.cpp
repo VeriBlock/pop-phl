@@ -1,4 +1,6 @@
-// Copyright (c) 2018-2020 The Placeholders Core developers
+// Copyright (c) 2018 The Bitcoin Core developers
+// Copyright (c) 2019-2020 Xenios SEZC
+// https://www.veriblock.org
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -27,9 +29,7 @@
 #include <sync.h>
 #include <txmempool.h>
 #include <ui_interface.h>
-#include <util/ref.h>
 #include <util/system.h>
-#include <util/translation.h>
 #include <validation.h>
 #include <warnings.h>
 
@@ -40,24 +40,23 @@
 #include <bootstraps.h>
 #include <univalue.h>
 
-#include <boost/signals2/signal.hpp>
-
 class CWallet;
 fs::path GetWalletDir();
 std::vector<fs::path> ListWalletDir();
 std::vector<std::shared_ptr<CWallet>> GetWallets();
-std::shared_ptr<CWallet> LoadWallet(interfaces::Chain& chain, const std::string& name, bilingual_str& error, std::vector<bilingual_str>& warnings);
-WalletCreationStatus CreateWallet(interfaces::Chain& chain, const SecureString& passphrase, uint64_t wallet_creation_flags, const std::string& name, bilingual_str& error, std::vector<bilingual_str>& warnings, std::shared_ptr<CWallet>& result);
-std::unique_ptr<interfaces::Handler> HandleLoadWallet(interfaces::Node::LoadWalletFn load_wallet);
+std::shared_ptr<CWallet> LoadWallet(interfaces::Chain& chain, const std::string& name, std::string& error, std::vector<std::string>& warnings);
+WalletCreationStatus CreateWallet(interfaces::Chain& chain, const SecureString& passphrase, uint64_t wallet_creation_flags, const std::string& name, std::string& error, std::vector<std::string>& warnings, std::shared_ptr<CWallet>& result);
 
 namespace interfaces {
+
+class Wallet;
 
 namespace {
 
 class NodeImpl : public Node
 {
 public:
-    void initError(const std::string& message) override { InitError(Untranslated(message)); }
+    void initError(const std::string& message) override { InitError(message); }
     bool parseParameters(int argc, const char* const argv[], std::string& error) override
     {
         return gArgs.ParseParameters(argc, argv, error);
@@ -82,22 +81,14 @@ public:
     bool appInitMain() override
     {
         m_context.chain = MakeChain(m_context);
-        return AppInitMain(m_context_ref, m_context);
+        return AppInitMain(m_context);
     }
     void appShutdown() override
     {
         Interrupt(m_context);
         Shutdown(m_context);
     }
-    void startShutdown() override
-    {
-        StartShutdown();
-        // Stop RPC for clean shutdown if any of waitfor* commands is executed.
-        if (gArgs.GetBoolArg("-server", false)) {
-            InterruptRPC();
-            StopRPC();
-        }
-    }
+    void startShutdown() override { StartShutdown(); }
     bool shutdownRequested() override { return ShutdownRequested(); }
     void mapPort(bool use_upnp) override
     {
@@ -108,7 +99,7 @@ public:
             StopMapPort();
         }
     }
-    void setupServerArgs() override { return SetupServerArgs(m_context); }
+    void setupServerArgs() override { return SetupServerArgs(); }
     bool getProxy(Network net, proxyType& proxy_info) override { return GetProxy(net, proxy_info); }
     size_t getNodeCount(CConnman::NumConnections flags) override
     {
@@ -163,14 +154,14 @@ public:
         }
         return false;
     }
-    bool disconnectByAddress(const CNetAddr& net_addr) override
+    bool disconnect(const CNetAddr& net_addr) override
     {
         if (m_context.connman) {
             return m_context.connman->DisconnectNode(net_addr);
         }
         return false;
     }
-    bool disconnectById(NodeId id) override
+    bool disconnect(NodeId id) override
     {
         if (m_context.connman) {
             return m_context.connman->DisconnectNode(id);
@@ -195,11 +186,6 @@ public:
     {
         LOCK(::cs_main);
         return ::ChainActive().Height();
-    }
-    uint256 getBestBlockHash() override
-    {
-        const CBlockIndex* tip = WITH_LOCK(::cs_main, return ::ChainActive().Tip());
-        return tip ? tip->GetBlockHash() : Params().GenesisBlock().GetHash();
     }
     int64_t getLastBlockTime() override
     {
@@ -240,7 +226,7 @@ public:
     CFeeRate getDustRelayFee() override { return ::dustRelayFee; }
     UniValue executeRpc(const std::string& command, const UniValue& params, const std::string& uri) override
     {
-        JSONRPCRequest req(m_context_ref);
+        JSONRPCRequest req;
         req.params = params;
         req.strMethod = command;
         req.URI = uri;
@@ -269,21 +255,21 @@ public:
     std::vector<std::unique_ptr<Wallet>> getWallets() override
     {
         std::vector<std::unique_ptr<Wallet>> wallets;
-        for (auto& client : m_context.chain_clients) {
-            auto client_wallets = client->getWallets();
-            std::move(client_wallets.begin(), client_wallets.end(), std::back_inserter(wallets));
+        for (const std::shared_ptr<CWallet>& wallet : GetWallets()) {
+            wallets.emplace_back(MakeWallet(wallet));
         }
         return wallets;
     }
-    std::unique_ptr<Wallet> loadWallet(const std::string& name, bilingual_str& error, std::vector<bilingual_str>& warnings) override
+    std::unique_ptr<Wallet> loadWallet(const std::string& name, std::string& error, std::vector<std::string>& warnings) override
     {
         return MakeWallet(LoadWallet(*m_context.chain, name, error, warnings));
     }
-    std::unique_ptr<Wallet> createWallet(const SecureString& passphrase, uint64_t wallet_creation_flags, const std::string& name, bilingual_str& error, std::vector<bilingual_str>& warnings, WalletCreationStatus& status) override
+    WalletCreationStatus createWallet(const SecureString& passphrase, uint64_t wallet_creation_flags, const std::string& name, std::string& error, std::vector<std::string>& warnings, std::unique_ptr<Wallet>& result) override
     {
         std::shared_ptr<CWallet> wallet;
-        status = CreateWallet(*m_context.chain, passphrase, wallet_creation_flags, name, error, warnings, wallet);
-        return MakeWallet(wallet);
+        WalletCreationStatus status = CreateWallet(*m_context.chain, passphrase, wallet_creation_flags, name, error, warnings, wallet);
+        result = MakeWallet(wallet);
+        return status;
     }
     std::unique_ptr<Handler> handleInitMessage(InitMessageFn fn) override
     {
@@ -303,7 +289,7 @@ public:
     }
     std::unique_ptr<Handler> handleLoadWallet(LoadWalletFn fn) override
     {
-        return HandleLoadWallet(std::move(fn));
+        return MakeHandler(::uiInterface.LoadWallet_connect([fn](std::unique_ptr<Wallet>& wallet) { fn(std::move(wallet)); }));
     }
     std::unique_ptr<Handler> handleNotifyNumConnectionsChanged(NotifyNumConnectionsChangedFn fn) override
     {
@@ -323,22 +309,21 @@ public:
     }
     std::unique_ptr<Handler> handleNotifyBlockTip(NotifyBlockTipFn fn) override
     {
-        return MakeHandler(::uiInterface.NotifyBlockTip_connect([fn](SynchronizationState sync_state, const CBlockIndex* block) {
-            fn(sync_state, BlockTip{block->nHeight, block->GetBlockTime(), block->GetBlockHash()},
+        return MakeHandler(::uiInterface.NotifyBlockTip_connect([fn](bool initial_download, const CBlockIndex* block) {
+            fn(initial_download, block->nHeight, block->GetBlockTime(),
                 GuessVerificationProgress(Params().TxData(), block));
         }));
     }
     std::unique_ptr<Handler> handleNotifyHeaderTip(NotifyHeaderTipFn fn) override
     {
         return MakeHandler(
-            ::uiInterface.NotifyHeaderTip_connect([fn](SynchronizationState sync_state, const CBlockIndex* block) {
-                fn(sync_state, BlockTip{block->nHeight, block->GetBlockTime(), block->GetBlockHash()},
+            ::uiInterface.NotifyHeaderTip_connect([fn](bool initial_download, const CBlockIndex* block) {
+                fn(initial_download, block->nHeight, block->GetBlockTime(),
                     /* verification progress is unused when a header was received */ 0);
             }));
     }
     NodeContext* context() override { return &m_context; }
     NodeContext m_context;
-    util::Ref m_context_ref{m_context};
 };
 
 } // namespace

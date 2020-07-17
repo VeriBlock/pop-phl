@@ -83,7 +83,7 @@
     </message>
     <message>
         <source>Export Address List</source>
-        <translation>Exportar la Lista de Direcciones</translation>
+        <translation>Exportar la Lista de Direcciones </translation>
     </message>
     <message>
         <source>Comma separated file (*.csv)</source>
@@ -160,8 +160,8 @@
         <translation>Confirme cifrado del monedero</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PHLS&lt;/b&gt;!</source>
-        <translation>Atención: Si cifra su monedero y pierde la contraseña, perderá ¡&lt;b&gt;TODOS SUS PHLS&lt;/b&gt;!</translation>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PLACEHS&lt;/b&gt;!</source>
+        <translation>Atención: Si cifra su monedero y pierde la contraseña, perderá ¡&lt;b&gt;TODOS SUS PLACEHS&lt;/b&gt;!</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -171,48 +171,12 @@
         <source>Wallet encrypted</source>
         <translation>Monedero cifrado</translation>
     </message>
-    <message>
-        <source>IMPORTANT: Any previous backups you have made of your wallet file should be replaced with the newly generated, encrypted wallet file. For security reasons, previous backups of the unencrypted wallet file will become useless as soon as you start using the new, encrypted wallet.</source>
-        <translation>IMPORTANTE: Algunas copias de seguridad que hayas hecho de tu archivo de billetera deberían ser reemplazadas con la billetera encriptada generada recientemente. Por razones de seguridad, las copias de seguridad previas del archivo de billetera sin cifrar serán inútiles tan pronto uses la nueva billetera encriptada.</translation>
-    </message>
-    <message>
-        <source>Wallet encryption failed</source>
-        <translation>Encriptado de monedero fallido</translation>
-    </message>
-    <message>
-        <source>Wallet encryption failed due to an internal error. Your wallet was not encrypted.</source>
-        <translation>Encriptación de billetera fallida debido a un error interno. Tu billetera no fue encriptada.</translation>
-    </message>
-    <message>
-        <source>The supplied passphrases do not match.</source>
-        <translation>Las frases secretas introducidas no concuerdan.</translation>
-    </message>
-    <message>
-        <source>Wallet unlock failed</source>
-        <translation>Desbloqueo de billetera fallido</translation>
-    </message>
-    <message>
-        <source>The passphrase entered for the wallet decryption was incorrect.</source>
-        <translation>La frase secreta introducida para la desencriptación de la billetera fué incorrecta.</translation>
-    </message>
-    <message>
-        <source>Wallet decryption failed</source>
-        <translation>Desencriptación de billetera fallida</translation>
-    </message>
-    <message>
-        <source>Wallet passphrase was successfully changed.</source>
-        <translation>La frase secreta de la billetera fué cambiada exitosamente.</translation>
-    </message>
-    <message>
-        <source>Warning: The Caps Lock key is on!</source>
-        <translation>Aviso: El bloqueo de mayúsculas está activado.</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>BanTableModel</name>
     </context>
 <context>
-    <name>PlaceholdersGUI</name>
+    <name>BitcoinGUI</name>
     <message>
         <source>Sign &amp;message...</source>
         <translation>Firmar &amp;mensaje...</translation>
@@ -279,7 +243,7 @@
     </message>
     <message>
         <source>Send coins to a Placeholders address</source>
-        <translation>Enviar monedas a una dirección Placeholders</translation>
+        <translation>Enviar monedas a una dirección Bitcoin</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -288,6 +252,14 @@
     <message>
         <source>Change the passphrase used for wallet encryption</source>
         <translation>Cambiar la contraseña utilizada para el cifrado del monedero</translation>
+    </message>
+    <message>
+        <source>&amp;Debug window</source>
+        <translation>Ventana de &amp;depuración</translation>
+    </message>
+    <message>
+        <source>Open debugging and diagnostic console</source>
+        <translation>Abrir la consola de depuración y diagnóstico</translation>
     </message>
     <message>
         <source>&amp;Verify message...</source>
@@ -339,7 +311,7 @@
     </message>
     <message>
         <source>Request payments (generates QR codes and placeh: URIs)</source>
-        <translation>Solicitar pagos (genera codigo QR y URL's de Placeholders)</translation>
+        <translation>Solicitar pagos (genera codigo QR y URL's de Bitcoin)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -348,6 +320,10 @@
     <message>
         <source>Show the list of used receiving addresses and labels</source>
         <translation>Muestra la lista de direcciones de recepción y etiquetas</translation>
+    </message>
+    <message>
+        <source>Open a placeh: URI or payment request</source>
+        <translation>Abrir un placeh: URI o petición de pago</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -380,14 +356,6 @@
     <message>
         <source>Up to date</source>
         <translation>Actualizado</translation>
-    </message>
-    <message>
-        <source>Close wallet</source>
-        <translation>Cerrar monedero</translation>
-    </message>
-    <message>
-        <source>No wallets available</source>
-        <translation>Monederos no disponibles</translation>
     </message>
     <message>
         <source>&amp;Window</source>
@@ -485,30 +453,6 @@
         <translation>Confirmado</translation>
     </message>
     <message>
-        <source>Copy address</source>
-        <translation>Copiar dirección</translation>
-    </message>
-    <message>
-        <source>Copy label</source>
-        <translation>Copiar etiqueta</translation>
-    </message>
-    <message>
-        <source>Copy amount</source>
-        <translation>Copiar cantidad</translation>
-    </message>
-    <message>
-        <source>Copy transaction ID</source>
-        <translation>Copiar ID de la transacción</translation>
-    </message>
-    <message>
-        <source>Lock unspent</source>
-        <translation>Bloqueo no gastado</translation>
-    </message>
-    <message>
-        <source>Unlock unspent</source>
-        <translation>Desbloqueo no gastado</translation>
-    </message>
-    <message>
         <source>Copy quantity</source>
         <translation>Copiar cantidad</translation>
     </message>
@@ -521,16 +465,8 @@
         <translation>Copiar bytes</translation>
     </message>
     <message>
-        <source>Copy dust</source>
-        <translation>Copiar dust</translation>
-    </message>
-    <message>
         <source>Copy change</source>
         <translation>Copiar cambio</translation>
-    </message>
-    <message>
-        <source>(%1 locked)</source>
-        <translation>(%1 bloqueado)</translation>
     </message>
     <message>
         <source>yes</source>
@@ -541,22 +477,10 @@
         <translation>no</translation>
     </message>
     <message>
-        <source>Can vary +/- %1 satoshi(s) per input.</source>
-        <translation>Puede variar +/- %1 satoshi(s) por entrada.</translation>
-    </message>
-    <message>
         <source>(no label)</source>
         <translation>(sin etiqueta)</translation>
     </message>
-    <message>
-        <source>change from %1 (%2)</source>
-        <translation>Cambio desde %1 (%2)</translation>
-    </message>
-    <message>
-        <source>(change)</source>
-        <translation>(cambio)</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>CreateWalletActivity</name>
     </context>
@@ -585,31 +509,7 @@
         <source>&amp;Address</source>
         <translation>&amp;Dirección</translation>
     </message>
-    <message>
-        <source>New sending address</source>
-        <translation>Nueva dirección de envío</translation>
-    </message>
-    <message>
-        <source>Edit receiving address</source>
-        <translation>Editar dirección de envío</translation>
-    </message>
-    <message>
-        <source>Edit sending address</source>
-        <translation>Editar dirección de envío</translation>
-    </message>
-    <message>
-        <source>The entered address "%1" is not a valid Placeholders address.</source>
-        <translation>La dirección introducida "%1" no es una dirección Placeholders válida.</translation>
-    </message>
-    <message>
-        <source>Could not unlock wallet.</source>
-        <translation>No se pudo desbloquear la billetera.</translation>
-    </message>
-    <message>
-        <source>New key generation failed.</source>
-        <translation>Creación de la nueva llave fallida</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>FreespaceChecker</name>
     <message>
@@ -640,6 +540,10 @@
         <translation>versión</translation>
     </message>
     <message>
+        <source>(%1-bit)</source>
+        <translation>(%1-bit)</translation>
+    </message>
+    <message>
         <source>Command-line options</source>
         <translation>Opciones de la línea de órdenes</translation>
     </message>
@@ -663,8 +567,8 @@
         <translation>Utilice un directorio de datos personalizado:</translation>
     </message>
     <message>
-        <source>Placeholders</source>
-        <translation>Placeholders</translation>
+        <source>Bitcoin</source>
+        <translation>Bitcoin</translation>
     </message>
     <message>
         <source>Error: Specified data directory "%1" cannot be created.</source>
@@ -689,10 +593,22 @@
 <context>
     <name>OpenURIDialog</name>
     <message>
+        <source>Open URI</source>
+        <translation>Abrir URI...</translation>
+    </message>
+    <message>
+        <source>Open payment request from URI or file</source>
+        <translation>El pago requiere una URI o archivo</translation>
+    </message>
+    <message>
         <source>URI:</source>
         <translation>URI:</translation>
     </message>
-</context>
+    <message>
+        <source>Select payment request file</source>
+        <translation>Seleccione archivo de sulicitud de pago</translation>
+    </message>
+    </context>
 <context>
     <name>OpenWalletActivity</name>
     </context>
@@ -937,6 +853,10 @@
         <translation>Información</translation>
     </message>
     <message>
+        <source>Debug window</source>
+        <translation>Ventana de depuración</translation>
+    </message>
+    <message>
         <source>General</source>
         <translation>General</translation>
     </message>
@@ -1039,19 +959,7 @@
         <source>Remove</source>
         <translation>Eliminar</translation>
     </message>
-    <message>
-        <source>Copy label</source>
-        <translation>Copiar etiqueta</translation>
-    </message>
-    <message>
-        <source>Copy message</source>
-        <translation>Copiar mensaje</translation>
-    </message>
-    <message>
-        <source>Copy amount</source>
-        <translation>Copiar cantidad</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>ReceiveRequestDialog</name>
     <message>
@@ -1197,20 +1105,12 @@
         <translation>Copiar cantidad</translation>
     </message>
     <message>
-        <source>Copy amount</source>
-        <translation>Copiar cantidad</translation>
-    </message>
-    <message>
         <source>Copy fee</source>
         <translation>Copiar comisión</translation>
     </message>
     <message>
         <source>Copy bytes</source>
         <translation>Copiar bytes</translation>
-    </message>
-    <message>
-        <source>Copy dust</source>
-        <translation>Copiar dust</translation>
     </message>
     <message>
         <source>Copy change</source>
@@ -1244,6 +1144,10 @@
         <translation>Escoger dirección previamente usada</translation>
     </message>
     <message>
+        <source>This is a normal payment.</source>
+        <translation>Esto es un pago ordinario.</translation>
+    </message>
+    <message>
         <source>Alt+A</source>
         <translation>Alt+A</translation>
     </message>
@@ -1275,7 +1179,10 @@
         <source>Memo:</source>
         <translation>Memo:</translation>
     </message>
-</context>
+    </context>
+<context>
+    <name>SendConfirmationDialog</name>
+    </context>
 <context>
     <name>ShutdownWindow</name>
     </context>
@@ -1319,7 +1226,7 @@
     </message>
     <message>
         <source>Sign the message to prove you own this Placeholders address</source>
-        <translation>Firmar el mensaje para demostrar que se posee esta dirección Placeholders</translation>
+        <translation>Firmar el mensaje para demostrar que se posee esta dirección Bitcoin</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -1372,10 +1279,6 @@
         <translation>Comisión de transacción</translation>
     </message>
     <message>
-        <source>Transaction</source>
-        <translation>Transacción</translation>
-    </message>
-    <message>
         <source>Amount</source>
         <translation>Cantidad</translation>
     </message>
@@ -1404,22 +1307,6 @@
     </context>
 <context>
     <name>TransactionView</name>
-    <message>
-        <source>Copy address</source>
-        <translation>Copiar dirección</translation>
-    </message>
-    <message>
-        <source>Copy label</source>
-        <translation>Copiar etiqueta</translation>
-    </message>
-    <message>
-        <source>Copy amount</source>
-        <translation>Copiar cantidad</translation>
-    </message>
-    <message>
-        <source>Copy transaction ID</source>
-        <translation>Copiar ID de la transacción</translation>
-    </message>
     <message>
         <source>Comma separated file (*.csv)</source>
         <translation>Archivo de columnas separadas por coma (*.csv)</translation>
@@ -1450,10 +1337,6 @@
     </context>
 <context>
     <name>WalletController</name>
-    <message>
-        <source>Close wallet</source>
-        <translation>Cerrar monedero</translation>
-    </message>
     </context>
 <context>
     <name>WalletFrame</name>
@@ -1475,37 +1358,9 @@
         <source>Export the data in the current tab to a file</source>
         <translation>Exportar a un archivo los datos de esta pestaña</translation>
     </message>
-    <message>
-        <source>Backup Failed</source>
-        <translation>Copia de seguridad fallida</translation>
-    </message>
-    <message>
-        <source>There was an error trying to save the wallet data to %1.</source>
-        <translation>Hubo un error intentando guardar los datos de la billetera al %1</translation>
-    </message>
-    <message>
-        <source>Backup Successful</source>
-        <translation>Copia de seguridad completada</translation>
-    </message>
-    <message>
-        <source>The wallet data was successfully saved to %1.</source>
-        <translation>Los datos de la billetera fueron guardados exitosamente al %1</translation>
-    </message>
     </context>
 <context>
     <name>placeh-core</name>
-    <message>
-        <source>This is a pre-release test build - use at your own risk - do not use for mining or merchant applications</source>
-        <translation>Esta es una compilación de prueba pre-lanzamiento - use bajo su propio riesgo - no utilizar para aplicaciones de minería o mercantes</translation>
-    </message>
-    <message>
-        <source>Warning: The network does not appear to fully agree! Some miners appear to be experiencing issues.</source>
-        <translation>Aviso: ¡La red no parece estar totalmente de acuerdo! Algunos mineros parecen estar teniendo inconvenientes.</translation>
-    </message>
-    <message>
-        <source>Warning: We do not appear to fully agree with our peers! You may need to upgrade, or other nodes may need to upgrade.</source>
-        <translation>Aviso: ¡No parecen estar totalmente de acuerdo con nuestros compañeros! Puede que tengas que actualizar, u otros nodos tengan que actualizarce.</translation>
-    </message>
     <message>
         <source>Corrupted block database detected</source>
         <translation>Corrupción de base de datos de bloques detectada.</translation>
@@ -1540,7 +1395,7 @@
     </message>
     <message>
         <source>Not enough file descriptors available.</source>
-        <translation>No hay suficientes descriptores de archivo disponibles.</translation>
+        <translation>No hay suficientes descriptores de archivo disponibles. </translation>
     </message>
     <message>
         <source>Verifying blocks...</source>

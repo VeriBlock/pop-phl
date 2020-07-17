@@ -1,9 +1,11 @@
-// Copyright (c) 2015-2020 The Placeholders Core developers
+// Copyright (c) 2015-2019 The Bitcoin Core developers
+// Copyright (c) 2019-2020 Xenios SEZC
+// https://www.veriblock.org
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_TEST_UTIL_SETUP_COMMON_H
-#define PHL_TEST_UTIL_SETUP_COMMON_H
+#ifndef PLACEH_TEST_UTIL_SETUP_COMMON_H
+#define PLACEH_TEST_UTIL_SETUP_COMMON_H
 
 #include <chainparamsbase.h>
 #include <fs.h>
@@ -13,14 +15,14 @@
 #include <random.h>
 #include <scheduler.h>
 #include <txmempool.h>
-#include <util/string.h>
+
+#include <vbk/pop_service.hpp>
+#include <vbk/config.hpp>
+#include <vbk/test/util/mock.hpp>
 
 #include <type_traits>
 
-#include <boost/thread/thread.hpp>
-
-/** This is connected to the logger. Can be used to redirect logs to any other log */
-extern const std::function<void(const std::string&)> G_TEST_LOG_FUN;
+#include <boost/thread.hpp>
 
 // Enable BOOST_CHECK_EQUAL for enum class types
 template <typename T>
@@ -73,11 +75,8 @@ static constexpr CAmount CENT{1000000};
  */
 struct BasicTestingSetup {
     ECCVerifyHandle globalVerifyHandle;
-    NodeContext m_node;
-
-    explicit BasicTestingSetup(const std::string& chainName = CBaseChainParams::MAIN, const std::vector<const char*>& extra_args = {});
+    explicit BasicTestingSetup(const std::string& chainName = CBaseChainParams::MAIN);
     ~BasicTestingSetup();
-
 private:
     const fs::path m_path_root;
 };
@@ -86,9 +85,10 @@ private:
  * Included are coins database, script check threads setup.
  */
 struct TestingSetup : public BasicTestingSetup {
+    NodeContext m_node;
     boost::thread_group threadGroup;
-
-    explicit TestingSetup(const std::string& chainName = CBaseChainParams::MAIN, const std::vector<const char*>& extra_args = {});
+    CScheduler scheduler;
+    explicit TestingSetup(const std::string& chainName = CBaseChainParams::MAIN);
     ~TestingSetup();
 };
 
@@ -116,6 +116,7 @@ struct TestChain100Setup : public RegTestingSetup {
 
     CBlock CreateAndProcessBlock(const std::vector<CMutableTransaction>& txns, uint256 prevBlock,
                                  const CScript& scriptPubKey, bool* isBlockValid = nullptr);
+
 
     ~TestChain100Setup();
 

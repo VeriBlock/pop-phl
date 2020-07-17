@@ -1,9 +1,9 @@
-// Copyright (c) 2019 The Placeholders Core developers
+// Copyright (c) 2019 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_TEST_UTIL_STR_H
-#define PHL_TEST_UTIL_STR_H
+#ifndef PLACEH_TEST_UTIL_STR_H
+#define PLACEH_TEST_UTIL_STR_H
 
 #include <string>
 
@@ -42,4 +42,4 @@ void ForEachNoDup(CharType (&string)[StringLength], CharType min_char, CharType 
     }
 }
 
-#endif // PHL_TEST_UTIL_STR_H
+#endif // PLACEH_TEST_UTIL_STR_H

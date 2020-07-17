@@ -162,8 +162,8 @@ Alihkan fail data ke dalam tab semasa</translation>
         <translation>Mengesahkan enkripsi dompet</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PHLS&lt;/b&gt;!</source>
-        <translation>Amaran: Jika anda enkripkan dompet anda dan hilangkan frasa laluan, anda akan &lt;b&gt;ANDA AKAN HILANGKAN SEMUA PHL ANDA&lt;/b&gt;!</translation>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PLACEHS&lt;/b&gt;!</source>
+        <translation>Amaran: Jika anda enkripkan dompet anda dan hilangkan frasa laluan, anda akan &lt;b&gt;ANDA AKAN HILANGKAN SEMUA PLACEH ANDA&lt;/b&gt;!</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -222,7 +222,7 @@ Alihkan fail data ke dalam tab semasa</translation>
     </message>
 </context>
 <context>
-    <name>PlaceholdersGUI</name>
+    <name>BitcoinGUI</name>
     <message>
         <source>Sign &amp;message...</source>
         <translation>Tandatangan &amp; mesej...</translation>
@@ -245,7 +245,7 @@ Alihkan fail data ke dalam tab semasa</translation>
     </message>
     <message>
         <source>Browse transaction history</source>
-        <translation>Menyemak imbas sejarah transaksi</translation>
+        <translation>Menyemak imbas sejarah transaksi </translation>
     </message>
     <message>
         <source>E&amp;xit</source>
@@ -321,7 +321,7 @@ Alihkan fail data ke dalam tab semasa</translation>
     </message>
     <message>
         <source>Send coins to a Placeholders address</source>
-        <translation>Menghantar koin kepada alamat Placeholders</translation>
+        <translation>Menghantar koin kepada alamat Bitcoin</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -330,6 +330,14 @@ Alihkan fail data ke dalam tab semasa</translation>
     <message>
         <source>Change the passphrase used for wallet encryption</source>
         <translation>Tukar kata laluan untuk dompet disulitkan</translation>
+    </message>
+    <message>
+        <source>&amp;Debug window</source>
+        <translation>Tetingkap windows</translation>
+    </message>
+    <message>
+        <source>Open debugging and diagnostic console</source>
+        <translation>buka debug dan konsol diagnostik</translation>
     </message>
     <message>
         <source>&amp;Verify message...</source>
@@ -353,7 +361,7 @@ Alihkan fail data ke dalam tab semasa</translation>
     </message>
     <message>
         <source>Encrypt the private keys that belong to your wallet</source>
-        <translation>sulitkan kata laluan milik peribadi anda</translation>
+        <translation>sulitkan kata laluan milik peribadi anda </translation>
     </message>
     <message>
         <source>Sign messages with your Placeholders addresses to prove you own them</source>
@@ -427,10 +435,6 @@ Alihkan fail data ke dalam tab semasa</translation>
 <context>
     <name>CoinControlDialog</name>
     <message>
-        <source>Amount</source>
-        <translation>Amount</translation>
-    </message>
-    <message>
         <source>(no label)</source>
         <translation>(tiada label)</translation>
     </message>
@@ -461,8 +465,8 @@ Alihkan fail data ke dalam tab semasa</translation>
 <context>
     <name>Intro</name>
     <message>
-        <source>Placeholders</source>
-        <translation>Placeholders</translation>
+        <source>Bitcoin</source>
+        <translation>Bitcoin</translation>
     </message>
     <message>
         <source>Error</source>
@@ -505,10 +509,6 @@ Alihkan fail data ke dalam tab semasa</translation>
     </context>
 <context>
     <name>QObject</name>
-    <message>
-        <source>Amount</source>
-        <translation>Amount</translation>
-    </message>
     </context>
 <context>
     <name>QRImageWidget</name>
@@ -528,10 +528,6 @@ Alihkan fail data ke dalam tab semasa</translation>
     <message>
         <source>Address</source>
         <translation>Alamat</translation>
-    </message>
-    <message>
-        <source>Amount</source>
-        <translation>Amount</translation>
     </message>
     <message>
         <source>Label</source>
@@ -568,6 +564,9 @@ Alihkan fail data ke dalam tab semasa</translation>
     <name>SendCoinsEntry</name>
     </context>
 <context>
+    <name>SendConfirmationDialog</name>
+    </context>
+<context>
     <name>ShutdownWindow</name>
     </context>
 <context>
@@ -578,10 +577,6 @@ Alihkan fail data ke dalam tab semasa</translation>
     </context>
 <context>
     <name>TransactionDesc</name>
-    <message>
-        <source>Amount</source>
-        <translation>Amount</translation>
-    </message>
     </context>
 <context>
     <name>TransactionDescDialog</name>

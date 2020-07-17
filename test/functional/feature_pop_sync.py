@@ -10,14 +10,14 @@ Test with multiple nodes, and multiple PoP endorsements, checking to make sure n
 """
 
 from test_framework.pop import KEYSTONE_INTERVAL, endorse_block
-from test_framework.test_framework import PlaceholdersTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import (
     connect_nodes,
     sync_mempools,
 )
 
 
-class PoPSync(PlaceholdersTestFramework):
+class PoPSync(BitcoinTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 3

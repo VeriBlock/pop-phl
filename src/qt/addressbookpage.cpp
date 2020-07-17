@@ -1,4 +1,6 @@
-// Copyright (c) 2011-2019 The Placeholders Core developers
+// Copyright (c) 2011-2018 The Bitcoin Core developers
+// Copyright (c) 2019-2020 Xenios SEZC
+// https://www.veriblock.org
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -35,7 +37,7 @@ public:
     }
 
 protected:
-    bool filterAcceptsRow(int row, const QModelIndex& parent) const override
+    bool filterAcceptsRow(int row, const QModelIndex& parent) const
     {
         auto model = sourceModel();
         auto label = model->index(row, AddressTableModel::Label, parent);
@@ -106,7 +108,7 @@ AddressBookPage::AddressBookPage(const PlatformStyle *platformStyle, Mode _mode,
         ui->newAddress->setVisible(true);
         break;
     case ReceivingTab:
-        ui->labelExplanation->setText(tr("These are your Placeholders addresses for receiving payments. Use the 'Create new receiving address' button in the receive tab to create new addresses.\nSigning is only possible with addresses of the type 'legacy'."));
+        ui->labelExplanation->setText(tr("These are your Placeholders addresses for receiving payments. Use the 'Create new receiving address' button in the receive tab to create new addresses."));
         ui->deleteAddress->setVisible(false);
         ui->newAddress->setVisible(false);
         break;
@@ -136,8 +138,6 @@ AddressBookPage::AddressBookPage(const PlatformStyle *platformStyle, Mode _mode,
     connect(ui->tableView, &QWidget::customContextMenuRequested, this, &AddressBookPage::contextualMenu);
 
     connect(ui->closeButton, &QPushButton::clicked, this, &QDialog::accept);
-
-    GUIUtil::handleCloseWindowShortcut(this);
 }
 
 AddressBookPage::~AddressBookPage()

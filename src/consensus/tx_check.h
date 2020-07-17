@@ -1,9 +1,9 @@
-// Copyright (c) 2017-2019 The Placeholders Core developers
+// Copyright (c) 2017-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_CONSENSUS_TX_CHECK_H
-#define PHL_CONSENSUS_TX_CHECK_H
+#ifndef PLACEH_CONSENSUS_TX_CHECK_H
+#define PLACEH_CONSENSUS_TX_CHECK_H
 
 /**
  * Context-independent transaction checking code that can be called outside the
@@ -17,4 +17,4 @@ class TxValidationState;
 
 bool CheckTransaction(const CTransaction& tx, TxValidationState& state);
 
-#endif // PHL_CONSENSUS_TX_CHECK_H
+#endif // PLACEH_CONSENSUS_TX_CHECK_H

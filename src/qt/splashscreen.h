@@ -1,9 +1,9 @@
-// Copyright (c) 2011-2018 The Placeholders Core developers
+// Copyright (c) 2011-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_QT_SPLASHSCREEN_H
-#define PHL_QT_SPLASHSCREEN_H
+#ifndef PLACEH_QT_SPLASHSCREEN_H
+#define PLACEH_QT_SPLASHSCREEN_H
 
 #include <QWidget>
 
@@ -19,7 +19,7 @@ class Wallet;
 
 /** Class for the splashscreen with information of the running client.
  *
- * @note this is intentionally not a QSplashScreen. Placeholders Core initialization
+ * @note this is intentionally not a QSplashScreen. Bitcoin Core initialization
  * can take a long time, and in that case a progress window that cannot be
  * moved around and minimized has turned out to be frustrating to the user.
  */
@@ -32,8 +32,8 @@ public:
     ~SplashScreen();
 
 protected:
-    void paintEvent(QPaintEvent *event) override;
-    void closeEvent(QCloseEvent *event) override;
+    void paintEvent(QPaintEvent *event);
+    void closeEvent(QCloseEvent *event);
 
 public Q_SLOTS:
     /** Hide the splash screen window and schedule the splash screen object for deletion */
@@ -43,7 +43,7 @@ public Q_SLOTS:
     void showMessage(const QString &message, int alignment, const QColor &color);
 
 protected:
-    bool eventFilter(QObject * obj, QEvent * ev) override;
+    bool eventFilter(QObject * obj, QEvent * ev);
 
 private:
     /** Connect core signals to splash screen */
@@ -66,4 +66,4 @@ private:
     std::list<std::unique_ptr<interfaces::Handler>> m_connected_wallet_handlers;
 };
 
-#endif // PHL_QT_SPLASHSCREEN_H
+#endif // PLACEH_QT_SPLASHSCREEN_H

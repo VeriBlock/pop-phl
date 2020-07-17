@@ -1,14 +1,12 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2018 The Placeholders Core developers
+// Copyright (c) 2009-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_HASH_H
-#define PHL_HASH_H
+#ifndef PLACEH_HASH_H
+#define PLACEH_HASH_H
 
-#include <iostream>
 #include <crypto/common.h>
-#include <chrono>
 #include <crypto/ripemd160.h>
 #include <crypto/sha256.h>
 #include <prevector.h>
@@ -16,15 +14,11 @@
 #include <uint256.h>
 #include <version.h>
 
-extern "C" {
-#include <algo/sph_sha2.h>
-}
-
 #include <vector>
 
 typedef uint256 ChainCode;
 
-/** A hasher class for Placeholders's 256-bit hash (double SHA-256). */
+/** A hasher class for Bitcoin's 256-bit hash (double SHA-256). */
 class CHash256 {
 private:
     CSHA256 sha;
@@ -48,7 +42,7 @@ public:
     }
 };
 
-/** A hasher class for Placeholders's 160-bit hash (SHA-256 + RIPEMD-160). */
+/** A hasher class for Bitcoin's 160-bit hash (SHA-256 + RIPEMD-160). */
 class CHash160 {
 private:
     CSHA256 sha;
@@ -210,4 +204,4 @@ unsigned int MurmurHash3(unsigned int nHashSeed, const std::vector<unsigned char
 
 void BIP32Hash(const ChainCode &chainCode, unsigned int nChild, unsigned char header, const unsigned char data[32], unsigned char output[64]);
 
-#endif // PHL_HASH_H
+#endif // PLACEH_HASH_H

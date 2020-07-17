@@ -1,9 +1,9 @@
-// Copyright (c) 2011-2018 The Placeholders Core developers
+// Copyright (c) 2011-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_QT_TRANSACTIONFILTERPROXY_H
-#define PHL_QT_TRANSACTIONFILTERPROXY_H
+#ifndef PLACEH_QT_TRANSACTIONFILTERPROXY_H
+#define PLACEH_QT_TRANSACTIONFILTERPROXY_H
 
 #include <amount.h>
 
@@ -49,10 +49,10 @@ public:
     /** Set whether to show conflicted transactions. */
     void setShowInactive(bool showInactive);
 
-    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
 protected:
-    bool filterAcceptsRow(int source_row, const QModelIndex & source_parent) const override;
+    bool filterAcceptsRow(int source_row, const QModelIndex & source_parent) const;
 
 private:
     QDateTime dateFrom;
@@ -65,4 +65,4 @@ private:
     bool showInactive;
 };
 
-#endif // PHL_QT_TRANSACTIONFILTERPROXY_H
+#endif // PLACEH_QT_TRANSACTIONFILTERPROXY_H

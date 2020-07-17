@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright (c) 2018-2020 The Placeholders Core developers
+# Copyright (c) 2018-2019 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 #
@@ -35,28 +35,26 @@ if ! command -v shellcheck > /dev/null; then
     exit $EXIT_CODE
 fi
 
-SHELLCHECK_CMD=(shellcheck --external-sources --check-sourced)
 EXCLUDE="--exclude=$(IFS=','; echo "${disabled[*]}")"
-if ! "${SHELLCHECK_CMD[@]}" "$EXCLUDE" $(git ls-files -- '*.sh' | grep -vE 'src/(leveldb|secp256k1|univalue)/'); then
+if ! shellcheck "$EXCLUDE" $(git ls-files -- '*.sh' | grep -vE 'src/(leveldb|secp256k1|univalue)/'); then
     EXIT_CODE=1
 fi
 
 if ! command -v yq > /dev/null; then
-    echo "Skipping Gitian descriptor scripts checking since yq is not installed."
+    echo "Skipping Gitian desriptor scripts checking since yq is not installed."
     exit $EXIT_CODE
 fi
 
 EXCLUDE_GITIAN=${EXCLUDE}",$(IFS=','; echo "${disabled_gitian[*]}")"
 for descriptor in $(git ls-files -- 'contrib/gitian-descriptors/*.yml')
 do
-    script=$(basename "$descriptor")
+    echo
+    echo "$descriptor"
     # Use #!/bin/bash as gitian-builder/bin/gbuild does to complete a script.
-    echo "#!/bin/bash" > $script
-    yq -r .script "$descriptor" >> $script
-    if ! "${SHELLCHECK_CMD[@]}" "$EXCLUDE_GITIAN" $script; then
+    SCRIPT=$'#!/bin/bash\n'$(yq -r .script "$descriptor")
+    if ! echo "$SCRIPT" | shellcheck "$EXCLUDE_GITIAN" -; then
         EXIT_CODE=1
     fi
-    rm $script
 done
 
 exit $EXIT_CODE

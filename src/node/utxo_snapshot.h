@@ -1,10 +1,10 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2019 The Placeholders Core developers
+// Copyright (c) 2009-2019 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_NODE_UTXO_SNAPSHOT_H
-#define PHL_NODE_UTXO_SNAPSHOT_H
+#ifndef PLACEH_NODE_UTXO_SNAPSHOT_H
+#define PLACEH_NODE_UTXO_SNAPSHOT_H
 
 #include <uint256.h>
 #include <serialize.h>
@@ -35,7 +35,16 @@ public:
             m_coins_count(coins_count),
             m_nchaintx(nchaintx) { }
 
-    SERIALIZE_METHODS(SnapshotMetadata, obj) { READWRITE(obj.m_base_blockhash, obj.m_coins_count, obj.m_nchaintx); }
+    ADD_SERIALIZE_METHODS;
+
+    template <typename Stream, typename Operation>
+    inline void SerializationOp(Stream& s, Operation ser_action)
+    {
+        READWRITE(m_base_blockhash);
+        READWRITE(m_coins_count);
+        READWRITE(m_nchaintx);
+    }
+
 };
 
-#endif // PHL_NODE_UTXO_SNAPSHOT_H
+#endif // PLACEH_NODE_UTXO_SNAPSHOT_H

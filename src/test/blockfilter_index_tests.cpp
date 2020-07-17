@@ -1,4 +1,4 @@
-// Copyright (c) 2017-2020 The Placeholders Core developers
+// Copyright (c) 2017-2019 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -17,11 +17,6 @@
 #include <boost/test/unit_test.hpp>
 
 BOOST_AUTO_TEST_SUITE(blockfilter_index_tests)
-
-struct BuildChainTestingSetup : public TestChain100Setup {
-    CBlock CreateBlock(const CBlockIndex* prev, const std::vector<CMutableTransaction>& txns, const CScript& scriptPubKey);
-    bool BuildChain(const CBlockIndex* pindex, const CScript& coinbase_script_pub_key, size_t length, std::vector<std::shared_ptr<CBlock>>& chain);
-};
 
 static bool CheckFilterLookups(BlockFilterIndex& filter_index, const CBlockIndex* block_index,
                                uint256& last_header)
@@ -43,8 +38,8 @@ static bool CheckFilterLookups(BlockFilterIndex& filter_index, const CBlockIndex
     BOOST_CHECK(filter_index.LookupFilterHashRange(block_index->nHeight, block_index,
                                                    filter_hashes));
 
-    BOOST_CHECK_EQUAL(filters.size(), 1U);
-    BOOST_CHECK_EQUAL(filter_hashes.size(), 1U);
+    BOOST_CHECK_EQUAL(filters.size(), 1);
+    BOOST_CHECK_EQUAL(filter_hashes.size(), 1);
 
     BOOST_CHECK_EQUAL(filter.GetHash(), expected_filter.GetHash());
     BOOST_CHECK_EQUAL(filter_header, expected_filter.ComputeHeader(last_header));
@@ -57,12 +52,12 @@ static bool CheckFilterLookups(BlockFilterIndex& filter_index, const CBlockIndex
     return true;
 }
 
-CBlock BuildChainTestingSetup::CreateBlock(const CBlockIndex* prev,
-    const std::vector<CMutableTransaction>& txns,
-    const CScript& scriptPubKey)
+static CBlock CreateBlock(const CBlockIndex* prev,
+                          const std::vector<CMutableTransaction>& txns,
+                          const CScript& scriptPubKey)
 {
     const CChainParams& chainparams = Params();
-    std::unique_ptr<CBlockTemplate> pblocktemplate = BlockAssembler(*m_node.mempool, chainparams).CreateNewBlock(scriptPubKey);
+    std::unique_ptr<CBlockTemplate> pblocktemplate = BlockAssembler(chainparams).CreateNewBlock(scriptPubKey);
     CBlock& block = pblocktemplate->block;
     block.hashPrevBlock = prev->GetBlockHash();
     block.nTime = prev->nTime + 1;
@@ -81,10 +76,8 @@ CBlock BuildChainTestingSetup::CreateBlock(const CBlockIndex* prev,
     return block;
 }
 
-bool BuildChainTestingSetup::BuildChain(const CBlockIndex* pindex,
-    const CScript& coinbase_script_pub_key,
-    size_t length,
-    std::vector<std::shared_ptr<CBlock>>& chain)
+static bool BuildChain(const CBlockIndex* pindex, const CScript& coinbase_script_pub_key,
+                       size_t length, std::vector<std::shared_ptr<CBlock>>& chain)
 {
     std::vector<CMutableTransaction> no_txns;
 
@@ -94,7 +87,7 @@ bool BuildChainTestingSetup::BuildChain(const CBlockIndex* pindex,
         CBlockHeader header = block->GetBlockHeader();
 
         BlockValidationState state;
-        if (!EnsureChainman(m_node).ProcessNewBlockHeaders({header}, state, Params(), &pindex)) {
+        if (!ProcessNewBlockHeaders({header}, state, Params(), &pindex)) {
             return false;
         }
     }
@@ -102,7 +95,7 @@ bool BuildChainTestingSetup::BuildChain(const CBlockIndex* pindex,
     return true;
 }
 
-BOOST_FIXTURE_TEST_CASE(blockfilter_index_initial_sync, BuildChainTestingSetup)
+BOOST_FIXTURE_TEST_CASE(blockfilter_index_initial_sync, TestChain100Setup)
 {
     BlockFilterIndex filter_index(BlockFilterType::BASIC, 1 << 20, true);
 
@@ -138,7 +131,7 @@ BOOST_FIXTURE_TEST_CASE(blockfilter_index_initial_sync, BuildChainTestingSetup)
     int64_t time_start = GetTimeMillis();
     while (!filter_index.BlockUntilSyncedToCurrentChain()) {
         BOOST_REQUIRE(time_start + timeout_ms > GetTimeMillis());
-        UninterruptibleSleep(std::chrono::milliseconds{100});
+        MilliSleep(100);
     }
 
     // Check that filter index has all blocks that were in the chain before it started.
@@ -171,7 +164,7 @@ BOOST_FIXTURE_TEST_CASE(blockfilter_index_initial_sync, BuildChainTestingSetup)
     uint256 chainA_last_header = last_header;
     for (size_t i = 0; i < 2; i++) {
         const auto& block = chainA[i];
-        BOOST_REQUIRE(EnsureChainman(m_node).ProcessNewBlock(Params(), block, true, nullptr));
+        BOOST_REQUIRE(ProcessNewBlock(Params(), block, true, nullptr));
     }
     for (size_t i = 0; i < 2; i++) {
         const auto& block = chainA[i];
@@ -189,7 +182,7 @@ BOOST_FIXTURE_TEST_CASE(blockfilter_index_initial_sync, BuildChainTestingSetup)
     uint256 chainB_last_header = last_header;
     for (size_t i = 0; i < 3; i++) {
         const auto& block = chainB[i];
-        BOOST_REQUIRE(EnsureChainman(m_node).ProcessNewBlock(Params(), block, true, nullptr));
+        BOOST_REQUIRE(ProcessNewBlock(Params(), block, true, nullptr));
     }
     for (size_t i = 0; i < 3; i++) {
         const auto& block = chainB[i];
@@ -220,7 +213,7 @@ BOOST_FIXTURE_TEST_CASE(blockfilter_index_initial_sync, BuildChainTestingSetup)
     // Reorg back to chain A.
      for (size_t i = 2; i < 4; i++) {
          const auto& block = chainA[i];
-         BOOST_REQUIRE(EnsureChainman(m_node).ProcessNewBlock(Params(), block, true, nullptr));
+         BOOST_REQUIRE(ProcessNewBlock(Params(), block, true, nullptr));
      }
 
      // Check that chain A and B blocks can be retrieved.
@@ -255,9 +248,8 @@ BOOST_FIXTURE_TEST_CASE(blockfilter_index_initial_sync, BuildChainTestingSetup)
     BOOST_CHECK(filter_index.LookupFilterRange(0, tip, filters));
     BOOST_CHECK(filter_index.LookupFilterHashRange(0, tip, filter_hashes));
 
-    assert(tip->nHeight >= 0);
-    BOOST_CHECK_EQUAL(filters.size(), tip->nHeight + 1U);
-    BOOST_CHECK_EQUAL(filter_hashes.size(), tip->nHeight + 1U);
+    BOOST_CHECK_EQUAL(filters.size(), tip->nHeight + 1);
+    BOOST_CHECK_EQUAL(filter_hashes.size(), tip->nHeight + 1);
 
     filters.clear();
     filter_hashes.clear();

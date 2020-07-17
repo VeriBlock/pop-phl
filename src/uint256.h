@@ -1,25 +1,25 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2019 The Placeholders Core developers
+// Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2019-2020 Xenios SEZC
+// https://www.veriblock.org
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_UINT256_H
-#define PHL_UINT256_H
+#ifndef PLACEH_UINT256_H
+#define PLACEH_UINT256_H
 
 #include <assert.h>
 #include <cstring>
-#include <stdexcept>
 #include <stdint.h>
 #include <string>
 #include <vector>
-#include <crypto/common.h>
 
 /** Template base class for fixed-sized opaque blobs. */
 template<unsigned int BITS>
 class base_blob
 {
 protected:
-    enum { WIDTH=BITS/8 };
+    static constexpr int WIDTH = BITS / 8;
     uint8_t data[WIDTH];
 public:
     base_blob()
@@ -127,23 +127,6 @@ class uint256 : public base_blob<256> {
 public:
     uint256() {}
     explicit uint256(const std::vector<unsigned char>& vch) : base_blob<256>(vch) {}
-
-    int GetNibble(int index) const 
-    {
-        index = 63 - index;
-        if (index % 2 == 1)
-            return(data[index / 2] >> 4);
-        return(data[index / 2] & 0x0F); 
-    }
-    /** A cheap hash function that just returns 64 bits from the result, it can be
-     * used when the contents are considered uniformly random. It is not appropriate
-     * when the value can easily be influenced from outside as e.g. a network adversary could
-     * provide values to trigger worst-case behavior.
-     */
-    uint64_t GetCheapHash() const
-    {
-        return ReadLE64(data);
-    }
 };
 
 /* uint256 from const char *.
@@ -167,18 +150,4 @@ inline uint256 uint256S(const std::string& str)
     return rv;
 }
 
-uint256& UINT256_ONE();
-
-class uint512 : public base_blob<512> {
-public:
-    uint512() {}
-    uint512(const base_blob<512>& b) : base_blob<512>(b) {}
-    explicit uint512(const std::vector<unsigned char>& vch) : base_blob<512>(vch) {}
-    uint256 trim256() const
-    {
-        uint256 result;
-        memcpy((void*)&result, (void*)data, 32);
-        return result;
-    }
-};
-#endif // PHL_UINT256_H
+#endif // PLACEH_UINT256_H

@@ -67,7 +67,7 @@
     </message>
     <message>
         <source>These are your Placeholders addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Tai yra jūsų Placeholders adresai išeinantiems mokėjimams. Visada pasitikrinkite sumą ir gavėjo adresą prieš siunčiant lėšas.</translation>
+        <translation>Tai yra jūsų Placeholders adresai išeinantiems mokėjimams. Visada pasitikrinkite sumą ir gavėjo adresą prieš siunčiant lėšas. </translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -132,10 +132,6 @@
         <translation>Pakartokite naują slaptafrazę</translation>
     </message>
     <message>
-        <source>Show passphrase</source>
-        <translation>Rodyti slaptafrazę</translation>
-    </message>
-    <message>
         <source>Encrypt wallet</source>
         <translation>Užšifruoti piniginę</translation>
     </message>
@@ -164,8 +160,8 @@
         <translation>Patvirtinkite piniginės užšifravimą</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PHLS&lt;/b&gt;!</source>
-        <translation>Dėmesio: jei užšifruosite savo piniginę ir pamesite slaptafrazę, jūs&lt;b&gt;PRARASITE VISUS SAVO PHLUS&lt;/b&gt;!</translation>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PLACEHS&lt;/b&gt;!</source>
+        <translation>Dėmesio: jei užšifruosite savo piniginę ir pamesite slaptafrazę, jūs&lt;b&gt;PRARASITE VISUS SAVO PLACEHUS&lt;/b&gt;! </translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -177,7 +173,7 @@
     </message>
     <message>
         <source>IMPORTANT: Any previous backups you have made of your wallet file should be replaced with the newly generated, encrypted wallet file. For security reasons, previous backups of the unencrypted wallet file will become useless as soon as you start using the new, encrypted wallet.</source>
-        <translation>SVARBU: Betkokios ankstesnės jūsų piniginės atsarginės kopijos turėtų būti pakeistos naujai sugeneruotu, užšifruotu piniginės failu. Dėl saugumo sumetimų, anstesnės neužšifruotos piniginės kopijos failas taps nenaudingu nuo momento, kai nauja ir užšifruota piniginė bus pradėta naudoti.</translation>
+        <translation>SVARBU: Betkokios ankstesnės jūsų piniginės atsarginės kopijos turėtų būti pakeistos naujai sugeneruotu, užšifruotu piniginės failu. Dėl saugumo sumetimų, anstesnės neužšifruotos piniginės kopijos failas taps nenaudingu nuo momento, kai nauja ir užšifruota piniginė bus pradėta naudoti. </translation>
     </message>
     <message>
         <source>Wallet encryption failed</source>
@@ -224,7 +220,7 @@
     </message>
 </context>
 <context>
-    <name>PlaceholdersGUI</name>
+    <name>BitcoinGUI</name>
     <message>
         <source>Sign &amp;message...</source>
         <translation>Pasirašyti ži&amp;nutę...</translation>
@@ -338,6 +334,14 @@
         <translation>Pakeisti slaptafrazę naudojamą piniginės užšifravimui</translation>
     </message>
     <message>
+        <source>&amp;Debug window</source>
+        <translation>&amp;Derinimo langas</translation>
+    </message>
+    <message>
+        <source>Open debugging and diagnostic console</source>
+        <translation>Atverti derinimo ir diagnostikos konsolę</translation>
+    </message>
+    <message>
         <source>&amp;Verify message...</source>
         <translation>&amp;Tikrinti žinutę...</translation>
     </message>
@@ -363,7 +367,7 @@
     </message>
     <message>
         <source>Sign messages with your Placeholders addresses to prove you own them</source>
-        <translation>Pasirašydami žinutes su savo Placeholders adresais įrodysite jog esate jų savininkas</translation>
+        <translation>Pasirašydami žinutes su savo Placeholders adresais įrodysite jog esate jų savininkas </translation>
     </message>
     <message>
         <source>Verify messages to ensure they were signed with specified Placeholders addresses</source>
@@ -398,6 +402,10 @@
         <translation>Rodyti sąrašą panaudotų gavimo adresų ir žymių</translation>
     </message>
     <message>
+        <source>Open a placeh: URI or payment request</source>
+        <translation>Atidaryti placeh: URI ar apmokėjimo reikalavimą</translation>
+    </message>
+    <message>
         <source>&amp;Command-line options</source>
         <translation>Komandinės eilutės parametrai</translation>
     </message>
@@ -427,7 +435,7 @@
     </message>
     <message>
         <source>Transactions after this will not yet be visible.</source>
-        <translation>Sekančios operacijos dar nebus matomos.</translation>
+        <translation>Sekančios operacijos dar nebus matomos. </translation>
     </message>
     <message>
         <source>Error</source>
@@ -820,6 +828,10 @@
         <translation>versija</translation>
     </message>
     <message>
+        <source>(%1-bit)</source>
+        <translation>(%1-bit)</translation>
+    </message>
+    <message>
         <source>About %1</source>
         <translation>&amp;Apie %1</translation>
     </message>
@@ -863,8 +875,8 @@
         <translation>Naudoti kitą duomenų katalogą:</translation>
     </message>
     <message>
-        <source>Placeholders</source>
-        <translation>Placeholders</translation>
+        <source>Bitcoin</source>
+        <translation>Bitcoin</translation>
     </message>
     <message>
         <source>At least %1 GB of data will be stored in this directory, and it will grow over time.</source>
@@ -953,8 +965,24 @@
 <context>
     <name>OpenURIDialog</name>
     <message>
+        <source>Open URI</source>
+        <translation>Atidaryti URI</translation>
+    </message>
+    <message>
+        <source>Open payment request from URI or file</source>
+        <translation>Atidaryti mokėjimo užklausą iš URI arba failo</translation>
+    </message>
+    <message>
         <source>URI:</source>
         <translation>URI:</translation>
+    </message>
+    <message>
+        <source>Select payment request file</source>
+        <translation>Pasirinkite mokėjimo užklausos failą</translation>
+    </message>
+    <message>
+        <source>Select payment request file to open</source>
+        <translation>Pasirinkite mokėjimo užklausos failą</translation>
     </message>
 </context>
 <context>
@@ -1104,7 +1132,7 @@
     </message>
     <message>
         <source>Connect to the Placeholders network through a SOCKS5 proxy.</source>
-        <translation>Prisijunkite prie „Placeholders“ tinklo per SOCKS5 proxy.</translation>
+        <translation>Prisijunkite prie „Bitcoin“ tinklo per SOCKS5 proxy.</translation>
     </message>
     <message>
         <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
@@ -1140,7 +1168,7 @@
     </message>
     <message>
         <source>Connect to the Placeholders network through a separate SOCKS5 proxy for Tor hidden services.</source>
-        <translation>Prisijunkite prie „Placeholders“ tinklo per atskirą „SOCKS5“ proxy „Tor“ paslėptas paslaugas.</translation>
+        <translation>Prisijunkite prie „Bitcoin“ tinklo per atskirą „SOCKS5“ proxy „Tor“ paslėptas paslaugas.</translation>
     </message>
     <message>
         <source>&amp;Window</source>
@@ -1251,7 +1279,7 @@
     </message>
     <message>
         <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Placeholders network after a connection is established, but this process has not completed yet.</source>
-        <translation>Rodoma informacija gali būti pasenusi. Piniginė automatiškai sinchronizuojasi su „Placeholders“ tinklu po ryšio užmezgimo, tačiau šis procesas dar nebaigtas.</translation>
+        <translation>Rodoma informacija gali būti pasenusi. Piniginė automatiškai sinchronizuojasi su „Bitcoin“ tinklu po ryšio užmezgimo, tačiau šis procesas dar nebaigtas.</translation>
     </message>
     <message>
         <source>Watch-only:</source>
@@ -1337,16 +1365,88 @@
         <translation>„placeh: //“ nėra galiojantis URI. Vietoj to naudokite „placeh:“.</translation>
     </message>
     <message>
+        <source>You are using a BIP70 URL which will be unsupported in the future.</source>
+        <translation>Jūs naudojate BIP70 URL, kuris ateityje nebus palaikomas.</translation>
+    </message>
+    <message>
+        <source>Payment request fetch URL is invalid: %1</source>
+        <translation>Mokėjimo užklausos atsiuntimo URL neteisingas: %1</translation>
+    </message>
+    <message>
+        <source>Cannot process payment request because BIP70 support was not compiled in.</source>
+        <translation>Nepavyksta apdoroti mokėjimo užklausos, nes „BIP70“ pagalba nebuvo surinkta.</translation>
+    </message>
+    <message>
         <source>Invalid payment address %1</source>
         <translation>Neteisingas mokėjimo adresas %1</translation>
     </message>
     <message>
         <source>URI cannot be parsed! This can be caused by an invalid Placeholders address or malformed URI parameters.</source>
-        <translation>URI negalima perskaityti! Tai gali sukelti negaliojantys „Placeholders“ adresas arba netinkami URI parametrai.</translation>
+        <translation>URI negalima perskaityti! Tai gali sukelti negaliojantys „Bitcoin“ adresas arba netinkami URI parametrai.</translation>
     </message>
     <message>
         <source>Payment request file handling</source>
         <translation>Mokėjimo užklausos failų tvarkymas</translation>
+    </message>
+    <message>
+        <source>Payment request file cannot be read! This can be caused by an invalid payment request file.</source>
+        <translation>Mokėjimo užklausos failo negalima skaityti! Tai gali sukelti neteisingas mokėjimo užklausos failas.</translation>
+    </message>
+    <message>
+        <source>Payment request rejected</source>
+        <translation>Mokėjimo prašymas atmestas</translation>
+    </message>
+    <message>
+        <source>Payment request network doesn't match client network.</source>
+        <translation>Mokėjimo užklausų tinklas neatitinka klientų tinklo.</translation>
+    </message>
+    <message>
+        <source>Payment request expired.</source>
+        <translation>Mokėjimo prašymas pasibaigė</translation>
+    </message>
+    <message>
+        <source>Payment request is not initialized.</source>
+        <translation>Mokėjimo prašymas nėra inicijuotas.</translation>
+    </message>
+    <message>
+        <source>Unverified payment requests to custom payment scripts are unsupported.</source>
+        <translation>Nepatvirtinti mokėjimo prašymai pagal individualius mokėjimo scenarijus nepalaikomi.</translation>
+    </message>
+    <message>
+        <source>Invalid payment request.</source>
+        <translation>Neteisingas mokėjimo prašymas.</translation>
+    </message>
+    <message>
+        <source>Requested payment amount of %1 is too small (considered dust).</source>
+        <translation>Prašoma %1 mokėjimo suma yra per maža (laikoma kaip dulkės).</translation>
+    </message>
+    <message>
+        <source>Refund from %1</source>
+        <translation>Grąžinimas iš %1</translation>
+    </message>
+    <message>
+        <source>Payment request %1 is too large (%2 bytes, allowed %3 bytes).</source>
+        <translation>Mokėjimo užklausa %1 yra per didelė (%2 baitai, leidžiama %3 baitų).</translation>
+    </message>
+    <message>
+        <source>Error communicating with %1: %2</source>
+        <translation>Ryšio klaida su %1: %2</translation>
+    </message>
+    <message>
+        <source>Payment request cannot be parsed!</source>
+        <translation>Mokėjimo užklausos negalima perskaityti!</translation>
+    </message>
+    <message>
+        <source>Bad response from server %1</source>
+        <translation>Blogas atsakymas iš serverio %1</translation>
+    </message>
+    <message>
+        <source>Network request error</source>
+        <translation>Tinklo užklausos klaida</translation>
+    </message>
+    <message>
+        <source>Payment acknowledged</source>
+        <translation>Mokėjimas patvirtintas</translation>
     </message>
 </context>
 <context>
@@ -1519,6 +1619,10 @@
     <message>
         <source>&amp;Information</source>
         <translation>&amp;Informacija</translation>
+    </message>
+    <message>
+        <source>Debug window</source>
+        <translation>Derinimo langas</translation>
     </message>
     <message>
         <source>General</source>
@@ -1837,7 +1941,7 @@
     </message>
     <message>
         <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Placeholders network.</source>
-        <translation>Neprivalomas pranešimas, pridedamas prie mokėjimo prašymo, kuris bus rodomas atidarius užklausą. Pastaba: pranešimas nebus išsiųstas su mokėjimu per „Placeholders“ tinklą.</translation>
+        <translation>Neprivalomas pranešimas, pridedamas prie mokėjimo prašymo, kuris bus rodomas atidarius užklausą. Pastaba: pranešimas nebus išsiųstas su mokėjimu per „Bitcoin“ tinklą.</translation>
     </message>
     <message>
         <source>An optional label to associate with the new receiving address.</source>
@@ -2057,6 +2161,10 @@
         <translation>Įspėjimas: šiuo metu neįmanoma apskaičiuoti mokesčio.</translation>
     </message>
     <message>
+        <source>collapse fee-settings</source>
+        <translation>sumažinti mokesčio nustatymus</translation>
+    </message>
+    <message>
         <source>Specify a custom fee per kB (1,000 bytes) of the transaction's virtual size.
 
 Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis per kB" for a transaction size of 500 bytes (half of 1 kB) would ultimately yield a fee of only 50 satoshis.</source>
@@ -2225,6 +2333,10 @@ Pastaba: Kadangi mokestis apskaičiuojamas pagal baitą, mokestis už „100 sat
         <translation>Sandorio sudarymas nepavyko!</translation>
     </message>
     <message>
+        <source>The transaction was rejected with the following reason: %1</source>
+        <translation>Sandoris buvo atmestas dėl šios priežasties: %1</translation>
+    </message>
+    <message>
         <source>A fee higher than %1 is considered an absurdly high fee.</source>
         <translation>Mokestis, didesnis nei %1, laikomas absurdiškai aukštu mokesčiu.</translation>
     </message>
@@ -2276,8 +2388,12 @@ Pastaba: Kadangi mokestis apskaičiuojamas pagal baitą, mokestis už „100 sat
         <translation>Pasirinkite anksčiau naudojamą adresą</translation>
     </message>
     <message>
+        <source>This is a normal payment.</source>
+        <translation>Tai įprastas mokėjimas.</translation>
+    </message>
+    <message>
         <source>The Placeholders address to send the payment to</source>
-        <translation>Placeholders adresas, į kurį siunčiamas mokėjimas</translation>
+        <translation>Bitcoin adresas, į kurį siunčiamas mokėjimas</translation>
     </message>
     <message>
         <source>Alt+A</source>
@@ -2325,7 +2441,7 @@ Pastaba: Kadangi mokestis apskaičiuojamas pagal baitą, mokestis už „100 sat
     </message>
     <message>
         <source>A message that was attached to the placeh: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Placeholders network.</source>
-        <translation>Pranešimas, kuris buvo pridėtas prie placeh: URI, kuris bus saugomas kartu su sandoriu jūsų nuoroda. Pastaba: šis pranešimas nebus išsiųstas per „Placeholders“ tinklą.</translation>
+        <translation>Pranešimas, kuris buvo pridėtas prie placeh: URI, kuris bus saugomas kartu su sandoriu jūsų nuoroda. Pastaba: šis pranešimas nebus išsiųstas per „Bitcoin“ tinklą.</translation>
     </message>
     <message>
         <source>Pay To:</source>
@@ -2334,6 +2450,17 @@ Pastaba: Kadangi mokestis apskaičiuojamas pagal baitą, mokestis už „100 sat
     <message>
         <source>Memo:</source>
         <translation>Atmintinė:</translation>
+    </message>
+    <message>
+        <source>Enter a label for this address to add it to your address book</source>
+        <translation>Įveskite šio adreso etiketę, kad ją pridėtumėte prie adresų knygos</translation>
+    </message>
+</context>
+<context>
+    <name>SendConfirmationDialog</name>
+    <message>
+        <source>Yes</source>
+        <translation>Taip</translation>
     </message>
 </context>
 <context>
@@ -2359,7 +2486,7 @@ Pastaba: Kadangi mokestis apskaičiuojamas pagal baitą, mokestis už „100 sat
     </message>
     <message>
         <source>The Placeholders address to sign the message with</source>
-        <translation>Placeholders adresas, kuriuo bus pasirašytas pranešimas su</translation>
+        <translation>Bitcoin adresas, kuriuo bus pasirašytas pranešimas su</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -2411,7 +2538,7 @@ Pastaba: Kadangi mokestis apskaičiuojamas pagal baitą, mokestis už „100 sat
     </message>
     <message>
         <source>The Placeholders address the message was signed with</source>
-        <translation>Placeholders adresas, kuriuo buvo pasirašytas pranešimas</translation>
+        <translation>Bitcoin adresas, kuriuo buvo pasirašytas pranešimas</translation>
     </message>
     <message>
         <source>Verify the message to ensure it was signed with the specified Placeholders address</source>
@@ -2588,20 +2715,12 @@ Pastaba: Kadangi mokestis apskaičiuojamas pagal baitą, mokestis už „100 sat
         <translation>Sandorio mokestis</translation>
     </message>
     <message>
-        <source>Net amount</source>
-        <translation>Neto suma</translation>
-    </message>
-    <message>
         <source>Message</source>
         <translation>Žinutė</translation>
     </message>
     <message>
         <source>Comment</source>
         <translation>Komentaras</translation>
-    </message>
-    <message>
-        <source>Transaction ID</source>
-        <translation>Sandorio ID</translation>
     </message>
     <message>
         <source>Merchant</source>

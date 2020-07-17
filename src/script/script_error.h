@@ -1,12 +1,12 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2020 The Placeholders Core developers
+// Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2019-2020 Xenios SEZC
+// https://www.veriblock.org
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_SCRIPT_SCRIPT_ERROR_H
-#define PHL_SCRIPT_SCRIPT_ERROR_H
-
-#include <string>
+#ifndef PLACEH_SCRIPT_SCRIPT_ERROR_H
+#define PLACEH_SCRIPT_SCRIPT_ERROR_H
 
 typedef enum ScriptError_t
 {
@@ -80,6 +80,6 @@ typedef enum ScriptError_t
 
 #define SCRIPT_ERR_LAST SCRIPT_ERR_ERROR_COUNT
 
-std::string ScriptErrorString(const ScriptError error);
+const char* ScriptErrorString(const ScriptError error);
 
-#endif // PHL_SCRIPT_SCRIPT_ERROR_H
+#endif // PLACEH_SCRIPT_SCRIPT_ERROR_H

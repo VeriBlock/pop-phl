@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2019 The Placeholders Core developers
+# Copyright (c) 2019 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Useful Script constants and utils."""
@@ -23,4 +23,3 @@ from test_framework.script import CScript
 # scriptPubKeys are needed, to guarantee that the minimum transaction size is
 # met.
 DUMMY_P2WPKH_SCRIPT = CScript([b'a' * 21])
-DUMMY_2_P2WPKH_SCRIPT = CScript([b'b' * 21])

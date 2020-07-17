@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_SRC_VBK_POP_SERVICE_POP_SERVICE_IMPL_HPP
-#define BITCOIN_SRC_VBK_POP_SERVICE_POP_SERVICE_IMPL_HPP
+#ifndef PLACEH_SRC_VBK_POP_SERVICE_POP_SERVICE_IMPL_HPP
+#define PLACEH_SRC_VBK_POP_SERVICE_POP_SERVICE_IMPL_HPP
 
 #include "chainparams.h"
 #include "pop_service.hpp"
@@ -51,10 +51,10 @@ public:
     bool checkPopInputs(const CTransaction& tx, TxValidationState& state, unsigned int flags, bool cacheSigStore, PrecomputedTransactionData& txdata) override;
 
     std::vector<BlockBytes> getLastKnownVBKBlocks(size_t blocks) override;
-    std::vector<BlockBytes> getLastKnownBTCBlocks(size_t blocks) override;
+    std::vector<BlockBytes> getLastKnownPHLBlocks(size_t blocks) override;
 
     bool acceptBlock(const CBlockIndex& indexNew, BlockValidationState& state) override;
-    bool addAllBlockPayloads(const CBlockIndex* indexPrev, const CBlock& fullBlock, BlockValidationState& state) override;
+    bool addAllBlockPayloads(const CBlockIndex& indexPrev, const CBlock& fullBlock, BlockValidationState& state) override;
     void invalidateBlockByHash(const uint256& block) override;
     bool setState(const uint256& block, altintegration::ValidationState& state) override;
 
@@ -65,7 +65,7 @@ public:
 bool parseTxPopPayloadsImpl(const CTransaction& tx, const Consensus::Params& params, TxValidationState& state, altintegration::AltPayloads& payloads);
 bool parseBlockPopPayloadsImpl(const CBlock& block, const CBlockIndex& indexPrev, const Consensus::Params& params, BlockValidationState& state, std::vector<altintegration::AltPayloads>* payloads);
 bool evalScriptImpl(const CScript& script, std::vector<std::vector<unsigned char>>& stack, ScriptError* serror, altintegration::AltPayloads* pub, altintegration::ValidationState& state, bool with_checks);
-bool addAllPayloadsToBlockImpl(altintegration::AltTree& tree, const CBlockIndex* indexPrev, const CBlock& block, BlockValidationState& state);
+bool addAllPayloadsToBlockImpl(altintegration::AltTree& tree, const CBlockIndex& indexPrev, const CBlock& block, BlockValidationState& state);
 
 } // namespace VeriBlock
-#endif //BITCOIN_SRC_VBK_POP_SERVICE_POP_SERVICE_IMPL_HPP
+#endif //PLACEH_SRC_VBK_POP_SERVICE_POP_SERVICE_IMPL_HPP

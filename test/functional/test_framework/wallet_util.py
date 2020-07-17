@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2018-2020 The Placeholders Core developers
+# Copyright (c) 2018 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Useful util functions for testing the wallet"""
@@ -12,10 +12,6 @@ from test_framework.address import (
     script_to_p2sh,
     script_to_p2sh_p2wsh,
     script_to_p2wsh,
-)
-from test_framework.key import (
-    bytes_to_wif,
-    ECKey,
 )
 from test_framework.script import (
     CScript,
@@ -70,25 +66,6 @@ def get_key(node):
                p2sh_p2wpkh_redeem_script=CScript([OP_0, pkh]).hex(),
                p2sh_p2wpkh_addr=key_to_p2sh_p2wpkh(pubkey))
 
-def get_generate_key():
-    """Generate a fresh key
-
-    Returns a named tuple of privkey, pubkey and all address and scripts."""
-    eckey = ECKey()
-    eckey.generate()
-    privkey = bytes_to_wif(eckey.get_bytes())
-    pubkey = eckey.get_pubkey().get_bytes().hex()
-    pkh = hash160(hex_str_to_bytes(pubkey))
-    return Key(privkey=privkey,
-               pubkey=pubkey,
-               p2pkh_script=CScript([OP_DUP, OP_HASH160, pkh, OP_EQUALVERIFY, OP_CHECKSIG]).hex(),
-               p2pkh_addr=key_to_p2pkh(pubkey),
-               p2wpkh_script=CScript([OP_0, pkh]).hex(),
-               p2wpkh_addr=key_to_p2wpkh(pubkey),
-               p2sh_p2wpkh_script=CScript([OP_HASH160, hash160(CScript([OP_0, pkh])), OP_EQUAL]).hex(),
-               p2sh_p2wpkh_redeem_script=CScript([OP_0, pkh]).hex(),
-               p2sh_p2wpkh_addr=key_to_p2sh_p2wpkh(pubkey))
-
 def get_multisig(node):
     """Generate a fresh 2-of-3 multisig on node
 
@@ -110,6 +87,11 @@ def get_multisig(node):
                     p2wsh_addr=script_to_p2wsh(script_code),
                     p2sh_p2wsh_script=CScript([OP_HASH160, witness_script, OP_EQUAL]).hex(),
                     p2sh_p2wsh_addr=script_to_p2sh_p2wsh(script_code))
+
+def labels_value(name="", purpose="receive"):
+    """Generate a getaddressinfo labels array from a name and purpose.
+    Often used as the value of a labels kwarg for calling test_address below."""
+    return [{"name": name, "purpose": purpose}]
 
 def test_address(node, address, **kwargs):
     """Get address info for `address` and test whether the returned values are as expected."""

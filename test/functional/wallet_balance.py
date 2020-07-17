@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2018-2020 The Placeholders Core developers
 # Copyright (c) 2018-2019 The Bitcoin Core developers
 # Copyright (c) 2019-2020 Xenios SEZC
 # https://www.veriblock.org
@@ -9,8 +8,8 @@
 from decimal import Decimal
 import struct
 
-from test_framework.address import ADDRESS_XCRT1_UNSPENDABLE as ADDRESS_WATCHONLY
-from test_framework.test_framework import PlaceholdersTestFramework
+from test_framework.address import ADDRESS_BCRT1_UNSPENDABLE as ADDRESS_WATCHONLY
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import (
     assert_equal,
     assert_raises_rpc_error,
@@ -50,7 +49,7 @@ def create_transactions(node, address, amt, fees):
 
     return txs
 
-class WalletTest(PlaceholdersTestFramework):
+class WalletTest(BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 2
         self.setup_clean_chain = True
@@ -97,13 +96,13 @@ class WalletTest(PlaceholdersTestFramework):
         assert_equal(self.nodes[0].getbalance(minconf=0, include_watchonly=True), POW_PAYOUT * 2)
         assert_equal(self.nodes[1].getbalance(minconf=0, include_watchonly=True), POW_PAYOUT)
 
-        # Send 4 PHL from 0 to 1 and 4 PHL from 1 to 0.
-        txs = create_transactions(self.nodes[0], self.nodes[1].getnewaddress(), 2, [Decimal('0.01')])
+        # Send 40 PHL from 0 to 1 and 60 PHL from 1 to 0.
+        txs = create_transactions(self.nodes[0], self.nodes[1].getnewaddress(), 20, [Decimal('0.01')])
         self.nodes[0].sendrawtransaction(txs[0]['hex'])
         self.nodes[1].sendrawtransaction(txs[0]['hex'])  # sending on both nodes is faster than waiting for propagation
 
         self.sync_all()
-        txs = create_transactions(self.nodes[1], self.nodes[0].getnewaddress(), 4, [Decimal('0.01'), Decimal('0.02')])
+        txs = create_transactions(self.nodes[1], self.nodes[0].getnewaddress(), 40, [Decimal('0.01'), Decimal('0.02')])
         self.nodes[1].sendrawtransaction(txs[0]['hex'])
         self.nodes[0].sendrawtransaction(txs[0]['hex'])  # sending on both nodes is faster than waiting for propagation
         self.sync_all()
@@ -111,7 +110,7 @@ class WalletTest(PlaceholdersTestFramework):
         # First argument of getbalance must be set to "*"
         assert_raises_rpc_error(-32, "dummy first argument must be excluded or set to \"*\"", self.nodes[1].getbalance, "")
 
-        self.log.info("Test balances with unconfirmed inputs")
+        self.log.info("Test getbalance and getunconfirmedbalance with unconfirmed inputs")
 
         # Before `test_balance()`, we have had two nodes with a balance of 50
         # each and then we:
@@ -152,18 +151,6 @@ class WalletTest(PlaceholdersTestFramework):
 
 
         def test_balances(*, fee_node_1=0):
-            # getbalances
-            expected_balances_0 = {'mine':      {'immature':          Decimal('0E-8'),
-                                                 'trusted':           Decimal('9.99'),  # change from node 0's send
-                                                 'untrusted_pending': Decimal('60.0')},
-                                   'watchonly': {'immature':          Decimal('5000'),
-                                                 'trusted':           Decimal('50.0'),
-                                                 'untrusted_pending': Decimal('0E-8')}}
-            expected_balances_1 = {'mine':      {'immature':          Decimal('0E-8'),
-                                                 'trusted':           Decimal('0E-8'),  # node 1's send had an unsafe input
-                                                 'untrusted_pending': Decimal('30.0') - fee_node_1}}  # Doesn't include output of node 0's send since it was spent
-            assert_equal(self.nodes[0].getbalances(), expected_balances_0)
-            assert_equal(self.nodes[1].getbalances(), expected_balances_1)
             # getbalance without any arguments includes unconfirmed transactions, but not untrusted transactions
             assert_equal(self.nodes[0].getbalance(), Decimal('9.99'))  # change from node 0's send
             assert_equal(self.nodes[1].getbalance(), Decimal('0'))  # node 1's send had an unsafe input
@@ -175,11 +162,13 @@ class WalletTest(PlaceholdersTestFramework):
             assert_equal(self.nodes[0].getbalance(minconf=1), Decimal('0'))
             assert_equal(self.nodes[1].getbalance(minconf=1), Decimal('0'))
             # getunconfirmedbalance
-            assert_equal(self.nodes[0].getunconfirmedbalance(), Decimal('60'))  # output of node 1's spend
-            assert_equal(self.nodes[1].getunconfirmedbalance(), Decimal('30') - fee_node_1)  # Doesn't include output of node 0's send since it was spent
-            # getwalletinfo.unconfirmed_balance
-            assert_equal(self.nodes[0].getwalletinfo()["unconfirmed_balance"], Decimal('60'))
-            assert_equal(self.nodes[1].getwalletinfo()["unconfirmed_balance"], Decimal('30') - fee_node_1)
+            assert_equal(self.nodes[0].getunconfirmedbalance(), Decimal('40'))  # output of node 1's spend
+            assert_equal(self.nodes[0].getbalances()['mine']['untrusted_pending'], Decimal('40'))
+            assert_equal(self.nodes[0].getwalletinfo()["unconfirmed_balance"], Decimal('40'))
+
+            assert_equal(self.nodes[1].getunconfirmedbalance(), Decimal('10') - fee_node_1)  # Doesn't include output of node 0's send since it was spent
+            assert_equal(self.nodes[1].getbalances()['mine']['untrusted_pending'], Decimal('10') - fee_node_1)
+            assert_equal(self.nodes[1].getwalletinfo()["unconfirmed_balance"], Decimal('10') - fee_node_1)
 
         test_balances(fee_node_1=Decimal('0.01'))
 
@@ -188,22 +177,18 @@ class WalletTest(PlaceholdersTestFramework):
         self.nodes[0].sendrawtransaction(txs[1]['hex'])  # sending on both nodes is faster than waiting for propagation
         self.sync_all()
 
-        self.log.info("Test getbalance and getbalances.mine.untrusted_pending with conflicted unconfirmed inputs")
+        self.log.info("Test getbalance and getunconfirmedbalance with conflicted unconfirmed inputs")
         test_balances(fee_node_1=Decimal('0.02'))
 
         self.nodes[1].generatetoaddress(1, ADDRESS_WATCHONLY)
         self.sync_all()
 
         # balances are correct after the transactions are confirmed
-        balance_node0 = Decimal('69.99')  # node 1's send plus change from node 0's send
-        balance_node1 = Decimal('29.98')  # change from node 0's send
-        assert_equal(self.nodes[0].getbalances()['mine']['trusted'], balance_node0)
-        assert_equal(self.nodes[1].getbalances()['mine']['trusted'], balance_node1)
-        assert_equal(self.nodes[0].getbalance(), balance_node0)
-        assert_equal(self.nodes[1].getbalance(), balance_node1)
+        assert_equal(self.nodes[0].getbalance(), Decimal('49.99'))  # node 1's send plus change from node 0's send
+        assert_equal(self.nodes[1].getbalance(), Decimal('9.98'))  # change from node 0's send
 
         # Send total balance away from node 1
-        txs = create_transactions(self.nodes[1], self.nodes[0].getnewaddress(), Decimal('29.97'), [Decimal('0.01')])
+        txs = create_transactions(self.nodes[1], self.nodes[0].getnewaddress(), Decimal('9.97'), [Decimal('0.01')])
         self.nodes[1].sendrawtransaction(txs[0]['hex'])
         self.nodes[1].generatetoaddress(2, ADDRESS_WATCHONLY)
         self.sync_all()
@@ -218,20 +203,20 @@ class WalletTest(PlaceholdersTestFramework):
 
         # check mempool transactions count for wallet unconfirmed balance after
         # dynamically loading the wallet.
-        before = self.nodes[1].getbalances()['mine']['untrusted_pending']
+        before = self.nodes[1].getunconfirmedbalance()
         dst = self.nodes[1].getnewaddress()
         self.nodes[1].unloadwallet('')
         self.nodes[0].sendtoaddress(dst, 0.1)
         self.sync_all()
         self.nodes[1].loadwallet('')
-        after = self.nodes[1].getbalances()['mine']['untrusted_pending']
+        after = self.nodes[1].getunconfirmedbalance()
         assert_equal(before + Decimal('0.1'), after)
 
         # Create 3 more wallet txs, where the last is not accepted to the
         # mempool because it is the third descendant of the tx above
         for _ in range(3):
             # Set amount high enough such that all coins are spent by each tx
-            txid = self.nodes[0].sendtoaddress(self.nodes[0].getnewaddress(), 99)
+            txid = self.nodes[0].sendtoaddress(self.nodes[0].getnewaddress(), POW_PAYOUT * 2 - 1)
 
         self.log.info('Check that wallet txs not in the mempool are untrusted')
         assert txid not in self.nodes[0].getrawmempool()
@@ -272,7 +257,9 @@ class WalletTest(PlaceholdersTestFramework):
         self.nodes[1].sendrawtransaction(tx_orig)
         self.nodes[1].generatetoaddress(1, ADDRESS_WATCHONLY)
         self.sync_all()
-        assert_equal(self.nodes[0].getbalance(minconf=0), total_amount + 1)  # The reorg recovered our fee of 1 coin
+        # was total_amount + 1
+        total = total_amount
+        assert_equal(self.nodes[0].getbalance(minconf=0), total)  # The reorg recovered our fee of 1 coin
 
 
 if __name__ == '__main__':

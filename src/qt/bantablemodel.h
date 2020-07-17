@@ -1,9 +1,9 @@
-// Copyright (c) 2011-2020 The Placeholders Core developers
+// Copyright (c) 2011-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_QT_BANTABLEMODEL_H
-#define PHL_QT_BANTABLEMODEL_H
+#ifndef PLACEH_QT_BANTABLEMODEL_H
+#define PLACEH_QT_BANTABLEMODEL_H
 
 #include <net.h>
 
@@ -12,6 +12,7 @@
 #include <QAbstractTableModel>
 #include <QStringList>
 
+class ClientModel;
 class BanTablePriv;
 
 namespace interfaces {
@@ -44,7 +45,7 @@ class BanTableModel : public QAbstractTableModel
     Q_OBJECT
 
 public:
-    explicit BanTableModel(interfaces::Node& node, QObject* parent);
+    explicit BanTableModel(interfaces::Node& node, ClientModel *parent = nullptr);
     ~BanTableModel();
     void startAutoRefresh();
     void stopAutoRefresh();
@@ -56,24 +57,24 @@ public:
 
     /** @name Methods overridden from QAbstractTableModel
         @{*/
-    int rowCount(const QModelIndex &parent) const override;
-    int columnCount(const QModelIndex &parent) const override;
-    QVariant data(const QModelIndex &index, int role) const override;
-    QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
-    QModelIndex index(int row, int column, const QModelIndex &parent) const override;
-    Qt::ItemFlags flags(const QModelIndex &index) const override;
-    void sort(int column, Qt::SortOrder order) override;
-    /*@}*/
-
+    int rowCount(const QModelIndex &parent) const;
+    int columnCount(const QModelIndex &parent) const;
+    QVariant data(const QModelIndex &index, int role) const;
+    QVariant headerData(int section, Qt::Orientation orientation, int role) const;
+    QModelIndex index(int row, int column, const QModelIndex &parent) const;
+    Qt::ItemFlags flags(const QModelIndex &index) const;
+    void sort(int column, Qt::SortOrder order);
     bool shouldShow();
+    /*@}*/
 
 public Q_SLOTS:
     void refresh();
 
 private:
     interfaces::Node& m_node;
+    ClientModel *clientModel;
     QStringList columns;
     std::unique_ptr<BanTablePriv> priv;
 };
 
-#endif // PHL_QT_BANTABLEMODEL_H
+#endif // PLACEH_QT_BANTABLEMODEL_H

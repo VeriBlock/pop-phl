@@ -1,9 +1,9 @@
-// Copyright (c) 2017-2019 The Placeholders Core developers
+// Copyright (c) 2017-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_CONSENSUS_TX_VERIFY_H
-#define PHL_CONSENSUS_TX_VERIFY_H
+#ifndef PLACEH_CONSENSUS_TX_VERIFY_H
+#define PLACEH_CONSENSUS_TX_VERIFY_H
 
 #include <amount.h>
 
@@ -75,4 +75,4 @@ bool EvaluateSequenceLocks(const CBlockIndex& block, std::pair<int, int64_t> loc
  */
 bool SequenceLocks(const CTransaction &tx, int flags, std::vector<int>* prevHeights, const CBlockIndex& block);
 
-#endif // PHL_CONSENSUS_TX_VERIFY_H
+#endif // PLACEH_CONSENSUS_TX_VERIFY_H

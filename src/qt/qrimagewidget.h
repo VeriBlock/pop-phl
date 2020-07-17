@@ -1,9 +1,9 @@
-// Copyright (c) 2011-2019 The Placeholders Core developers
+// Copyright (c) 2011-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_QT_QRIMAGEWIDGET_H
-#define PHL_QT_QRIMAGEWIDGET_H
+#ifndef PLACEH_QT_QRIMAGEWIDGET_H
+#define PLACEH_QT_QRIMAGEWIDGET_H
 
 #include <QImage>
 #include <QLabel>
@@ -35,11 +35,11 @@ public Q_SLOTS:
     void copyImage();
 
 protected:
-    virtual void mousePressEvent(QMouseEvent *event) override;
-    virtual void contextMenuEvent(QContextMenuEvent *event) override;
+    virtual void mousePressEvent(QMouseEvent *event);
+    virtual void contextMenuEvent(QContextMenuEvent *event);
 
 private:
     QMenu *contextMenu;
 };
 
-#endif // PHL_QT_QRIMAGEWIDGET_H
+#endif // PLACEH_QT_QRIMAGEWIDGET_H

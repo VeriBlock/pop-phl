@@ -2,11 +2,6 @@ Name "@PACKAGE_NAME@ (64-bit)"
 
 RequestExecutionLevel highest
 SetCompressor /SOLID lzma
-SetDateSave off
-
-# Uncomment these lines when investigating reproducibility errors
-#SetCompress off
-#SetDatablockOptimize off
 
 # General Symbol Definitions
 !define REGKEY "SOFTWARE\$(^Name)"
@@ -25,7 +20,7 @@ SetDateSave off
 !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME StartMenuGroup
 !define MUI_STARTMENUPAGE_DEFAULTFOLDER "@PACKAGE_NAME@"
 !define MUI_FINISHPAGE_RUN "$WINDIR\explorer.exe"
-!define MUI_FINISHPAGE_RUN_PARAMETERS $INSTDIR\@PHL_GUI_NAME@@EXEEXT@
+!define MUI_FINISHPAGE_RUN_PARAMETERS $INSTDIR\@PLACEH_GUI_NAME@@EXEEXT@
 !define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall.ico"
 !define MUI_UNWELCOMEFINISHPAGE_BITMAP "@abs_top_srcdir@/share/pixmaps/nsis-wizard.bmp"
 !define MUI_UNFINISHPAGE_NOAUTOCLOSE
@@ -63,8 +58,8 @@ VIAddVersionKey ProductVersion "@PACKAGE_VERSION@"
 VIAddVersionKey CompanyName "${COMPANY}"
 VIAddVersionKey CompanyWebsite "${URL}"
 VIAddVersionKey FileVersion "@PACKAGE_VERSION@"
-VIAddVersionKey FileDescription "Installer for @PACKAGE_NAME@"
-VIAddVersionKey LegalCopyright "Copyright (C) 2009-@COPYRIGHT_YEAR@ @COPYRIGHT_HOLDERS_FINAL@"
+VIAddVersionKey FileDescription ""
+VIAddVersionKey LegalCopyright ""
 InstallDirRegKey HKCU "${REGKEY}" Path
 ShowUninstDetails show
 
@@ -72,14 +67,14 @@ ShowUninstDetails show
 Section -Main SEC0000
     SetOutPath $INSTDIR
     SetOverwrite on
-    File @abs_top_srcdir@/release/@PHL_GUI_NAME@@EXEEXT@
+    File @abs_top_srcdir@/release/@PLACEH_GUI_NAME@@EXEEXT@
     File /oname=COPYING.txt @abs_top_srcdir@/COPYING
     File /oname=readme.txt @abs_top_srcdir@/doc/README_windows.txt
     SetOutPath $INSTDIR\daemon
-    File @abs_top_srcdir@/release/@PHL_DAEMON_NAME@@EXEEXT@
-    File @abs_top_srcdir@/release/@PHL_CLI_NAME@@EXEEXT@
-    File @abs_top_srcdir@/release/@PHL_TX_NAME@@EXEEXT@
-    File @abs_top_srcdir@/release/@PHL_WALLET_TOOL_NAME@@EXEEXT@
+    File @abs_top_srcdir@/release/@PLACEH_DAEMON_NAME@@EXEEXT@
+    File @abs_top_srcdir@/release/@PLACEH_CLI_NAME@@EXEEXT@
+    File @abs_top_srcdir@/release/@PLACEH_TX_NAME@@EXEEXT@
+    File @abs_top_srcdir@/release/@PLACEH_WALLET_TOOL_NAME@@EXEEXT@
     SetOutPath $INSTDIR\doc
     File /r /x Makefile* @abs_top_srcdir@/doc\*.*
     SetOutPath $INSTDIR
@@ -92,8 +87,8 @@ Section -post SEC0001
     WriteUninstaller $INSTDIR\uninstall.exe
     !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
     CreateDirectory $SMPROGRAMS\$StartMenuGroup
-    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^Name).lnk" $INSTDIR\@PHL_GUI_NAME@@EXEEXT@
-    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\@PACKAGE_NAME@ (testnet, 64-bit).lnk" "$INSTDIR\@PHL_GUI_NAME@@EXEEXT@" "-testnet" "$INSTDIR\@PHL_GUI_NAME@@EXEEXT@" 1
+    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^Name).lnk" $INSTDIR\@PLACEH_GUI_NAME@@EXEEXT@
+    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\@PACKAGE_NAME@ (testnet, 64-bit).lnk" "$INSTDIR\@PLACEH_GUI_NAME@@EXEEXT@" "-testnet" "$INSTDIR\@PLACEH_GUI_NAME@@EXEEXT@" 1
     CreateShortcut "$SMPROGRAMS\$StartMenuGroup\Uninstall $(^Name).lnk" $INSTDIR\uninstall.exe
     !insertmacro MUI_STARTMENU_WRITE_END
     WriteRegStr HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" DisplayName "$(^Name)"
@@ -106,8 +101,8 @@ Section -post SEC0001
     WriteRegDWORD HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" NoRepair 1
     WriteRegStr HKCR "@PACKAGE_TARNAME@" "URL Protocol" ""
     WriteRegStr HKCR "@PACKAGE_TARNAME@" "" "URL:Placeholders"
-    WriteRegStr HKCR "@PACKAGE_TARNAME@\DefaultIcon" "" $INSTDIR\@PHL_GUI_NAME@@EXEEXT@
-    WriteRegStr HKCR "@PACKAGE_TARNAME@\shell\open\command" "" '"$INSTDIR\@PHL_GUI_NAME@@EXEEXT@" "%1"'
+    WriteRegStr HKCR "@PACKAGE_TARNAME@\DefaultIcon" "" $INSTDIR\@PLACEH_GUI_NAME@@EXEEXT@
+    WriteRegStr HKCR "@PACKAGE_TARNAME@\shell\open\command" "" '"$INSTDIR\@PLACEH_GUI_NAME@@EXEEXT@" "%1"'
 SectionEnd
 
 # Macro for selecting uninstaller sections
@@ -125,7 +120,7 @@ done${UNSECTION_ID}:
 
 # Uninstaller sections
 Section /o -un.Main UNSEC0000
-    Delete /REBOOTOK $INSTDIR\@PHL_GUI_NAME@@EXEEXT@
+    Delete /REBOOTOK $INSTDIR\@PLACEH_GUI_NAME@@EXEEXT@
     Delete /REBOOTOK $INSTDIR\COPYING.txt
     Delete /REBOOTOK $INSTDIR\readme.txt
     RMDir /r /REBOOTOK $INSTDIR\daemon

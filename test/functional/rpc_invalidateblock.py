@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2019 The Placeholders Core developers
+# Copyright (c) 2014-2019 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test the invalidateblock RPC."""
 
-from test_framework.test_framework import PlaceholdersTestFramework
-from test_framework.address import ADDRESS_XCRT1_UNSPENDABLE_DESCRIPTOR
+from test_framework.test_framework import BitcoinTestFramework
+from test_framework.address import ADDRESS_BCRT1_UNSPENDABLE_DESCRIPTOR
 from test_framework.util import (
     assert_equal,
     connect_nodes,
@@ -13,7 +13,7 @@ from test_framework.util import (
 )
 
 
-class InvalidateTest(PlaceholdersTestFramework):
+class InvalidateTest(BitcoinTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 3
@@ -62,7 +62,7 @@ class InvalidateTest(PlaceholdersTestFramework):
         wait_until(lambda: self.nodes[1].getblockcount() == 4, timeout=5)
 
         self.log.info("Verify that we reconsider all ancestors as well")
-        blocks = self.nodes[1].generatetodescriptor(10, ADDRESS_XCRT1_UNSPENDABLE_DESCRIPTOR)
+        blocks = self.nodes[1].generatetodescriptor(10, ADDRESS_BCRT1_UNSPENDABLE_DESCRIPTOR)
         assert_equal(self.nodes[1].getbestblockhash(), blocks[-1])
         # Invalidate the two blocks at the tip
         self.nodes[1].invalidateblock(blocks[-1])
@@ -74,7 +74,7 @@ class InvalidateTest(PlaceholdersTestFramework):
         assert_equal(self.nodes[1].getbestblockhash(), blocks[-1])
 
         self.log.info("Verify that we reconsider all descendants")
-        blocks = self.nodes[1].generatetodescriptor(10, ADDRESS_XCRT1_UNSPENDABLE_DESCRIPTOR)
+        blocks = self.nodes[1].generatetodescriptor(10, ADDRESS_BCRT1_UNSPENDABLE_DESCRIPTOR)
         assert_equal(self.nodes[1].getbestblockhash(), blocks[-1])
         # Invalidate the two blocks at the tip
         self.nodes[1].invalidateblock(blocks[-2])

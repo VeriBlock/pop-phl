@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2019 The Placeholders Core developers
 # Copyright (c) 2014-2019 The Bitcoin Core developers
 # Copyright (c) 2019-2020 Xenios SEZC
 # https://www.veriblock.org
@@ -8,7 +7,7 @@
 """Test the wallet accounts properly when there are cloned transactions with malleated scriptsigs."""
 
 import io
-from test_framework.test_framework import PlaceholdersTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import (
     assert_equal,
     connect_nodes,
@@ -17,7 +16,7 @@ from test_framework.util import (
 from test_framework.messages import CTransaction, COIN
 from test_framework.payout import POW_PAYOUT
 
-class TxnMallTest(PlaceholdersTestFramework):
+class TxnMallTest(BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 4
         self.supports_cli = False
@@ -33,7 +32,7 @@ class TxnMallTest(PlaceholdersTestFramework):
 
     def setup_network(self):
         # Start with split network:
-        super().setup_network()
+        super(TxnMallTest, self).setup_network()
         disconnect_nodes(self.nodes[1], 2)
         disconnect_nodes(self.nodes[2], 1)
 
@@ -43,7 +42,7 @@ class TxnMallTest(PlaceholdersTestFramework):
         else:
             output_type = "legacy"
 
-        # All nodes should start with 750 PHL:
+        # All nodes should start with 750 vPHL:
         starting_balance = (POW_PAYOUT*25)
         for i in range(4):
             assert_equal(self.nodes[i].getbalance(), starting_balance)
@@ -96,7 +95,7 @@ class TxnMallTest(PlaceholdersTestFramework):
         tx1 = self.nodes[0].gettransaction(txid1)
         tx2 = self.nodes[0].gettransaction(txid2)
 
-        # Node0's balance should be starting balance, plus 30 Placeholders for another
+        # Node0's balance should be starting balance, plus 30 vPHL for another
         # matured block, minus tx1 and tx2 amounts, and minus transaction fees:
         expected = starting_balance + node0_tx1["fee"] + node0_tx2["fee"]
         if self.options.mine_block:
@@ -139,7 +138,7 @@ class TxnMallTest(PlaceholdersTestFramework):
         assert_equal(tx1_clone["confirmations"], 2)
         assert_equal(tx2["confirmations"], 1)
 
-        # Check node0's total balance; should be same as before the clone, + 6 Placeholders for 2 matured,
+        # Check node0's total balance; should be same as before the clone, + 60 vPHL for 2 matured,
         # less possible orphaned matured subsidy
         expected += (POW_PAYOUT * 2)
         if (self.options.mine_block):

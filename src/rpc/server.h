@@ -1,18 +1,18 @@
 // Copyright (c) 2010 Satoshi Nakamoto
-// Copyright (c) 2009-2019 The Placeholders Core developers
+// Copyright (c) 2009-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_RPC_SERVER_H
-#define PHL_RPC_SERVER_H
+#ifndef PLACEH_RPC_SERVER_H
+#define PLACEH_RPC_SERVER_H
 
 #include <amount.h>
 #include <rpc/request.h>
 
-#include <functional>
 #include <map>
 #include <stdint.h>
 #include <string>
+#include <functional>
 
 #include <univalue.h>
 
@@ -28,9 +28,6 @@ namespace RPCServer
 
 /** Query whether RPC is running */
 bool IsRPCRunning();
-
-/** Throw JSONRPCError if RPC is not running */
-void RpcInterruptionPoint();
 
 /**
  * Set the RPC warmup status.  When this is done, all RPC calls will error out
@@ -117,7 +114,7 @@ public:
 };
 
 /**
- * Placeholders RPC command dispatcher.
+ * Bitcoin RPC command dispatcher.
  */
 class CRPCTable
 {
@@ -170,4 +167,4 @@ std::string JSONRPCExecBatch(const JSONRPCRequest& jreq, const UniValue& vReq);
 // Retrieves any serialization flags requested in command line argument
 int RPCSerializationFlags();
 
-#endif // PHL_RPC_SERVER_H
+#endif // PLACEH_RPC_SERVER_H

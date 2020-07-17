@@ -1,9 +1,9 @@
-// Copyright (c) 2011-2018 The Placeholders Core developers
+// Copyright (c) 2011-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_QT_EDITADDRESSDIALOG_H
-#define PHL_QT_EDITADDRESSDIALOG_H
+#ifndef PLACEH_QT_EDITADDRESSDIALOG_H
+#define PLACEH_QT_EDITADDRESSDIALOG_H
 
 #include <QDialog>
 
@@ -40,7 +40,7 @@ public:
     void setAddress(const QString &address);
 
 public Q_SLOTS:
-    void accept() override;
+    void accept();
 
 private:
     bool saveCurrentRow();
@@ -56,4 +56,4 @@ private:
     QString address;
 };
 
-#endif // PHL_QT_EDITADDRESSDIALOG_H
+#endif // PLACEH_QT_EDITADDRESSDIALOG_H

@@ -1,9 +1,9 @@
-// Copyright (c) 2016-2020 The Placeholders Core developers
+// Copyright (c) 2016-2019 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_WALLET_RPCWALLET_H
-#define PHL_WALLET_RPCWALLET_H
+#ifndef PLACEH_WALLET_RPCWALLET_H
+#define PLACEH_WALLET_RPCWALLET_H
 
 #include <memory>
 #include <string>
@@ -38,10 +38,11 @@ void RegisterWalletRPCCommands(interfaces::Chain& chain, std::vector<std::unique
  */
 std::shared_ptr<CWallet> GetWalletForJSONRPCRequest(const JSONRPCRequest& request);
 
+std::string HelpRequiringPassphrase(const CWallet*);
 void EnsureWalletIsUnlocked(const CWallet*);
 bool EnsureWalletIsAvailable(const CWallet*, bool avoidException);
-LegacyScriptPubKeyMan& EnsureLegacyScriptPubKeyMan(CWallet& wallet, bool also_create = false);
+LegacyScriptPubKeyMan& EnsureLegacyScriptPubKeyMan(CWallet& wallet);
 
 UniValue getaddressinfo(const JSONRPCRequest& request);
 UniValue signrawtransactionwithwallet(const JSONRPCRequest& request);
-#endif //PHL_WALLET_RPCWALLET_H
+#endif //PLACEH_WALLET_RPCWALLET_H

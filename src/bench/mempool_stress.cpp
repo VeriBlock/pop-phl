@@ -1,10 +1,9 @@
-// Copyright (c) 2011-2019 The Placeholders Core developers
+// Copyright (c) 2011-2019 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <bench/bench.h>
 #include <policy/policy.h>
-#include <test/util/setup_common.h>
 #include <txmempool.h>
 
 #include <vector>
@@ -74,7 +73,6 @@ static void ComplexMemPool(benchmark::State& state)
         ordered_coins.emplace_back(MakeTransactionRef(tx));
         available_coins.emplace_back(ordered_coins.back(), tx_counter++);
     }
-    TestingSetup test_setup;
     CTxMemPool pool;
     LOCK2(cs_main, pool.cs);
     while (state.KeepRunning()) {

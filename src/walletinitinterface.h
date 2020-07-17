@@ -1,9 +1,9 @@
-// Copyright (c) 2017-2019 The Placeholders Core developers
+// Copyright (c) 2017-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_WALLETINITINTERFACE_H
-#define PHL_WALLETINITINTERFACE_H
+#ifndef PLACEH_WALLETINITINTERFACE_H
+#define PLACEH_WALLETINITINTERFACE_H
 
 struct NodeContext;
 
@@ -23,4 +23,4 @@ public:
 
 extern const WalletInitInterface& g_wallet_init_interface;
 
-#endif // PHL_WALLETINITINTERFACE_H
+#endif // PLACEH_WALLETINITINTERFACE_H

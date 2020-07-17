@@ -1,15 +1,15 @@
-// Copyright (c) 2015-2020 The Placeholders Core developers
+// Copyright (c) 2015-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_BENCH_BENCH_H
-#define PHL_BENCH_BENCH_H
+#ifndef PLACEH_BENCH_BENCH_H
+#define PLACEH_BENCH_BENCH_H
 
-#include <chrono>
 #include <functional>
 #include <map>
 #include <string>
 #include <vector>
+#include <chrono>
 
 #include <boost/preprocessor/cat.hpp>
 #include <boost/preprocessor/stringize.hpp>
@@ -138,4 +138,4 @@ private:
 #define BENCHMARK(n, num_iters_for_one_second) \
     benchmark::BenchRunner BOOST_PP_CAT(bench_, BOOST_PP_CAT(__LINE__, n))(BOOST_PP_STRINGIZE(n), n, (num_iters_for_one_second));
 
-#endif // PHL_BENCH_BENCH_H
+#endif // PLACEH_BENCH_BENCH_H

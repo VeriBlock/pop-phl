@@ -1,9 +1,9 @@
-// Copyright (c) 2011-2019 The Placeholders Core developers
+// Copyright (c) 2011-2015 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_QT_OPENURIDIALOG_H
-#define PHL_QT_OPENURIDIALOG_H
+#ifndef PLACEH_QT_OPENURIDIALOG_H
+#define PLACEH_QT_OPENURIDIALOG_H
 
 #include <QDialog>
 
@@ -22,10 +22,10 @@ public:
     QString getURI();
 
 protected Q_SLOTS:
-    void accept() override;
+    void accept();
 
 private:
     Ui::OpenURIDialog *ui;
 };
 
-#endif // PHL_QT_OPENURIDIALOG_H
+#endif // PLACEH_QT_OPENURIDIALOG_H

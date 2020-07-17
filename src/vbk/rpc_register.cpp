@@ -13,6 +13,7 @@
 #include <key_io.h>
 #include <rpc/server.h>
 #include <rpc/util.h>
+#include <util/validation.h>
 #include <validation.h>
 #include <wallet/rpcwallet.h>
 #include <wallet/rpcwallet.h> // for GetWalletForJSONRPCRequest
@@ -44,7 +45,7 @@ UniValue createPopTx(const CScript& scriptSig)
             nullptr /* plTxnReplaced */, false /* bypass_limits */, 0 /* nAbsurdFee */, false /* test accept */);
         if (result) {
             std::string err;
-            if (!g_rpc_chain->broadcastTransaction(tx_ref, 0, true, err)) {
+            if (!g_rpc_chain->broadcastTransaction(tx_ref, err, 0, true)) {
                 throw JSONRPCError(RPC_TRANSACTION_ERROR, err);
             }
             //            RelayTransaction(hashTx, *this->connman);
@@ -52,10 +53,10 @@ UniValue createPopTx(const CScript& scriptSig)
         }
 
         if (state.IsInvalid()) {
-            throw JSONRPCError(RPC_TRANSACTION_REJECTED, state.ToString());
+            throw JSONRPCError(RPC_TRANSACTION_REJECTED, FormatStateMessage(state));
         }
 
-        throw JSONRPCError(RPC_TRANSACTION_ERROR, state.ToString());
+        throw JSONRPCError(RPC_TRANSACTION_ERROR, FormatStateMessage(state));
     }
 
     return hashTx.GetHex();
@@ -92,17 +93,17 @@ void SaveState(std::string file_name)
 {
     LOCK2(cs_main, mempool.cs);
 
-    altintegration::TestCase placeh_state;
-    placeh_state.config = VeriBlock::getService<VeriBlock::Config>().popconfig;
+    altintegration::TestCase vbtc_state;
+    vbtc_state.config = VeriBlock::getService<VeriBlock::Config>().popconfig;
 
-    auto& placeh_tree = BlockIndex();
+    auto& vbtc_tree = BlockIndex();
 
     auto cmp = [](CBlockIndex* a, CBlockIndex* b) -> bool {
         return a->nHeight < b->nHeight;
     };
     std::vector<CBlockIndex*> block_index;
-    block_index.reserve(placeh_tree.size());
-    for (const auto& el : placeh_tree) {
+    block_index.reserve(vbtc_tree.size());
+    for (const auto& el : vbtc_tree) {
         block_index.push_back(el.second);
     }
     std::sort(block_index.begin(), block_index.end(), cmp);
@@ -119,13 +120,13 @@ void SaveState(std::string file_name)
                 assert(res);
             }
         }
-        placeh_state.alt_tree.push_back(std::make_pair(alt_block, payloads));
+        vbtc_state.alt_tree.push_back(std::make_pair(alt_block, payloads));
     }
 
     std::ofstream file(file_name, std::ios::binary);
 
     altintegration::WriteStream stream;
-    placeh_state.toRaw(stream);
+    vbtc_state.toRaw(stream);
 
     file.write((const char*)stream.data().data(), stream.data().size());
 
@@ -149,7 +150,7 @@ UniValue getpopdata(const JSONRPCRequest& request)
             "    \"last_known_veriblock_blocks\" : [ (array) last known VeriBlock blocks at the given Bitcoin block\n"
             "        \"blockhash\",                (string) VeriBlock block hash\n"
             "       ... ]\n"
-            "    \"last_known_bitcoin_blocks\" : [ (array) last known Bitcoin blocks at the given Bitcoin block\n"
+            "    \"last_known_placeh_blocks\" : [ (array) last known Bitcoin blocks at the given Bitcoin block\n"
             "        \"blockhash\",                (string) Bitcoin block hash\n"
             "       ... ]\n"
             "}\n"
@@ -202,12 +203,12 @@ UniValue getpopdata(const JSONRPCRequest& request)
     }
     result.pushKV("last_known_veriblock_blocks", univalueLastVBKBlocks);
 
-    auto lastBTCBlocks = pop.getLastKnownBTCBlocks(16);
-    UniValue univalueLastBTCBlocks(UniValue::VARR);
-    for (const auto& b : lastBTCBlocks) {
-        univalueLastBTCBlocks.push_back(HexStr(b));
+    auto lastPHLBlocks = pop.getLastKnownPHLBlocks(16);
+    UniValue univalueLastPHLBlocks(UniValue::VARR);
+    for (const auto& b : lastPHLBlocks) {
+        univalueLastPHLBlocks.push_back(HexStr(b));
     }
-    result.pushKV("last_known_bitcoin_blocks", univalueLastBTCBlocks);
+    result.pushKV("last_known_placeh_blocks", univalueLastPHLBlocks);
 
     return result;
 }
@@ -271,17 +272,17 @@ UniValue savepopstate(const JSONRPCRequest& request)
             "savepopstate [file]\n"
             "\nSave pop state into the file.\n"
             "\nArguments:\n"
-            "1. file       (string, optional) the name of the file, by default 'placeh_state'.\n");
+            "1. file       (string, optional) the name of the file, by default 'vbtc_state'.\n");
     }
 
-    std::string file_name = "placeh_state";
+    std::string file_name = "vbtc_state";
 
     if (!request.params.empty()) {
         RPCTypeCheck(request.params, {UniValue::VSTR});
         file_name = request.params[0].getValStr();
     }
 
-    LogPrint(BCLog::POP, "Save placeh state to the file %s \n", file_name);
+    LogPrint(BCLog::POP, "Save vPHL state to the file %s \n", file_name);
     SaveState(file_name);
 
     return UniValue();

@@ -1,8 +1,8 @@
-# Copyright (c) 2012-2018 The Placeholders Core developers
+# Copyright (c) 2012-2018 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 '''
-Placeholders base58 encoding and decoding.
+Bitcoin base58 encoding and decoding.
 
 Based on https://placehtalk.org/index.php?topic=1026.0 (public domain)
 '''

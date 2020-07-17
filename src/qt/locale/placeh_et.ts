@@ -160,8 +160,8 @@
         <translation>Kinnita rahakoti krüpteerimine.</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PHLS&lt;/b&gt;!</source>
-        <translation>Hoiatus:Kui sa krüpteerid oma rahakoti ja kaotad salafraasi, siis sa&lt;b&gt;KAOTAD OMA PHLID&lt;/b&gt;!</translation>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PLACEHS&lt;/b&gt;!</source>
+        <translation>Hoiatus:Kui sa krüpteerid oma rahakoti ja kaotad salafraasi, siis sa&lt;b&gt;KAOTAD OMA PLACEHID&lt;/b&gt;!</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -170,10 +170,6 @@
     <message>
         <source>Wallet encrypted</source>
         <translation>Rahakott krüpteeritud</translation>
-    </message>
-    <message>
-        <source>IMPORTANT: Any previous backups you have made of your wallet file should be replaced with the newly generated, encrypted wallet file. For security reasons, previous backups of the unencrypted wallet file will become useless as soon as you start using the new, encrypted wallet.</source>
-        <translation>TÄHTIS: Kõik varasemad rahakoti varundfailid tuleks üle kirjutada äsja loodud krüpteeritud rahakoti failiga. Turvakaalutlustel tühistatakse krüpteerimata rahakoti failid alates uue, krüpteeritud rahakoti, kasutusele võtust.</translation>
     </message>
     <message>
         <source>Wallet encryption failed</source>
@@ -216,7 +212,7 @@
     </message>
     </context>
 <context>
-    <name>PlaceholdersGUI</name>
+    <name>BitcoinGUI</name>
     <message>
         <source>Sign &amp;message...</source>
         <translation>Signeeri &amp;sõnum</translation>
@@ -287,7 +283,7 @@
     </message>
     <message>
         <source>Send coins to a Placeholders address</source>
-        <translation>Saada münte Placeholdersi aadressile</translation>
+        <translation>Saada münte Bitcoini aadressile</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -296,6 +292,14 @@
     <message>
         <source>Change the passphrase used for wallet encryption</source>
         <translation>Rahakoti krüpteerimise salafraasi muutmine</translation>
+    </message>
+    <message>
+        <source>&amp;Debug window</source>
+        <translation>&amp;Silumise aken</translation>
+    </message>
+    <message>
+        <source>Open debugging and diagnostic console</source>
+        <translation>Ava debugimise ja diagnostika konsool</translation>
     </message>
     <message>
         <source>&amp;Verify message...</source>
@@ -323,11 +327,11 @@
     </message>
     <message>
         <source>Sign messages with your Placeholders addresses to prove you own them</source>
-        <translation>Omandi tõestamiseks allkirjasta sõnumid oma Placeholdersi aadressiga</translation>
+        <translation>Omandi tõestamiseks allkirjasta sõnumid oma Bitcoini aadressiga</translation>
     </message>
     <message>
         <source>Verify messages to ensure they were signed with specified Placeholders addresses</source>
-        <translation>Kinnita sõnumid kindlustamaks et need allkirjastati määratud Placeholdersi aadressiga</translation>
+        <translation>Kinnita sõnumid kindlustamaks et need allkirjastati määratud Bitcoini aadressiga</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -350,12 +354,16 @@
         <translation>Loo maksepäring (genereerib QR koodid ja placehi: URId)</translation>
     </message>
     <message>
+        <source>Open a placeh: URI or payment request</source>
+        <translation>Ava placehi: URI või maksepäring</translation>
+    </message>
+    <message>
         <source>&amp;Command-line options</source>
         <translation>&amp;Käsurea valikud</translation>
     </message>
     <message numerus="yes">
         <source>%n active connection(s) to Placeholders network</source>
-        <translation><numerusform>%n aktiivne ühendus Placeholdersi võrku</numerusform><numerusform>%n aktiivset ühendust Placeholdersi võrku</numerusform></translation>
+        <translation><numerusform>%n aktiivne ühendus Bitcoini võrku</numerusform><numerusform>%n aktiivset ühendust Bitcoini võrku</numerusform></translation>
     </message>
     <message>
         <source>Indexing blocks on disk...</source>
@@ -455,11 +463,7 @@
         <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;locked&lt;/b&gt;</source>
         <translation>Rahakott on &lt;b&gt;krüpteeritud&lt;/b&gt; ning hetkel &lt;b&gt;suletud&lt;/b&gt;</translation>
     </message>
-    <message>
-        <source>A fatal error occurred. Placeholders can no longer continue safely and will quit.</source>
-        <translation>Ilmnes kriitiline tõrge. Placeholders suletakse turvakaalutluste tõttu.</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>CoinControlDialog</name>
     <message>
@@ -649,8 +653,8 @@
         <translation>Tere tulemast</translation>
     </message>
     <message>
-        <source>Placeholders</source>
-        <translation>Placeholders</translation>
+        <source>Bitcoin</source>
+        <translation>Bitcoin</translation>
     </message>
     <message>
         <source>Error</source>
@@ -675,8 +679,20 @@
 <context>
     <name>OpenURIDialog</name>
     <message>
+        <source>Open URI</source>
+        <translation>Ava URI</translation>
+    </message>
+    <message>
         <source>URI:</source>
         <translation>URI:</translation>
+    </message>
+    <message>
+        <source>Select payment request file</source>
+        <translation>Vali maksepäringu fail</translation>
+    </message>
+    <message>
+        <source>Select payment request file to open</source>
+        <translation>Vali maksepäringu fail mida avada</translation>
     </message>
 </context>
 <context>
@@ -714,7 +730,7 @@
     </message>
     <message>
         <source>Automatically open the Placeholders client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Placeholdersi kliendi pordi automaatne avamine ruuteris. Toimib, kui sinu ruuter aktsepteerib UPnP ühendust.</translation>
+        <translation>Bitcoini kliendi pordi automaatne avamine ruuteris. Toimib, kui sinu ruuter aktsepteerib UPnP ühendust.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
@@ -843,12 +859,16 @@
         <translation>Maksepäringu tõrge</translation>
     </message>
     <message>
-        <source>Cannot start placeh: click-to-pay handler</source>
-        <translation>Placeholders ei käivitu: vajuta-maksa toiming</translation>
+        <source>Payment request rejected</source>
+        <translation>Maksepäring tagasi lükatud</translation>
     </message>
     <message>
-        <source>URI handling</source>
-        <translation>URI käsitsemine</translation>
+        <source>Payment request expired.</source>
+        <translation>Maksepäring aegunud.</translation>
+    </message>
+    <message>
+        <source>Unverified payment requests to custom payment scripts are unsupported.</source>
+        <translation>Kinnitamata maksepäringud kohandatud makse scriptidele ei ole toetatud.</translation>
     </message>
     </context>
 <context>
@@ -953,6 +973,10 @@
     <message>
         <source>&amp;Information</source>
         <translation>&amp;Informatsioon</translation>
+    </message>
+    <message>
+        <source>Debug window</source>
+        <translation>Debugimise aken</translation>
     </message>
     <message>
         <source>General</source>
@@ -1381,7 +1405,18 @@
         <source>Pay To:</source>
         <translation>Maksa :</translation>
     </message>
-    </context>
+    <message>
+        <source>Enter a label for this address to add it to your address book</source>
+        <translation>Aadressiraamatusse sisestamiseks märgista aadress</translation>
+    </message>
+</context>
+<context>
+    <name>SendConfirmationDialog</name>
+    <message>
+        <source>Yes</source>
+        <translation>Jah</translation>
+    </message>
+</context>
 <context>
     <name>ShutdownWindow</name>
     <message>
@@ -1405,7 +1440,7 @@
     </message>
     <message>
         <source>The Placeholders address to sign the message with</source>
-        <translation>Placeholders aadress millega sõnum allkirjastada</translation>
+        <translation>Bitcoin aadress millega sõnum allkirjastada</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -1437,7 +1472,7 @@
     </message>
     <message>
         <source>Sign the message to prove you own this Placeholders address</source>
-        <translation>Allkirjasta sõnum Placeholdersi aadressi sulle kuulumise tõestamiseks</translation>
+        <translation>Allkirjasta sõnum Bitcoini aadressi sulle kuulumise tõestamiseks</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -1457,11 +1492,11 @@
     </message>
     <message>
         <source>The Placeholders address the message was signed with</source>
-        <translation>Placeholders aadress millega sõnum on allkirjastatud</translation>
+        <translation>Bitcoin aadress millega sõnum on allkirjastatud</translation>
     </message>
     <message>
         <source>Verify the message to ensure it was signed with the specified Placeholders address</source>
-        <translation>Kinnita sõnum tõestamaks selle allkirjastatust määratud Placeholdersi aadressiga.</translation>
+        <translation>Kinnita sõnum tõestamaks selle allkirjastatust määratud Bitcoini aadressiga.</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>

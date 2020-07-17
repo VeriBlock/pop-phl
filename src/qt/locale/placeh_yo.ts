@@ -3,7 +3,7 @@
     <name>AddressBookPage</name>
     <message>
         <source>&amp;New</source>
-        <translation>&amp;ati tuntun</translation>
+        <translation>ati tuntun </translation>
     </message>
     </context>
 <context>
@@ -16,7 +16,7 @@
     <name>BanTableModel</name>
     </context>
 <context>
-    <name>PlaceholdersGUI</name>
+    <name>BitcoinGUI</name>
     <message>
         <source>Open Wallet</source>
         <translation>sii apamowo</translation>
@@ -80,7 +80,7 @@
     <name>OptionsDialog</name>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;o da</translation>
+        <translation>o da</translation>
     </message>
     </context>
 <context>
@@ -99,7 +99,7 @@
     <name>QRImageWidget</name>
     <message>
         <source>&amp;Save Image...</source>
-        <translation>fi aworan &amp;pamo</translation>
+        <translation>fi aworan pamo</translation>
     </message>
     </context>
 <context>
@@ -110,7 +110,7 @@
     </message>
     <message>
         <source>1 &amp;year</source>
-        <translation>okan ati &amp;odun</translation>
+        <translation>okan ati odun</translation>
     </message>
     </context>
 <context>
@@ -120,7 +120,7 @@
     <name>ReceiveRequestDialog</name>
     <message>
         <source>&amp;Save Image...</source>
-        <translation>fi aworan &amp;pamo</translation>
+        <translation>fi aworan pamo</translation>
     </message>
     </context>
 <context>
@@ -135,6 +135,9 @@
     </context>
 <context>
     <name>SendCoinsEntry</name>
+    </context>
+<context>
+    <name>SendConfirmationDialog</name>
     </context>
 <context>
     <name>ShutdownWindow</name>

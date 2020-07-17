@@ -1,9 +1,9 @@
-// Copyright (c) 2019 The Placeholders Core developers
+// Copyright (c) 2019 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_QT_CREATEWALLETDIALOG_H
-#define PHL_QT_CREATEWALLETDIALOG_H
+#ifndef PLACEH_QT_CREATEWALLETDIALOG_H
+#define PLACEH_QT_CREATEWALLETDIALOG_H
 
 #include <QDialog>
 
@@ -27,10 +27,9 @@ public:
     bool isEncryptWalletChecked() const;
     bool isDisablePrivateKeysChecked() const;
     bool isMakeBlankWalletChecked() const;
-    bool isDescriptorWalletChecked() const;
 
 private:
     Ui::CreateWalletDialog *ui;
 };
 
-#endif // PHL_QT_CREATEWALLETDIALOG_H
+#endif // PLACEH_QT_CREATEWALLETDIALOG_H

@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-# Copyright (c) 2016-2019 The Placeholders Core developers
+# Copyright (c) 2016-2019 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test RPC commands for signing and verifying messages."""
 
-from test_framework.test_framework import PlaceholdersTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import assert_equal
 
-class SignMessagesTest(PlaceholdersTestFramework):
+class SignMessagesTest(BitcoinTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 1
@@ -22,7 +22,7 @@ class SignMessagesTest(PlaceholdersTestFramework):
         self.log.info('test signing with priv_key')
         priv_key = 'cUeKHd5orzT3mz8P9pxyREHfsWtVfgsfDjiZZBcjUBAaGk1BTj7N'
         address = 'mpLQjfK79b7CCV4VMJWEWAj5Mpx8Up5zxB'
-        expected_signature = 'HzrZEj9glq2mQ0km8QDff5MJ2ZxpZGD86VCICNvboEiTdEZWfzjuOe+MpZOq+Njc/8+owNCNvXpHpvsGPyW7J1A='
+        expected_signature = 'INbVnW4e6PeRmsv2Qgu8NuopvrVjkcxob+sX8OcZG0SALhWybUjzMLPdAsXI46YZGb0KQTRii+wWIQzRpG/U+S0='
         signature = self.nodes[0].signmessagewithprivkey(priv_key, message)
         assert_equal(expected_signature, signature)
         assert self.nodes[0].verifymessage(address, signature, message)

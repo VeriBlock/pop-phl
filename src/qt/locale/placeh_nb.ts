@@ -3,7 +3,7 @@
     <name>AddressBookPage</name>
     <message>
         <source>Right-click to edit address or label</source>
-        <translation>Høyreklikk for å redigere adressen eller beskrivelsen</translation>
+        <translation>Høyreklikk for å redigere adresse, eller beskrivelse</translation>
     </message>
     <message>
         <source>Create a new address</source>
@@ -160,8 +160,8 @@
         <translation>Bekreft kryptering av lommeboken</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PHLS&lt;/b&gt;!</source>
-        <translation>Advarsel: Dersom du krypterer lommeboken og mister passordsetningen vil du &lt;b&gt;MISTE ALLE DINE PHL&lt;/b&gt;!</translation>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PLACEHS&lt;/b&gt;!</source>
+        <translation>Advarsel: Dersom du krypterer lommeboken og mister passordsetningen vil du &lt;b&gt;MISTE ALLE DINE PLACEH&lt;/b&gt;!</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -224,7 +224,7 @@
     </message>
 </context>
 <context>
-    <name>PlaceholdersGUI</name>
+    <name>BitcoinGUI</name>
     <message>
         <source>Sign &amp;message...</source>
         <translation>Signer &amp;melding</translation>
@@ -338,6 +338,14 @@
         <translation>Endre passordsetningen for kryptering av lommeboken</translation>
     </message>
     <message>
+        <source>&amp;Debug window</source>
+        <translation>&amp;Feilsøkingsvindu</translation>
+    </message>
+    <message>
+        <source>Open debugging and diagnostic console</source>
+        <translation>Åpne konsoll for feilsøking og diagnostisering</translation>
+    </message>
+    <message>
         <source>&amp;Verify message...</source>
         <translation>&amp;Verifiser meldingen...</translation>
     </message>
@@ -396,6 +404,10 @@
     <message>
         <source>Show the list of used receiving addresses and labels</source>
         <translation>Vis lista over brukte mottakeradresser og merkelapper</translation>
+    </message>
+    <message>
+        <source>Open a placeh: URI or payment request</source>
+        <translation>Åpne en placeh: URI eller betalingsforespørsel</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -471,7 +483,7 @@
     </message>
     <message>
         <source>Show the %1 help message to get a list with possible Placeholders command-line options</source>
-        <translation>Vis %1-hjelpemeldingen for å få en liste over mulige Placeholders-kommandolinjealternativer</translation>
+        <translation>Vis %1-hjelpemeldingen for å få en liste over mulige Bitcoin-kommandolinjealternativer</translation>
     </message>
     <message>
         <source>default wallet</source>
@@ -775,7 +787,7 @@
     </message>
     <message>
         <source>The entered address "%1" is not a valid Placeholders address.</source>
-        <translation>Den angitte adressen "%1" er ikke en gyldig Placeholders-adresse.</translation>
+        <translation>Den angitte adressen "%1" er ikke en gyldig Bitcoin-adresse.</translation>
     </message>
     <message>
         <source>Address "%1" already exists as a receiving address with label "%2" and so cannot be added as a sending address.</source>
@@ -820,6 +832,10 @@
         <translation>versjon</translation>
     </message>
     <message>
+        <source>(%1-bit)</source>
+        <translation> (%1-bit)</translation>
+    </message>
+    <message>
         <source>About %1</source>
         <translation>Om %1</translation>
     </message>
@@ -848,11 +864,11 @@
     </message>
     <message>
         <source>This initial synchronisation is very demanding, and may expose hardware problems with your computer that had previously gone unnoticed. Each time you run %1, it will continue downloading where it left off.</source>
-        <translation>Den initielle synkroniseringen er svært krevende, og kan forårsake problemer med maskinvaren i datamaskinen din som du tidligere ikke merket. Hver gang du kjører %1 vil den fortsette nedlastingen der den sluttet.</translation>
+        <translation>Den initielle synkroniseringen er svært krevende, og kan forårsake problemer med maskinvaren i datamaskinen din som du tidligere ikke merket. Hver gang du kjører %1 vil den fortsette nedlastingen der den sluttet. </translation>
     </message>
     <message>
         <source>If you have chosen to limit block chain storage (pruning), the historical data must still be downloaded and processed, but will be deleted afterward to keep your disk usage low.</source>
-        <translation>Hvis du har valgt å begrense blokkjedelagring (beskjæring), må historiske data fortsatt lastes ned og behandles, men de vil bli slettet etterpå for å holde bruken av lagringsplass lav.</translation>
+        <translation>Hvis du har valgt å begrense blokkjedelagring (beskjæring), må historiske data fortsatt lastes ned og behandles, men de vil bli slettet etterpå for å holde bruken av lagringsplass lav. </translation>
     </message>
     <message>
         <source>Use the default data directory</source>
@@ -863,8 +879,8 @@
         <translation>Bruk en egendefinert datamappe:</translation>
     </message>
     <message>
-        <source>Placeholders</source>
-        <translation>Placeholders</translation>
+        <source>Bitcoin</source>
+        <translation>Bitcoin</translation>
     </message>
     <message>
         <source>At least %1 GB of data will be stored in this directory, and it will grow over time.</source>
@@ -949,8 +965,24 @@
 <context>
     <name>OpenURIDialog</name>
     <message>
+        <source>Open URI</source>
+        <translation>Åpne URI</translation>
+    </message>
+    <message>
+        <source>Open payment request from URI or file</source>
+        <translation>Åpne betalingsetterspørring fra URI eller fil</translation>
+    </message>
+    <message>
         <source>URI:</source>
         <translation>URI:</translation>
+    </message>
+    <message>
+        <source>Select payment request file</source>
+        <translation>Velg fil for betalingsetterspørring</translation>
+    </message>
+    <message>
+        <source>Select payment request file to open</source>
+        <translation>Velg betalingsforespørselsfil å åpne</translation>
     </message>
 </context>
 <context>
@@ -1088,7 +1120,7 @@
     </message>
     <message>
         <source>Connect to the Placeholders network through a SOCKS5 proxy.</source>
-        <translation>Koble til Placeholders-nettverket gjennom en SOCKS5 proxy.</translation>
+        <translation>Koble til Bitcoin-nettverket gjennom en SOCKS5 proxy.</translation>
     </message>
     <message>
         <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
@@ -1124,7 +1156,7 @@
     </message>
     <message>
         <source>Connect to the Placeholders network through a separate SOCKS5 proxy for Tor hidden services.</source>
-        <translation>Koble til Placeholders-nettverket gjennom en separat SOCKS5 mellomtjener for Tor skjulte tjenester.</translation>
+        <translation>Koble til Bitcoin-nettverket gjennom en separat SOCKS5 mellomtjener for Tor skjulte tjenester.</translation>
     </message>
     <message>
         <source>&amp;Window</source>
@@ -1231,7 +1263,7 @@
     </message>
     <message>
         <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Placeholders network after a connection is established, but this process has not completed yet.</source>
-        <translation>Informasjonen som vises kan være foreldet. Din lommebok synkroniseres automatisk med Placeholders-nettverket etter at tilkobling er opprettet, men denne prosessen er ikke ferdig enda.</translation>
+        <translation>Informasjonen som vises kan være foreldet. Din lommebok synkroniseres automatisk med Bitcoin-nettverket etter at tilkobling er opprettet, men denne prosessen er ikke ferdig enda.</translation>
     </message>
     <message>
         <source>Watch-only:</source>
@@ -1313,6 +1345,10 @@
         <translation>URI-håndtering</translation>
     </message>
     <message>
+        <source>Payment request fetch URL is invalid: %1</source>
+        <translation>Nettadressen for betalingsforespørselshenting er ugyldig: %1</translation>
+    </message>
+    <message>
         <source>Invalid payment address %1</source>
         <translation>Ugyldig betalingsadresse %1</translation>
     </message>
@@ -1323,6 +1359,66 @@
     <message>
         <source>Payment request file handling</source>
         <translation>Håndtering av betalingsforespørselsfil</translation>
+    </message>
+    <message>
+        <source>Payment request file cannot be read! This can be caused by an invalid payment request file.</source>
+        <translation>Betalingsforespørselsfila kan ikke leses! Dette kan ha sitt opphav i at den er ugyldig.</translation>
+    </message>
+    <message>
+        <source>Payment request rejected</source>
+        <translation>Betalingsforespørsel avslått</translation>
+    </message>
+    <message>
+        <source>Payment request network doesn't match client network.</source>
+        <translation>Betalingsforespørselsnettverket samsvarer ikke med klientnettverket.</translation>
+    </message>
+    <message>
+        <source>Payment request expired.</source>
+        <translation>Tidsavbrudd for betalingsforespørsel</translation>
+    </message>
+    <message>
+        <source>Payment request is not initialized.</source>
+        <translation>Betalingsforespørselen er ikke igangsatt.</translation>
+    </message>
+    <message>
+        <source>Unverified payment requests to custom payment scripts are unsupported.</source>
+        <translation>Uverifiserte betalingsforespørsler til egentilpassede betalingsskript støttes ikke.</translation>
+    </message>
+    <message>
+        <source>Invalid payment request.</source>
+        <translation>Ugyldig betalingsforespørsel.</translation>
+    </message>
+    <message>
+        <source>Requested payment amount of %1 is too small (considered dust).</source>
+        <translation>Forespurt betalingsbeløp på %1 er for lite (betraktet som støv).</translation>
+    </message>
+    <message>
+        <source>Refund from %1</source>
+        <translation>Tilbakebetaling fra %1</translation>
+    </message>
+    <message>
+        <source>Payment request %1 is too large (%2 bytes, allowed %3 bytes).</source>
+        <translation>Betalingsforespørsel %1 er for stor (%2 byte, %3 byte tillatt).</translation>
+    </message>
+    <message>
+        <source>Error communicating with %1: %2</source>
+        <translation>Feil under kommunikasjon med %1: %2</translation>
+    </message>
+    <message>
+        <source>Payment request cannot be parsed!</source>
+        <translation>Betalingsforespørselen kan ikke tolkes!</translation>
+    </message>
+    <message>
+        <source>Bad response from server %1</source>
+        <translation>Feilaktig svar fra tjeneren %1</translation>
+    </message>
+    <message>
+        <source>Network request error</source>
+        <translation>Nettverksforespørselsfeil</translation>
+    </message>
+    <message>
+        <source>Payment acknowledged</source>
+        <translation>Betaling anerkjent</translation>
     </message>
 </context>
 <context>
@@ -1360,7 +1456,7 @@
     </message>
     <message>
         <source>Enter a Placeholders address (e.g. %1)</source>
-        <translation>Oppgi en Placeholders-adresse (f.eks. %1)</translation>
+        <translation>Oppgi en Bitcoin-adresse (f.eks. %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -1491,6 +1587,10 @@
     <message>
         <source>&amp;Information</source>
         <translation>&amp;Informasjon</translation>
+    </message>
+    <message>
+        <source>Debug window</source>
+        <translation>Feilsøkingsvindu</translation>
     </message>
     <message>
         <source>General</source>
@@ -1789,7 +1889,7 @@
     </message>
     <message>
         <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Placeholders network.</source>
-        <translation>En valgfri melding å tilknytte betalingsetterspørringen, som vil bli vist når forespørselen er åpnet. Meldingen vil ikke bli sendt med betalingen over Placeholders-nettverket.</translation>
+        <translation>En valgfri melding å tilknytte betalingsetterspørringen, som vil bli vist når forespørselen er åpnet. Meldingen vil ikke bli sendt med betalingen over Bitcoin-nettverket.</translation>
     </message>
     <message>
         <source>An optional label to associate with the new receiving address.</source>
@@ -1934,7 +2034,7 @@
     <name>SendCoinsDialog</name>
     <message>
         <source>Send Coins</source>
-        <translation>Send Placeholderss</translation>
+        <translation>Send Bitcoins</translation>
     </message>
     <message>
         <source>Coin Control Features</source>
@@ -2001,6 +2101,10 @@
         <translation>Advarsel: Gebyroverslag er ikke tilgjengelig for tiden.</translation>
     </message>
     <message>
+        <source>collapse fee-settings</source>
+        <translation>Legg ned gebyrinnstillinger</translation>
+    </message>
+    <message>
         <source>per kilobyte</source>
         <translation>per kilobyte</translation>
     </message>
@@ -2046,7 +2150,7 @@
     </message>
     <message>
         <source>With Replace-By-Fee (BIP-125) you can increase a transaction's fee after it is sent. Without this, a higher fee may be recommended to compensate for increased transaction delay risk.</source>
-        <translation>Med Replace-By-Fee (BIP-125) kan du øke transaksjonens gebyr etter at den er sendt. Uten dette aktivert anbefales et høyere gebyr for å kompensere for risikoen for at transaksjonen blir forsinket.</translation>
+        <translation>Med Replace-By-Fee (BIP-125) kan du øke transaksjonens gebyr etter at den er sendt. Uten dette aktivert anbefales et høyere gebyr for å kompensere for risikoen for at transaksjonen blir forsinket. </translation>
     </message>
     <message>
         <source>Clear &amp;All</source>
@@ -2157,6 +2261,10 @@
         <translation>Opprettelse av transaksjon mislyktes!</translation>
     </message>
     <message>
+        <source>The transaction was rejected with the following reason: %1</source>
+        <translation>Transaksjonen ble avslått av følgende grunn: %1</translation>
+    </message>
+    <message>
         <source>A fee higher than %1 is considered an absurdly high fee.</source>
         <translation>Et gebyr høyere enn %1 anses som absurd høyt.</translation>
     </message>
@@ -2208,8 +2316,12 @@
         <translation>Velg tidligere brukt adresse</translation>
     </message>
     <message>
+        <source>This is a normal payment.</source>
+        <translation>Dette er en normal betaling.</translation>
+    </message>
+    <message>
         <source>The Placeholders address to send the payment to</source>
-        <translation>Placeholders-adressen betalingen skal sendes til</translation>
+        <translation>Bitcoin-adressen betalingen skal sendes til</translation>
     </message>
     <message>
         <source>Alt+A</source>
@@ -2257,7 +2369,7 @@
     </message>
     <message>
         <source>A message that was attached to the placeh: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Placeholders network.</source>
-        <translation>En melding som var tilknyttet placehen: URI vil bli lagret med transaksjonen for din oversikt. Denne meldingen vil ikke bli sendt over Placeholders-nettverket.</translation>
+        <translation>En melding som var tilknyttet placehen: URI vil bli lagret med transaksjonen for din oversikt. Denne meldingen vil ikke bli sendt over Bitcoin-nettverket.</translation>
     </message>
     <message>
         <source>Pay To:</source>
@@ -2266,6 +2378,17 @@
     <message>
         <source>Memo:</source>
         <translation>Memo:</translation>
+    </message>
+    <message>
+        <source>Enter a label for this address to add it to your address book</source>
+        <translation>Skriv inn en merkelapp for denne adressen for å legge den til i din adressebok</translation>
+    </message>
+</context>
+<context>
+    <name>SendConfirmationDialog</name>
+    <message>
+        <source>Yes</source>
+        <translation>Ja</translation>
     </message>
 </context>
 <context>
@@ -2290,12 +2413,12 @@
         <translation>&amp;Signer Melding</translation>
     </message>
     <message>
-        <source>You can sign messages/agreements with your addresses to prove you can receive placehs sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
+        <source>You can sign messages/agreements with your addresses to prove you can receive Placeholderss sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
         <translation>Du kan signere meldinger/avtaler med adresser for å bevise at du kan motta placehs sendt til dem. Vær forsiktig med å signere noe vagt eller tilfeldig, siden phishing-angrep kan prøve å lure deg til å signere din identitet over til dem. Bare signer fullt detaljerte utsagn som du er enig i.</translation>
     </message>
     <message>
         <source>The Placeholders address to sign the message with</source>
-        <translation>Placeholders-adressen meldingen skal signeres med</translation>
+        <translation>Bitcoin-adressen meldingen skal signeres med</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -2327,7 +2450,7 @@
     </message>
     <message>
         <source>Sign the message to prove you own this Placeholders address</source>
-        <translation>Signer meldingen for å bevise at du eier denne Placeholders-adressen</translation>
+        <translation>Signer meldingen for å bevise at du eier denne Bitcoin-adressen</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -2351,11 +2474,11 @@
     </message>
     <message>
         <source>The Placeholders address the message was signed with</source>
-        <translation>Placeholders-adressen meldingen ble signert med</translation>
+        <translation>Bitcoin-adressen meldingen ble signert med</translation>
     </message>
     <message>
         <source>Verify the message to ensure it was signed with the specified Placeholders address</source>
-        <translation>Verifiser meldingen for å være sikker på at den ble signert av den angitte Placeholders-adressen</translation>
+        <translation>Verifiser meldingen for å være sikker på at den ble signert av den angitte Bitcoin-adressen</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>
@@ -2991,6 +3114,10 @@
         <translation>Beskjæring: siste lommeboksynkronisering går utenfor beskjærte data. Du må bruke -reindex (laster ned hele blokkjeden igjen for beskjærte noder)</translation>
     </message>
     <message>
+        <source>Rescans are not possible in pruned mode. You will need to use -reindex which will download the whole blockchain again.</source>
+        <translation>Omsøk er ikke mulig i beskjært modus. Du vil måtte bruke -reindex som vil laste nede hele blokkjeden på nytt.</translation>
+    </message>
+    <message>
         <source>Error: A fatal internal error occurred, see debug.log for details</source>
         <translation>Feil: En fatal intern feil oppstod, se debug.log for detaljer</translation>
     </message>
@@ -3012,7 +3139,7 @@
     </message>
     <message>
         <source>Cannot provide specific connections and have addrman find outgoing connections at the same.</source>
-        <translation>Kan ikke angi spesifikke tilkoblinger og ha addrman til å finne utgående tilkoblinger samtidig.</translation>
+        <translation>Kan ikke angi spesifikke tilkoblinger og ha addrman til å finne utgående tilkoblinger samtidig. </translation>
     </message>
     <message>
         <source>Error reading %s! All keys read correctly, but transaction data or address book entries might be missing or incorrect.</source>
@@ -3331,6 +3458,10 @@
     <message>
         <source>This is the transaction fee you may pay when fee estimates are not available.</source>
         <translation>Dette er transaksjonsgebyret du kan betale når gebyranslag ikke er tilgjengelige.</translation>
+    </message>
+    <message>
+        <source>This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit %s and cryptographic software written by Eric Young and UPnP software written by Thomas Bernard.</source>
+        <translation>Dette produktet inneholder programmet utviklet av OpenSSL-prosjektet for bruk i OpenSSL-verktøyssettet %s og kryptografisk programvare skrevet av Eric Young og UPnP-programvare skrevet av Thomas Bernard.</translation>
     </message>
     <message>
         <source>Total length of network version string (%i) exceeds maximum length (%i). Reduce the number or size of uacomments.</source>

@@ -1,9 +1,9 @@
-// Copyright (c) 2011-2020 The Placeholders Core developers
+// Copyright (c) 2011-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_QT_GUIUTIL_H
-#define PHL_QT_GUIUTIL_H
+#ifndef PLACEH_QT_GUIUTIL_H
+#define PLACEH_QT_GUIUTIL_H
 
 #include <amount.h>
 #include <fs.h>
@@ -28,18 +28,15 @@ namespace interfaces
 
 QT_BEGIN_NAMESPACE
 class QAbstractItemView;
-class QAction;
 class QDateTime;
 class QFont;
 class QLineEdit;
-class QMenu;
-class QPoint;
 class QProgressDialog;
 class QUrl;
 class QWidget;
 QT_END_NAMESPACE
 
-/** Utility functions used by the Placeholders Qt UI.
+/** Utility functions used by the Bitcoin Qt UI.
  */
 namespace GUIUtil
 {
@@ -54,9 +51,9 @@ namespace GUIUtil
     void setupAddressWidget(QValidatedLineEdit *widget, QWidget *parent);
 
     // Parse "placeh:" URI into recipient object, return true on successful parsing
-    bool parsePlaceholdersURI(const QUrl &uri, SendCoinsRecipient *out);
-    bool parsePlaceholdersURI(QString uri, SendCoinsRecipient *out);
-    QString formatPlaceholdersURI(const SendCoinsRecipient &info);
+    bool parseBitcoinURI(const QUrl &uri, SendCoinsRecipient *out);
+    bool parseBitcoinURI(QString uri, SendCoinsRecipient *out);
+    QString formatBitcoinURI(const SendCoinsRecipient &info);
 
     // Returns true if given address+amount meets "dust" definition
     bool isDust(interfaces::Node& node, const QString& address, const CAmount& amount);
@@ -71,21 +68,14 @@ namespace GUIUtil
        @param[in] role    Data role to extract from the model
        @see  TransactionView::copyLabel, TransactionView::copyAmount, TransactionView::copyAddress
      */
-    void copyEntryData(const QAbstractItemView *view, int column, int role=Qt::EditRole);
+    void copyEntryData(QAbstractItemView *view, int column, int role=Qt::EditRole);
 
     /** Return a field of the currently selected entry as a QString. Does nothing if nothing
         is selected.
        @param[in] column  Data column to extract from the model
        @see  TransactionView::copyLabel, TransactionView::copyAmount, TransactionView::copyAddress
      */
-    QList<QModelIndex> getEntryData(const QAbstractItemView *view, int column);
-
-    /** Returns true if the specified field of the currently selected view entry is not empty.
-       @param[in] column  Data column to extract from the model
-       @param[in] role    Data role to extract from the model
-       @see  TransactionView::contextualMenu
-     */
-    bool hasEntryData(const QAbstractItemView *view, int column, int role);
+    QList<QModelIndex> getEntryData(QAbstractItemView *view, int column);
 
     void setClipboard(const QString& str);
 
@@ -134,14 +124,11 @@ namespace GUIUtil
     // Activate, show and raise the widget
     void bringToFront(QWidget* w);
 
-    // Set shortcut to close window
-    void handleCloseWindowShortcut(QWidget* w);
-
     // Open debug.log
     void openDebugLogfile();
 
     // Open the config file
-    bool openPlaceholdersConf();
+    bool openBitcoinConf();
 
     /** Qt event filter that intercepts ToolTipChange events, and replaces the tooltip with a rich text
       representation if needed. This assures that Qt can word-wrap long tooltip messages.
@@ -155,7 +142,7 @@ namespace GUIUtil
         explicit ToolTipToRichTextFilter(int size_threshold, QObject *parent = nullptr);
 
     protected:
-        bool eventFilter(QObject *obj, QEvent *evt) override;
+        bool eventFilter(QObject *obj, QEvent *evt);
 
     private:
         int size_threshold;
@@ -215,8 +202,8 @@ namespace GUIUtil
     /* Format CNodeStats.nServices bitmask into a user-readable string */
     QString formatServicesStr(quint64 mask);
 
-    /* Format a CNodeStats.m_ping_usec into a user-readable string or display N/A, if 0*/
-    QString formatPingTime(int64_t ping_usec);
+    /* Format a CNodeCombinedStats.dPingTime into a user-readable string or display N/A, if 0*/
+    QString formatPingTime(double dPingTime);
 
     /* Format a CNodeCombinedStats.nTimeOffset into a user-readable string. */
     QString formatTimeOffset(int64_t nTimeOffset);
@@ -237,7 +224,7 @@ namespace GUIUtil
          */
         void clicked(const QPoint& point);
     protected:
-        void mouseReleaseEvent(QMouseEvent *event) override;
+        void mouseReleaseEvent(QMouseEvent *event);
     };
 
     class ClickableProgressBar : public QProgressBar
@@ -250,7 +237,7 @@ namespace GUIUtil
          */
         void clicked(const QPoint& point);
     protected:
-        void mouseReleaseEvent(QMouseEvent *event) override;
+        void mouseReleaseEvent(QMouseEvent *event);
     };
 
     typedef ClickableProgressBar ProgressBar;
@@ -265,7 +252,7 @@ namespace GUIUtil
         void keyEscapePressed();
 
     private:
-        bool eventFilter(QObject *object, QEvent *event) override;
+        bool eventFilter(QObject *object, QEvent *event);
     };
 
     // Fix known bugs in QProgressDialog class.
@@ -278,16 +265,6 @@ namespace GUIUtil
      * In Qt 5.11 the QFontMetrics::horizontalAdvance() was introduced.
      */
     int TextWidth(const QFontMetrics& fm, const QString& text);
-
-    /**
-     * Writes to debug.log short info about the used Qt and the host system.
-     */
-    void LogQtInfo();
-
-    /**
-     * Call QMenu::popup() only on supported QT_QPA_PLATFORM.
-     */
-    void PopupMenu(QMenu* menu, const QPoint& point, QAction* at_action = nullptr);
 } // namespace GUIUtil
 
-#endif // PHL_QT_GUIUTIL_H
+#endif // PLACEH_QT_GUIUTIL_H

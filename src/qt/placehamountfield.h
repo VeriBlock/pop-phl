@@ -1,9 +1,9 @@
-// Copyright (c) 2011-2018 The Placeholders Core developers
+// Copyright (c) 2011-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_QT_PHLAMOUNTFIELD_H
-#define PHL_QT_PHLAMOUNTFIELD_H
+#ifndef PLACEH_QT_PLACEHAMOUNTFIELD_H
+#define PLACEH_QT_PLACEHAMOUNTFIELD_H
 
 #include <amount.h>
 
@@ -17,7 +17,7 @@ QT_END_NAMESPACE
 
 /** Widget for entering placeh amounts.
   */
-class PlaceholdersAmountField: public QWidget
+class BitcoinAmountField: public QWidget
 {
     Q_OBJECT
 
@@ -26,7 +26,7 @@ class PlaceholdersAmountField: public QWidget
     Q_PROPERTY(qint64 value READ value WRITE setValue NOTIFY valueChanged USER true)
 
 public:
-    explicit PlaceholdersAmountField(QWidget *parent = nullptr);
+    explicit BitcoinAmountField(QWidget *parent = nullptr);
 
     CAmount value(bool *value=nullptr) const;
     void setValue(const CAmount& value);
@@ -70,7 +70,7 @@ Q_SIGNALS:
 
 protected:
     /** Intercept focus-in event and ',' key presses */
-    bool eventFilter(QObject *object, QEvent *event) override;
+    bool eventFilter(QObject *object, QEvent *event);
 
 private:
     AmountSpinBox *amount;
@@ -81,4 +81,4 @@ private Q_SLOTS:
 
 };
 
-#endif // PHL_QT_PHLAMOUNTFIELD_H
+#endif // PLACEH_QT_PLACEHAMOUNTFIELD_H

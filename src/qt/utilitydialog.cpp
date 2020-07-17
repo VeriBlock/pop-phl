@@ -1,4 +1,6 @@
-// Copyright (c) 2011-2020 The Placeholders Core developers
+// Copyright (c) 2011-2018 The Bitcoin Core developers
+// Copyright (c) 2019-2020 Xenios SEZC
+// https://www.veriblock.org
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -10,7 +12,7 @@
 
 #include <qt/forms/ui_helpmessagedialog.h>
 
-#include <qt/guiutil.h>
+#include <qt/placehgui.h>
 
 #include <clientversion.h>
 #include <init.h>
@@ -21,10 +23,9 @@
 
 #include <QCloseEvent>
 #include <QLabel>
-#include <QMainWindow>
 #include <QRegExp>
-#include <QTextCursor>
 #include <QTextTable>
+#include <QTextCursor>
 #include <QVBoxLayout>
 
 /** "Help message" or "About" dialog box */
@@ -104,8 +105,6 @@ HelpMessageDialog::HelpMessageDialog(interfaces::Node& node, QWidget *parent, bo
         ui->scrollArea->setVisible(false);
         ui->aboutLogo->setVisible(false);
     }
-
-    GUIUtil::handleCloseWindowShortcut(this);
 }
 
 HelpMessageDialog::~HelpMessageDialog()
@@ -145,13 +144,12 @@ ShutdownWindow::ShutdownWindow(QWidget *parent, Qt::WindowFlags f):
         tr("%1 is shutting down...").arg(PACKAGE_NAME) + "<br /><br />" +
         tr("Do not shut down the computer until this window disappears.")));
     setLayout(layout);
-
-    GUIUtil::handleCloseWindowShortcut(this);
 }
 
-QWidget* ShutdownWindow::showShutdownWindow(QMainWindow* window)
+QWidget *ShutdownWindow::showShutdownWindow(BitcoinGUI *window)
 {
-    assert(window != nullptr);
+    if (!window)
+        return nullptr;
 
     // Show a simple window indicating shutdown status
     QWidget *shutdownWindow = new ShutdownWindow();

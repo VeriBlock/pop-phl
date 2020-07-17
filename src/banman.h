@@ -1,23 +1,20 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2020 The Placeholders Core developers
+// Copyright (c) 2009-2017 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
-#ifndef PHL_BANMAN_H
-#define PHL_BANMAN_H
+#ifndef PLACEH_BANMAN_H
+#define PLACEH_BANMAN_H
+
+#include <cstdint>
+#include <memory>
 
 #include <addrdb.h>
 #include <fs.h>
 #include <net_types.h> // For banmap_t
 #include <sync.h>
 
-#include <chrono>
-#include <cstdint>
-#include <memory>
-
 // NOTE: When adjusting this, update rpcnet:setban's help ("24h")
 static constexpr unsigned int DEFAULT_MISBEHAVING_BANTIME = 60 * 60 * 24; // Default 24-hour ban
-// How often to dump addresses to banlist.dat
-static constexpr std::chrono::minutes DUMP_BANS_INTERVAL{15};
 
 class CClientUIInterface;
 class CNetAddr;
@@ -62,7 +59,7 @@ private:
     //!clean unused entries (if bantime has expired)
     void SweepBanned();
 
-    RecursiveMutex m_cs_banned;
+    CCriticalSection m_cs_banned;
     banmap_t m_banned GUARDED_BY(m_cs_banned);
     bool m_is_dirty GUARDED_BY(m_cs_banned);
     CClientUIInterface* m_client_interface = nullptr;

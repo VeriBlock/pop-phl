@@ -32,7 +32,7 @@ Tests.
 
 ### placehgui.(h/cpp)
 
-Represents the main window of the Placeholders UI.
+Represents the main window of the Bitcoin UI.
 
 ### \*model.(h/cpp)
 
@@ -58,9 +58,9 @@ Represents the view to a single wallet.
 
 ### Other .h/cpp files
 
-* UI elements like PlaceholdersAmountField, which inherit from QWidget.
+* UI elements like BitcoinAmountField, which inherit from QWidget.
 * `placehstrings.cpp`: automatically generated
-* `placehunits.(h/cpp)`: PHL / mPHL / etc handling
+* `placehunits.(h/cpp)`: vPHL / mvPHL / etc handling
 * `callback.h`
 * `guiconstants.h`: UI colors, app name, etc
 * `guiutil.h`: several helper functions

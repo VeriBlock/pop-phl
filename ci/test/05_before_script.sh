@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright (c) 2018-2020 The Placeholders Core developers
+# Copyright (c) 2018 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -8,7 +8,7 @@ export LC_ALL=C.UTF-8
 
 # Make sure default datadir does not exist and is never read by creating a dummy file
 if [ "$TRAVIS_OS_NAME" == "osx" ]; then
-  echo > $HOME/Library/Application\ Support/Placeholders
+  echo > $HOME/Library/Application\ Support/Bitcoin
 else
   DOCKER_EXEC echo \> \$HOME/.placeh
 fi
@@ -25,20 +25,5 @@ if [[ $HOST = *-mingw32 ]]; then
   DOCKER_EXEC update-alternatives --set $HOST-g++ \$\(which $HOST-g++-posix\)
 fi
 if [ -z "$NO_DEPENDS" ]; then
-  if [[ $DOCKER_NAME_TAG == centos* ]]; then
-    # CentOS has problems building the depends if the config shell is not explicitly set
-    # (i.e. for libevent a Makefile with an empty SHELL variable is generated, leading to
-    #  an error as the first command is executed)
-    SHELL_OPTS="CONFIG_SHELL=/bin/bash"
-  else
-    SHELL_OPTS="CONFIG_SHELL="
-  fi
-  # Temporary workaround for https://github.com/bitcoin/bitcoin/issues/16368
-  python3 -c 'import time; [print(".") or time.sleep(500) for _ in range(4)]' &
-  ( DOCKER_EXEC $SHELL_OPTS make $MAKEJOBS -C depends HOST=$HOST $DEP_OPTS ) &> /dev/null
-fi
-if [ -n "$PREVIOUS_RELEASES_TO_DOWNLOAD" ]; then
-  BEGIN_FOLD previous-versions
-  DOCKER_EXEC contrib/devtools/previous_release.sh -b -t "$PREVIOUS_RELEASES_DIR" "${PREVIOUS_RELEASES_TO_DOWNLOAD}"
-  END_FOLD
+  DOCKER_EXEC CONFIG_SHELL= make $MAKEJOBS -C depends HOST=$HOST $DEP_OPTS
 fi

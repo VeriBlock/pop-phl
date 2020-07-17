@@ -1,9 +1,11 @@
-// Copyright (c) 2011-2020 The Placeholders Core developers
+// Copyright (c) 2011-2018 The Bitcoin Core developers
+// Copyright (c) 2019-2020 Xenios SEZC
+// https://www.veriblock.org
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_QT_GUICONSTANTS_H
-#define PHL_QT_GUICONSTANTS_H
+#ifndef PLACEH_QT_GUICONSTANTS_H
+#define PLACEH_QT_GUICONSTANTS_H
 
 #include <cstdint>
 
@@ -13,7 +15,7 @@ static const int MODEL_UPDATE_DELAY = 250;
 /* AskPassphraseDialog -- Maximum passphrase length */
 static const int MAX_PASSPHRASE_SIZE = 1024;
 
-/* PlaceholdersGUI -- Size of icons in status bar */
+/* BitcoinGUI -- Size of icons in status bar */
 static const int STATUSBAR_ICONSIZE = 16;
 
 static const bool DEFAULT_SPLASHSCREEN = true;
@@ -43,7 +45,7 @@ static const int TOOLTIP_WRAP_THRESHOLD = 80;
 #define SPINNER_FRAMES 36
 
 #define QAPP_ORG_NAME "Placeholders"
-#define QAPP_ORG_DOMAIN "placehproject.com"
+#define QAPP_ORG_DOMAIN "veriblock.org"
 #define QAPP_APP_NAME_DEFAULT "Placeholders-Qt"
 #define QAPP_APP_NAME_TESTNET "Placeholders-Qt-testnet"
 #define QAPP_APP_NAME_REGTEST "Placeholders-Qt-regtest"
@@ -51,7 +53,4 @@ static const int TOOLTIP_WRAP_THRESHOLD = 80;
 /* One gigabyte (GB) in bytes */
 static constexpr uint64_t GB_BYTES{1000000000};
 
-// Default prune target displayed in GUI.
-static constexpr int DEFAULT_PRUNE_TARGET_GB{2};
-
-#endif // PHL_QT_GUICONSTANTS_H
+#endif // PLACEH_QT_GUICONSTANTS_H

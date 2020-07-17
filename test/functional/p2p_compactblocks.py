@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-# Copyright (c) 2016-2019 The Placeholders Core developers
+# Copyright (c) 2016-2019 The Bitcoin Core developers
+# Copyright (c) 2019-2020 Xenios SEZC
+# https://www.veriblock.org
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test compact blocks (BIP 152).
@@ -10,10 +12,10 @@ Version 2 compact blocks are post-segwit (wtxids)
 import random
 
 from test_framework.blocktools import create_block, create_coinbase, add_witness_commitment
-from test_framework.messages import BlockTransactions, BlockTransactionsRequest, calculate_shortid, CBlock, CBlockHeader, CInv, COutPoint, CTransaction, CTxIn, CTxInWitness, CTxOut, FromHex, HeaderAndShortIDs, msg_no_witness_block, msg_no_witness_blocktxn, msg_cmpctblock, msg_getblocktxn, msg_getdata, msg_getheaders, msg_headers, msg_inv, msg_sendcmpct, msg_sendheaders, msg_tx, msg_block, msg_blocktxn, MSG_BLOCK, MSG_CMPCT_BLOCK, MSG_WITNESS_FLAG, NODE_NETWORK, P2PHeaderAndShortIDs, PrefilledTransaction, ser_uint256, ToHex
+from test_framework.messages import BlockTransactions, BlockTransactionsRequest, calculate_shortid, CBlock, CBlockHeader, CInv, COutPoint, CTransaction, CTxIn, CTxInWitness, CTxOut, FromHex, HeaderAndShortIDs, msg_no_witness_block, msg_no_witness_blocktxn, msg_cmpctblock, msg_getblocktxn, msg_getdata, msg_getheaders, msg_headers, msg_inv, msg_sendcmpct, msg_sendheaders, msg_tx, msg_block, msg_blocktxn, MSG_WITNESS_FLAG, NODE_NETWORK, P2PHeaderAndShortIDs, PrefilledTransaction, ser_uint256, ToHex
 from test_framework.mininode import mininode_lock, P2PInterface
 from test_framework.script import CScript, OP_TRUE, OP_DROP
-from test_framework.test_framework import PlaceholdersTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import assert_equal, wait_until, softfork_active
 
 # TestP2PConn: A peer we use to send messages to placehd, and store responses.
@@ -44,7 +46,7 @@ class TestP2PConn(P2PInterface):
 
     def on_inv(self, message):
         for x in self.last_message["inv"].inv:
-            if x.type == MSG_BLOCK:
+            if x.type == 2:
                 self.block_announced = True
                 self.announced_blockhashes.add(x.hash)
 
@@ -91,7 +93,7 @@ class TestP2PConn(P2PInterface):
         self.send_message(message)
         wait_until(lambda: not self.is_connected, timeout=timeout, lock=mininode_lock)
 
-class CompactBlocksTest(PlaceholdersTestFramework):
+class CompactBlocksTest(BitcoinTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 1
@@ -307,7 +309,7 @@ class CompactBlocksTest(PlaceholdersTestFramework):
         # Now fetch the compact block using a normal non-announce getdata
         with mininode_lock:
             test_node.clear_block_announcement()
-            inv = CInv(MSG_CMPCT_BLOCK, block_hash)
+            inv = CInv(4, block_hash)  # 4 == "CompactBlock"
             test_node.send_message(msg_getdata([inv]))
 
         wait_until(test_node.received_block_announcement, timeout=30, lock=mininode_lock)
@@ -378,15 +380,19 @@ class CompactBlocksTest(PlaceholdersTestFramework):
         # request
         for announce in ["inv", "header"]:
             block = self.build_block_on_tip(node, segwit=segwit)
+            with mininode_lock:
+                test_node.last_message.pop("getdata", None)
 
             if announce == "inv":
-                test_node.send_message(msg_inv([CInv(MSG_BLOCK, block.sha256)]))
+                test_node.send_message(msg_inv([CInv(2, block.sha256)]))
                 wait_until(lambda: "getheaders" in test_node.last_message, timeout=30, lock=mininode_lock)
                 test_node.send_header_for_blocks([block])
             else:
                 test_node.send_header_for_blocks([block])
-            test_node.wait_for_getdata([block.sha256], timeout=30)
+            wait_until(lambda: "getdata" in test_node.last_message, timeout=30, lock=mininode_lock)
+            assert_equal(len(test_node.last_message["getdata"].inv), 1)
             assert_equal(test_node.last_message["getdata"].inv[0].type, 4)
+            assert_equal(test_node.last_message["getdata"].inv[0].hash, block.sha256)
 
             # Send back a compactblock message that omits the coinbase
             comp_block = HeaderAndShortIDs()
@@ -563,9 +569,10 @@ class CompactBlocksTest(PlaceholdersTestFramework):
         assert_equal(int(node.getbestblockhash(), 16), block.hashPrevBlock)
 
         # We should receive a getdata request
-        test_node.wait_for_getdata([block.sha256], timeout=10)
-        assert test_node.last_message["getdata"].inv[0].type == MSG_BLOCK or \
-               test_node.last_message["getdata"].inv[0].type == MSG_BLOCK | MSG_WITNESS_FLAG
+        wait_until(lambda: "getdata" in test_node.last_message, timeout=10, lock=mininode_lock)
+        assert_equal(len(test_node.last_message["getdata"].inv), 1)
+        assert test_node.last_message["getdata"].inv[0].type == 2 or test_node.last_message["getdata"].inv[0].type == 2 | MSG_WITNESS_FLAG
+        assert_equal(test_node.last_message["getdata"].inv[0].hash, block.sha256)
 
         # Deliver the block
         if version == 2:
@@ -634,7 +641,7 @@ class CompactBlocksTest(PlaceholdersTestFramework):
             wait_until(test_node.received_block_announcement, timeout=30, lock=mininode_lock)
 
         test_node.clear_block_announcement()
-        test_node.send_message(msg_getdata([CInv(MSG_CMPCT_BLOCK, int(new_blocks[0], 16))]))
+        test_node.send_message(msg_getdata([CInv(4, int(new_blocks[0], 16))]))
         wait_until(lambda: "cmpctblock" in test_node.last_message, timeout=30, lock=mininode_lock)
 
         test_node.clear_block_announcement()
@@ -643,7 +650,7 @@ class CompactBlocksTest(PlaceholdersTestFramework):
         test_node.clear_block_announcement()
         with mininode_lock:
             test_node.last_message.pop("block", None)
-        test_node.send_message(msg_getdata([CInv(MSG_CMPCT_BLOCK, int(new_blocks[0], 16))]))
+        test_node.send_message(msg_getdata([CInv(4, int(new_blocks[0], 16))]))
         wait_until(lambda: "block" in test_node.last_message, timeout=30, lock=mininode_lock)
         with mininode_lock:
             test_node.last_message["block"].block.calc_sha256()

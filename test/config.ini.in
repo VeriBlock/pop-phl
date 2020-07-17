@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2016 The Placeholders Core developers
+# Copyright (c) 2013-2016 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -7,7 +7,6 @@
 
 [environment]
 PACKAGE_NAME=@PACKAGE_NAME@
-PACKAGE_BUGREPORT=@PACKAGE_BUGREPORT@
 SRCDIR=@abs_top_srcdir@
 BUILDDIR=@abs_top_builddir@
 EXEEXT=@EXEEXT@
@@ -16,8 +15,8 @@ RPCAUTH=@abs_top_srcdir@/share/rpcauth/rpcauth.py
 [components]
 # Which components are enabled. These are commented out by `configure` if they were disabled when running config.
 @ENABLE_WALLET_TRUE@ENABLE_WALLET=true
-@BUILD_PHL_CLI_TRUE@ENABLE_CLI=true
-@BUILD_PHL_WALLET_TRUE@ENABLE_WALLET_TOOL=true
-@BUILD_PHLD_TRUE@ENABLE_PHLD=true
+@BUILD_PLACEH_CLI_TRUE@ENABLE_CLI=true
+@BUILD_PLACEH_WALLET_TRUE@ENABLE_WALLET_TOOL=true
+@BUILD_PLACEHD_TRUE@ENABLE_PLACEHD=true
 @ENABLE_FUZZ_TRUE@ENABLE_FUZZ=true
 @ENABLE_ZMQ_TRUE@ENABLE_ZMQ=true

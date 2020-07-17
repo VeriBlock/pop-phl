@@ -4,7 +4,7 @@ distro: "ubuntu"
 suites:
 - "bionic"
 architectures:
-- "amd64"
+- "linux64"
 packages:
 - "faketime"
 remotes:

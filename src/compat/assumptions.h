@@ -1,12 +1,12 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2019 The Placeholders Core developers
+// Copyright (c) 2009-2019 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 // Compile-time verification of assumptions we make.
 
-#ifndef PHL_COMPAT_ASSUMPTIONS_H
-#define PHL_COMPAT_ASSUMPTIONS_H
+#ifndef PLACEH_COMPAT_ASSUMPTIONS_H
+#define PLACEH_COMPAT_ASSUMPTIONS_H
 
 #include <limits>
 
@@ -14,7 +14,7 @@
 // Example(s): We use assert(...) extensively with the assumption of it never
 //             being a noop at runtime.
 #if defined(NDEBUG)
-# error "Placeholders cannot be compiled without assertions."
+# error "Bitcoin cannot be compiled without assertions."
 #endif
 
 // Assumption: We assume a C++11 (ISO/IEC 14882:2011) compiler (minimum requirement).
@@ -50,7 +50,6 @@ static_assert(sizeof(double) == 8, "64-bit double assumed");
 //             code.
 static_assert(sizeof(short) == 2, "16-bit short assumed");
 static_assert(sizeof(int) == 4, "32-bit int assumed");
-static_assert(sizeof(unsigned) == 4, "32-bit unsigned assumed");
 
 // Assumption: We assume size_t to be 32-bit or 64-bit.
 // Example(s): size_t assumed to be at least 32-bit in ecdsa_signature_parse_der_lax(...).
@@ -63,4 +62,4 @@ static_assert(sizeof(size_t) == sizeof(void*), "Sizes of size_t and void* assume
 // * We are NOT assuming a specific value for std::locale("").name().
 // * We are NOT assuming a specific value for std::numeric_limits<char>::is_signed.
 
-#endif // PHL_COMPAT_ASSUMPTIONS_H
+#endif // PLACEH_COMPAT_ASSUMPTIONS_H

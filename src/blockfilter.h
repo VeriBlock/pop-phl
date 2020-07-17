@@ -1,9 +1,9 @@
-// Copyright (c) 2018-2019 The Placeholders Core developers
+// Copyright (c) 2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_BLOCKFILTER_H
-#define PHL_BLOCKFILTER_H
+#ifndef PLACEH_BLOCKFILTER_H
+#define PLACEH_BLOCKFILTER_H
 
 #include <stdint.h>
 #include <string>
@@ -144,8 +144,8 @@ public:
 
     template <typename Stream>
     void Serialize(Stream& s) const {
-        s << static_cast<uint8_t>(m_filter_type)
-          << m_block_hash
+        s << m_block_hash
+          << static_cast<uint8_t>(m_filter_type)
           << m_filter.GetEncoded();
     }
 
@@ -154,8 +154,8 @@ public:
         std::vector<unsigned char> encoded_filter;
         uint8_t filter_type;
 
-        s >> filter_type
-          >> m_block_hash
+        s >> m_block_hash
+          >> filter_type
           >> encoded_filter;
 
         m_filter_type = static_cast<BlockFilterType>(filter_type);
@@ -168,4 +168,4 @@ public:
     }
 };
 
-#endif // PHL_BLOCKFILTER_H
+#endif // PLACEH_BLOCKFILTER_H

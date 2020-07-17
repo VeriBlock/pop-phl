@@ -1,5 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2019 The Placeholders Core developers
+// Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2019-2020 Xenios SEZC
+// https://www.veriblock.org
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -13,6 +15,7 @@
 #include <vbk/util.hpp>
 #include <vbk/config.hpp>
 #include <vbk/service_locator.hpp>
+
 
 CAmount GetDustThreshold(const CTxOut& txout, const CFeeRate& dustRelayFeeIn)
 {
@@ -103,9 +106,12 @@ bool IsStandardTx(const CTransaction& tx, bool permit_bare_multisig, const CFeeR
         // CHECKMULTISIG scriptPubKey, though such a scriptPubKey is not
         // considered standard.
 
-        if (VeriBlock::isPopTx(tx)) {
+        if (VeriBlock::isPopTx(tx))
+        {
             return true; // accept pop txes with any size
-        } else {
+        }
+        else
+        {
             if (txin.scriptSig.size() > 1650) {
                 reason = "scriptsig-size";
                 return false;

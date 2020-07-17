@@ -3,7 +3,7 @@
     <name>AddressBookPage</name>
     <message>
         <source>Right-click to edit address or label</source>
-        <translation>Clic derecho para editar la dirección o etiqueta</translation>
+        <translation>Haga clic para editar la dirección o etiqueta</translation>
     </message>
     <message>
         <source>Create a new address</source>
@@ -121,7 +121,7 @@
     </message>
     <message>
         <source>Enter passphrase</source>
-        <translation>Introduce contraseña actual</translation>
+        <translation>Introduce contraseña actual      </translation>
     </message>
     <message>
         <source>New passphrase</source>
@@ -160,8 +160,8 @@
         <translation>Confirmar cifrado del monedero</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PHLS&lt;/b&gt;!</source>
-        <translation>Advertencia: Si encriptas tu billetera y pierdes tu contraseña, vas a ¡&lt;b&gt;PERDER TODOS TUS PHLS&lt;/b&gt;!</translation>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PLACEHS&lt;/b&gt;!</source>
+        <translation>Advertencia: Si encriptas tu billetera y pierdes tu contraseña, vas a perder&lt;b&gt;TODOS TUS PLACEHS&lt;/b&gt;!</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -220,7 +220,7 @@
     </message>
 </context>
 <context>
-    <name>PlaceholdersGUI</name>
+    <name>BitcoinGUI</name>
     <message>
         <source>Sign &amp;message...</source>
         <translation>Firmar &amp;mensaje...</translation>
@@ -334,6 +334,14 @@
         <translation>Cambiar la contraseña utilizada para la codificación de la billetera</translation>
     </message>
     <message>
+        <source>&amp;Debug window</source>
+        <translation>Ventana &amp;Debug</translation>
+    </message>
+    <message>
+        <source>Open debugging and diagnostic console</source>
+        <translation>Abre consola de depuración y diagnóstico</translation>
+    </message>
+    <message>
         <source>&amp;Verify message...</source>
         <translation>Verificar mensaje....</translation>
     </message>
@@ -394,12 +402,16 @@
         <translation>Mostrar la lista de direcciones de recepción y etiquetas</translation>
     </message>
     <message>
+        <source>Open a placeh: URI or payment request</source>
+        <translation>Abrir un identificador URI placeh o una petición de pago</translation>
+    </message>
+    <message>
         <source>&amp;Command-line options</source>
         <translation>&amp;Opciones de linea de comando</translation>
     </message>
     <message numerus="yes">
         <source>%n active connection(s) to Placeholders network</source>
-        <translation><numerusform>%n conexión activa hacia la red Placeholders</numerusform><numerusform>%n conexiones activas hacia la red Placeholders</numerusform></translation>
+        <translation><numerusform>%n conexión activa hacia la red Bitcoin</numerusform><numerusform>%n conexiones activas hacia la red Bitcoin</numerusform></translation>
     </message>
     <message>
         <source>Indexing blocks on disk...</source>
@@ -443,7 +455,7 @@
     </message>
     <message>
         <source>Show the %1 help message to get a list with possible Placeholders command-line options</source>
-        <translation>Mostrar el mensaje de ayuda %1 para obtener una lista de los posibles comandos de Placeholders</translation>
+        <translation>Mostrar el mensaje de ayuda %1 para obtener una lista de los posibles comandos de Bitcoin</translation>
     </message>
     <message>
         <source>&amp;Window</source>
@@ -777,6 +789,10 @@
         <translation>versión</translation>
     </message>
     <message>
+        <source>(%1-bit)</source>
+        <translation>(%1-bit)</translation>
+    </message>
+    <message>
         <source>About %1</source>
         <translation>Sobre %1</translation>
     </message>
@@ -820,8 +836,8 @@
         <translation>usar un directorio de datos personalizado:</translation>
     </message>
     <message>
-        <source>Placeholders</source>
-        <translation>Placeholders</translation>
+        <source>Bitcoin</source>
+        <translation>Bitcoin</translation>
     </message>
     <message>
         <source>At least %1 GB of data will be stored in this directory, and it will grow over time.</source>
@@ -833,7 +849,7 @@
     </message>
     <message>
         <source>%1 will download and store a copy of the Placeholders block chain.</source>
-        <translation>%1 descargará y almacenará una copia del blockchain de Placeholders.</translation>
+        <translation>%1 descargará y almacenará una copia del blockchain de Bitcoin.</translation>
     </message>
     <message>
         <source>The wallet will also be stored in this directory.</source>
@@ -904,14 +920,30 @@
     </message>
     <message>
         <source>Unknown. Syncing Headers (%1, %2%)...</source>
-        <translation>Desconocido. Sincronizando cabeceras (%1, %2%)...</translation>
+        <translation>Desconocido. Sincronizando cabecesar (%1, %2%)...</translation>
     </message>
 </context>
 <context>
     <name>OpenURIDialog</name>
     <message>
+        <source>Open URI</source>
+        <translation>Abrir URI</translation>
+    </message>
+    <message>
+        <source>Open payment request from URI or file</source>
+        <translation>Abrir solicitud de pago desde URI o un archivo</translation>
+    </message>
+    <message>
         <source>URI:</source>
         <translation>URI:</translation>
+    </message>
+    <message>
+        <source>Select payment request file</source>
+        <translation>Seleccionar archivo de solicitud de pago</translation>
+    </message>
+    <message>
+        <source>Select payment request file to open</source>
+        <translation>Seleccionar archivo de solicitud de pago para abrir</translation>
     </message>
 </context>
 <context>
@@ -1166,7 +1198,7 @@
     </message>
     <message>
         <source>The supplied proxy address is invalid.</source>
-        <translation>El proxy ingresado es inválido.</translation>
+        <translation>El proxy ingresado es inválido. </translation>
     </message>
 </context>
 <context>
@@ -1252,11 +1284,15 @@
     </message>
     <message>
         <source>Cannot start placeh: click-to-pay handler</source>
-        <translation>No se puede iniciar Placeholders: controlador de clic para pagar</translation>
+        <translation>No se puede iniciar Bitcoin: controlador de clic para pagar</translation>
     </message>
     <message>
         <source>URI handling</source>
         <translation>Manejo de URI</translation>
+    </message>
+    <message>
+        <source>Payment request fetch URL is invalid: %1</source>
+        <translation>Lectura de URL para la solicitud de pagos es invalida: %1</translation>
     </message>
     <message>
         <source>Invalid payment address %1</source>
@@ -1269,6 +1305,66 @@
     <message>
         <source>Payment request file handling</source>
         <translation>Manejo del archivo de solicitud de pago</translation>
+    </message>
+    <message>
+        <source>Payment request file cannot be read! This can be caused by an invalid payment request file.</source>
+        <translation>¡El archivo de solicitud de pago no se puede leer! Esto puede deberse a un archivo de solicitud de pago no válido.</translation>
+    </message>
+    <message>
+        <source>Payment request rejected</source>
+        <translation>Solicitud de pago rechazada</translation>
+    </message>
+    <message>
+        <source>Payment request network doesn't match client network.</source>
+        <translation>Red de solicitud de pagos no coincide con la red del cliente.</translation>
+    </message>
+    <message>
+        <source>Payment request expired.</source>
+        <translation>Solicitud de pago expirada</translation>
+    </message>
+    <message>
+        <source>Payment request is not initialized.</source>
+        <translation>La solicitud de pago no se ha iniciado.</translation>
+    </message>
+    <message>
+        <source>Unverified payment requests to custom payment scripts are unsupported.</source>
+        <translation>Las solicitudes de pago no verificadas para los scripts de pago personalizados no son compatibles.</translation>
+    </message>
+    <message>
+        <source>Invalid payment request.</source>
+        <translation>Solicitud de pago invalida.</translation>
+    </message>
+    <message>
+        <source>Requested payment amount of %1 is too small (considered dust).</source>
+        <translation>El monto para la solicitud de pago de %1 es muy pequeño (considera el dust).</translation>
+    </message>
+    <message>
+        <source>Refund from %1</source>
+        <translation>Reembolsar desde %1</translation>
+    </message>
+    <message>
+        <source>Payment request %1 is too large (%2 bytes, allowed %3 bytes).</source>
+        <translation>Solicitud de pago %1 es muy grande (Actualmente %2 bytes, máximo %3 bytes)</translation>
+    </message>
+    <message>
+        <source>Error communicating with %1: %2</source>
+        <translation>Fallo al comunicar con %1: %2</translation>
+    </message>
+    <message>
+        <source>Payment request cannot be parsed!</source>
+        <translation>La solicitud de pago no puede ser analizada!</translation>
+    </message>
+    <message>
+        <source>Bad response from server %1</source>
+        <translation>Mala respuesta desde el servidor %1</translation>
+    </message>
+    <message>
+        <source>Network request error</source>
+        <translation>Error en petición de la red</translation>
+    </message>
+    <message>
+        <source>Payment acknowledged</source>
+        <translation>Pago declarado</translation>
     </message>
 </context>
 <context>
@@ -1433,6 +1529,10 @@
     <message>
         <source>&amp;Information</source>
         <translation>&amp;Información</translation>
+    </message>
+    <message>
+        <source>Debug window</source>
+        <translation>Ventana Debug</translation>
     </message>
     <message>
         <source>General</source>
@@ -1720,7 +1820,7 @@
     </message>
     <message>
         <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Placeholders network.</source>
-        <translation>Mensaje opcional adjunto a la solicitud de pago, que será mostrado cuando la solicitud sea abierta. Nota: Este mensaje no será enviado con el pago a través de la red Placeholders.</translation>
+        <translation>Mensaje opcional adjunto a la solicitud de pago, que será mostrado cuando la solicitud sea abierta. Nota: Este mensaje no será enviado con el pago a través de la red Bitcoin.</translation>
     </message>
     <message>
         <source>An optional label to associate with the new receiving address.</source>
@@ -1783,7 +1883,7 @@
     <name>ReceiveRequestDialog</name>
     <message>
         <source>QR Code</source>
-        <translation>Código QR</translation>
+        <translation>Código QR </translation>
     </message>
     <message>
         <source>Copy &amp;URI</source>
@@ -1925,6 +2025,10 @@
         <translation>Advertencia: En este momento no se puede estimar la cuota.</translation>
     </message>
     <message>
+        <source>collapse fee-settings</source>
+        <translation>Colapsar ajustes de comisión.</translation>
+    </message>
+    <message>
         <source>per kilobyte</source>
         <translation>por kilobyte</translation>
     </message>
@@ -2049,6 +2153,10 @@
         <translation>¡Fallo al crear la transacción!</translation>
     </message>
     <message>
+        <source>The transaction was rejected with the following reason: %1</source>
+        <translation>Se ha rechazado la transacción por la siguiente razón: %1</translation>
+    </message>
+    <message>
         <source>A fee higher than %1 is considered an absurdly high fee.</source>
         <translation>Una comisión mayor que %1 se considera como una comisión absurda-mente alta.</translation>
     </message>
@@ -2094,6 +2202,10 @@
     <message>
         <source>Choose previously used address</source>
         <translation>Seleccionar dirección usada anteriormente</translation>
+    </message>
+    <message>
+        <source>This is a normal payment.</source>
+        <translation>Este es un pago normal</translation>
     </message>
     <message>
         <source>The Placeholders address to send the payment to</source>
@@ -2142,6 +2254,17 @@
     <message>
         <source>Memo:</source>
         <translation>Memo:</translation>
+    </message>
+    <message>
+        <source>Enter a label for this address to add it to your address book</source>
+        <translation>Introduce una etiqueta a esta dirección para añadirla a tu guía</translation>
+    </message>
+</context>
+<context>
+    <name>SendConfirmationDialog</name>
+    <message>
+        <source>Yes</source>
+        <translation>Si</translation>
     </message>
 </context>
 <context>
@@ -2805,6 +2928,10 @@
     <message>
         <source>Prune configured below the minimum of %d MiB.  Please use a higher number.</source>
         <translation>La Poda se ha configurado por debajo del mínimo de %d MiB. Por favor utiliza un valor mas alto.</translation>
+    </message>
+    <message>
+        <source>Rescans are not possible in pruned mode. You will need to use -reindex which will download the whole blockchain again.</source>
+        <translation>No es es posible re-escanear en modo prune. Debes usar -reindex el cual descargara toda la blockchain de nuevo.</translation>
     </message>
     <message>
         <source>Error: A fatal internal error occurred, see debug.log for details</source>

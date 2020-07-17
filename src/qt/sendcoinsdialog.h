@@ -1,9 +1,9 @@
-// Copyright (c) 2011-2019 The Placeholders Core developers
+// Copyright (c) 2011-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_QT_SENDCOINSDIALOG_H
-#define PHL_QT_SENDCOINSDIALOG_H
+#ifndef PLACEH_QT_SENDCOINSDIALOG_H
+#define PLACEH_QT_SENDCOINSDIALOG_H
 
 #include <qt/walletmodel.h>
 
@@ -12,7 +12,6 @@
 #include <QString>
 #include <QTimer>
 
-class CCoinControl;
 class ClientModel;
 class PlatformStyle;
 class SendCoinsEntry;
@@ -48,8 +47,8 @@ public:
 
 public Q_SLOTS:
     void clear();
-    void reject() override;
-    void accept() override;
+    void reject();
+    void accept();
     SendCoinsEntry *addEntry();
     void updateTabsAndLabels();
     void setBalance(const interfaces::WalletBalances& balances);
@@ -61,8 +60,6 @@ private:
     Ui::SendCoinsDialog *ui;
     ClientModel *clientModel;
     WalletModel *model;
-    std::unique_ptr<CCoinControl> m_coin_control;
-    std::unique_ptr<WalletModelTransaction> m_current_transaction;
     bool fNewRecipientAllowed;
     bool fFeeMinimized;
     const PlatformStyle *platformStyle;
@@ -72,8 +69,6 @@ private:
     // Additional parameter msgArg can be used via .arg(msgArg).
     void processSendCoinsReturn(const WalletModel::SendCoinsReturn &sendCoinsReturn, const QString &msgArg = QString());
     void minimizeFeeSection(bool fMinimize);
-    // Format confirmation message
-    bool PrepareSendText(QString& question_string, QString& informative_text, QString& detailed_text);
     void updateFeeMinimizedLabel();
     // Update the passed in CCoinControl with state from the GUI
     void updateCoinControlState(CCoinControl& ctrl);
@@ -114,7 +109,7 @@ class SendConfirmationDialog : public QMessageBox
 
 public:
     SendConfirmationDialog(const QString& title, const QString& text, const QString& informative_text = "", const QString& detailed_text = "", int secDelay = SEND_CONFIRM_DELAY, const QString& confirmText = "Send", QWidget* parent = nullptr);
-    int exec() override;
+    int exec();
 
 private Q_SLOTS:
     void countDown();
@@ -127,4 +122,4 @@ private:
     QString confirmButtonText;
 };
 
-#endif // PHL_QT_SENDCOINSDIALOG_H
+#endif // PLACEH_QT_SENDCOINSDIALOG_H

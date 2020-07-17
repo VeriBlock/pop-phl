@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2020 The Placeholders Core developers
+# Copyright (c) 2014-2019 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test mining RPCs
@@ -23,12 +23,14 @@ from test_framework.messages import (
 from test_framework.mininode import (
     P2PDataStore,
 )
-from test_framework.test_framework import PlaceholdersTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import (
     assert_equal,
     assert_raises_rpc_error,
     connect_nodes,
 )
+from test_framework.script import CScriptNum
+
 
 def assert_template(node, block, expect, rehash=True):
     if rehash:
@@ -37,7 +39,7 @@ def assert_template(node, block, expect, rehash=True):
     assert_equal(rsp, expect)
 
 
-class MiningTest(PlaceholdersTestFramework):
+class MiningTest(BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 2
         self.setup_clean_chain = True
@@ -68,7 +70,7 @@ class MiningTest(PlaceholdersTestFramework):
         self.log.info('getmininginfo')
         mining_info = node.getmininginfo()
         assert_equal(mining_info['blocks'], 200)
-        assert_equal(mining_info['chain'], self.chain)
+        assert_equal(mining_info['chain'], 'regtest')
         assert 'currentblocktx' not in mining_info
         assert 'currentblockweight' not in mining_info
         assert_equal(mining_info['difficulty'], Decimal('4.656542373906925E-10'))
@@ -89,6 +91,12 @@ class MiningTest(PlaceholdersTestFramework):
         coinbase_tx.rehash()
 
         # round-trip the encoded bip34 block height commitment
+        assert_equal(CScriptNum.decode(coinbase_tx.vin[0].scriptSig), next_height)
+        # round-trip negative and multi-byte CScriptNums to catch python regression
+        assert_equal(CScriptNum.decode(CScriptNum.encode(CScriptNum(1500))), 1500)
+        assert_equal(CScriptNum.decode(CScriptNum.encode(CScriptNum(-1500))), -1500)
+        assert_equal(CScriptNum.decode(CScriptNum.encode(CScriptNum(-1))), -1)
+
         block = CBlock()
         block.nVersion = tmpl["version"]
         block.hashPrevBlock = int(tmpl["previousblockhash"], 16)

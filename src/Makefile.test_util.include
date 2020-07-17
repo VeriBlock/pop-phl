@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2019 The Placeholders Core developers
+# Copyright (c) 2013-2019 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -11,7 +11,6 @@ TEST_UTIL_H = \
     test/util/blockfilter.h \
     test/util/logging.h \
     test/util/mining.h \
-    test/util/net.h \
     test/util/setup_common.h \
     test/util/str.h \
     test/util/transaction_utils.h \
@@ -23,7 +22,6 @@ libtest_util_a_SOURCES = \
   test/util/blockfilter.cpp \
   test/util/logging.cpp \
   test/util/mining.cpp \
-  test/util/net.cpp \
   test/util/setup_common.cpp \
   test/util/str.cpp \
   test/util/transaction_utils.cpp \

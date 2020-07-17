@@ -1,24 +1,25 @@
 // Copyright (c) 2010 Satoshi Nakamoto
-// Copyright (c) 2012-2020 The Placeholders Core developers
+// Copyright (c) 2012-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_UI_INTERFACE_H
-#define PHL_UI_INTERFACE_H
+#ifndef PLACEH_UI_INTERFACE_H
+#define PLACEH_UI_INTERFACE_H
 
 #include <functional>
 #include <memory>
 #include <string>
 
 class CBlockIndex;
-enum class SynchronizationState;
-struct bilingual_str;
-
 namespace boost {
 namespace signals2 {
 class connection;
 }
 } // namespace boost
+
+namespace interfaces {
+class Wallet;
+} // namespace interfaces
 
 /** General change type (added, updated, removed). */
 enum ChangeType
@@ -85,10 +86,10 @@ public:
     boost::signals2::connection signal_name##_connect(std::function<signal_name##Sig> fn);
 
     /** Show message box. */
-    ADD_SIGNALS_DECL_WRAPPER(ThreadSafeMessageBox, bool, const bilingual_str& message, const std::string& caption, unsigned int style);
+    ADD_SIGNALS_DECL_WRAPPER(ThreadSafeMessageBox, bool, const std::string& message, const std::string& caption, unsigned int style);
 
     /** If possible, ask the user a question. If not, falls back to ThreadSafeMessageBox(noninteractive_message, caption, style) and returns false. */
-    ADD_SIGNALS_DECL_WRAPPER(ThreadSafeQuestion, bool, const bilingual_str& message, const std::string& noninteractive_message, const std::string& caption, unsigned int style);
+    ADD_SIGNALS_DECL_WRAPPER(ThreadSafeQuestion, bool, const std::string& message, const std::string& noninteractive_message, const std::string& caption, unsigned int style);
 
     /** Progress message during initialization. */
     ADD_SIGNALS_DECL_WRAPPER(InitMessage, void, const std::string& message);
@@ -104,6 +105,9 @@ public:
      */
     ADD_SIGNALS_DECL_WRAPPER(NotifyAlertChanged, void, );
 
+    /** A wallet has been loaded. */
+    ADD_SIGNALS_DECL_WRAPPER(LoadWallet, void, std::unique_ptr<interfaces::Wallet>& wallet);
+
     /**
      * Show progress e.g. for verifychain.
      * resume_possible indicates shutting down now will result in the current progress action resuming upon restart.
@@ -111,21 +115,21 @@ public:
     ADD_SIGNALS_DECL_WRAPPER(ShowProgress, void, const std::string& title, int nProgress, bool resume_possible);
 
     /** New block has been accepted */
-    ADD_SIGNALS_DECL_WRAPPER(NotifyBlockTip, void, SynchronizationState, const CBlockIndex*);
+    ADD_SIGNALS_DECL_WRAPPER(NotifyBlockTip, void, bool, const CBlockIndex*);
 
     /** Best header has changed */
-    ADD_SIGNALS_DECL_WRAPPER(NotifyHeaderTip, void, SynchronizationState, const CBlockIndex*);
+    ADD_SIGNALS_DECL_WRAPPER(NotifyHeaderTip, void, bool, const CBlockIndex*);
 
     /** Banlist did change. */
     ADD_SIGNALS_DECL_WRAPPER(BannedListChanged, void, void);
 };
 
 /** Show warning message **/
-void InitWarning(const bilingual_str& str);
+void InitWarning(const std::string& str);
 
 /** Show error message **/
-bool InitError(const bilingual_str& str);
+bool InitError(const std::string& str);
 
 extern CClientUIInterface uiInterface;
 
-#endif // PHL_UI_INTERFACE_H
+#endif // PLACEH_UI_INTERFACE_H

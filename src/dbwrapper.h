@@ -1,9 +1,9 @@
-// Copyright (c) 2012-2019 The Placeholders Core developers
+// Copyright (c) 2012-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_DBWRAPPER_H
-#define PHL_DBWRAPPER_H
+#ifndef PLACEH_DBWRAPPER_H
+#define PLACEH_DBWRAPPER_H
 
 #include <clientversion.h>
 #include <fs.h>
@@ -348,4 +348,4 @@ public:
 
 };
 
-#endif // PHL_DBWRAPPER_H
+#endif // PLACEH_DBWRAPPER_H

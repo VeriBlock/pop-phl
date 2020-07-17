@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2018 The Placeholders Core developers
+// Copyright (c) 2009-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -125,5 +125,5 @@ int placehconsensus_verify_script(const unsigned char *scriptPubKey, unsigned in
 unsigned int placehconsensus_version()
 {
     // Just use the API version for now
-    return PHLCONSENSUS_API_VER;
+    return PLACEHCONSENSUS_API_VER;
 }

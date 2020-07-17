@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2020 The Placeholders Core developers
+# Copyright (c) 2014-2019 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test the wallet backup features.
@@ -35,7 +35,7 @@ import os
 from random import randint
 import shutil
 
-from test_framework.test_framework import PlaceholdersTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import (
     assert_equal,
     assert_raises_rpc_error,
@@ -43,17 +43,17 @@ from test_framework.util import (
 )
 
 
-class WalletBackupTest(PlaceholdersTestFramework):
+class WalletBackupTest(BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 4
         self.setup_clean_chain = True
         # nodes 1, 2,3 are spenders, let's give them a keypool=100
         # whitelist all peers to speed up tx relay / mempool sync
         self.extra_args = [
-            ["-whitelist=noban@127.0.0.1", "-keypool=100"],
-            ["-whitelist=noban@127.0.0.1", "-keypool=100"],
-            ["-whitelist=noban@127.0.0.1", "-keypool=100"],
-            ["-whitelist=noban@127.0.0.1"],
+            ["-keypool=100", "-whitelist=127.0.0.1"],
+            ["-keypool=100", "-whitelist=127.0.0.1"],
+            ["-keypool=100", "-whitelist=127.0.0.1"],
+            ["-whitelist=127.0.0.1"]
         ]
         self.rpc_timeout = 120
 
@@ -107,9 +107,9 @@ class WalletBackupTest(PlaceholdersTestFramework):
         self.stop_node(2)
 
     def erase_three(self):
-        os.remove(os.path.join(self.nodes[0].datadir, self.chain, 'wallets', 'wallet.dat'))
-        os.remove(os.path.join(self.nodes[1].datadir, self.chain, 'wallets', 'wallet.dat'))
-        os.remove(os.path.join(self.nodes[2].datadir, self.chain, 'wallets', 'wallet.dat'))
+        os.remove(os.path.join(self.nodes[0].datadir, 'regtest', 'wallets', 'wallet.dat'))
+        os.remove(os.path.join(self.nodes[1].datadir, 'regtest', 'wallets', 'wallet.dat'))
+        os.remove(os.path.join(self.nodes[2].datadir, 'regtest', 'wallets', 'wallet.dat'))
 
     def run_test(self):
         self.log.info("Generating initial blockchain")
@@ -122,9 +122,9 @@ class WalletBackupTest(PlaceholdersTestFramework):
         self.nodes[3].generate(100)
         self.sync_blocks()
 
-        assert_equal(self.nodes[0].getbalance(), 50)
-        assert_equal(self.nodes[1].getbalance(), 50)
-        assert_equal(self.nodes[2].getbalance(), 50)
+        assert_equal(self.nodes[0].getbalance(), 30)
+        assert_equal(self.nodes[1].getbalance(), 30)
+        assert_equal(self.nodes[2].getbalance(), 30)
         assert_equal(self.nodes[3].getbalance(), 0)
 
         self.log.info("Creating transactions")
@@ -157,7 +157,8 @@ class WalletBackupTest(PlaceholdersTestFramework):
 
         # At this point, there are 214 blocks (103 for setup, then 10 rounds, then 101.)
         # 114 are mature, so the sum of all wallets should be 114 * 50 = 5700.
-        assert_equal(total, 5700)
+        # VeriBlock: payout changed 50->30, so 114 * 30 = 3420
+        assert_equal(total, 3420)
 
         ##
         # Test restoring spender wallets from backups
@@ -167,13 +168,13 @@ class WalletBackupTest(PlaceholdersTestFramework):
         self.erase_three()
 
         # Start node2 with no chain
-        shutil.rmtree(os.path.join(self.nodes[2].datadir, self.chain, 'blocks'))
-        shutil.rmtree(os.path.join(self.nodes[2].datadir, self.chain, 'chainstate'))
+        shutil.rmtree(os.path.join(self.nodes[2].datadir, 'regtest', 'blocks'))
+        shutil.rmtree(os.path.join(self.nodes[2].datadir, 'regtest', 'chainstate'))
 
         # Restore wallets from backup
-        shutil.copyfile(os.path.join(self.nodes[0].datadir, 'wallet.bak'), os.path.join(self.nodes[0].datadir, self.chain, 'wallets', 'wallet.dat'))
-        shutil.copyfile(os.path.join(self.nodes[1].datadir, 'wallet.bak'), os.path.join(self.nodes[1].datadir, self.chain, 'wallets', 'wallet.dat'))
-        shutil.copyfile(os.path.join(self.nodes[2].datadir, 'wallet.bak'), os.path.join(self.nodes[2].datadir, self.chain, 'wallets', 'wallet.dat'))
+        shutil.copyfile(os.path.join(self.nodes[0].datadir, 'wallet.bak'), os.path.join(self.nodes[0].datadir, 'regtest', 'wallets', 'wallet.dat'))
+        shutil.copyfile(os.path.join(self.nodes[1].datadir, 'wallet.bak'), os.path.join(self.nodes[1].datadir, 'regtest', 'wallets', 'wallet.dat'))
+        shutil.copyfile(os.path.join(self.nodes[2].datadir, 'wallet.bak'), os.path.join(self.nodes[2].datadir, 'regtest', 'wallets', 'wallet.dat'))
 
         self.log.info("Re-starting nodes")
         self.start_three()
@@ -188,8 +189,8 @@ class WalletBackupTest(PlaceholdersTestFramework):
         self.erase_three()
 
         #start node2 with no chain
-        shutil.rmtree(os.path.join(self.nodes[2].datadir, self.chain, 'blocks'))
-        shutil.rmtree(os.path.join(self.nodes[2].datadir, self.chain, 'chainstate'))
+        shutil.rmtree(os.path.join(self.nodes[2].datadir, 'regtest', 'blocks'))
+        shutil.rmtree(os.path.join(self.nodes[2].datadir, 'regtest', 'chainstate'))
 
         self.start_three()
 
@@ -209,10 +210,10 @@ class WalletBackupTest(PlaceholdersTestFramework):
 
         # Backup to source wallet file must fail
         sourcePaths = [
-            os.path.join(self.nodes[0].datadir, self.chain, 'wallets', 'wallet.dat'),
-            os.path.join(self.nodes[0].datadir, self.chain, '.', 'wallets', 'wallet.dat'),
-            os.path.join(self.nodes[0].datadir, self.chain, 'wallets', ''),
-            os.path.join(self.nodes[0].datadir, self.chain, 'wallets')]
+            os.path.join(self.nodes[0].datadir, 'regtest', 'wallets', 'wallet.dat'),
+            os.path.join(self.nodes[0].datadir, 'regtest', '.', 'wallets', 'wallet.dat'),
+            os.path.join(self.nodes[0].datadir, 'regtest', 'wallets', ''),
+            os.path.join(self.nodes[0].datadir, 'regtest', 'wallets')]
 
         for sourcePath in sourcePaths:
             assert_raises_rpc_error(-4, "backup failed", self.nodes[0].backupwallet, sourcePath)

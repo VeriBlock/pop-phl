@@ -1,10 +1,10 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2019 The Placeholders Core developers
+// Copyright (c) 2009-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_ADDRDB_H
-#define PHL_ADDRDB_H
+#ifndef PLACEH_ADDRDB_H
+#define PLACEH_ADDRDB_H
 
 #include <fs.h>
 #include <net_types.h> // For banmap_t
@@ -49,7 +49,15 @@ public:
         banReason = ban_reason_in;
     }
 
-    SERIALIZE_METHODS(CBanEntry, obj) { READWRITE(obj.nVersion, obj.nCreateTime, obj.nBanUntil, obj.banReason); }
+    ADD_SERIALIZE_METHODS;
+
+    template <typename Stream, typename Operation>
+    inline void SerializationOp(Stream& s, Operation ser_action) {
+        READWRITE(this->nVersion);
+        READWRITE(nCreateTime);
+        READWRITE(nBanUntil);
+        READWRITE(banReason);
+    }
 
     void SetNull()
     {
@@ -95,4 +103,4 @@ public:
     bool Read(banmap_t& banSet);
 };
 
-#endif // PHL_ADDRDB_H
+#endif // PLACEH_ADDRDB_H

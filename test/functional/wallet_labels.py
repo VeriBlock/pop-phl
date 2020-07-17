@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2016-2020 The Placeholders Core developers
 # Copyright (c) 2016-2018 The Bitcoin Core developers
 # Copyright (c) 2019-2020 Xenios SEZC
 # https://www.veriblock.org
@@ -14,12 +13,15 @@ RPCs tested are:
 """
 from collections import defaultdict
 
-from test_framework.test_framework import PlaceholdersTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import assert_equal, assert_raises_rpc_error
-from test_framework.wallet_util import test_address
+from test_framework.wallet_util import (
+    labels_value,
+    test_address,
+)
 from test_framework.payout import POW_PAYOUT
 
-class WalletLabelsTest(PlaceholdersTestFramework):
+class WalletLabelsTest(BitcoinTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 1
@@ -118,16 +120,15 @@ class WalletLabelsTest(PlaceholdersTestFramework):
             assert_raises_rpc_error(-11, "No addresses with label", node.getaddressesbylabel, "")
 
         # Check that addmultisigaddress can assign labels.
-        if not self.options.descriptors:
-            for label in labels:
-                addresses = []
-                for x in range(10):
-                    addresses.append(node.getnewaddress())
-                multisig_address = node.addmultisigaddress(5, addresses, label.name)['address']
-                label.add_address(multisig_address)
-                label.purpose[multisig_address] = "send"
-                label.verify(node)
-            node.generate(101)
+        for label in labels:
+            addresses = []
+            for x in range(10):
+                addresses.append(node.getnewaddress())
+            multisig_address = node.addmultisigaddress(5, addresses, label.name)['address']
+            label.add_address(multisig_address)
+            label.purpose[multisig_address] = "send"
+            label.verify(node)
+        node.generate(101)
 
         # Check that setlabel can change the label of an address from a
         # different label.
@@ -136,33 +137,6 @@ class WalletLabelsTest(PlaceholdersTestFramework):
         # Check that setlabel can set the label of an address already
         # in the label. This is a no-op.
         change_label(node, labels[2].addresses[0], labels[2], labels[2])
-
-        self.log.info('Check watchonly labels')
-        node.createwallet(wallet_name='watch_only', disable_private_keys=True, descriptors=False)
-        wallet_watch_only = node.get_wallet_rpc('watch_only')
-        BECH32_VALID = {
-            '✔️_VER15_PROG40': 'xcrt10qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqn2cjv3',
-            '✔️_VER16_PROG03': 'xcrt1sqqqqqjq8pdp',
-            '✔️_VER16_PROB02': 'xcrt1sqqqqqjq8pv',
-        }
-        BECH32_INVALID = {
-            '❌_VER15_PROG41': 'xcrt10qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqzc7xyq',
-            '❌_VER16_PROB01': 'xcrt1sqqpl9r5c',
-        }
-        for l in BECH32_VALID:
-            ad = BECH32_VALID[l]
-            wallet_watch_only.importaddress(label=l, rescan=False, address=ad)
-            node.generatetoaddress(1, ad)
-            assert_equal(wallet_watch_only.getaddressesbylabel(label=l), {ad: {'purpose': 'receive'}})
-            assert_equal(wallet_watch_only.getreceivedbylabel(label=l), 0)
-        for l in BECH32_INVALID:
-            ad = BECH32_INVALID[l]
-            assert_raises_rpc_error(
-                -5,
-                "Invalid Bitcoin address or script",
-                lambda: wallet_watch_only.importaddress(label=l, rescan=False, address=ad),
-            )
-
 
 class Label:
     def __init__(self, name):
@@ -186,7 +160,12 @@ class Label:
         if self.receive_address is not None:
             assert self.receive_address in self.addresses
         for address in self.addresses:
-            test_address(node, address, labels=[self.name])
+            test_address(
+                node,
+                address,
+                label=self.name,
+                labels=labels_value(name=self.name, purpose=self.purpose[address])
+             )
         assert self.name in node.listlabels()
         assert_equal(
             node.getaddressesbylabel(self.name),

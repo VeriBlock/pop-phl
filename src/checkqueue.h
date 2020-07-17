@@ -1,9 +1,9 @@
-// Copyright (c) 2012-2020 The Placeholders Core developers
+// Copyright (c) 2012-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_CHECKQUEUE_H
-#define PHL_CHECKQUEUE_H
+#ifndef PLACEH_CHECKQUEUE_H
+#define PLACEH_CHECKQUEUE_H
 
 #include <sync.h>
 
@@ -90,7 +90,8 @@ private:
                         nTotal--;
                         bool fRet = fAllOk;
                         // reset the status for new work later
-                        fAllOk = true;
+                        if (fMaster)
+                            fAllOk = true;
                         // return the current status
                         return fRet;
                     }
@@ -210,4 +211,4 @@ public:
     }
 };
 
-#endif // PHL_CHECKQUEUE_H
+#endif // PLACEH_CHECKQUEUE_H

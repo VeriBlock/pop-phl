@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-# Copyright (c) 2017-2018 The Placeholders Core developers
+# Copyright (c) 2017-2018 The Bitcoin Core developers
+# Copyright (c) 2019-2020 Xenios SEZC
+# https://www.veriblock.org
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test various fingerprinting protections.
@@ -11,7 +13,7 @@ the node should pretend that it does not have it to avoid fingerprinting.
 import time
 
 from test_framework.blocktools import (create_block, create_coinbase)
-from test_framework.messages import CInv, MSG_BLOCK
+from test_framework.messages import CInv
 from test_framework.mininode import (
     P2PInterface,
     msg_headers,
@@ -19,13 +21,13 @@ from test_framework.mininode import (
     msg_getdata,
     msg_getheaders,
 )
-from test_framework.test_framework import PlaceholdersTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import (
     assert_equal,
     wait_until,
 )
 
-class P2PFingerprintTest(PlaceholdersTestFramework):
+class P2PFingerprintTest(BitcoinTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 1
@@ -48,7 +50,7 @@ class P2PFingerprintTest(PlaceholdersTestFramework):
     # Send a getdata request for a given block hash
     def send_block_request(self, block_hash, node):
         msg = msg_getdata()
-        msg.inv.append(CInv(MSG_BLOCK, block_hash))
+        msg.inv.append(CInv(2, block_hash))  # 2 == "Block"
         node.send_message(msg)
 
     # Send a getheaders request for a given single block hash
@@ -90,7 +92,7 @@ class P2PFingerprintTest(PlaceholdersTestFramework):
 
         # Force reorg to a longer chain
         node0.send_message(msg_headers(new_blocks))
-        node0.wait_for_getdata([x.sha256 for x in new_blocks])
+        node0.wait_for_getdata()
         for block in new_blocks:
             node0.send_and_ping(msg_block(block))
 

@@ -1,9 +1,9 @@
-// Copyright (c) 2014-2016 The Placeholders Core developers
+// Copyright (c) 2014-2016 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_CRYPTO_RIPEMD160_H
-#define PHL_CRYPTO_RIPEMD160_H
+#ifndef PLACEH_CRYPTO_RIPEMD160_H
+#define PLACEH_CRYPTO_RIPEMD160_H
 
 #include <stdint.h>
 #include <stdlib.h>
@@ -25,4 +25,4 @@ public:
     CRIPEMD160& Reset();
 };
 
-#endif // PHL_CRYPTO_RIPEMD160_H
+#endif // PLACEH_CRYPTO_RIPEMD160_H

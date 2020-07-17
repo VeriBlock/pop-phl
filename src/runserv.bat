@@ -1,2 +1,2 @@
-placehd.exe -testnet -server 
+placehd.exe -testnet -server -listen=1
 pause

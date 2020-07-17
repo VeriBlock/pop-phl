@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_SRC_VBK_TEST_UTIL_TX_HPP
-#define BITCOIN_SRC_VBK_TEST_UTIL_TX_HPP
+#ifndef PLACEH_SRC_VBK_TEST_UTIL_TX_HPP
+#define PLACEH_SRC_VBK_TEST_UTIL_TX_HPP
 
 #include <primitives/transaction.h>
 
@@ -34,4 +34,4 @@ inline CMutableTransaction makePopTx(const std::vector<uint8_t>& atv, const std:
 
 } // namespace VeriBlockTest
 
-#endif //BITCOIN_SRC_VBK_TEST_UTIL_TX_HPP
+#endif //PLACEH_SRC_VBK_TEST_UTIL_TX_HPP

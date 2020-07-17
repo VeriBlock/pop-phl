@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-# Copyright (c) 2018-2019 The Placeholders Core developers
+# Copyright (c) 2018-2019 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test the deriveaddresses rpc call."""
-from test_framework.test_framework import PlaceholdersTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.descriptors import descsum_create
 from test_framework.util import assert_equal, assert_raises_rpc_error
 
-class DeriveaddressesTest(PlaceholdersTestFramework):
+class DeriveaddressesTest(BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
 
@@ -15,19 +15,19 @@ class DeriveaddressesTest(PlaceholdersTestFramework):
         assert_raises_rpc_error(-5, "Missing checksum", self.nodes[0].deriveaddresses, "a")
 
         descriptor = "wpkh(tprv8ZgxMBicQKsPd7Uf69XL1XwhmjHopUGep8GuEiJDZmbQz6o58LninorQAfcKZWARbtRtfnLcJ5MQ2AtHcQJCCRUcMRvmDUjyEmNUWwx8UbK/1/1/0)#t6wfjs64"
-        address = "xcrt1qjqmxmkpmxt80xz4y3746zgt0q3u3ferrxgp6ga"
+        address = "bcrt1qjqmxmkpmxt80xz4y3746zgt0q3u3ferr34acd5"
         assert_equal(self.nodes[0].deriveaddresses(descriptor), [address])
 
         descriptor = descriptor[:-9]
         assert_raises_rpc_error(-5, "Missing checksum", self.nodes[0].deriveaddresses, descriptor)
 
         descriptor_pubkey = "wpkh(tpubD6NzVbkrYhZ4WaWSyoBvQwbpLkojyoTZPRsgXELWz3Popb3qkjcJyJUGLnL4qHHoQvao8ESaAstxYSnhyswJ76uZPStJRJCTKvosUCJZL5B/1/1/0)#s9ga3alw"
-        address = "xcrt1qjqmxmkpmxt80xz4y3746zgt0q3u3ferrxgp6ga"
+        address = "bcrt1qjqmxmkpmxt80xz4y3746zgt0q3u3ferr34acd5"
         assert_equal(self.nodes[0].deriveaddresses(descriptor_pubkey), [address])
 
         ranged_descriptor = "wpkh(tprv8ZgxMBicQKsPd7Uf69XL1XwhmjHopUGep8GuEiJDZmbQz6o58LninorQAfcKZWARbtRtfnLcJ5MQ2AtHcQJCCRUcMRvmDUjyEmNUWwx8UbK/1/1/*)#kft60nuy"
-        assert_equal(self.nodes[0].deriveaddresses(ranged_descriptor, [1, 2]), ["xcrt1qhku5rq7jz8ulufe2y6fkcpnlvpsta7rqzgfggd", "xcrt1qpgptk2gvshyl0s9lqshsmx932l9ccsv2dfhwcf"])
-        assert_equal(self.nodes[0].deriveaddresses(ranged_descriptor, 2), [address, "xcrt1qhku5rq7jz8ulufe2y6fkcpnlvpsta7rqzgfggd", "xcrt1qpgptk2gvshyl0s9lqshsmx932l9ccsv2dfhwcf"])
+        assert_equal(self.nodes[0].deriveaddresses(ranged_descriptor, [1, 2]), ["bcrt1qhku5rq7jz8ulufe2y6fkcpnlvpsta7rq4442dy", "bcrt1qpgptk2gvshyl0s9lqshsmx932l9ccsv265tvaq"])
+        assert_equal(self.nodes[0].deriveaddresses(ranged_descriptor, 2), [address, "bcrt1qhku5rq7jz8ulufe2y6fkcpnlvpsta7rq4442dy", "bcrt1qpgptk2gvshyl0s9lqshsmx932l9ccsv265tvaq"])
 
         assert_raises_rpc_error(-8, "Range should not be specified for an un-ranged descriptor", self.nodes[0].deriveaddresses, descsum_create("wpkh(tprv8ZgxMBicQKsPd7Uf69XL1XwhmjHopUGep8GuEiJDZmbQz6o58LninorQAfcKZWARbtRtfnLcJ5MQ2AtHcQJCCRUcMRvmDUjyEmNUWwx8UbK/1/1/0)"), [0, 2])
 

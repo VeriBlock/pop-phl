@@ -1,23 +1,21 @@
-// Copyright (c) 2011-2019 The Placeholders Core developers
+// Copyright (c) 2011-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_QT_CLIENTMODEL_H
-#define PHL_QT_CLIENTMODEL_H
+#ifndef PLACEH_QT_CLIENTMODEL_H
+#define PLACEH_QT_CLIENTMODEL_H
 
 #include <QObject>
 #include <QDateTime>
 
 #include <atomic>
 #include <memory>
-#include <sync.h>
-#include <uint256.h>
 
 class BanTableModel;
-class CBlockIndex;
 class OptionsModel;
 class PeerTableModel;
-enum class SynchronizationState;
+
+class CBlockIndex;
 
 namespace interfaces {
 class Handler;
@@ -42,7 +40,7 @@ enum NumConnections {
     CONNECTIONS_ALL  = (CONNECTIONS_IN | CONNECTIONS_OUT),
 };
 
-/** Model for Placeholders network client. */
+/** Model for Bitcoin network client. */
 class ClientModel : public QObject
 {
     Q_OBJECT
@@ -58,8 +56,6 @@ public:
 
     //! Return number of connections, default is in- and outbound (total)
     int getNumConnections(unsigned int flags = CONNECTIONS_ALL) const;
-    int getNumBlocks() const;
-    uint256 getBestBlockHash();
     int getHeaderTipHeight() const;
     int64_t getHeaderTipTime() const;
 
@@ -77,13 +73,9 @@ public:
 
     bool getProxyInfo(std::string& ip_port) const;
 
-    // caches for the best header: hash, number of blocks and block time
+    // caches for the best header
     mutable std::atomic<int> cachedBestHeaderHeight;
     mutable std::atomic<int64_t> cachedBestHeaderTime;
-    mutable std::atomic<int> m_cached_num_blocks{-1};
-
-    Mutex m_cached_tip_mutex;
-    uint256 m_cached_tip_blocks GUARDED_BY(m_cached_tip_mutex){};
 
 private:
     interfaces::Node& m_node;
@@ -106,7 +98,7 @@ private:
 
 Q_SIGNALS:
     void numConnectionsChanged(int count);
-    void numBlocksChanged(int count, const QDateTime& blockDate, double nVerificationProgress, bool header, SynchronizationState sync_state);
+    void numBlocksChanged(int count, const QDateTime& blockDate, double nVerificationProgress, bool header);
     void mempoolSizeChanged(long count, size_t mempoolSizeInBytes);
     void networkActiveChanged(bool networkActive);
     void alertsChanged(const QString &warnings);
@@ -125,4 +117,4 @@ public Q_SLOTS:
     void updateBanlist();
 };
 
-#endif // PHL_QT_CLIENTMODEL_H
+#endif // PLACEH_QT_CLIENTMODEL_H

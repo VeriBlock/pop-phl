@@ -149,7 +149,7 @@ QLabel { color: rgb(40,40,40);  }</string>
                 </font>
                </property>
                <property name="text">
-                <string>Attempting to spend placehs that are affected by not-yet-displayed transactions will not be accepted by the network.</string>
+                <string>Attempting to spend Placeholderss that are affected by not-yet-displayed transactions will not be accepted by the network.</string>
                </property>
                <property name="textFormat">
                 <enum>Qt::RichText</enum>
@@ -350,9 +350,6 @@ QLabel { color: rgb(40,40,40);  }</string>
             <widget class="QPushButton" name="closeButton">
              <property name="text">
               <string>Hide</string>
-             </property>
-             <property name="shortcut">
-              <string>Esc</string>
              </property>
              <property name="focusPolicy">
               <enum>Qt::StrongFocus</enum>

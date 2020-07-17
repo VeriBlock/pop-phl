@@ -1,9 +1,9 @@
-// Copyright (c) 2015-2019 The Placeholders Core developers
+// Copyright (c) 2015-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_ZMQ_ZMQNOTIFICATIONINTERFACE_H
-#define PHL_ZMQ_ZMQNOTIFICATIONINTERFACE_H
+#ifndef PLACEH_ZMQ_ZMQNOTIFICATIONINTERFACE_H
+#define PLACEH_ZMQ_ZMQNOTIFICATIONINTERFACE_H
 
 #include <validationinterface.h>
 #include <list>
@@ -26,7 +26,7 @@ protected:
 
     // CValidationInterface
     void TransactionAddedToMempool(const CTransactionRef& tx) override;
-    void BlockConnected(const std::shared_ptr<const CBlock>& pblock, const CBlockIndex* pindexConnected) override;
+    void BlockConnected(const std::shared_ptr<const CBlock>& pblock, const CBlockIndex* pindexConnected, const std::vector<CTransactionRef>& vtxConflicted) override;
     void BlockDisconnected(const std::shared_ptr<const CBlock>& pblock, const CBlockIndex* pindexDisconnected) override;
     void UpdatedBlockTip(const CBlockIndex *pindexNew, const CBlockIndex *pindexFork, bool fInitialDownload) override;
 
@@ -39,4 +39,4 @@ private:
 
 extern CZMQNotificationInterface* g_zmq_notification_interface;
 
-#endif // PHL_ZMQ_ZMQNOTIFICATIONINTERFACE_H
+#endif // PLACEH_ZMQ_ZMQNOTIFICATIONINTERFACE_H

@@ -1,9 +1,9 @@
-// Copyright (c) 2017-2019 The Placeholders Core developers
+// Copyright (c) 2017 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_OPTIONAL_H
-#define PHL_OPTIONAL_H
+#ifndef PLACEH_OPTIONAL_H
+#define PLACEH_OPTIONAL_H
 
 #include <utility>
 
@@ -23,4 +23,4 @@ Optional<T> MakeOptional(bool condition, T&& value)
 //! Substitute for C++17 std::nullopt
 static auto& nullopt = boost::none;
 
-#endif // PHL_OPTIONAL_H
+#endif // PLACEH_OPTIONAL_H

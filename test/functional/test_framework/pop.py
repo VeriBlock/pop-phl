@@ -81,7 +81,7 @@ def endorse_block(node, apm, height: int, addr: str) -> str:
     pub = PublicationData()
     pub.header = header
     pub.payoutInfo = payoutInfo
-    pub.identifier = 0x304fa45
+    pub.identifier = 0x3ae6ca
     payloads = apm.endorseAltBlock(pub, last_vbk)
     txid = node.submitpop(payloads.atv, payloads.vtbs)
     return txid

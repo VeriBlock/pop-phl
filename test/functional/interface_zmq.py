@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-# Copyright (c) 2015-2019 The Placeholders Core developers
+# Copyright (c) 2015-2019 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test the ZMQ notification interface."""
 import struct
 
-from test_framework.address import ADDRESS_XCRT1_UNSPENDABLE
-from test_framework.test_framework import PlaceholdersTestFramework
+from test_framework.address import ADDRESS_BCRT1_UNSPENDABLE
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.messages import CTransaction, hash256
 from test_framework.util import assert_equal, connect_nodes
 from io import BytesIO
@@ -34,7 +34,7 @@ class ZMQSubscriber:
         return body
 
 
-class ZMQTest (PlaceholdersTestFramework):
+class ZMQTest (BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 2
 
@@ -59,10 +59,6 @@ class ZMQTest (PlaceholdersTestFramework):
         # Note that the publishing order is not defined in the documentation and
         # is subject to change.
         import zmq
-
-        # Invalid zmq arguments don't take down the node, see #17185.
-        self.restart_node(0, ["-zmqpubrawtx=foo", "-zmqpubhashtx=bar"])
-
         address = 'tcp://127.0.0.1:28332'
         socket = self.ctx.socket(zmq.SUB)
         socket.set(zmq.RCVTIMEO, 60000)
@@ -81,7 +77,7 @@ class ZMQTest (PlaceholdersTestFramework):
 
         num_blocks = 5
         self.log.info("Generate %(n)d blocks (and %(n)d coinbase txes)" % {"n": num_blocks})
-        genhashes = self.nodes[0].generatetoaddress(num_blocks, ADDRESS_XCRT1_UNSPENDABLE)
+        genhashes = self.nodes[0].generatetoaddress(num_blocks, ADDRESS_BCRT1_UNSPENDABLE)
 
         self.sync_all()
 
@@ -144,11 +140,11 @@ class ZMQTest (PlaceholdersTestFramework):
         sleep(0.2)
 
         # Generate 1 block in nodes[0] and receive all notifications
-        self.nodes[0].generatetoaddress(1, ADDRESS_XCRT1_UNSPENDABLE)
+        self.nodes[0].generatetoaddress(1, ADDRESS_BCRT1_UNSPENDABLE)
         assert_equal(self.nodes[0].getbestblockhash(), hashblock.receive().hex())
 
         # Generate 2 blocks in nodes[1]
-        self.nodes[1].generatetoaddress(2, ADDRESS_XCRT1_UNSPENDABLE)
+        self.nodes[1].generatetoaddress(2, ADDRESS_BCRT1_UNSPENDABLE)
 
         # nodes[0] will reorg chain after connecting back nodes[1]
         connect_nodes(self.nodes[0], 1)

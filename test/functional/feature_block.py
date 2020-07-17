@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-# Copyright (c) 2015-2020 The Placeholders Core developers
+# Copyright (c) 2015-2019 The Bitcoin Core developers
+# Copyright (c) 2019-2020 Xenios SEZC
+# https://www.veriblock.org
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test block processing."""
@@ -49,7 +51,7 @@ from test_framework.script import (
     LegacySignatureHash,
     hash160,
 )
-from test_framework.test_framework import PlaceholdersTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import assert_equal
 from data import invalid_txs
 
@@ -78,7 +80,7 @@ class CBrokenBlock(CBlock):
 DUPLICATE_COINBASE_SCRIPT_SIG = b'\x01\x78'  # Valid for block at height 120
 
 
-class FullBlockTest(PlaceholdersTestFramework):
+class FullBlockTest(BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
         self.setup_clean_chain = True
@@ -630,19 +632,17 @@ class FullBlockTest(PlaceholdersTestFramework):
 
         self.log.info("Reject a block with invalid work")
         self.move_tip(44)
-        b47 = self.next_block(47)
+        b47 = self.next_block(47, solve=False)
         target = uint256_from_compact(b47.nBits)
-        while b47.sha256 <= target:
-            # Rehash nonces until an invalid too-high-hash block is found.
+        while b47.sha256 < target:
             b47.nNonce += 1
             b47.rehash()
         self.send_blocks([b47], False, force_send=True, reject_reason='high-hash', reconnect=True)
 
         self.log.info("Reject a block with a timestamp >2 hours in the future")
         self.move_tip(44)
-        b48 = self.next_block(48)
+        b48 = self.next_block(48, solve=False)
         b48.nTime = int(time.time()) + 60 * 60 * 3
-        # Header timestamp has changed. Re-solve the block.
         b48.solve()
         self.send_blocks([b48], False, force_send=True, reject_reason='time-too-new')
 
@@ -1263,7 +1263,7 @@ class FullBlockTest(PlaceholdersTestFramework):
             self.save_spendable_output()
             spend = self.get_spendable_output()
 
-        self.send_blocks(blocks, True, timeout=2440)
+        self.send_blocks(blocks, True, timeout=960)
         chain1_tip = i
 
         # now create alt chain of same length
@@ -1275,14 +1275,14 @@ class FullBlockTest(PlaceholdersTestFramework):
 
         # extend alt chain to trigger re-org
         block = self.next_block("alt" + str(chain1_tip + 1), version=4)
-        self.send_blocks([block], True, timeout=2440)
+        self.send_blocks([block], True, timeout=960)
 
         # ... and re-org back to the first chain
         self.move_tip(chain1_tip)
         block = self.next_block(chain1_tip + 1, version=4)
         self.send_blocks([block], False, force_send=True)
         block = self.next_block(chain1_tip + 2, version=4)
-        self.send_blocks([block], True, timeout=2440)
+        self.send_blocks([block], True, timeout=960)
 
         self.log.info("Reject a block with an invalid block header version")
         b_v1 = self.next_block('b_v1', version=1)
@@ -1323,7 +1323,7 @@ class FullBlockTest(PlaceholdersTestFramework):
         tx.rehash()
         return tx
 
-    def next_block(self, number, spend=None, additional_coinbase_value=0, script=CScript([OP_TRUE]), *, version=1):
+    def next_block(self, number, spend=None, additional_coinbase_value=0, script=CScript([OP_TRUE]), solve=True, *, version=1):
         if self.tip is None:
             base_block_hash = self.genesis_hash
             block_time = int(time.time()) + 1
@@ -1345,8 +1345,8 @@ class FullBlockTest(PlaceholdersTestFramework):
             self.sign_tx(tx, spend)
             self.add_transactions_to_block(block, [tx])
             block.hashMerkleRoot = block.calc_merkle_root()
-        # Block is created. Find a valid nonce.
-        block.solve()
+        if solve:
+            block.solve()
         self.tip = block
         self.block_heights[block.sha256] = height
         assert number not in self.blocks
@@ -1403,7 +1403,7 @@ class FullBlockTest(PlaceholdersTestFramework):
         self.nodes[0].disconnect_p2ps()
         self.bootstrap_p2p(timeout=timeout)
 
-    def send_blocks(self, blocks, success=True, reject_reason=None, force_send=False, reconnect=False, timeout=960):
+    def send_blocks(self, blocks, success=True, reject_reason=None, force_send=False, reconnect=False, timeout=60):
         """Sends blocks to test node. Syncs and verifies that tip has advanced to most recent block.
 
         Call with success = False if the tip shouldn't advance to the most recent block."""

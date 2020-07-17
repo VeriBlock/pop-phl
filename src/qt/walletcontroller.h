@@ -1,14 +1,13 @@
-// Copyright (c) 2019-2020 The Placeholders Core developers
+// Copyright (c) 2019 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_QT_WALLETCONTROLLER_H
-#define PHL_QT_WALLETCONTROLLER_H
+#ifndef PLACEH_QT_WALLETCONTROLLER_H
+#define PLACEH_QT_WALLETCONTROLLER_H
 
 #include <qt/sendcoinsrecipient.h>
 #include <support/allocators/secure.h>
 #include <sync.h>
-#include <util/translation.h>
 
 #include <map>
 #include <memory>
@@ -22,7 +21,6 @@
 #include <QTimer>
 #include <QString>
 
-class ClientModel;
 class OptionsModel;
 class PlatformStyle;
 class WalletModel;
@@ -49,7 +47,7 @@ class WalletController : public QObject
     void removeAndDeleteWallet(WalletModel* wallet_model);
 
 public:
-    WalletController(ClientModel& client_model, const PlatformStyle* platform_style, QObject* parent);
+    WalletController(interfaces::Node& node, const PlatformStyle* platform_style, OptionsModel* options_model, QObject* parent);
     ~WalletController();
 
     //! Returns wallet models currently open.
@@ -72,7 +70,6 @@ Q_SIGNALS:
 private:
     QThread* const m_activity_thread;
     QObject* const m_activity_worker;
-    ClientModel& m_client_model;
     interfaces::Node& m_node;
     const PlatformStyle* const m_platform_style;
     OptionsModel* const m_options_model;
@@ -99,14 +96,13 @@ protected:
     QObject* worker() const { return m_wallet_controller->m_activity_worker; }
 
     void showProgressDialog(const QString& label_text);
-    void destroyProgressDialog();
 
     WalletController* const m_wallet_controller;
     QWidget* const m_parent_widget;
     QProgressDialog* m_progress_dialog{nullptr};
     WalletModel* m_wallet_model{nullptr};
-    bilingual_str m_error_message;
-    std::vector<bilingual_str> m_warning_message;
+    std::string m_error_message;
+    std::vector<std::string> m_warning_message;
 };
 
 
@@ -149,4 +145,4 @@ private:
     void finish();
 };
 
-#endif // PHL_QT_WALLETCONTROLLER_H
+#endif // PLACEH_QT_WALLETCONTROLLER_H

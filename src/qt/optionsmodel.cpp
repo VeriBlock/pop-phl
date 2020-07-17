@@ -1,4 +1,6 @@
-// Copyright (c) 2011-2020 The Placeholders Core developers
+// Copyright (c) 2011-2018 The Bitcoin Core developers
+// Copyright (c) 2019-2020 Xenios SEZC
+// https://www.veriblock.org
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -17,7 +19,6 @@
 #include <net.h>
 #include <netbase.h>
 #include <txdb.h> // for -dbcache defaults
-#include <util/string.h>
 
 #include <QDebug>
 #include <QSettings>
@@ -69,7 +70,7 @@ void OptionsModel::Init(bool resetSettings)
 
     // Display
     if (!settings.contains("nDisplayUnit"))
-        settings.setValue("nDisplayUnit", PlaceholdersUnits::PHL);
+        settings.setValue("nDisplayUnit", BitcoinUnits::vPHL);
     nDisplayUnit = settings.value("nDisplayUnit").toInt();
 
     if (!settings.contains("strThirdPartyTxUrls"))
@@ -92,8 +93,8 @@ void OptionsModel::Init(bool resetSettings)
     if (!settings.contains("bPrune"))
         settings.setValue("bPrune", false);
     if (!settings.contains("nPruneSize"))
-        settings.setValue("nPruneSize", DEFAULT_PRUNE_TARGET_GB);
-    SetPruneEnabled(settings.value("bPrune").toBool());
+        settings.setValue("nPruneSize", 2);
+    SetPrune(settings.value("bPrune").toBool());
 
     if (!settings.contains("nDatabaseCache"))
         settings.setValue("nDatabaseCache", (qint64)nDefaultDbCache);
@@ -237,12 +238,13 @@ static const QString GetDefaultProxyAddress()
     return QString("%1:%2").arg(DEFAULT_GUI_PROXY_HOST).arg(DEFAULT_GUI_PROXY_PORT);
 }
 
-void OptionsModel::SetPruneEnabled(bool prune, bool force)
+void OptionsModel::SetPrune(bool prune, bool force)
 {
     QSettings settings;
     settings.setValue("bPrune", prune);
-    const int64_t prune_target_mib = PruneGBtoMiB(settings.value("nPruneSize").toInt());
-    std::string prune_val = prune ? ToString(prune_target_mib) : "0";
+    // Convert prune size from GB to MiB:
+    const uint64_t nPruneSizeMiB = (settings.value("nPruneSize").toInt() * GB_BYTES) >> 20;
+    std::string prune_val = prune ? std::to_string(nPruneSizeMiB) : "0";
     if (force) {
         m_node.forceSetArg("-prune", prune_val);
         return;
@@ -250,16 +252,6 @@ void OptionsModel::SetPruneEnabled(bool prune, bool force)
     if (!m_node.softSetArg("-prune", prune_val)) {
         addOverriddenOption("-prune");
     }
-}
-
-void OptionsModel::SetPruneTargetGB(int prune_target_gb, bool force)
-{
-    const bool prune = prune_target_gb > 0;
-    if (prune) {
-        QSettings settings;
-        settings.setValue("nPruneSize", prune_target_gb);
-    }
-    SetPruneEnabled(prune, force);
 }
 
 // read QSettings values and return them

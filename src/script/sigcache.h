@@ -1,10 +1,10 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2018 The Placeholders Core developers
+// Copyright (c) 2009-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_SCRIPT_SIGCACHE_H
-#define PHL_SCRIPT_SIGCACHE_H
+#ifndef PLACEH_SCRIPT_SIGCACHE_H
+#define PLACEH_SCRIPT_SIGCACHE_H
 
 #include <script/interpreter.h>
 
@@ -53,4 +53,4 @@ public:
 
 void InitSignatureCache();
 
-#endif // PHL_SCRIPT_SIGCACHE_H
+#endif // PLACEH_SCRIPT_SIGCACHE_H

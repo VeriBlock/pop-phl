@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2016-2020 The Placeholders Core developers
 # Copyright (c) 2016-2019 The Bitcoin Core developers
 # Copyright (c) 2019-2020 Xenios SEZC
 # https://www.veriblock.org
@@ -20,7 +19,7 @@ import time
 from test_framework.blocktools import create_coinbase, create_block, create_transaction, add_witness_commitment
 from test_framework.messages import CTransaction
 from test_framework.script import CScript
-from test_framework.test_framework import PlaceholdersTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import assert_equal, assert_raises_rpc_error
 from test_framework.payout import POW_PAYOUT
 
@@ -38,17 +37,14 @@ def trueDummy(tx):
     tx.vin[0].scriptSig = CScript(newscript)
     tx.rehash()
 
-class NULLDUMMYTest(PlaceholdersTestFramework):
+class NULLDUMMYTest(BitcoinTestFramework):
 
     def set_test_params(self):
         self.num_nodes = 1
         self.setup_clean_chain = True
         # This script tests NULLDUMMY activation, which is part of the 'segwit' deployment, so we go through
         # normal segwit activation here (and don't use the default always-on behaviour).
-        self.extra_args = [[
-            '-segwitheight=432',
-            '-addresstype=legacy',
-        ]]
+        self.extra_args = [['-whitelist=127.0.0.1', '-segwitheight=432', '-addresstype=legacy']]
 
     def skip_test_if_missing_module(self):
         self.skip_if_no_wallet()

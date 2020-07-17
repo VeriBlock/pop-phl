@@ -1,20 +1,16 @@
-// Copyright (c) 2019-2020 The Placeholders Core developers
+// Copyright (c) 2019 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PHL_NODE_CONTEXT_H
-#define PHL_NODE_CONTEXT_H
+#ifndef PLACEH_NODE_CONTEXT_H
+#define PLACEH_NODE_CONTEXT_H
 
-#include <cassert>
 #include <memory>
 #include <vector>
 
-class ArgsManager;
 class BanMan;
 class CConnman;
-class CScheduler;
 class CTxMemPool;
-class ChainstateManager;
 class PeerLogicValidation;
 namespace interfaces {
 class Chain;
@@ -35,12 +31,9 @@ struct NodeContext {
     std::unique_ptr<CConnman> connman;
     CTxMemPool* mempool{nullptr}; // Currently a raw pointer because the memory is not managed by this struct
     std::unique_ptr<PeerLogicValidation> peer_logic;
-    ChainstateManager* chainman{nullptr}; // Currently a raw pointer because the memory is not managed by this struct
     std::unique_ptr<BanMan> banman;
-    ArgsManager* args{nullptr}; // Currently a raw pointer because the memory is not managed by this struct
     std::unique_ptr<interfaces::Chain> chain;
     std::vector<std::unique_ptr<interfaces::ChainClient>> chain_clients;
-    std::unique_ptr<CScheduler> scheduler;
 
     //! Declare default constructor and destructor that are not inline, so code
     //! instantiating the NodeContext struct doesn't need to #include class
@@ -49,10 +42,4 @@ struct NodeContext {
     ~NodeContext();
 };
 
-inline ChainstateManager& EnsureChainman(const NodeContext& node)
-{
-    assert(node.chainman);
-    return *node.chainman;
-}
-
-#endif // PHL_NODE_CONTEXT_H
+#endif // PLACEH_NODE_CONTEXT_H

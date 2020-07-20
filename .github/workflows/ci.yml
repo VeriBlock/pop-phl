@@ -145,7 +145,7 @@ jobs:
       - name: autogen
         run: ./autogen.sh
       - name: configure
-        run: CONFIG_SITE=$PWD/depends/x86_64-w64-mingw32/share/config.site ./configure --prefix=/ --disable-bench --disable-man
+        run: CONFIG_SITE=$PWD/depends/x86_64-w64-mingw32/share/config.site ./configure --prefix=/ --disable-bench --disable-man --disable-gmock
       - name: make
         run: make -j2
       - name: Post status to Discord

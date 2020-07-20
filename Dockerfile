@@ -85,7 +85,7 @@ RUN strip ${PHL_PREFIX}/lib/libplacehconsensus.so.0.0.0
 # Build stage for compiled artifacts
 FROM alpine
 
-LABEL maintainer.0="Ryan Hein (@ryanmhein)"
+LABEL maintainer.0="Sean Beecroft (@xagay)"
 
 RUN sed -i 's/http\:\/\/dl-cdn.alpinelinux.org/https\:\/\/alpine.global.ssl.fastly.net/g' /etc/apk/repositories
 RUN apk --no-cache add \

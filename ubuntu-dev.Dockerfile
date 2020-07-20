@@ -22,6 +22,7 @@ RUN if [ ${BUILD_TYPE} = "Release" ]; then \
       CC=gcc-7 CXX=g++-7 ./configure \
         --without-gui \
         --disable-tests \
+        --disable-gmock \
         --disable-bench \
         --disable-ccache \
         --disable-man \
@@ -31,6 +32,7 @@ RUN if [ ${BUILD_TYPE} = "Release" ]; then \
         --enable-debug \
         --without-gui \
         --disable-tests \
+        --disable-gmock \
         --disable-bench \
         --disable-ccache \
         --disable-man \

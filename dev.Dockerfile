@@ -75,6 +75,7 @@ RUN ./configure LDFLAGS=-L`ls -d /opt/db*`/lib/ CPPFLAGS=-I`ls -d /opt/db*`/incl
     --disable-bench \
     --disable-ccache \
     --disable-man \
+    --disable-gmock \         
     --without-gui \
     --with-libs=no \
     --with-daemon \

@@ -1,46 +1,32 @@
 QT_TS = \
   qt/locale/placeh_ar.ts \
-  qt/locale/placeh_be_BY.ts \
   qt/locale/placeh_ca.ts \
   qt/locale/placeh_cs.ts \
-  qt/locale/placeh_cs_CZ.ts \
   qt/locale/placeh_cy.ts \
   qt/locale/placeh_da.ts \
   qt/locale/placeh_de.ts \
-  qt/locale/placeh_de_DE.ts \
   qt/locale/placeh_el.ts \
-  qt/locale/placeh_el_GR.ts \
-  qt/locale/placeh_en_AU.ts \
   qt/locale/placeh_en_GB.ts \
   qt/locale/placeh_eo.ts \
   qt/locale/placeh_es.ts \
   qt/locale/placeh_es_CL.ts \
   qt/locale/placeh_es_CO.ts \
   qt/locale/placeh_es_DO.ts \
-  qt/locale/placeh_es_ES.ts \
   qt/locale/placeh_es_MX.ts \
   qt/locale/placeh_es_VE.ts \
   qt/locale/placeh_et.ts \
-  qt/locale/placeh_et_EE.ts \
   qt/locale/placeh_eu.ts \
   qt/locale/placeh_fa.ts \
   qt/locale/placeh_fi.ts \
   qt/locale/placeh_fil.ts \
   qt/locale/placeh_fr.ts \
-  qt/locale/placeh_fr_CA.ts \
-  qt/locale/placeh_fr_FR.ts \
-  qt/locale/placeh_gl.ts \
   qt/locale/placeh_he.ts \
-  qt/locale/placeh_he_IL.ts \
   qt/locale/placeh_hi.ts \
   qt/locale/placeh_hr.ts \
   qt/locale/placeh_hu.ts \
-  qt/locale/placeh_hu_HU.ts \
   qt/locale/placeh_id.ts \
-  qt/locale/placeh_id_ID.ts \
   qt/locale/placeh_is.ts \
   qt/locale/placeh_it.ts \
-  qt/locale/placeh_it_IT.ts \
   qt/locale/placeh_ja.ts \
   qt/locale/placeh_ka.ts \
   qt/locale/placeh_kk.ts \
@@ -51,31 +37,23 @@ QT_TS = \
   qt/locale/placeh_la.ts \
   qt/locale/placeh_lt.ts \
   qt/locale/placeh_lv.ts \
-  qt/locale/placeh_lv_LV.ts \
   qt/locale/placeh_mk.ts \
   qt/locale/placeh_ml.ts \
   qt/locale/placeh_mn.ts \
   qt/locale/placeh_mr_IN.ts \
   qt/locale/placeh_ms.ts \
-  qt/locale/placeh_ms_MY.ts \
   qt/locale/placeh_nb.ts \
   qt/locale/placeh_ne.ts \
   qt/locale/placeh_nl.ts \
-  qt/locale/placeh_nl_NL.ts \
   qt/locale/placeh_pam.ts \
   qt/locale/placeh_pl.ts \
   qt/locale/placeh_pt.ts \
   qt/locale/placeh_pt_BR.ts \
-  qt/locale/placeh_pt_PT.ts \
   qt/locale/placeh_ro.ts \
-  qt/locale/placeh_ro_RO.ts \
   qt/locale/placeh_ru.ts \
-  qt/locale/placeh_ru_RU.ts \
   qt/locale/placeh_si.ts \
   qt/locale/placeh_sk.ts \
-  qt/locale/placeh_sk_SK.ts \
   qt/locale/placeh_sl.ts \
-  qt/locale/placeh_sl_SI.ts \
   qt/locale/placeh_sn.ts \
   qt/locale/placeh_sr.ts \
   qt/locale/placeh_sr@latin.ts \
@@ -85,13 +63,10 @@ QT_TS = \
   qt/locale/placeh_te.ts \
   qt/locale/placeh_th.ts \
   qt/locale/placeh_tr.ts \
-  qt/locale/placeh_tr_TR.ts \
   qt/locale/placeh_uk.ts \
-  qt/locale/placeh_uk_UA.ts \
   qt/locale/placeh_ur.ts \
   qt/locale/placeh_uz@Cyrl.ts \
   qt/locale/placeh_vi.ts \
-  qt/locale/placeh_vi_VN.ts \
   qt/locale/placeh_yo.ts \
   qt/locale/placeh_zh-Hans.ts \
   qt/locale/placeh_zh_CN.ts \

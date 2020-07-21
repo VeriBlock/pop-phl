@@ -1,6 +1,7 @@
 <!DOCTYPE RCC><RCC version="1.0">
     <qresource prefix="/translations">
         <file alias="ar">locale/placeh_ar.qm</file>
+        <file alias="be">locale/placeh_be_BY.qm</file>
         <file alias="ca">locale/placeh_ca.qm</file>
         <file alias="cs">locale/placeh_cs.qm</file>
         <file alias="cs_CZ">locale/placeh_cs_CZ.qm</file>

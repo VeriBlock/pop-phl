@@ -150,7 +150,7 @@ UniValue getpopdata(const JSONRPCRequest& request)
             "    \"last_known_veriblock_blocks\" : [ (array) last known VeriBlock blocks at the given Bitcoin block\n"
             "        \"blockhash\",                (string) VeriBlock block hash\n"
             "       ... ]\n"
-            "    \"last_known_placeh_blocks\" : [ (array) last known Bitcoin blocks at the given Bitcoin block\n"
+            "    \"last_known_bitcoin_blocks\" : [ (array) last known Bitcoin blocks at the given Bitcoin block\n"
             "        \"blockhash\",                (string) Bitcoin block hash\n"
             "       ... ]\n"
             "}\n"
@@ -203,12 +203,12 @@ UniValue getpopdata(const JSONRPCRequest& request)
     }
     result.pushKV("last_known_veriblock_blocks", univalueLastVBKBlocks);
 
-    auto lastPHLBlocks = pop.getLastKnownPHLBlocks(16);
-    UniValue univalueLastPHLBlocks(UniValue::VARR);
-    for (const auto& b : lastPHLBlocks) {
-        univalueLastPHLBlocks.push_back(HexStr(b));
+    auto lastBTCBlocks = pop.getLastKnownBTCBlocks(16);
+    UniValue univalueLastBTCBlocks(UniValue::VARR);
+    for (const auto& b : lastBTCBlocks) {
+        univalueLastBTCBlocks.push_back(HexStr(b));
     }
-    result.pushKV("last_known_placeh_blocks", univalueLastPHLBlocks);
+    result.pushKV("last_known_bitcoin_blocks", univalueLastBTCBlocks);
 
     return result;
 }
@@ -282,7 +282,7 @@ UniValue savepopstate(const JSONRPCRequest& request)
         file_name = request.params[0].getValStr();
     }
 
-    LogPrint(BCLog::POP, "Save vPHL state to the file %s \n", file_name);
+    LogPrint(BCLog::POP, "Save PHL state to the file %s \n", file_name);
     SaveState(file_name);
 
     return UniValue();

@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef __BOOTSTRAPS_PHL_VBK
-#define __BOOTSTRAPS_PHL_VBK
+#ifndef __BOOTSTRAPS_BTC_VBK
+#define __BOOTSTRAPS_BTC_VBK
 
 #include <string>
 #include <vector>
@@ -17,13 +17,13 @@
 extern int testnetVBKstartHeight;
 extern std::vector<std::string> testnetVBKblocks;
 
-extern int testnetPHLstartHeight;
-extern std::vector<std::string> testnetPHLblocks;
+extern int testnetBTCstartHeight;
+extern std::vector<std::string> testnetBTCblocks;
 
-struct AltChainParamsVPHL : public altintegration::AltChainParams {
-    ~AltChainParamsVPHL() override = default;
+struct AltChainParamsPHL : public altintegration::AltChainParams {
+    ~AltChainParamsPHL() override = default;
 
-    AltChainParamsVPHL(const CBlock& genesis)
+    AltChainParamsPHL(const CBlock& genesis)
     {
         auto hash = genesis.GetHash();
         bootstrap.hash = std::vector<uint8_t>{hash.begin(), hash.end()};

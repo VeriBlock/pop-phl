@@ -116,7 +116,7 @@ struct E2eFixture : public TestChain100Setup {
 
         auto btctx = popminer.createBtcTxEndorsingVbkBlock(*endorsed->header);
         auto* btccontaining = popminer.mineBtcBlocks(1);
-        auto vbktx = popminer.createVbkPopTxEndorsingVbkBlock(*btccontaining->header, btctx, *endorsed->header, getLastKnownPHLblock());
+        auto vbktx = popminer.createVbkPopTxEndorsingVbkBlock(*btccontaining->header, btctx, *endorsed->header, getLastKnownBTCblock());
         auto* vbkcontaining = popminer.mineVbkBlocks(1);
 
         auto vtbs = popminer.vbkPayloads[vbkcontaining->getHash()];
@@ -135,9 +135,9 @@ struct E2eFixture : public TestChain100Setup {
         return vtb;
     }
 
-    BtcBlock::hash_t getLastKnownPHLblock()
+    BtcBlock::hash_t getLastKnownBTCblock()
     {
-        auto blocks = pop->getLastKnownPHLBlocks(1);
+        auto blocks = pop->getLastKnownBTCBlocks(1);
         BOOST_CHECK(blocks.size() == 1);
         return blocks[0];
     }

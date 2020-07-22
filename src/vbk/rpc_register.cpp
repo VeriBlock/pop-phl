@@ -45,7 +45,7 @@ UniValue createPopTx(const CScript& scriptSig)
             nullptr /* plTxnReplaced */, false /* bypass_limits */, 0 /* nAbsurdFee */, false /* test accept */);
         if (result) {
             std::string err;
-            if (!g_rpc_chain->broadcastTransaction(tx_ref, 0, true, err)) {
+            if (!g_rpc_chain->broadcastTransaction(tx_ref, err, 0, true)) {
                 throw JSONRPCError(RPC_TRANSACTION_ERROR, err);
             }
             //            RelayTransaction(hashTx, *this->connman);

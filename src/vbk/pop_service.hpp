@@ -49,7 +49,7 @@ struct PopService {
     virtual bool checkPopInputs(const CTransaction& tx, TxValidationState& state, unsigned int flags, bool cacheSigStore, PrecomputedTransactionData& txdata) = 0;
 
     virtual std::vector<BlockBytes> getLastKnownVBKBlocks(size_t blocks) = 0;
-    virtual std::vector<BlockBytes> getLastKnownPHLBlocks(size_t blocks) = 0;
+    virtual std::vector<BlockBytes> getLastKnownBTCBlocks(size_t blocks) = 0;
 
     virtual bool acceptBlock(const CBlockIndex& indexNew, BlockValidationState& state) = 0;
     virtual bool addAllBlockPayloads(const CBlockIndex& prevIndex, const CBlock& fullBlock, BlockValidationState& state) = 0;

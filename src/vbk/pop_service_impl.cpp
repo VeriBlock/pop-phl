@@ -246,7 +246,7 @@ std::vector<BlockBytes> PopServiceImpl::getLastKnownVBKBlocks(size_t blocks)
     return altintegration::getLastKnownBlocks(altTree->vbk(), blocks);
 }
 
-std::vector<BlockBytes> PopServiceImpl::getLastKnownPHLBlocks(size_t blocks)
+std::vector<BlockBytes> PopServiceImpl::getLastKnownBTCBlocks(size_t blocks)
 {
     LOCK(cs_main);
     return altintegration::getLastKnownBlocks(altTree->btc(), blocks);

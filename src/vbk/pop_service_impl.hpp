@@ -51,7 +51,7 @@ public:
     bool checkPopInputs(const CTransaction& tx, TxValidationState& state, unsigned int flags, bool cacheSigStore, PrecomputedTransactionData& txdata) override;
 
     std::vector<BlockBytes> getLastKnownVBKBlocks(size_t blocks) override;
-    std::vector<BlockBytes> getLastKnownPHLBlocks(size_t blocks) override;
+    std::vector<BlockBytes> getLastKnownBTCBlocks(size_t blocks) override;
 
     bool acceptBlock(const CBlockIndex& indexNew, BlockValidationState& state) override;
     bool addAllBlockPayloads(const CBlockIndex& indexPrev, const CBlock& fullBlock, BlockValidationState& state) override;

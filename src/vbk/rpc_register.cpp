@@ -53,10 +53,10 @@ UniValue createPopTx(const CScript& scriptSig)
         }
 
         if (state.IsInvalid()) {
-            throw JSONRPCError(RPC_TRANSACTION_REJECTED, state.ToString());
+            throw JSONRPCError(RPC_TRANSACTION_REJECTED, FormatStateMessage(state));
         }
 
-        throw JSONRPCError(RPC_TRANSACTION_ERROR, state.ToString());
+        throw JSONRPCError(RPC_TRANSACTION_ERROR, FormatStateMessage(state));
     }
 
     return hashTx.GetHex();

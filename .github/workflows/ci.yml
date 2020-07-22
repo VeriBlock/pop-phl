@@ -5,10 +5,11 @@ on:
     branches:
       - master
       - feature/*
+
   pull_request:
     branches:
       - master
-
+      - feature/*
 jobs:
   linux:
     runs-on: ubuntu-latest

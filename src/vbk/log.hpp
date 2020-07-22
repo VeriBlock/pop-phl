@@ -11,8 +11,8 @@
 
 namespace VeriBlock {
 
-struct VPHLLogger : public altintegration::Logger {
-    ~VPHLLogger() override = default;
+struct PHLLogger : public altintegration::Logger {
+    ~PHLLogger() override = default;
 
     void log(altintegration::LogLevel l, const std::string& msg) override
     {

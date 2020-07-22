@@ -9,6 +9,7 @@
 #include <chain.h>
 #include <test/util/setup_common.h>
 #include <validation.h>
+#include <vbk/init.hpp>
 #include <vbk/test/util/e2e_fixture.hpp>
 #include <vbk/util.hpp>
 #include <veriblock/alt-util.hpp>

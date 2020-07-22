@@ -156,7 +156,7 @@ public:
         pchMessageStart[1] = 2;
         pchMessageStart[2] = 2;
         pchMessageStart[3] = 2 + VBK_VERSION;
-        nDefaultPort = 16608;
+        nDefaultPort = 16607;
         nPruneAfterHeight = 1000;
         m_assumed_blockchain_size = 30;
         m_assumed_chain_state_size = 2;

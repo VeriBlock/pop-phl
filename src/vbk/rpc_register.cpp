@@ -102,7 +102,7 @@ void SaveState(std::string file_name)
         return a->nHeight < b->nHeight;
     };
     std::vector<CBlockIndex*> block_index;
-    block_index.reserve(pexa_tree.size());
+    block_index.reserve(phl_tree.size());
     for (const auto& el : phl_tree) {
         block_index.push_back(el.second);
     }

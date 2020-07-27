@@ -68,20 +68,20 @@ void selectPopConfig(
 {
     altintegration::Config popconfig;
 
-    //! SET PHL
+    //! SET BTC
     if (btcnet == "test") {
         auto param = std::make_shared<altintegration::BtcChainParamsTest>();
         if (popautoconfig) {
-            popconfig.setPHL(testnetPHLstartHeight, testnetPHLblocks, param);
+            popconfig.setBTC(testnetBTCstartHeight, testnetBTCblocks, param);
         } else {
-            popconfig.setPHL(btcstart, parseBlocks(btcblocks), param);
+            popconfig.setBTC(btcstart, parseBlocks(btcblocks), param);
         }
     } else if (btcnet == "regtest") {
         auto param = std::make_shared<altintegration::BtcChainParamsRegTest>();
         if (popautoconfig) {
-            popconfig.setPHL(0, {}, param);
+            popconfig.setBTC(0, {}, param);
         } else {
-            popconfig.setPHL(btcstart, parseBlocks(btcblocks), param);
+            popconfig.setBTC(btcstart, parseBlocks(btcblocks), param);
         }
     } else {
         throw std::invalid_argument("btcnet currently only supports test/regtest");
@@ -106,7 +106,7 @@ void selectPopConfig(
         throw std::invalid_argument("vbknet currently only supports test/regtest");
     }
 
-    popconfig.alt = std::make_shared<AltChainParamsVPHL>(Params().GenesisBlock());
+    popconfig.alt = std::make_shared<AltChainParamsPHL>(Params().GenesisBlock());
 
     auto& config = VeriBlock::getService<VeriBlock::Config>();
     config.popconfig = std::move(popconfig);
@@ -127,9 +127,9 @@ void selectPopConfig(const ArgsManager& args)
 }
 
 int testnetVBKstartHeight = 492041;
-int testnetPHLstartHeight = 1721218;
+int testnetBTCstartHeight = 1721218;
 
-std::vector<std::string> testnetPHLblocks = {
+std::vector<std::string> testnetBTCblocks = {
 
     "00E0FF3FD6F166D227E2B3BAE7BE0BBF95214D4B04E079584F0B734BFE010000000000000C5BF18D5C9D16878BCEE9C5286466E57FFE651697F3FC42001D73DAD55999BAF8E19F5EF8A7021A54626DF3",
     "0000C020CC0C51BE4F3300F1C10E591B777F4716BEAAAFCD8096206382010000000000002E6712DE5E8452DE2020C0DA806DCD30B3AF9BF922845F798AAC54C03A83CCBB04E29F5EF8A7021A89420222",

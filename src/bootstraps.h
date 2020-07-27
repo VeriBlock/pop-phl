@@ -19,13 +19,13 @@
 extern int testnetVBKstartHeight;
 extern std::vector<std::string> testnetVBKblocks;
 
-extern int testnetPHLstartHeight;
-extern std::vector<std::string> testnetPHLblocks;
+extern int testnetBTCstartHeight;
+extern std::vector<std::string> testnetBTCblocks;
 
-struct AltChainParamsVPHL : public altintegration::AltChainParams {
-    ~AltChainParamsVPHL() override = default;
+struct AltChainParamsPHL : public altintegration::AltChainParams {
+    ~AltChainParamsPHL() override = default;
 
-    AltChainParamsVPHL(const CBlock& genesis)
+    AltChainParamsPHL(const CBlock& genesis)
     {
         auto hash = genesis.GetHash();
         bootstrap.hash = std::vector<uint8_t>{hash.begin(), hash.end()};
@@ -40,7 +40,7 @@ struct AltChainParamsVPHL : public altintegration::AltChainParams {
 
     uint32_t getIdentifier() const noexcept override
     {
-        return 0x3ae6ca;
+        return 0xdeadbeef;
     }
 
     std::vector<uint8_t> getHash(const std::vector<uint8_t>& bytes) const noexcept override

@@ -35,12 +35,12 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\git\repo\vbk-ri-btc\src\qt\placeh-qt.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\git\repo\vbk-ri-btc\placeh.conf"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\git\repo\vbk-ri-btc\placeh.conf"; DestDir: "{userappdata}\placeh\"; Flags: ignoreversion
-Source: "C:\git\repo\vbk-ri-btc\src\placeh-cli.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\git\repo\vbk-ri-btc\src\placehd.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\git\repo\vbk-ri-btc\README.md"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\git\repo\pop-phl\src\qt\placeh-qt.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\git\repo\pop-phl\placeh.conf"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\git\repo\pop-phl\placeh.conf"; DestDir: "{userappdata}\placeh\"; Flags: ignoreversion
+Source: "C:\git\repo\pop-phl\src\placeh-cli.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\git\repo\pop-phl\src\placehd.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\git\repo\pop-phl\README.md"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

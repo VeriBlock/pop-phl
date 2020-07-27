@@ -224,7 +224,7 @@
     </message>
 </context>
 <context>
-    <name>BitcoinGUI</name>
+    <name>PlaceholdersGUI</name>
     <message>
         <source>Sign &amp;message...</source>
         <translation>Signer &amp;melding</translation>
@@ -483,7 +483,7 @@
     </message>
     <message>
         <source>Show the %1 help message to get a list with possible Placeholders command-line options</source>
-        <translation>Vis %1-hjelpemeldingen for å få en liste over mulige Bitcoin-kommandolinjealternativer</translation>
+        <translation>Vis %1-hjelpemeldingen for å få en liste over mulige Placeholders-kommandolinjealternativer</translation>
     </message>
     <message>
         <source>default wallet</source>
@@ -787,7 +787,7 @@
     </message>
     <message>
         <source>The entered address "%1" is not a valid Placeholders address.</source>
-        <translation>Den angitte adressen "%1" er ikke en gyldig Bitcoin-adresse.</translation>
+        <translation>Den angitte adressen "%1" er ikke en gyldig Placeholders-adresse.</translation>
     </message>
     <message>
         <source>Address "%1" already exists as a receiving address with label "%2" and so cannot be added as a sending address.</source>
@@ -879,8 +879,8 @@
         <translation>Bruk en egendefinert datamappe:</translation>
     </message>
     <message>
-        <source>Bitcoin</source>
-        <translation>Bitcoin</translation>
+        <source>Placeholders</source>
+        <translation>Placeholders</translation>
     </message>
     <message>
         <source>At least %1 GB of data will be stored in this directory, and it will grow over time.</source>
@@ -1120,7 +1120,7 @@
     </message>
     <message>
         <source>Connect to the Placeholders network through a SOCKS5 proxy.</source>
-        <translation>Koble til Bitcoin-nettverket gjennom en SOCKS5 proxy.</translation>
+        <translation>Koble til Placeholders-nettverket gjennom en SOCKS5 proxy.</translation>
     </message>
     <message>
         <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
@@ -1156,7 +1156,7 @@
     </message>
     <message>
         <source>Connect to the Placeholders network through a separate SOCKS5 proxy for Tor hidden services.</source>
-        <translation>Koble til Bitcoin-nettverket gjennom en separat SOCKS5 mellomtjener for Tor skjulte tjenester.</translation>
+        <translation>Koble til Placeholders-nettverket gjennom en separat SOCKS5 mellomtjener for Tor skjulte tjenester.</translation>
     </message>
     <message>
         <source>&amp;Window</source>
@@ -1263,7 +1263,7 @@
     </message>
     <message>
         <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Placeholders network after a connection is established, but this process has not completed yet.</source>
-        <translation>Informasjonen som vises kan være foreldet. Din lommebok synkroniseres automatisk med Bitcoin-nettverket etter at tilkobling er opprettet, men denne prosessen er ikke ferdig enda.</translation>
+        <translation>Informasjonen som vises kan være foreldet. Din lommebok synkroniseres automatisk med Placeholders-nettverket etter at tilkobling er opprettet, men denne prosessen er ikke ferdig enda.</translation>
     </message>
     <message>
         <source>Watch-only:</source>
@@ -1456,7 +1456,7 @@
     </message>
     <message>
         <source>Enter a Placeholders address (e.g. %1)</source>
-        <translation>Oppgi en Bitcoin-adresse (f.eks. %1)</translation>
+        <translation>Oppgi en Placeholders-adresse (f.eks. %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -1889,7 +1889,7 @@
     </message>
     <message>
         <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Placeholders network.</source>
-        <translation>En valgfri melding å tilknytte betalingsetterspørringen, som vil bli vist når forespørselen er åpnet. Meldingen vil ikke bli sendt med betalingen over Bitcoin-nettverket.</translation>
+        <translation>En valgfri melding å tilknytte betalingsetterspørringen, som vil bli vist når forespørselen er åpnet. Meldingen vil ikke bli sendt med betalingen over Placeholders-nettverket.</translation>
     </message>
     <message>
         <source>An optional label to associate with the new receiving address.</source>
@@ -2034,7 +2034,7 @@
     <name>SendCoinsDialog</name>
     <message>
         <source>Send Coins</source>
-        <translation>Send Bitcoins</translation>
+        <translation>Send Placeholderss</translation>
     </message>
     <message>
         <source>Coin Control Features</source>
@@ -2321,7 +2321,7 @@
     </message>
     <message>
         <source>The Placeholders address to send the payment to</source>
-        <translation>Bitcoin-adressen betalingen skal sendes til</translation>
+        <translation>Placeholders-adressen betalingen skal sendes til</translation>
     </message>
     <message>
         <source>Alt+A</source>
@@ -2369,7 +2369,7 @@
     </message>
     <message>
         <source>A message that was attached to the placeh: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Placeholders network.</source>
-        <translation>En melding som var tilknyttet placehen: URI vil bli lagret med transaksjonen for din oversikt. Denne meldingen vil ikke bli sendt over Bitcoin-nettverket.</translation>
+        <translation>En melding som var tilknyttet placehen: URI vil bli lagret med transaksjonen for din oversikt. Denne meldingen vil ikke bli sendt over Placeholders-nettverket.</translation>
     </message>
     <message>
         <source>Pay To:</source>
@@ -2418,7 +2418,7 @@
     </message>
     <message>
         <source>The Placeholders address to sign the message with</source>
-        <translation>Bitcoin-adressen meldingen skal signeres med</translation>
+        <translation>Placeholders-adressen meldingen skal signeres med</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -2450,7 +2450,7 @@
     </message>
     <message>
         <source>Sign the message to prove you own this Placeholders address</source>
-        <translation>Signer meldingen for å bevise at du eier denne Bitcoin-adressen</translation>
+        <translation>Signer meldingen for å bevise at du eier denne Placeholders-adressen</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -2474,11 +2474,11 @@
     </message>
     <message>
         <source>The Placeholders address the message was signed with</source>
-        <translation>Bitcoin-adressen meldingen ble signert med</translation>
+        <translation>Placeholders-adressen meldingen ble signert med</translation>
     </message>
     <message>
         <source>Verify the message to ensure it was signed with the specified Placeholders address</source>
-        <translation>Verifiser meldingen for å være sikker på at den ble signert av den angitte Bitcoin-adressen</translation>
+        <translation>Verifiser meldingen for å være sikker på at den ble signert av den angitte Placeholders-adressen</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>

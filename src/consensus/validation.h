@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2009-2018 The Placeholders Core developers
 // Copyright (c) 2019-2020 Xenios SEZC
 // https://www.veriblock.org
 // Distributed under the MIT software license, see the accompanying
@@ -114,6 +114,7 @@ public:
     bool IsError() const { return m_mode == MODE_ERROR; }
     std::string GetRejectReason() const { return m_reject_reason; }
     std::string GetDebugMessage() const { return m_debug_message; }
+    std::string ToString() const {return m_reject_reason + ": " + m_debug_message; }
 
     operator altintegration::ValidationState() {
         altintegration::ValidationState v;
@@ -170,17 +171,13 @@ static inline int64_t GetTransactionWeight(const CTransaction& tx)
 {
     return ::GetSerializeSize(tx, PROTOCOL_VERSION | SERIALIZE_TRANSACTION_NO_WITNESS) * (WITNESS_SCALE_FACTOR - 1) + ::GetSerializeSize(tx, PROTOCOL_VERSION);
 }
+
 static inline int64_t GetBlockWeight(const CBlock& block)
 {
-    int64_t txsPoPsize = 0;
-    for (const auto& tx : block.vtx)
-	{
-        if (VeriBlock::isPopTx(*tx)) {
-            txsPoPsize += GetTransactionWeight(*tx);
-        }
-	}
+    int64_t popDataSize = 0;
+    popDataSize += VeriBlock::GetPopDataWeight(block.popData);
 
-    return ::GetSerializeSize(block, PROTOCOL_VERSION | SERIALIZE_TRANSACTION_NO_WITNESS) * (WITNESS_SCALE_FACTOR - 1) + ::GetSerializeSize(block, PROTOCOL_VERSION) - txsPoPsize;
+    return ::GetSerializeSize(block, PROTOCOL_VERSION | SERIALIZE_TRANSACTION_NO_WITNESS) * (WITNESS_SCALE_FACTOR - 1) + ::GetSerializeSize(block, PROTOCOL_VERSION) - popDataSize;
 }
 static inline int64_t GetTransactionInputWeight(const CTxIn& txin)
 {

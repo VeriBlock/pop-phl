@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2017-2019 The Bitcoin Core developers
+# Copyright (c) 2017-2019 The Placeholders Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test that the wallet resends transactions periodically."""
@@ -9,7 +9,7 @@ import time
 from test_framework.blocktools import create_block, create_coinbase
 from test_framework.messages import ToHex
 from test_framework.mininode import P2PInterface, mininode_lock
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import PlaceholdersTestFramework
 from test_framework.util import assert_equal, wait_until
 
 class P2PStoreTxInvs(P2PInterface):
@@ -24,7 +24,7 @@ class P2PStoreTxInvs(P2PInterface):
                 # save txid
                 self.tx_invs_received[i.hash] += 1
 
-class ResendWalletTransactionsTest(BitcoinTestFramework):
+class ResendWalletTransactionsTest(PlaceholdersTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
 
@@ -57,7 +57,7 @@ class ResendWalletTransactionsTest(BitcoinTestFramework):
         # after the last time we tried to broadcast. Use mocktime and give an extra minute to be sure.
         block_time = int(time.time()) + 6 * 60
         node.setmocktime(block_time)
-        block = create_block(int(node.getbestblockhash(), 16), create_coinbase(node.getblockcount() + 1), block_time)
+        block = create_block(self.nodes[0], int(node.getbestblockhash(), 16), create_coinbase(node.getblockcount() + 1), block_time)
         block.rehash()
         block.solve()
         node.submitblock(ToHex(block))

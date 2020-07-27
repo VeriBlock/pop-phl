@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2019 The Bitcoin Core developers
+# Copyright (c) 2014-2019 The Placeholders Core developers
 # Copyright (c) 2019-2020 Xenios SEZC
 # https://www.veriblock.org
 # Distributed under the MIT software license, see the accompanying
@@ -9,15 +9,15 @@
 Test with multiple nodes, and multiple PoP endorsements, checking to make sure nodes stay in sync.
 """
 
-from test_framework.pop import KEYSTONE_INTERVAL, endorse_block
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.pop import KEYSTONE_INTERVAL, endorse_block, sync_pop_mempools
+from test_framework.test_framework import PlaceholdersTestFramework
 from test_framework.util import (
     connect_nodes,
     sync_mempools,
 )
 
 
-class PoPSync(BitcoinTestFramework):
+class PoPSync(PlaceholdersTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 3
@@ -59,7 +59,7 @@ class PoPSync(BitcoinTestFramework):
                 node1_txid = endorse_block(self.nodes[1], self.apm, height, addr1)
 
                 # wait until node[1] gets relayed pop tx
-                sync_mempools(self.nodes)
+                self.sync_all(self.nodes, timeout=20)
                 self.log.info("transactions relayed")
 
                 # mine a block on node[1] with this pop tx
@@ -71,16 +71,21 @@ class PoPSync(BitcoinTestFramework):
                 self.log.info("node0 and node2 got containing block over p2p")
 
                 # assert that all txids exist in this block
-                block = self.nodes[0].getblock(containingblockhash)
-                assert node0_txid in block['tx'], "node0: Containing block {} does not contain pop tx {}".format(block['hash'], node0_txid)
-                assert node1_txid in block['tx'], "node1: Containing block {} does not contain pop tx {}".format(block['hash'], node1_txid)
-                assert node2_txid in block['tx'], "node2: Containing block {} does not contain pop tx {}".format(block['hash'], node2_txid)
+                for node in self.nodes:
+                    self.assert_atvs_in_node(node, containingblockhash, [node0_txid, node1_txid, node2_txid])
 
                 # assert that node height matches
                 assert self.nodes[0].getblockcount() == self.nodes[1].getblockcount() == self.nodes[2].getblockcount()
 
             height += 1
         self.log.info("success! _check_pop_sync()")
+
+    def assert_atvs_in_node(self, node, containingblockhash, expected):
+        block = node.getblock(containingblockhash)
+        atvs = block['pop']['data']['atvs']
+
+        for atv in expected:
+            assert atv in atvs, "containing block {} does not contain ATV {}".format(containingblockhash, atv)
 
     def run_test(self):
         """Main test logic"""

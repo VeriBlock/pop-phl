@@ -212,7 +212,7 @@
     </message>
     </context>
 <context>
-    <name>BitcoinGUI</name>
+    <name>PlaceholdersGUI</name>
     <message>
         <source>Sign &amp;message...</source>
         <translation>Signeeri &amp;sõnum</translation>
@@ -283,7 +283,7 @@
     </message>
     <message>
         <source>Send coins to a Placeholders address</source>
-        <translation>Saada münte Bitcoini aadressile</translation>
+        <translation>Saada münte Placeholdersi aadressile</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -327,11 +327,11 @@
     </message>
     <message>
         <source>Sign messages with your Placeholders addresses to prove you own them</source>
-        <translation>Omandi tõestamiseks allkirjasta sõnumid oma Bitcoini aadressiga</translation>
+        <translation>Omandi tõestamiseks allkirjasta sõnumid oma Placeholdersi aadressiga</translation>
     </message>
     <message>
         <source>Verify messages to ensure they were signed with specified Placeholders addresses</source>
-        <translation>Kinnita sõnumid kindlustamaks et need allkirjastati määratud Bitcoini aadressiga</translation>
+        <translation>Kinnita sõnumid kindlustamaks et need allkirjastati määratud Placeholdersi aadressiga</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -363,7 +363,7 @@
     </message>
     <message numerus="yes">
         <source>%n active connection(s) to Placeholders network</source>
-        <translation><numerusform>%n aktiivne ühendus Bitcoini võrku</numerusform><numerusform>%n aktiivset ühendust Bitcoini võrku</numerusform></translation>
+        <translation><numerusform>%n aktiivne ühendus Placeholdersi võrku</numerusform><numerusform>%n aktiivset ühendust Placeholdersi võrku</numerusform></translation>
     </message>
     <message>
         <source>Indexing blocks on disk...</source>
@@ -653,8 +653,8 @@
         <translation>Tere tulemast</translation>
     </message>
     <message>
-        <source>Bitcoin</source>
-        <translation>Bitcoin</translation>
+        <source>Placeholders</source>
+        <translation>Placeholders</translation>
     </message>
     <message>
         <source>Error</source>
@@ -730,7 +730,7 @@
     </message>
     <message>
         <source>Automatically open the Placeholders client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Bitcoini kliendi pordi automaatne avamine ruuteris. Toimib, kui sinu ruuter aktsepteerib UPnP ühendust.</translation>
+        <translation>Placeholdersi kliendi pordi automaatne avamine ruuteris. Toimib, kui sinu ruuter aktsepteerib UPnP ühendust.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
@@ -1440,7 +1440,7 @@
     </message>
     <message>
         <source>The Placeholders address to sign the message with</source>
-        <translation>Bitcoin aadress millega sõnum allkirjastada</translation>
+        <translation>Placeholders aadress millega sõnum allkirjastada</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -1472,7 +1472,7 @@
     </message>
     <message>
         <source>Sign the message to prove you own this Placeholders address</source>
-        <translation>Allkirjasta sõnum Bitcoini aadressi sulle kuulumise tõestamiseks</translation>
+        <translation>Allkirjasta sõnum Placeholdersi aadressi sulle kuulumise tõestamiseks</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -1492,11 +1492,11 @@
     </message>
     <message>
         <source>The Placeholders address the message was signed with</source>
-        <translation>Bitcoin aadress millega sõnum on allkirjastatud</translation>
+        <translation>Placeholders aadress millega sõnum on allkirjastatud</translation>
     </message>
     <message>
         <source>Verify the message to ensure it was signed with the specified Placeholders address</source>
-        <translation>Kinnita sõnum tõestamaks selle allkirjastatust määratud Bitcoini aadressiga.</translation>
+        <translation>Kinnita sõnum tõestamaks selle allkirjastatust määratud Placeholdersi aadressiga.</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>

@@ -220,7 +220,7 @@
     </message>
 </context>
 <context>
-    <name>BitcoinGUI</name>
+    <name>PlaceholdersGUI</name>
     <message>
         <source>Sign &amp;message...</source>
         <translation>Szkryftnij &amp;wiadōmość</translation>
@@ -323,7 +323,7 @@
     </message>
     <message>
         <source>Send coins to a Placeholders address</source>
-        <translation>Poślij mōnety na adresã Bitcoin</translation>
+        <translation>Poślij mōnety na adresã Placeholders</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -371,7 +371,7 @@
     </message>
     <message>
         <source>Verify messages to ensure they were signed with specified Placeholders addresses</source>
-        <translation>Zweryfikuj wiadōmość, coby wejzdrzeć sie, iże ôstała podpisanŏ podanōm adresōm Bitcoin.</translation>
+        <translation>Zweryfikuj wiadōmość, coby wejzdrzeć sie, iże ôstała podpisanŏ podanōm adresōm Placeholders.</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -411,7 +411,7 @@
     </message>
     <message numerus="yes">
         <source>%n active connection(s) to Placeholders network</source>
-        <translation><numerusform>%n aktywne połōnczynie do necu Bitcoin</numerusform><numerusform>%n aktywnych połōnczyń do necu Bitcoin</numerusform><numerusform>%n aktywnych skuplowań do necu Bitcoin</numerusform></translation>
+        <translation><numerusform>%n aktywne połōnczynie do necu Placeholders</numerusform><numerusform>%n aktywnych połōnczyń do necu Placeholders</numerusform><numerusform>%n aktywnych skuplowań do necu Placeholders</numerusform></translation>
     </message>
     <message>
         <source>Indexing blocks on disk...</source>
@@ -739,7 +739,7 @@
     </message>
     <message>
         <source>The entered address "%1" is not a valid Placeholders address.</source>
-        <translation>Wkludzōnŏ adresa "%1" niyma nŏleżnōm adresōm Bitcoin.</translation>
+        <translation>Wkludzōnŏ adresa "%1" niyma nŏleżnōm adresōm Placeholders.</translation>
     </message>
     <message>
         <source>Address "%1" already exists as a receiving address with label "%2" and so cannot be added as a sending address.</source>
@@ -831,8 +831,8 @@
         <translation>Użyj ôbranego folderu datōw</translation>
     </message>
     <message>
-        <source>Bitcoin</source>
-        <translation>Bitcoin</translation>
+        <source>Placeholders</source>
+        <translation>Placeholders</translation>
     </message>
     <message>
         <source>At least %1 GB of data will be stored in this directory, and it will grow over time.</source>
@@ -844,7 +844,7 @@
     </message>
     <message>
         <source>%1 will download and store a copy of the Placeholders block chain.</source>
-        <translation>%1 sebiere i spamiyntŏ kopijõ kety blokōw Bitcoin.</translation>
+        <translation>%1 sebiere i spamiyntŏ kopijõ kety blokōw Placeholders.</translation>
     </message>
     <message>
         <source>The wallet will also be stored in this directory.</source>
@@ -1433,7 +1433,7 @@
     </message>
     <message>
         <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Placeholders network.</source>
-        <translation>Ôpcyjōnalnŏ wiadōmość do prziwstōniŏ do żōndaniŏ płatu, kerŏ bydzie wyświytlanŏ, kej żōndanie ôstanie ôdewrzōne. Napōmniynie: wiadōmość ta niy ôstanie wysłanŏ z płatym w nec Bitcoin.</translation>
+        <translation>Ôpcyjōnalnŏ wiadōmość do prziwstōniŏ do żōndaniŏ płatu, kerŏ bydzie wyświytlanŏ, kej żōndanie ôstanie ôdewrzōne. Napōmniynie: wiadōmość ta niy ôstanie wysłanŏ z płatym w nec Placeholders.</translation>
     </message>
     <message>
         <source>Clear</source>
@@ -1638,7 +1638,7 @@
     </message>
     <message>
         <source>Warning: Invalid Placeholders address</source>
-        <translation>Pozōr: niynŏleżnŏ adresa Bitcoin</translation>
+        <translation>Pozōr: niynŏleżnŏ adresa Placeholders</translation>
     </message>
     <message>
         <source>Warning: Unknown change address</source>
@@ -1661,7 +1661,7 @@
     </message>
     <message>
         <source>The Placeholders address to send the payment to</source>
-        <translation>Adresa Bitcoin, na kerõ chcesz posłać płat</translation>
+        <translation>Adresa Placeholders, na kerõ chcesz posłać płat</translation>
     </message>
     <message>
         <source>Alt+A</source>
@@ -1681,7 +1681,7 @@
     </message>
     <message>
         <source>A message that was attached to the placeh: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Placeholders network.</source>
-        <translation>Wiadōmość, kerŏ ôstała prziwstōnŏ do URI placeh:, kerŏ bydzie przechowowanŏ z transakcyjōm w cylach informacyjnych. Napōmniynie: Ta wiadōmość niy bydzie rozszyrzowanŏ w necu Bitcoin.</translation>
+        <translation>Wiadōmość, kerŏ ôstała prziwstōnŏ do URI placeh:, kerŏ bydzie przechowowanŏ z transakcyjōm w cylach informacyjnych. Napōmniynie: Ta wiadōmość niy bydzie rozszyrzowanŏ w necu Placeholders.</translation>
     </message>
     </context>
 <context>

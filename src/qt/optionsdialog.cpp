@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2018 The Bitcoin Core developers
+// Copyright (c) 2011-2018 The Placeholders Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -42,7 +42,7 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
     ui->threadsScriptVerif->setMaximum(MAX_SCRIPTCHECK_THREADS);
     ui->pruneWarning->setVisible(false);
     ui->pruneWarning->setStyleSheet("QLabel { color: red; }");
-    
+
     ui->pruneSize->setEnabled(false);
     connect(ui->prune, &QPushButton::toggled, ui->pruneSize, &QWidget::setEnabled);
 
@@ -90,7 +90,7 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
     ui->placehAtStartup->setToolTip(ui->placehAtStartup->toolTip().arg(PACKAGE_NAME));
     ui->placehAtStartup->setText(ui->placehAtStartup->text().arg(PACKAGE_NAME));
 
-    ui->openBitcoinConfButton->setToolTip(ui->openBitcoinConfButton->toolTip().arg(PACKAGE_NAME));
+    ui->openPlaceholdersConfButton->setToolTip(ui->openPlaceholdersConfButton->toolTip().arg(PACKAGE_NAME));
 
     ui->lang->setToolTip(ui->lang->toolTip().arg(PACKAGE_NAME));
     ui->lang->addItem(QString("(") + tr("default") + QString(")"), QVariant(""));
@@ -110,18 +110,16 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
             ui->lang->addItem(locale.nativeLanguageName() + QString(" (") + langStr + QString(")"), QVariant(langStr));
         }
     }
-    ui->unit->setModel(new BitcoinUnits(this));
+    ui->unit->setModel(new PlaceholdersUnits(this));
 
     /* Widget-to-option mapper */
     mapper = new QDataWidgetMapper(this);
     mapper->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
     mapper->setOrientation(Qt::Vertical);
-
+	    
     /* VBK */
     QString bfiendpoint = QString::fromStdString(gArgs.GetArg("-bfiendpoint",""));
-    ui->bfiDataSourceUrls->setText(bfiendpoint); // = new QDataWidgetMapper(this);
-    //mapper->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
-    //mapper->setOrientation(Qt::Vertical);
+    ui->bfiDataSourceUrls->setText(bfiendpoint);
 
     GUIUtil::ItemDelegate* delegate = new GUIUtil::ItemDelegate(mapper);
     connect(delegate, &GUIUtil::ItemDelegate::keyEscapePressed, this, &OptionsDialog::reject);
@@ -269,7 +267,7 @@ void OptionsDialog::on_resetButton_clicked()
 }
 
 
-void OptionsDialog::on_openBitcoinConfButton_clicked()
+void OptionsDialog::on_openPlaceholdersConfButton_clicked()
 {
     /* explain the purpose of the config file */
     QMessageBox::information(this, tr("Configuration options"),
@@ -277,7 +275,7 @@ void OptionsDialog::on_openBitcoinConfButton_clicked()
            "Additionally, any command-line options will override this configuration file."));
 
     /* show an error if there was some problem opening the file */
-    if (!GUIUtil::openBitcoinConf())
+    if (!GUIUtil::openPlaceholdersConf())
         QMessageBox::critical(this, tr("Error"), tr("The configuration file could not be opened."));
 }
 

@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2019 The Bitcoin Core developers
+// Copyright (c) 2011-2019 The Placeholders Core developers
 // Copyright (c) 2019-2020 Xenios SEZC
 // https://www.veriblock.org
 // Distributed under the MIT software license, see the accompanying
@@ -106,11 +106,11 @@ void setupAddressWidget(QValidatedLineEdit *widget, QWidget *parent)
     // and this is the only place, where this address is supplied.
     widget->setPlaceholderText(QObject::tr("Enter a Placeholders address (e.g. %1)").arg(
         QString::fromStdString(DummyAddress(Params()))));
-    widget->setValidator(new BitcoinAddressEntryValidator(parent));
-    widget->setCheckValidator(new BitcoinAddressCheckValidator(parent));
+    widget->setValidator(new PlaceholdersAddressEntryValidator(parent));
+    widget->setCheckValidator(new PlaceholdersAddressCheckValidator(parent));
 }
 
-bool parseBitcoinURI(const QUrl &uri, SendCoinsRecipient *out)
+bool parsePlaceholdersURI(const QUrl &uri, SendCoinsRecipient *out)
 {
     // return if URI is not valid or is no placeh: URI
     if(!uri.isValid() || uri.scheme() != QString("placeh"))
@@ -149,7 +149,7 @@ bool parseBitcoinURI(const QUrl &uri, SendCoinsRecipient *out)
         {
             if(!i->second.isEmpty())
             {
-                if(!BitcoinUnits::parse(BitcoinUnits::vPHL, i->second, &rv.amount))
+                if(!PlaceholdersUnits::parse(PlaceholdersUnits::vPHL, i->second, &rv.amount))
                 {
                     return false;
                 }
@@ -167,13 +167,13 @@ bool parseBitcoinURI(const QUrl &uri, SendCoinsRecipient *out)
     return true;
 }
 
-bool parseBitcoinURI(QString uri, SendCoinsRecipient *out)
+bool parsePlaceholdersURI(QString uri, SendCoinsRecipient *out)
 {
     QUrl uriInstance(uri);
-    return parseBitcoinURI(uriInstance, out);
+    return parsePlaceholdersURI(uriInstance, out);
 }
 
-QString formatBitcoinURI(const SendCoinsRecipient &info)
+QString formatPlaceholdersURI(const SendCoinsRecipient &info)
 {
     bool bech_32 = info.address.startsWith(QString::fromStdString(Params().Bech32HRP() + "1"));
 
@@ -182,7 +182,7 @@ QString formatBitcoinURI(const SendCoinsRecipient &info)
 
     if (info.amount)
     {
-        ret += QString("?amount=%1").arg(BitcoinUnits::format(BitcoinUnits::vPHL, info.amount, false, BitcoinUnits::separatorNever));
+        ret += QString("?amount=%1").arg(PlaceholdersUnits::format(PlaceholdersUnits::vPHL, info.amount, false, PlaceholdersUnits::separatorNever));
         paramCount++;
     }
 
@@ -383,7 +383,7 @@ void openDebugLogfile()
         QDesktopServices::openUrl(QUrl::fromLocalFile(boostPathToQString(pathDebug)));
 }
 
-bool openBitcoinConf()
+bool openPlaceholdersConf()
 {
     fs::path pathConfig = GetConfigFile(gArgs.GetArg("-conf", PLACEH_CONF_FILENAME));
 
@@ -559,7 +559,7 @@ fs::path static StartupShortcutPath()
 
 bool GetStartOnSystemStartup()
 {
-    // check for Bitcoin*.lnk
+    // check for Placeholders*.lnk
     return fs::exists(StartupShortcutPath());
 }
 

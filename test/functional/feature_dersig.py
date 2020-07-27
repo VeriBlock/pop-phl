@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2015-2019 The Bitcoin Core developers
+# Copyright (c) 2015-2019 The Placeholders Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test BIP66 (DER SIG).
@@ -11,7 +11,7 @@ from test_framework.blocktools import create_coinbase, create_block, create_tran
 from test_framework.messages import msg_block
 from test_framework.mininode import P2PInterface
 from test_framework.script import CScript
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import PlaceholdersTestFramework
 from test_framework.util import (
     assert_equal,
 )
@@ -37,7 +37,7 @@ def unDERify(tx):
 
 
 
-class BIP66Test(BitcoinTestFramework):
+class BIP66Test(PlaceholdersTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
         self.extra_args = [['-whitelist=127.0.0.1', '-par=1']]  # Use only one script thread to get the exact log msg for testing
@@ -74,7 +74,7 @@ class BIP66Test(BitcoinTestFramework):
 
         tip = self.nodes[0].getbestblockhash()
         block_time = self.nodes[0].getblockheader(tip)['mediantime'] + 1
-        block = create_block(int(tip, 16), create_coinbase(DERSIG_HEIGHT - 1), block_time)
+        block = create_block(self.nodes[0], int(tip, 16), create_coinbase(DERSIG_HEIGHT - 1), block_time)
         block.nVersion = 2
         block.vtx.append(spendtx)
         block.hashMerkleRoot = block.calc_merkle_root()
@@ -89,7 +89,7 @@ class BIP66Test(BitcoinTestFramework):
         self.log.info("Test that blocks must now be at least version 3")
         tip = block.sha256
         block_time += 1
-        block = create_block(tip, create_coinbase(DERSIG_HEIGHT), block_time)
+        block = create_block(self.nodes[0], tip, create_coinbase(DERSIG_HEIGHT), block_time)
         block.nVersion = 2
         block.rehash()
         block.solve()

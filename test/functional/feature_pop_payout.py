@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2019 The Bitcoin Core developers
+# Copyright (c) 2014-2019 The Placeholders Core developers
 # Copyright (c) 2019-2020 Xenios SEZC
 # https://www.veriblock.org
 # Distributed under the MIT software license, see the accompanying
@@ -19,14 +19,14 @@ Expected balance is POW_PAYOUT * 10 + pop payout. (node0 has only 10 mature coin
 
 from test_framework.payout import POW_PAYOUT
 from test_framework.pop import POP_PAYOUT_DELAY, endorse_block
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import PlaceholdersTestFramework
 from test_framework.util import (
     connect_nodes,
     sync_mempools,
 )
 
 
-class PopPayouts(BitcoinTestFramework):
+class PopPayouts(PlaceholdersTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 2
@@ -44,13 +44,14 @@ class PopPayouts(BitcoinTestFramework):
 
     def _case1_endorse_keystone_get_paid(self):
         self.log.warning("running _case1_endorse_keystone_get_paid()")
+
         # endorse block 5
         addr = self.nodes[0].getnewaddress()
         self.log.info("endorsing block 5 on node0 by miner {}".format(addr))
-        txid = endorse_block(self.nodes[0], self.apm, 5, addr)
+        atv_id = endorse_block(self.nodes[0], self.apm, 5, addr)
 
         # wait until node[1] gets relayed pop tx
-        sync_mempools(self.nodes)
+        self.sync_pop_mempools(self.nodes)
         self.log.info("node1 got relayed transaction")
 
         # mine a block on node[1] with this pop tx
@@ -62,7 +63,8 @@ class PopPayouts(BitcoinTestFramework):
 
         # assert that txid exists in this block
         block = self.nodes[0].getblock(containingblockhash)
-        assert txid in block['tx'], "Containing block {} does not contain pop tx {}".format(block['hash'], txid)
+
+        assert atv_id in block['pop']['data']['atvs']
 
         # target height is 5 + POP_PAYOUT_DELAY
         n = POP_PAYOUT_DELAY + 5 - block['height']
@@ -79,11 +81,12 @@ class PopPayouts(BitcoinTestFramework):
         assert outputs[1]['n'] == 1
         assert outputs[1]['value'] > 0, "expected non-zero output at n=1, got: {}".format(outputs[1])
 
+
         # mine 100 blocks and check balance
         self.nodes[0].generate(nblocks=100)
         balance = self.nodes[0].getbalance()
 
-        # node[0] has 10 mature coinbases and single pop payout
+        # node[0] has 11 mature coinbases and single pop payout
         assert balance == POW_PAYOUT * 10 + outputs[1]['value']
         self.log.warning("success! _case1_endorse_keystone_get_paid()")
 

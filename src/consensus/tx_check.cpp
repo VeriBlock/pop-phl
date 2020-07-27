@@ -1,4 +1,4 @@
-// Copyright (c) 2017-2018 The Bitcoin Core developers
+// Copyright (c) 2017-2018 The Placeholders Core developers
 // Copyright (c) 2019-2020 Xenios SEZC
 // https://www.veriblock.org
 // Distributed under the MIT software license, see the accompanying
@@ -14,12 +14,6 @@
 
 bool CheckTransaction(const CTransaction& tx, TxValidationState& state)
 {
-    // if it is pop tx, use separate validation function
-    if(VeriBlock::isPopTx(tx)) {
-        auto& util = VeriBlock::getService<VeriBlock::PopService>();
-        return util.validatePopTx(tx, state);
-    }
-
     // Basic checks that don't depend on any context
     if (tx.vin.empty())
         return state.Invalid(TxValidationResult::TX_CONSENSUS, "bad-txns-vin-empty");

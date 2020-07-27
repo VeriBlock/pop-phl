@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2016 The Bitcoin Core developers
+# Copyright (c) 2013-2016 The Placeholders Core developers
 # Copyright (c) 2019-2020 Xenios SEZC
 # https://www.veriblock.org
 # Distributed under the MIT software license, see the accompanying
@@ -114,7 +114,9 @@ VBK_H = \
   vbk/merkle.hpp \
   vbk/genesis.hpp \
   vbk/altchainparam.hpp \
-  vbk/util.hpp
+  vbk/p2p_sync.hpp \
+  vbk/util.hpp \
+  vbk/adaptors/univalue_json.hpp
 ### VeriBlock section end
 
 
@@ -328,6 +330,8 @@ libplaceh_server_a_SOURCES = \
   rest.cpp \
   vbk/rpc_register.hpp \
   vbk/rpc_register.cpp \
+  vbk/p2p_sync.hpp \
+  vbk/p2p_sync.cpp \
   rpc/blockchain.cpp \
   rpc/mining.cpp \
   rpc/misc.cpp \
@@ -751,7 +755,6 @@ include Makefile.test_util.include
 
 if ENABLE_TESTS
 include Makefile.test.include
-include vbk/test/integration/Makefile.include
 endif
 
 if ENABLE_BENCH

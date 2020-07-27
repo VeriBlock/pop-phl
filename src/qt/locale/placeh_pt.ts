@@ -220,7 +220,7 @@
     </message>
 </context>
 <context>
-    <name>BitcoinGUI</name>
+    <name>PlaceholdersGUI</name>
     <message>
         <source>Sign &amp;message...</source>
         <translation>Assinar &amp;mensagem...</translation>
@@ -323,7 +323,7 @@
     </message>
     <message>
         <source>Send coins to a Placeholders address</source>
-        <translation>Enviar moedas para um endereço Bitcoin</translation>
+        <translation>Enviar moedas para um endereço Placeholders</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -411,7 +411,7 @@
     </message>
     <message numerus="yes">
         <source>%n active connection(s) to Placeholders network</source>
-        <translation><numerusform>%n ligação ativa à rede Bitcoin</numerusform><numerusform>%n ligações ativas à rede Bitcoin</numerusform></translation>
+        <translation><numerusform>%n ligação ativa à rede Placeholders</numerusform><numerusform>%n ligações ativas à rede Placeholders</numerusform></translation>
     </message>
     <message>
         <source>Indexing blocks on disk...</source>
@@ -879,8 +879,8 @@
         <translation>Utilizar uma pasta de dados personalizada:</translation>
     </message>
     <message>
-        <source>Bitcoin</source>
-        <translation>Bitcoin</translation>
+        <source>Placeholders</source>
+        <translation>Placeholders</translation>
     </message>
     <message>
         <source>At least %1 GB of data will be stored in this directory, and it will grow over time.</source>
@@ -892,7 +892,7 @@
     </message>
     <message>
         <source>%1 will download and store a copy of the Placeholders block chain.</source>
-        <translation>%1 irá descarregar e armazenar uma cópia da cadeia de blocos da Bitcoin.</translation>
+        <translation>%1 irá descarregar e armazenar uma cópia da cadeia de blocos da Placeholders.</translation>
     </message>
     <message>
         <source>The wallet will also be stored in this directory.</source>
@@ -1946,7 +1946,7 @@
     </message>
     <message>
         <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Placeholders network.</source>
-        <translation>Uma mensagem opcional para anexar ao pedido de pagamento, que será exibida quando o pedido for aberto. Nota: A mensagem não será enviada com o pagamento através da rede Bitcoin.</translation>
+        <translation>Uma mensagem opcional para anexar ao pedido de pagamento, que será exibida quando o pedido for aberto. Nota: A mensagem não será enviada com o pagamento através da rede Placeholders.</translation>
     </message>
     <message>
         <source>An optional label to associate with the new receiving address.</source>
@@ -2451,7 +2451,7 @@ Nota: como a taxa é calculada por byte, uma taxa de "100 satoshis por kB" por u
     </message>
     <message>
         <source>A message that was attached to the placeh: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Placeholders network.</source>
-        <translation>Uma mensagem que estava anexada ao URI placeh: que será armazenada com a transação para sua referência. Nota: Esta mensagem não será enviada através da rede Bitcoin.</translation>
+        <translation>Uma mensagem que estava anexada ao URI placeh: que será armazenada com a transação para sua referência. Nota: Esta mensagem não será enviada através da rede Placeholders.</translation>
     </message>
     <message>
         <source>Pay To:</source>
@@ -2532,7 +2532,7 @@ Nota: como a taxa é calculada por byte, uma taxa de "100 satoshis por kB" por u
     </message>
     <message>
         <source>Sign the message to prove you own this Placeholders address</source>
-        <translation>Assine uma mensagem para provar que é dono deste endereço Bitcoin</translation>
+        <translation>Assine uma mensagem para provar que é dono deste endereço Placeholders</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>

@@ -323,7 +323,7 @@
     </message>
 </context>
 <context>
-    <name>BitcoinGUI</name>
+    <name>PlaceholdersGUI</name>
     <message>
         <location filename="../placehgui.cpp" line="+316"/>
         <source>Sign &amp;message...</source>
@@ -1222,8 +1222,8 @@
     </message>
     <message>
         <location filename="../intro.cpp" line="+22"/>
-        <source>Bitcoin</source>
-        <translation type="unfinished">Bitcoin</translation>
+        <source>Placeholders</source>
+        <translation type="unfinished">Placeholders</translation>
     </message>
     <message>
         <location line="+9"/>

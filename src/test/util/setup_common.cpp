@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2019 The Bitcoin Core developers
+// Copyright (c) 2011-2019 The Placeholders Core developers
 // Copyright (c) 2019-2020 Xenios SEZC
 // https://www.veriblock.org
 // Distributed under the MIT software license, see the accompanying
@@ -77,7 +77,7 @@ BasicTestingSetup::BasicTestingSetup(const std::string& chainName)
     SelectParams(chainName);
     VeriBlock::InitConfig();
     selectPopConfig("regtest", "regtest", true);
-    VeriBlock::InitPopService();
+    VeriBlock::InitPopService(m_path_root / "pop");
     SeedInsecureRand();
     gArgs.ForceSetArg("-printtoconsole", "0");
     InitLogging();
@@ -181,10 +181,14 @@ TestChain100Setup::TestChain100Setup(): RegTestingSetup()
     assert(ChainActive().Tip() != nullptr);
     assert(ChainActive().Tip()->nHeight == 100);
     assert(BlockIndex().size() == 101);
+
+    auto& tree = VeriBlock::getService<VeriBlock::PopService>().getAltTree();
+    assert(tree.getBestChain().tip()->getHeight() == ChainActive().Tip()->nHeight);
 }
 
 CBlock TestChain100Setup::CreateAndProcessBlock(const std::vector<CMutableTransaction>& txns, uint256 prevBlock,
                              const CScript& scriptPubKey, bool* isBlockValid) {
+
     CBlockIndex* pPrev = nullptr;
     {
         LOCK(cs_main);
@@ -206,6 +210,8 @@ CBlock TestChain100Setup::CreateAndProcessBlock(const std::vector<CMutableTransa
         unsigned int extraNonce = 0;
         IncrementExtraNonce(&block, pPrev, extraNonce);
     }
+
+    block.nTime = pPrev->nTime + (rand() % 100 + 1);
 
     while (!CheckProofOfWork(block.GetHash(), block.nBits, chainparams.GetConsensus())) ++block.nNonce;
 

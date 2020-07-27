@@ -19,7 +19,7 @@ To Build
 
 ```bash
 ./autogen.sh
-./configure --disable-gmock
+./configure
 make
 make install # optional
 ```
@@ -105,7 +105,7 @@ pass `--with-incompatible-bdb` to configure.
 
 Otherwise, you can build from self-compiled `depends` (see above).
 
-To build Bitcoin Core without wallet, see [*Disable-wallet mode*](/doc/build-unix.md#disable-wallet-mode)
+To build Placeholders Core without wallet, see [*Disable-wallet mode*](/doc/build-unix.md#disable-wallet-mode)
 
 
 Optional (see `--with-miniupnpc` and `--enable-upnp-default`):
@@ -201,7 +201,7 @@ If you need to build Boost yourself:
 
 Security
 --------
-To help make your Bitcoin Core installation more secure by making certain attacks impossible to
+To help make your Placeholders Core installation more secure by making certain attacks impossible to
 exploit even if a vulnerability is found, binaries are hardened by default.
 This can be disabled with:
 

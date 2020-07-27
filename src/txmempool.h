@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2009-2018 The Placeholders Core developers
 // Copyright (c) 2019-2020 Xenios SEZC
 // https://www.veriblock.org
 // Distributed under the MIT software license, see the accompanying
@@ -488,22 +488,6 @@ public:
                 boost::multi_index::tag<ancestor_score>,
                 boost::multi_index::identity<CTxMemPoolEntry>,
                 CompareTxMemPoolEntryByAncestorFee
-            >,
-            // sorted by pop tx priority
-			boost::multi_index::ordered_non_unique<
-                boost::multi_index::tag<VeriBlock::poptx_priority<descendant_score>>,
-                boost::multi_index::identity<CTxMemPoolEntry>,
-                VeriBlock::CompareTxMemPoolEntryByPoPtxPriority<CompareTxMemPoolEntryByDescendantScore>
-            >,
-			boost::multi_index::ordered_non_unique<
-                boost::multi_index::tag<VeriBlock::poptx_priority<entry_time>>,
-                boost::multi_index::identity<CTxMemPoolEntry>,
-                VeriBlock::CompareTxMemPoolEntryByPoPtxPriority<CompareTxMemPoolEntryByEntryTime>
-            >,
-			boost::multi_index::ordered_non_unique<
-                boost::multi_index::tag<VeriBlock::poptx_priority<ancestor_score>>,
-                boost::multi_index::identity<CTxMemPoolEntry>,
-                VeriBlock::CompareTxMemPoolEntryByPoPtxPriority<CompareTxMemPoolEntryByAncestorFee>
             >
         >
     > indexed_transaction_set;

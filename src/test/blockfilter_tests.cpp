@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2019 The Bitcoin Core developers
+// Copyright (c) 2018-2019 The Placeholders Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -130,6 +130,7 @@ BOOST_AUTO_TEST_CASE(blockfilters_json_test)
     UniValue json;
     std::string json_data(json_tests::blockfilters,
                           json_tests::blockfilters + sizeof(json_tests::blockfilters));
+
     if (!json.read(json_data) || !json.isArray()) {
         BOOST_ERROR("Parse error.");
         return;

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2019 The Bitcoin Core developers
+# Copyright (c) 2014-2019 The Placeholders Core developers
 # Copyright (c) 2019-2020 Xenios SEZC
 # https://www.veriblock.org
 # Distributed under the MIT software license, see the accompanying
@@ -10,7 +10,7 @@ This module calls down into individual test cases via subprocess. It will
 forward all unrecognized arguments onto the individual test scripts.
 
 For a description of arguments recognized by test scripts, see
-`test/functional/test_framework/test_framework.py:BitcoinTestFramework.main`.
+`test/functional/test_framework/test_framework.py:PlaceholdersTestFramework.main`.
 
 """
 
@@ -111,14 +111,24 @@ BASE_SCRIPTS = [
     'feature_reindex.py',
     'feature_abortnode.py',
     # vv Tests less than 30s vv
+    # VeriBlock tests
+    'feature_pop_fork_resolution.py',
     'feature_pop_merkleroot.py',
     'feature_pop_payout.py',
     'feature_pop_sync.py',
+    # 'feature_pop_init.py',
+    'feature_pop_mempool_sync.py',
+    'feature_pop_p2p.py',
+    'feature_pop_p2p_ddos.py',
+    'feature_pop_mempool_reorg.py',
+    'feature_pop_mempool_getpop.py',
+    'feature_pop_popdata_max_size.py',
+    ## end VeriBlock tests
     'wallet_keypool_topup.py',
     'feature_fee_estimation.py',
     'interface_zmq.py',
-    'interface_placeh_cli.py',
-    # 'mempool_resurrect.py',
+    'interface_bitcoin_cli.py',
+    'mempool_resurrect.py',
     'wallet_txn_doublespend.py --mineblock',
     # 'tool_wallet.py',
     'wallet_txn_clone.py',
@@ -128,7 +138,7 @@ BASE_SCRIPTS = [
     # 'interface_rest.py',
     'mempool_spend_coinbase.py',
     'wallet_avoidreuse.py',
-    # 'mempool_reorg.py',
+    'mempool_reorg.py',
     'mempool_persist.py',
     'wallet_multiwallet.py',
     'wallet_multiwallet.py --usecli',
@@ -161,12 +171,12 @@ BASE_SCRIPTS = [
     'p2p_invalid_messages.py',
     # 'p2p_invalid_tx.py',
     # 'feature_assumevalid.py',
-    'example_test.py',
+    # 'example_test.py',
     'wallet_txn_doublespend.py',
     'wallet_txn_clone.py --mineblock',
     'feature_notifications.py',
     'rpc_getblockfilter.py',
-    # 'rpc_invalidateblock.py',
+    'rpc_invalidateblock.py',
     'feature_rbf.py',
     'mempool_packages.py',
     'mempool_package_onemore.py',
@@ -195,7 +205,7 @@ BASE_SCRIPTS = [
     # 'feature_dersig.py',
     # 'feature_cltv.py',
     'rpc_uptime.py',
-    # 'wallet_resendwallettransactions.py',
+    'wallet_resendwallettransactions.py',
     'wallet_fallbackfee.py',
     # 'rpc_dumptxoutset.py',
     'feature_minchainwork.py',
@@ -203,7 +213,7 @@ BASE_SCRIPTS = [
     'wallet_create_tx.py',
     # 'p2p_fingerprint.py',
     'feature_uacomment.py',
-    # 'wallet_coinbase_category.py',
+    'wallet_coinbase_category.py',
     'feature_filelock.py',
     'feature_loadblock.py',
     # 'p2p_dos_header_tree.py',
@@ -280,7 +290,7 @@ def main():
     logging.basicConfig(format='%(message)s', level=logging_level)
 
     # Create base test directory
-    tmpdir = "%s/test_runner_₿_🏃_%s" % (args.tmpdirprefix, datetime.datetime.now().strftime("%Y%m%d_%H%M%S"))
+    tmpdir = "%s/test_runner_%s" % (args.tmpdirprefix, datetime.datetime.now().strftime("%Y%m%d_%H%M%S"))
 
     os.makedirs(tmpdir)
 

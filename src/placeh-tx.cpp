@@ -1,4 +1,4 @@
-// Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2009-2018 The Placeholders Core developers
 // Copyright (c) 2019-2020 Xenios SEZC
 // https://www.veriblock.org
 // Distributed under the MIT software license, see the accompanying
@@ -39,7 +39,7 @@ static const int CONTINUE_EXECUTION=-1;
 
 const std::function<std::string(const char*)> G_TRANSLATION_FUN = nullptr;
 
-static void SetupBitcoinTxArgs()
+static void SetupPlaceholdersTxArgs()
 {
     SetupHelpOptions(gArgs);
 
@@ -84,7 +84,7 @@ static int AppInitRawTx(int argc, char* argv[])
     //
     // Parameters
     //
-    SetupBitcoinTxArgs();
+    SetupPlaceholdersTxArgs();
     std::string error;
     if (!gArgs.ParseParameters(argc, argv, error)) {
         tfm::format(std::cerr, "Error parsing command line arguments: %s\n", error);

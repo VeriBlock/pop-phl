@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2016 The Bitcoin Core developers
+# Copyright (c) 2013-2016 The Placeholders Core developers
 # Copyright (c) 2019-2020 Xenios SEZC
 # https://www.veriblock.org
 # Distributed under the MIT software license, see the accompanying
@@ -117,20 +117,18 @@ FUZZ_SUITE_LD_COMMON = \
 # path is relative to src
 VBK_TESTS = \
 	vbk/test/unit/e2e_poptx_tests.cpp \
-	vbk/test/unit/pop_tx_tests.cpp \
 	vbk/test/unit/pop_reward_tests.cpp \
-    vbk/test/unit/vbk_merkle_tests.cpp
-
-
-if USE_GMOCK
-  VBK_TESTS += vbk/test/unit/gmock_tests.cpp
-endif
+    vbk/test/unit/vbk_merkle_tests.cpp \
+    vbk/test/unit/block_validation_tests.cpp \
+    vbk/test/unit/rpc_service_tests.cpp \
+    vbk/test/unit/forkresolution_tests.cpp
 
 #  vbk/test/unit/updated_mempool_tests.cpp \
 #  vbk/test/unit/rpc_service_tests.cpp \
 #  vbk/test/unit/genesis_block_tests.cpp \
 #  vbk/test/unit/pop_service_tests.cpp \
 #  vbk/test/unit/util_service_tests.cpp \
+#  vbk/test/unit/vbk_merkle_tests.cpp \
 #  vbk/test/unit/vbk_net_processing_tests.cpp \
 #  vbk/test/unit/pop_interpreter_tests.cpp \
 #  vbk/test/unit/block_validation_tests.cpp \
@@ -250,7 +248,7 @@ endif
 
 test_test_placeh_LDADD += $(LIBPLACEH_SERVER) $(LIBPLACEH_CLI) $(LIBPLACEH_COMMON) $(LIBPLACEH_UTIL) $(LIBPLACEH_CONSENSUS) $(LIBPLACEH_CRYPTO) $(LIBUNIVALUE) \
   $(LIBLEVELDB) $(LIBLEVELDB_SSE42) $(LIBMEMENV) $(BOOST_LIBS) $(BOOST_UNIT_TEST_FRAMEWORK_LIB) $(LIBSECP256K1) $(EVENT_LIBS) $(EVENT_PTHREADS_LIBS) \
-  $(GMOCK_LIBS) $(VERIBLOCK_POP_CPP_LIBS)
+  $(VERIBLOCK_POP_CPP_LIBS)
 test_test_placeh_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS) -g -Og
 
 test_test_placeh_LDADD += $(BDB_LIBS) $(MINIUPNPC_LIBS) $(RAPIDCHECK_LIBS)
@@ -628,7 +626,7 @@ if BUILD_PLACEH_TX
 	@echo "SKIPPING test/util/placeh-util-test.py..."
 
 # disable tests for now, as they started to fail after merkle root algo have changed
-#	$(PYTHON) $(top_builddir)/test/util/placeh-util-test.py
+# 	$(PYTHON) $(top_builddir)/test/util/placeh-util-test.py
 endif
 	@echo "Running test/util/rpcauth-test.py..."
 	$(PYTHON) $(top_builddir)/test/util/rpcauth-test.py

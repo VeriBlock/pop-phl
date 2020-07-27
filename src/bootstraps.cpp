@@ -72,16 +72,16 @@ void selectPopConfig(
     if (btcnet == "test") {
         auto param = std::make_shared<altintegration::BtcChainParamsTest>();
         if (popautoconfig) {
-            popconfig.setBTC(testnetPHLstartHeight, testnetPHLblocks, param);
+            popconfig.setPHL(testnetPHLstartHeight, testnetPHLblocks, param);
         } else {
-            popconfig.setBTC(btcstart, parseBlocks(btcblocks), param);
+            popconfig.setPHL(btcstart, parseBlocks(btcblocks), param);
         }
     } else if (btcnet == "regtest") {
         auto param = std::make_shared<altintegration::BtcChainParamsRegTest>();
         if (popautoconfig) {
-            popconfig.setBTC(0, {}, param);
+            popconfig.setPHL(0, {}, param);
         } else {
-            popconfig.setBTC(btcstart, parseBlocks(btcblocks), param);
+            popconfig.setPHL(btcstart, parseBlocks(btcblocks), param);
         }
     } else {
         throw std::invalid_argument("btcnet currently only supports test/regtest");
@@ -127,7 +127,7 @@ void selectPopConfig(const ArgsManager& args)
 }
 
 int testnetVBKstartHeight = 492041;
-int testnetPHLstartHeight = 0;
+int testnetPHLstartHeight = 1721218;
 
 std::vector<std::string> testnetPHLblocks = {
 

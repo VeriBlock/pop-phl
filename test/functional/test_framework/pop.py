@@ -5,6 +5,7 @@
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test framework addition to include VeriBlock PoP functions"""
 import struct
+import time
 from typing import List
 
 from .messages import ser_uint256, hash256, uint256_from_str
@@ -53,14 +54,14 @@ def create_endorsed_chain(node, apm, size: int, addr: str) -> None:
     height = block['height']
 
     for i in range(size):
-        txid = endorse_block(node, apm, height, addr)
+        atv_id = endorse_block(node, apm, height, addr)
         containinghash = node.generate(nblocks=1)[0]
         # endorsing prev tip
         node.waitforblockheight(height + 1)
         containing = node.getblock(containinghash)
-        assert txid in containing['tx'], \
+        assert atv_id in containing['pop']['data']['atvs'], \
             "iteration {}: containing block at height {}" \
-            "does not contain pop tx {}".format(i, containing['height'], txid)
+            "does not contain pop tx {}".format(i, containing['height'], atv_id)
 
         # we advanced 1 block further
         height += 1
@@ -83,8 +84,18 @@ def endorse_block(node, apm, height: int, addr: str) -> str:
     pub.payoutInfo = payoutInfo
     pub.identifier = 0x3ae6ca
     payloads = apm.endorseAltBlock(pub, last_vbk)
-    txid = node.submitpop(payloads.atv, payloads.vtbs)
-    return txid
+    vtbs = [x.toVbkEncodingHex() for x in payloads.vtbs]
+    node.submitpop([], vtbs, [payloads.atv.toVbkEncodingHex()])
+    return payloads.atv.getId()
+
+
+def mine_vbk_blocks(node, apm, amount: int) -> str:
+    vbks = []
+    for i in range(amount):
+        vbks.append(apm.mineVbkBlocks(1))
+
+    result = node.submitpop([b.toVbkEncodingHex() for b in vbks], [], [])
+    return result['vbkblocks']
 
 
 class ContextInfoContainer:
@@ -146,3 +157,56 @@ class ContextInfoContainer:
         return "ContextInfo(height={}, ks1={}, ks2={}, mroot={})".format(self.height, self.keystone1,
                                                                          self.keystone2,
                                                                          self.txRoot)
+
+
+def sync_pop_tips(rpc_connections, *, wait=1, timeout=10, flush_scheduler=True):
+    """
+    Wait until everybody has the same POP TIPS (BTC tip and VBK tip)
+    """
+
+    def test(s):
+        return s.count(s[0]) == len(rpc_connections)
+
+    stop_time = time.time() + timeout
+    while time.time() <= stop_time:
+        btc = [r.getbtcbestblockhash() for r in rpc_connections]
+        vbk = [r.getvbkbestblockhash() for r in rpc_connections]
+
+        if test(btc) and test(vbk):
+            if flush_scheduler:
+                for r in rpc_connections:
+                    r.syncwithvalidationinterfacequeue()
+            return
+        time.sleep(wait)
+    raise AssertionError("POP data sync timed out: \nbtc: {}\nvbk: {}\n".format(
+        "".join("\n  {!r}".format(m) for m in btc),
+        "".join("\n  {!r}".format(m) for m in vbk),
+    ))
+
+
+def sync_pop_mempools(rpc_connections, *, wait=1, timeout=60, flush_scheduler=True):
+    """
+    Wait until everybody has the same POP data in their POP mempools
+    """
+
+    def test(s):
+        return s.count(s[0]) == len(rpc_connections)
+
+    stop_time = time.time() + timeout
+    while time.time() <= stop_time:
+        mpooldata = [r.getrawpopmempool() for r in rpc_connections]
+        atvs = [set(data['atvs']) for data in mpooldata]
+        vtbs = [set(data['vtbs']) for data in mpooldata]
+        vbkblocks = [set(data['vbkblocks']) for data in mpooldata]
+
+        if test(atvs) and test(vtbs) and test(vbkblocks):
+            if flush_scheduler:
+                for r in rpc_connections:
+                    r.syncwithvalidationinterfacequeue()
+            return
+        time.sleep(wait)
+    raise AssertionError("POP mempool sync timed out: \natvs: {}\nvtbs: {}\nvbkblocks:{}".format(
+        "".join("\n  {!r}".format(m) for m in atvs),
+        "".join("\n  {!r}".format(m) for m in vtbs),
+        "".join("\n  {!r}".format(m) for m in vbkblocks)
+    ))

@@ -88,7 +88,7 @@
     <name>BanTableModel</name>
     </context>
 <context>
-    <name>BitcoinGUI</name>
+    <name>PlaceholdersGUI</name>
     <message>
         <source>No wallets available</source>
         <translation>المحفظة الرقمية غير متوفرة</translation>

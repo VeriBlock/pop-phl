@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2009-2018 The Placeholders Core developers
 // Copyright (c) 2019-2020 Xenios SEZC
 // https://www.veriblock.org
 // Distributed under the MIT software license, see the accompanying
@@ -139,14 +139,6 @@ const char* GetOpName(opcodetype opcode)
     case OP_NOP8                   : return "OP_NOP8";
     case OP_NOP9                   : return "OP_NOP9";
     case OP_NOP10                  : return "OP_NOP10";
-            
-    // VBK -->
-    case OP_CHECKATV               : return "OP_CHECKATV";
-    case OP_CHECKVTB               : return "OP_CHECKVTB";
-    case OP_CHECKPOP               : return "OP_CHECKPOP";
-    case OP_POPPHLHEADER           : return "OP_POPPHLHEADER";
-    case OP_POPVBKHEADER           : return "OP_POPVBKHEADER";
-    // <-- VBK
             
     case OP_INVALIDOPCODE          : return "OP_INVALIDOPCODE";
 

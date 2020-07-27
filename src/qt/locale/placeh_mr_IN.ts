@@ -88,7 +88,7 @@
     <name>BanTableModel</name>
     </context>
 <context>
-    <name>BitcoinGUI</name>
+    <name>PlaceholdersGUI</name>
     </context>
 <context>
     <name>CoinControlDialog</name>

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2017-2019 The Bitcoin Core developers
+# Copyright (c) 2017-2019 The Placeholders Core developers
 # Copyright (c) 2019-2020 Xenios SEZC
 # https://www.veriblock.org
 # Distributed under the MIT software license, see the accompanying
@@ -17,7 +17,7 @@ from test_framework.mininode import (
     msg_getdata,
 )
 from test_framework.pop import ContextInfoContainer
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import PlaceholdersTestFramework
 from test_framework.util import (
     assert_equal,
     connect_nodes,
@@ -25,7 +25,7 @@ from test_framework.util import (
 )
 
 
-class PoPMerkleRootTest(BitcoinTestFramework):
+class PoPMerkleRootTest(PlaceholdersTestFramework):
 
     def set_test_params(self):
         self.setup_clean_chain = True

@@ -143,7 +143,7 @@ NOTE: Offline builds must use the --url flag to ensure Gitian fetches only from 
 
 The gbuild invocations below <b>DO NOT DO THIS</b> by default.
 
-### Build and sign Bitcoin Core for Linux, Windows, and macOS:
+### Build and sign Placeholders Core for Linux, Windows, and macOS:
 
     pushd ./gitian-builder
     ./bin/gbuild --num-make 2 --memory 3000 --commit placeh=v${VERSION} ../placeh/contrib/gitian-descriptors/gitian-linux.yml
@@ -305,14 +305,14 @@ placeh.org (see below for placeh.org update instructions).
 
 - Update placeh.org version
 
-  - First, check to see if the Bitcoin.org maintainers have prepared a
+  - First, check to see if the Placeholders.org maintainers have prepared a
     release: https://github.com/placeh-dot-org/placeh.org/labels/Core
 
       - If they have, it will have previously failed their Travis CI
         checks because the final release files weren't uploaded.
         Trigger a Travis CI rebuild---if it passes, merge.
 
-  - If they have not prepared a release, follow the Bitcoin.org release
+  - If they have not prepared a release, follow the Placeholders.org release
     instructions: https://github.com/placeh-dot-org/placeh.org/blob/master/docs/adding-events-release-notes-and-alerts.md#release-notes
 
   - After the pull request is merged, the website will automatically show the newest version within 15 minutes, as well
@@ -364,11 +364,11 @@ placeh.org (see below for placeh.org update instructions).
 
   - placeh-dev and placeh-core-dev mailing list
 
-  - Bitcoin Core announcements list https://placehcore.org/en/list/announcements/join/
+  - Placeholders Core announcements list https://placehcore.org/en/list/announcements/join/
 
   - Update title of #placeh on Freenode IRC
 
-  - Optionally twitter, reddit /r/Bitcoin, ... but this will usually sort out itself
+  - Optionally twitter, reddit /r/Placeholders, ... but this will usually sort out itself
 
   - Celebrate
 

@@ -178,7 +178,7 @@
     <name>BanTableModel</name>
     </context>
 <context>
-    <name>BitcoinGUI</name>
+    <name>PlaceholdersGUI</name>
     <message>
         <source>Sign &amp;message...</source>
         <translation>Firmar &amp;mensaje...</translation>
@@ -245,7 +245,7 @@
     </message>
     <message>
         <source>Send coins to a Placeholders address</source>
-        <translation>Enviar monedas a una dirección Bitcoin</translation>
+        <translation>Enviar monedas a una dirección Placeholders</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -313,7 +313,7 @@
     </message>
     <message>
         <source>Request payments (generates QR codes and placeh: URIs)</source>
-        <translation>Solicitar pagos (genera codigo QR y URL's de Bitcoin)</translation>
+        <translation>Solicitar pagos (genera codigo QR y URL's de Placeholders)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -569,8 +569,8 @@
         <translation>Usa un directorio de datos personalizado:</translation>
     </message>
     <message>
-        <source>Bitcoin</source>
-        <translation>Bitcoin</translation>
+        <source>Placeholders</source>
+        <translation>Placeholders</translation>
     </message>
     <message>
         <source>Error: Specified data directory "%1" cannot be created.</source>
@@ -1240,7 +1240,7 @@
     </message>
     <message>
         <source>Sign the message to prove you own this Placeholders address</source>
-        <translation>Firmar el mensaje para demostrar que se posee esta dirección Bitcoin</translation>
+        <translation>Firmar el mensaje para demostrar que se posee esta dirección Placeholders</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>

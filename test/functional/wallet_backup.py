@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2019 The Bitcoin Core developers
+# Copyright (c) 2014-2019 The Placeholders Core developers
+# Copyright (c) 2019-2020 Xenios SEZC
+# https://www.veriblock.org
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test the wallet backup features.
@@ -35,15 +37,16 @@ import os
 from random import randint
 import shutil
 
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import PlaceholdersTestFramework
 from test_framework.util import (
     assert_equal,
     assert_raises_rpc_error,
     connect_nodes,
 )
+from test_framework.payout import POW_PAYOUT
 
 
-class WalletBackupTest(BitcoinTestFramework):
+class WalletBackupTest(PlaceholdersTestFramework):
     def set_test_params(self):
         self.num_nodes = 4
         self.setup_clean_chain = True
@@ -122,9 +125,9 @@ class WalletBackupTest(BitcoinTestFramework):
         self.nodes[3].generate(100)
         self.sync_blocks()
 
-        assert_equal(self.nodes[0].getbalance(), 30)
-        assert_equal(self.nodes[1].getbalance(), 30)
-        assert_equal(self.nodes[2].getbalance(), 30)
+        assert_equal(self.nodes[0].getbalance(), POW_PAYOUT)
+        assert_equal(self.nodes[1].getbalance(), POW_PAYOUT)
+        assert_equal(self.nodes[2].getbalance(), POW_PAYOUT)
         assert_equal(self.nodes[3].getbalance(), 0)
 
         self.log.info("Creating transactions")

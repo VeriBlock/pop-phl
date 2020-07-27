@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2009-2018 The Placeholders Core developers
 // Copyright (c) 2019-2020 Xenios SEZC
 // https://www.veriblock.org
 // Distributed under the MIT software license, see the accompanying
@@ -51,9 +51,9 @@
 #include <warnings.h>
 
 #include <vbk/pop_service.hpp>
+#include <vbk/pop_service_impl.hpp>
 #include <vbk/service_locator.hpp>
 #include <vbk/util.hpp>
-#include <vbk/pop_service_impl.hpp>
 
 #include <string>
 
@@ -62,7 +62,7 @@
 #include <boost/thread.hpp>
 
 #if defined(NDEBUG)
-#error "Bitcoin cannot be compiled without assertions."
+#error "Placeholders cannot be compiled without assertions."
 #endif
 
 #define MICRO 0.000001
@@ -70,12 +70,6 @@
 
 bool CBlockIndexWorkComparator::operator()(const CBlockIndex* pa, const CBlockIndex* pb) const
 {
-//    std::cout << "Comparing " << pa->nHeight << " and " << pb->nHeight << "\n";
-//    // VeriBlock forkresolution comparing
-//    int compare_result = VeriBlock::getService<VeriBlock::PopService>().compareForks(*pa, *pb);
-//    if (compare_result > 0) return false;
-//    if (compare_result < 0) return true;
-
     // First sort by most total work, ...
     if (pa->nChainWork > pb->nChainWork) return false;
     if (pa->nChainWork < pb->nChainWork) return true;
@@ -278,23 +272,19 @@ bool CheckSequenceLocks(const CTxMemPool& pool, const CTransaction& tx, int flag
         // CoinsTip() contains the UTXO set for ::ChainActive().Tip()
         CCoinsViewMemPool viewMemPool(&::ChainstateActive().CoinsTip(), pool);
         std::vector<int> prevheights;
-        if (VeriBlock::isPopTx(tx)) {
-            assert(tx.vin.size() == 1);
-            prevheights.push_back(tip->nHeight + 1);
-        } else {
-            prevheights.resize(tx.vin.size());
-            for (size_t txinIndex = 0; txinIndex < tx.vin.size(); txinIndex++) {
-                const CTxIn& txin = tx.vin[txinIndex];
-                Coin coin;
-                if (!viewMemPool.GetCoin(txin.prevout, coin)) {
-                    return error("%s: Missing input", __func__);
-                }
-                if (coin.nHeight == MEMPOOL_HEIGHT) {
-                    // Assume all mempool transaction confirm in the next block
-                    prevheights[txinIndex] = tip->nHeight + 1;
-                } else {
-                    prevheights[txinIndex] = coin.nHeight;
-                }
+
+        prevheights.resize(tx.vin.size());
+        for (size_t txinIndex = 0; txinIndex < tx.vin.size(); txinIndex++) {
+            const CTxIn& txin = tx.vin[txinIndex];
+            Coin coin;
+            if (!viewMemPool.GetCoin(txin.prevout, coin)) {
+                return error("%s: Missing input", __func__);
+            }
+            if (coin.nHeight == MEMPOOL_HEIGHT) {
+                // Assume all mempool transaction confirm in the next block
+                prevheights[txinIndex] = tip->nHeight + 1;
+            } else {
+                prevheights[txinIndex] = coin.nHeight;
             }
         }
         lockPair = CalculateSequenceLocks(tx, flags, &prevheights, index);
@@ -337,10 +327,6 @@ static void LimitMempoolSize(CTxMemPool& pool, size_t limit, std::chrono::second
     if (expired != 0) {
         LogPrint(BCLog::MEMPOOL, "Expired %i transactions from the memory pool\n", expired);
     }
-    int pop_expired = pool.ExpirePop();
-    if (pop_expired != 0) {
-        LogPrint(BCLog::MEMPOOL, "Expired %i POP transactions from the memory pool\n", pop_expired);
-    }
 
     std::vector<COutPoint> vNoSpendsRemaining;
     pool.TrimToSize(limit, &vNoSpendsRemaining);
@@ -376,6 +362,10 @@ static bool IsCurrentForFeeEstimation() EXCLUSIVE_LOCKS_REQUIRED(cs_main)
 static void UpdateMempoolForReorg(DisconnectedBlockTransactions& disconnectpool, bool fAddToMempool) EXCLUSIVE_LOCKS_REQUIRED(cs_main, ::mempool.cs)
 {
     AssertLockHeld(cs_main);
+
+    // VeriBlock
+    VeriBlock::getService<VeriBlock::PopService>().updatePopMempoolForReorg();
+
     std::vector<uint256> vHashUpdate;
     // disconnectpool's insertion_order index sorts the entries from
     // oldest to newest, but the oldest entry will be the last tx from the
@@ -424,26 +414,25 @@ static bool CheckInputsFromMempoolAndCache(const CTransaction& tx, TxValidationS
     LOCK(pool.cs);
 
     assert(!tx.IsCoinBase());
-    if (!VeriBlock::isPopTx(tx)) {
-        for (const CTxIn& txin : tx.vin) {
-            const Coin& coin = view.AccessCoin(txin.prevout);
 
-            // At this point we haven't actually checked if the coins are all
-            // available (or shouldn't assume we have, since CheckInputs does).
-            // So we just return failure if the inputs are not available here,
-            // and then only have to check equivalence for available inputs.
-            if (coin.IsSpent()) return false;
+    for (const CTxIn& txin : tx.vin) {
+        const Coin& coin = view.AccessCoin(txin.prevout);
 
-            const CTransactionRef& txFrom = pool.get(txin.prevout.hash);
-            if (txFrom) {
-                assert(txFrom->GetHash() == txin.prevout.hash);
-                assert(txFrom->vout.size() > txin.prevout.n);
-                assert(txFrom->vout[txin.prevout.n] == coin.out);
-            } else {
-                const Coin& coinFromDisk = ::ChainstateActive().CoinsTip().AccessCoin(txin.prevout);
-                assert(!coinFromDisk.IsSpent());
-                assert(coinFromDisk.out == coin.out);
-            }
+        // At this point we haven't actually checked if the coins are all
+        // available (or shouldn't assume we have, since CheckInputs does).
+        // So we just return failure if the inputs are not available here,
+        // and then only have to check equivalence for available inputs.
+        if (coin.IsSpent()) return false;
+
+        const CTransactionRef& txFrom = pool.get(txin.prevout.hash);
+        if (txFrom) {
+            assert(txFrom->GetHash() == txin.prevout.hash);
+            assert(txFrom->vout.size() > txin.prevout.n);
+            assert(txFrom->vout[txin.prevout.n] == coin.out);
+        } else {
+            const Coin& coinFromDisk = ::ChainstateActive().CoinsTip().AccessCoin(txin.prevout);
+            assert(!coinFromDisk.IsSpent());
+            assert(coinFromDisk.out == coin.out);
         }
     }
     // Call CheckInputs() to cache signature and script validity against current tip consensus rules.
@@ -607,37 +596,34 @@ bool MemPoolAccept::PreChecks(ATMPArgs& args, Workspace& ws)
     }
 
     // Check for conflicts with in-memory transactions
-
-    if (!VeriBlock::isPopTx(tx)) {
-        for (const CTxIn& txin : tx.vin) {
-            const CTransaction* ptxConflicting = m_pool.GetConflictTx(txin.prevout);
-            if (ptxConflicting) {
-                if (!setConflicts.count(ptxConflicting->GetHash())) {
-                    // Allow opt-out of transaction replacement by setting
-                    // nSequence > MAX_BIP125_RBF_SEQUENCE (SEQUENCE_FINAL-2) on all inputs.
-                    //
-                    // SEQUENCE_FINAL-1 is picked to still allow use of nLockTime by
-                    // non-replaceable transactions. All inputs rather than just one
-                    // is for the sake of multi-party protocols, where we don't
-                    // want a single party to be able to disable replacement.
-                    //
-                    // The opt-out ignores descendants as anyone relying on
-                    // first-seen mempool behavior should be checking all
-                    // unconfirmed ancestors anyway; doing otherwise is hopelessly
-                    // insecure.
-                    bool fReplacementOptOut = true;
-                    for (const CTxIn& _txin : ptxConflicting->vin) {
-                        if (_txin.nSequence <= MAX_BIP125_RBF_SEQUENCE) {
-                            fReplacementOptOut = false;
-                            break;
-                        }
+    for (const CTxIn& txin : tx.vin) {
+        const CTransaction* ptxConflicting = m_pool.GetConflictTx(txin.prevout);
+        if (ptxConflicting) {
+            if (!setConflicts.count(ptxConflicting->GetHash())) {
+                // Allow opt-out of transaction replacement by setting
+                // nSequence > MAX_BIP125_RBF_SEQUENCE (SEQUENCE_FINAL-2) on all inputs.
+                //
+                // SEQUENCE_FINAL-1 is picked to still allow use of nLockTime by
+                // non-replaceable transactions. All inputs rather than just one
+                // is for the sake of multi-party protocols, where we don't
+                // want a single party to be able to disable replacement.
+                //
+                // The opt-out ignores descendants as anyone relying on
+                // first-seen mempool behavior should be checking all
+                // unconfirmed ancestors anyway; doing otherwise is hopelessly
+                // insecure.
+                bool fReplacementOptOut = true;
+                for (const CTxIn& _txin : ptxConflicting->vin) {
+                    if (_txin.nSequence <= MAX_BIP125_RBF_SEQUENCE) {
+                        fReplacementOptOut = false;
+                        break;
                     }
-                    if (fReplacementOptOut) {
-                        return state.Invalid(TxValidationResult::TX_MEMPOOL_POLICY, "txn-mempool-conflict");
-                    }
-
-                    setConflicts.insert(ptxConflicting->GetHash());
                 }
+                if (fReplacementOptOut) {
+                    return state.Invalid(TxValidationResult::TX_MEMPOOL_POLICY, "txn-mempool-conflict");
+                }
+
+                setConflicts.insert(ptxConflicting->GetHash());
             }
         }
     }
@@ -647,26 +633,24 @@ bool MemPoolAccept::PreChecks(ATMPArgs& args, Workspace& ws)
 
     CCoinsViewCache& coins_cache = ::ChainstateActive().CoinsTip();
     // do all inputs exist?
-    if (!VeriBlock::isPopTx(tx)) {
-        for (const CTxIn& txin : tx.vin) {
-            if (!coins_cache.HaveCoinInCache(txin.prevout)) {
-                coins_to_uncache.push_back(txin.prevout);
-            }
+    for (const CTxIn& txin : tx.vin) {
+        if (!coins_cache.HaveCoinInCache(txin.prevout)) {
+            coins_to_uncache.push_back(txin.prevout);
+        }
 
-            // Note: this call may add txin.prevout to the coins cache
-            // (coins_cache.cacheCoins) by way of FetchCoin(). It should be removed
-            // later (via coins_to_uncache) if this tx turns out to be invalid.
-            if (!m_view.HaveCoin(txin.prevout)) {
-                // Are inputs missing because we already have the tx?
-                for (size_t out = 0; out < tx.vout.size(); out++) {
-                    // Optimistically just do efficient check of cache for outputs
-                    if (coins_cache.HaveCoinInCache(COutPoint(hash, out))) {
-                        return state.Invalid(TxValidationResult::TX_CONFLICT, "txn-already-known");
-                    }
+        // Note: this call may add txin.prevout to the coins cache
+        // (coins_cache.cacheCoins) by way of FetchCoin(). It should be removed
+        // later (via coins_to_uncache) if this tx turns out to be invalid.
+        if (!m_view.HaveCoin(txin.prevout)) {
+            // Are inputs missing because we already have the tx?
+            for (size_t out = 0; out < tx.vout.size(); out++) {
+                // Optimistically just do efficient check of cache for outputs
+                if (coins_cache.HaveCoinInCache(COutPoint(hash, out))) {
+                    return state.Invalid(TxValidationResult::TX_CONFLICT, "txn-already-known");
                 }
-                // Otherwise assume this might be an orphan tx for which we just haven't seen parents yet
-                return state.Invalid(TxValidationResult::TX_MISSING_INPUTS, "bad-txns-inputs-missingorspent");
             }
+            // Otherwise assume this might be an orphan tx for which we just haven't seen parents yet
+            return state.Invalid(TxValidationResult::TX_MISSING_INPUTS, "bad-txns-inputs-missingorspent");
         }
     }
 
@@ -687,7 +671,7 @@ bool MemPoolAccept::PreChecks(ATMPArgs& args, Workspace& ws)
         return state.Invalid(TxValidationResult::TX_PREMATURE_SPEND, "non-BIP68-final");
 
     CAmount nFees = 0;
-    if (!VeriBlock::isPopTx(tx) && !Consensus::CheckTxInputs(tx, state, m_view, GetSpendHeight(m_view), nFees)) {
+    if (!Consensus::CheckTxInputs(tx, state, m_view, GetSpendHeight(m_view), nFees)) {
         return error("%s: Consensus::CheckTxInputs: %s, %s", __func__, tx.GetHash().ToString(), FormatStateMessage(state));
     }
 
@@ -726,7 +710,7 @@ bool MemPoolAccept::PreChecks(ATMPArgs& args, Workspace& ws)
 
     // No transactions are allowed below minRelayTxFee except from disconnected
     // blocks
-    if (!bypass_limits && !VeriBlock::isPopTx(tx) && !CheckFeeRate(nSize, nModifiedFees, state)) return false;
+    if (!bypass_limits && !CheckFeeRate(nSize, nModifiedFees, state)) return false;
 
     if (nAbsurdFee && nFees > nAbsurdFee)
         return state.Invalid(TxValidationResult::TX_NOT_STANDARD,
@@ -1411,8 +1395,6 @@ void CChainState::InvalidBlockFound(CBlockIndex* pindex, const BlockValidationSt
 {
     if (state.GetResult() != BlockValidationResult::BLOCK_MUTATED) {
         pindex->nStatus |= BLOCK_FAILED_VALID;
-        //TODO: figure out, should we invalidate this block index here?
-//        VeriBlock::getService<VeriBlock::PopService>().invalidateBlockByHash(pindex->GetBlockHash());
         m_blockman.m_failed_blocks.insert(pindex);
         setDirtyBlockIndex.insert(pindex);
         setBlockIndexCandidates.erase(pindex);
@@ -1423,7 +1405,7 @@ void CChainState::InvalidBlockFound(CBlockIndex* pindex, const BlockValidationSt
 void UpdateCoins(const CTransaction& tx, CCoinsViewCache& inputs, CTxUndo& txundo, int nHeight)
 {
     // mark inputs spent
-    if (!tx.IsCoinBase() && !VeriBlock::isPopTx(tx)) {
+    if (!tx.IsCoinBase()) {
         txundo.vprevout.reserve(tx.vin.size());
         for (const CTxIn& txin : tx.vin) {
             txundo.vprevout.emplace_back();
@@ -1489,9 +1471,6 @@ void InitScriptExecutionCache()
 bool CheckInputs(const CTransaction& tx, TxValidationState& state, const CCoinsViewCache& inputs, unsigned int flags, bool cacheSigStore, bool cacheFullScriptStore, PrecomputedTransactionData& txdata, std::vector<CScriptCheck>* pvChecks) EXCLUSIVE_LOCKS_REQUIRED(cs_main)
 {
     if (tx.IsCoinBase()) return true;
-
-    if (VeriBlock::isPopTx(tx))
-        return VeriBlock::getService<VeriBlock::PopService>().checkPopInputs(tx, state, flags, cacheSigStore, txdata);
 
     if (pvChecks) {
         pvChecks->reserve(tx.vin.size());
@@ -1713,7 +1692,7 @@ DisconnectResult CChainState::DisconnectBlock(const CBlock& block, const CBlockI
         }
 
         // restore inputs
-        if (i > 0 && !VeriBlock::isPopTx(tx)) { // not coinbases
+        if (i > 0) { // not coinbases
             CTxUndo& txundo = blockUndo.vtxundo[i - 1];
             if (txundo.vprevout.size() != tx.vin.size()) {
                 error("DisconnectBlock(): transaction and undo data inconsistent");
@@ -1919,9 +1898,7 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
 
     //VeriBlock : added ContextualCheckBlock() here becuse merkleRoot calculation  moved from the CheckBlock() to the ContextualCheckBlock()
 
-    if (!CheckBlock(block, state, chainparams.GetConsensus(), !fJustCheck)
-        /*&& !ContextualCheckBlock(block, state, chainparams.GetConsensus(), pindex->pprev, true)
-         */) {
+    if (!CheckBlock(block, state, chainparams.GetConsensus(), !fJustCheck) && !ContextualCheckBlock(block, state, chainparams.GetConsensus(), pindex->pprev, true)) {
         if (state.GetResult() == BlockValidationResult::BLOCK_MUTATED) {
             // We don't write down blocks to disk if they may have been
             // corrupted, so this should be impossible unless we're having hardware
@@ -2099,7 +2076,7 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
 
         nInputs += tx.vin.size();
 
-        if (!tx.IsCoinBase() && !VeriBlock::isPopTx(tx)) {
+        if (!tx.IsCoinBase()) {
             CAmount txfee = 0;
             TxValidationState tx_state;
             if (!Consensus::CheckTxInputs(tx, tx_state, view, pindex->nHeight, txfee)) {
@@ -2161,9 +2138,6 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
     }
 
     auto& pop = VeriBlock::getService<VeriBlock::PopService>();
-    if (!pop.addAllBlockPayloads(*pindex, block, state)) {
-        return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-block-pop-payloads", strprintf("Can not add POP payloads to block %s: %s", pindex->GetBlockHash().ToString(), FormatStateMessage(state)));
-    }
     altintegration::ValidationState _state;
     if (!pop.setState(pindex->GetBlockHash(), _state)) {
         return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-block-pop", strprintf("Block %s is POP invalid: %s", pindex->GetBlockHash().ToString(), _state.toString()));
@@ -2406,9 +2380,8 @@ void static UpdateTip(const CBlockIndex* pindexNew, const CChainParams& chainPar
         g_best_block = pindexNew->GetBlockHash();
         g_best_block_cv.notify_all();
     }
-
-    altintegration::ValidationState state;
     auto& pop = VeriBlock::getService<VeriBlock::PopService>();
+    altintegration::ValidationState state;
     bool ret = pop.setState(pindexNew->GetBlockHash(), state);
     assert(ret && "block has been checked previously and should be valid");
 
@@ -2431,7 +2404,7 @@ void static UpdateTip(const CBlockIndex* pindexNew, const CChainParams& chainPar
         // Check the version of the last 100 blocks to see if we need to upgrade:
         for (int i = 0; i < 100 && pindex != nullptr; i++) {
             int32_t nExpectedVersion = ComputeBlockVersion(pindex->pprev, chainParams.GetConsensus());
-            if (pindex->nVersion > VERSIONBITS_LAST_OLD_BLOCK_VERSION && (pindex->nVersion & ~nExpectedVersion) != 0)
+            if (pindex->nVersion > VERSIONBITS_LAST_OLD_BLOCK_VERSION && ((pindex->nVersion ^ VeriBlock::POP_BLOCK_VERSION_BIT) & ~nExpectedVersion) != 0)
                 ++nUpgraded;
             pindex = pindex->pprev;
         }
@@ -2450,8 +2423,7 @@ void static UpdateTip(const CBlockIndex* pindexNew, const CChainParams& chainPar
         log(pindexNew->nChainWork.getdouble()) / log(2.0), (unsigned long)pindexNew->nChainTx,
         FormatISO8601DateTime(pindexNew->GetBlockTime()),
         GuessVerificationProgress(chainParams.TxData(), pindexNew), ::ChainstateActive().CoinsTip().DynamicMemoryUsage() * (1.0 / (1 << 20)), ::ChainstateActive().CoinsTip().GetCacheSize(),
-        !warningMessages.empty() ? strprintf(" warning='%s'", warningMessages) : ""
-        );
+        !warningMessages.empty() ? strprintf(" warning='%s'", warningMessages) : "");
 }
 
 /** Disconnect m_chain's tip.
@@ -2500,6 +2472,9 @@ bool CChainState::DisconnectTip(BlockValidationState& state, const CChainParams&
             disconnectpool->removeEntry(it);
         }
     }
+
+    // VeriBlock
+    VeriBlock::getService<VeriBlock::PopService>().addDisconnectedPopdata(block.popData);
 
     m_chain.SetTip(pindexDelete->pprev);
 
@@ -2637,6 +2612,11 @@ bool CChainState::ConnectTip(BlockValidationState& state, const CChainParams& ch
     mempool.removeForBlock(blockConnecting.vtx, pindexNew->nHeight);
     disconnectpool.removeForBlock(blockConnecting.vtx);
 
+
+    // VeriBlock: remove from pop_mempool
+    VeriBlock::getService<VeriBlock::PopService>().removePayloadsFromMempool(blockConnecting.popData);
+
+
     // Update m_chain & related variables.
     m_chain.SetTip(pindexNew);
     UpdateTip(pindexNew, chainparams);
@@ -2655,71 +2635,100 @@ bool CChainState::ConnectTip(BlockValidationState& state, const CChainParams& ch
  * Return the tip of the chain with the most work in it, that isn't
  * known to be invalid (it's however far from certain to be valid).
  */
-CBlockIndex* CChainState::FindMostWorkChain()
+CBlockIndex* CChainState::FindBestChain()
 {
-    do {
-        CBlockIndex* pindexNew = nullptr;
+    AssertLockHeld(cs_main);
+    auto& pop_service = VeriBlock::getService<VeriBlock::PopService>();
+    CBlockIndex* bestCandidate = m_chain.Tip();
 
-        // Find the best candidate header.
-        {
-            std::set<CBlockIndex*, CBlockIndexWorkComparator>::reverse_iterator it = setBlockIndexCandidates.rbegin();
-            if (it == setBlockIndexCandidates.rend())
-                return nullptr;
-            pindexNew = *it;
+    // return early
+    if (setBlockIndexCandidates.empty()) {
+        return nullptr;
+    }
+
+    auto temp_set = setBlockIndexCandidates;
+    for (auto* pindexNew : temp_set) {
+        if (pindexNew == bestCandidate || !TestBlockIndex(pindexNew)) {
+            continue;
         }
 
-        // Check whether all blocks on the path between the currently active chain and the candidate are valid.
-        // Just going until the active chain is an optimization, as we know all blocks in it are valid already.
-        CBlockIndex* pindexTest = pindexNew;
-        bool fInvalidAncestor = false;
-        while (pindexTest && !m_chain.Contains(pindexTest)) {
-            assert(pindexTest->HaveTxsDownloaded() || pindexTest->nHeight == 0);
+        if (bestCandidate == nullptr) {
+            bestCandidate = pindexNew;
+            continue;
+        }
 
-            // Pruned nodes may have entries in setBlockIndexCandidates for
-            // which block files have been deleted.  Remove those as candidates
-            // for the most work chain if we come across them; we can't switch
-            // to a chain unless we have all the non-active-chain parent blocks.
-            bool fFailedChain = pindexTest->nStatus & BLOCK_FAILED_MASK;
-            bool fMissingData = !(pindexTest->nStatus & BLOCK_HAVE_DATA);
-            if (fFailedChain || fMissingData) {
-                // Candidate chain is not usable (either invalid or missing data)
-                if (fFailedChain && (pindexBestInvalid == nullptr || pindexNew->nChainWork > pindexBestInvalid->nChainWork))
-                    pindexBestInvalid = pindexNew;
-                CBlockIndex* pindexFailed = pindexNew;
-                // Remove the entire chain from the set.
-                while (pindexTest != pindexFailed) {
-                    if (fFailedChain) {
-                        pindexFailed->nStatus |= BLOCK_FAILED_CHILD;
-                    } else if (fMissingData) {
-                        // If we're missing data, then add back to m_blocks_unlinked,
-                        // so that if the block arrives in the future we can try adding
-                        // to setBlockIndexCandidates again.
-                        m_blockman.m_blocks_unlinked.insert(
-                            std::make_pair(pindexFailed->pprev, pindexFailed));
-                    }
-                    setBlockIndexCandidates.erase(pindexFailed);
-                    pindexFailed = pindexFailed->pprev;
+        int popComparisonResult = pop_service.compareForks(*bestCandidate, *pindexNew);
+        // even if next candidate is pop equal to current pindexNew, it is likely to have higher work
+        if (popComparisonResult <= 0) {
+            // candidate is either has POP or WORK better
+            bestCandidate = pindexNew;
+        }
+    }
+
+    // update best header after POP FR
+    pindexBestHeader = bestCandidate;
+    return bestCandidate;
+}
+
+bool CChainState::TestBlockIndex(CBlockIndex* pindexTest)
+{
+    CBlockIndex* testWalkBlock = pindexTest;
+    bool fInvalidAncestor = false;
+    while (testWalkBlock && !m_chain.Contains(testWalkBlock)) {
+        assert(testWalkBlock->HaveTxsDownloaded() || testWalkBlock->nHeight == 0);
+
+        // Pruned nodes may have entries in setBlockIndexCandidates for
+        // which block files have been deleted.  Remove those as candidates
+        // for the most work chain if we come across them; we can't switch
+        // to a chain unless we have all the non-active-chain parent blocks.
+        bool fFailedChain = testWalkBlock->nStatus & BLOCK_FAILED_MASK;
+        bool fMissingData = !(testWalkBlock->nStatus & BLOCK_HAVE_DATA);
+        if (fFailedChain || fMissingData) {
+            // Candidate chain is not usable (either invalid or missing data)
+            if (fFailedChain && (pindexBestInvalid == nullptr || pindexTest->nChainWork > pindexBestInvalid->nChainWork))
+                pindexBestInvalid = pindexTest;
+            CBlockIndex* pindexFailed = pindexTest;
+            // Remove the entire chain from the set.
+            while (testWalkBlock != pindexFailed) {
+                if (fFailedChain) {
+                    pindexFailed->nStatus |= BLOCK_FAILED_CHILD;
+                } else if (fMissingData) {
+                    // If we're missing data, then add back to m_blocks_unlinked,
+                    // so that if the block arrives in the future we can try adding
+                    // to setBlockIndexCandidates again.
+                    m_blockman.m_blocks_unlinked.insert(
+                        std::make_pair(pindexFailed->pprev, pindexFailed));
                 }
-                setBlockIndexCandidates.erase(pindexTest);
-                fInvalidAncestor = true;
-                break;
+                setBlockIndexCandidates.erase(pindexFailed);
+                pindexFailed = pindexFailed->pprev;
             }
-            pindexTest = pindexTest->pprev;
+            setBlockIndexCandidates.erase(testWalkBlock);
+            fInvalidAncestor = true;
+            break;
         }
-        if (!fInvalidAncestor)
-            return pindexNew;
-    } while (true);
+        testWalkBlock = testWalkBlock->pprev;
+    }
+    return !fInvalidAncestor;
 }
 
 /** Delete all entries in setBlockIndexCandidates that are worse than the current tip. */
 void CChainState::PruneBlockIndexCandidates()
 {
+    /*
     // Note that we can't delete the current block itself, as we may need to return to it later in case a
     // reorganization to a better block fails.
     std::set<CBlockIndex*, CBlockIndexWorkComparator>::iterator it = setBlockIndexCandidates.begin();
     while (it != setBlockIndexCandidates.end() && setBlockIndexCandidates.value_comp()(*it, m_chain.Tip())) {
         setBlockIndexCandidates.erase(it++);
+    }*/
+
+    auto temp_set = setBlockIndexCandidates;
+    for (const auto& el : temp_set) {
+        if (el->pprev != nullptr) {
+            setBlockIndexCandidates.erase(el->pprev);
+        }
     }
+
     // Either the current tip or a successor of it we're working towards is left in setBlockIndexCandidates.
     assert(!setBlockIndexCandidates.empty());
 }
@@ -2864,7 +2873,7 @@ bool CChainState::ActivateBestChain(BlockValidationState& state, const CChainPar
     // we use m_cs_chainstate to enforce mutual exclusion so that only one caller may execute this function at a time
     LOCK(m_cs_chainstate);
 
-    CBlockIndex* pindexMostWork = nullptr;
+    CBlockIndex* pindexBestChain = nullptr;
     CBlockIndex* pindexNewTip = nullptr;
     int nStopAtHeight = gArgs.GetArg("-stopatheight", DEFAULT_STOPATHEIGHT);
     do {
@@ -2887,18 +2896,18 @@ bool CChainState::ActivateBestChain(BlockValidationState& state, const CChainPar
                 // (with the exception of shutdown due to hardware issues, low disk space, etc).
                 ConnectTrace connectTrace(mempool); // Destructed before cs_main is unlocked
 
-                if (pindexMostWork == nullptr) {
-                    pindexMostWork = FindMostWorkChain();
+                if (pindexBestChain == nullptr) {
+                    pindexBestChain = FindBestChain();
                 }
 
                 // Whether we have anything to do at all.
-                if (pindexMostWork == nullptr || pindexMostWork == m_chain.Tip()) {
+                if (pindexBestChain == nullptr || pindexBestChain == m_chain.Tip()) {
                     break;
                 }
 
                 bool fInvalidFound = false;
                 std::shared_ptr<const CBlock> nullBlockPtr;
-                if (!ActivateBestChainStep(state, chainparams, pindexMostWork, pblock && pblock->GetHash() == pindexMostWork->GetBlockHash() ? pblock : nullBlockPtr, fInvalidFound, connectTrace)) {
+                if (!ActivateBestChainStep(state, chainparams, pindexBestChain, pblock && pblock->GetHash() == pindexBestChain->GetBlockHash() ? pblock : nullBlockPtr, fInvalidFound, connectTrace)) {
                     // A system error occurred
                     return false;
                 }
@@ -2906,7 +2915,7 @@ bool CChainState::ActivateBestChain(BlockValidationState& state, const CChainPar
 
                 if (fInvalidFound) {
                     // Wipe cache, we may need another branch now.
-                    pindexMostWork = nullptr;
+                    pindexBestChain = nullptr;
                 }
                 pindexNewTip = m_chain.Tip();
 
@@ -2940,7 +2949,8 @@ bool CChainState::ActivateBestChain(BlockValidationState& state, const CChainPar
         // that the best block hash is non-null.
         if (ShutdownRequested())
             break;
-    } while (pindexNewTip != pindexMostWork);
+    } while (pindexNewTip != pindexBestChain);
+
     CheckBlockIndex(chainparams.GetConsensus());
 
     // Write changes periodically to disk, after relay.
@@ -2998,7 +3008,6 @@ bool CChainState::InvalidateBlock(BlockValidationState& state, const CChainParam
     // We do not allow ActivateBestChain() to run while InvalidateBlock() is
     // running, as that could cause the tip to change while we disconnect
     // blocks.
-    LOCK(m_cs_chainstate);
 
     // We'll be acquiring and releasing cs_main below, to allow the validation
     // callbacks to run. However, we should keep the block index in a
@@ -3011,7 +3020,6 @@ bool CChainState::InvalidateBlock(BlockValidationState& state, const CChainParam
 
     {
         LOCK(cs_main);
-        VeriBlock::getService<VeriBlock::PopService>().invalidateBlockByHash(pindex->GetBlockHash());
         for (const auto& entry : m_blockman.m_block_index) {
             CBlockIndex* candidate = entry.second;
             // We don't need to put anything in our active chain into the
@@ -3110,7 +3118,10 @@ bool CChainState::InvalidateBlock(BlockValidationState& state, const CChainParam
         // to setBlockIndexCandidates.
         BlockMap::iterator it = m_blockman.m_block_index.begin();
         while (it != m_blockman.m_block_index.end()) {
-            if (it->second->IsValid(BLOCK_VALID_TRANSACTIONS) && it->second->HaveTxsDownloaded() && !setBlockIndexCandidates.value_comp()(it->second, m_chain.Tip())) {
+            if (it->second->IsValid(BLOCK_VALID_TRANSACTIONS) && it->second->HaveTxsDownloaded()
+                // VeriBlock: setBlockIndexCandidates now stores all tips
+                /*&& !setBlockIndexCandidates.value_comp()(it->second, m_chain.Tip())*/
+            ) {
                 setBlockIndexCandidates.insert(it->second);
             }
             it++;
@@ -3118,6 +3129,8 @@ bool CChainState::InvalidateBlock(BlockValidationState& state, const CChainParam
 
         InvalidChainFound(to_mark_failed);
     }
+
+    PruneBlockIndexCandidates();
 
     // Only notify about a new block tip if the active chain was modified.
     if (pindex_was_in_chain) {
@@ -3146,7 +3159,10 @@ void CChainState::ResetBlockFailureFlags(CBlockIndex* pindex)
         if (!it->second->IsValid() && it->second->GetAncestor(nHeight) == pindex) {
             it->second->nStatus &= ~BLOCK_FAILED_MASK;
             setDirtyBlockIndex.insert(it->second);
-            if (it->second->IsValid(BLOCK_VALID_TRANSACTIONS) && it->second->HaveTxsDownloaded() && setBlockIndexCandidates.value_comp()(m_chain.Tip(), it->second)) {
+            if (it->second->IsValid(BLOCK_VALID_TRANSACTIONS) && it->second->HaveTxsDownloaded()
+                // VeriBlock: setBlockIndexCandidates now stores all tips
+                /*&& setBlockIndexCandidates.value_comp()(m_chain.Tip(), it->second)*/
+            ) {
                 setBlockIndexCandidates.insert(it->second);
             }
             if (it->second == pindexBestInvalid) {
@@ -3157,6 +3173,8 @@ void CChainState::ResetBlockFailureFlags(CBlockIndex* pindex)
         }
         it++;
     }
+
+    PruneBlockIndexCandidates();
 
     // Remove the invalidity flag from all ancestors too.
     while (pindex != nullptr) {
@@ -3238,9 +3256,10 @@ void CChainState::ReceivedBlockTransactions(const CBlock& block, CBlockIndex* pi
                 LOCK(cs_nBlockSequenceId);
                 pindex->nSequenceId = nBlockSequenceId++;
             }
-            if (m_chain.Tip() == nullptr || !setBlockIndexCandidates.value_comp()(pindex, m_chain.Tip())) {
+            /*if (m_chain.Tip() == nullptr || !setBlockIndexCandidates.value_comp()(pindex, m_chain.Tip())) {
                 setBlockIndexCandidates.insert(pindex);
-            }
+            }*/
+            setBlockIndexCandidates.insert(pindex);
             std::pair<std::multimap<CBlockIndex*, CBlockIndex*>::iterator, std::multimap<CBlockIndex*, CBlockIndex*>::iterator> range = m_blockman.m_blocks_unlinked.equal_range(pindex);
             while (range.first != range.second) {
                 std::multimap<CBlockIndex*, CBlockIndex*>::iterator it = range.first;
@@ -3254,6 +3273,8 @@ void CChainState::ReceivedBlockTransactions(const CBlock& block, CBlockIndex* pi
             m_blockman.m_blocks_unlinked.insert(std::make_pair(pindexNew->pprev, pindexNew));
         }
     }
+
+    PruneBlockIndexCandidates();
 }
 
 static bool FindBlockPos(FlatFilePos& pos, unsigned int nAddSize, unsigned int nHeight, uint64_t nTime, bool fKnown = false)
@@ -3357,7 +3378,7 @@ bool CheckBlock(const CBlock& block, BlockValidationState& state, const Consensu
     // checks that use witness data may be performed here.
 
     // Size limits
-    if (block.vtx.empty() || VeriBlock::RegularTxesTotalSize(block.vtx) * WITNESS_SCALE_FACTOR > MAX_BLOCK_WEIGHT || GetBlockWeight(block) > MAX_BLOCK_WEIGHT)
+    if (block.vtx.empty() || block.vtx.size() * WITNESS_SCALE_FACTOR > MAX_BLOCK_WEIGHT || GetBlockWeight(block) > MAX_BLOCK_WEIGHT)
         return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-blk-length", "size limits failed");
 
     // First transaction must be coinbase, the rest must not be
@@ -3447,7 +3468,7 @@ std::vector<unsigned char> GenerateCoinbaseCommitment(CBlock& block, const CBloc
             commitment = std::vector<unsigned char>(out.scriptPubKey.begin(), out.scriptPubKey.end());
             CMutableTransaction tx(*block.vtx[0]);
             tx.vout.push_back(out);
-            CTxOut popOut = VeriBlock::addPopTransactionRootIntoCoinbaseCommitment(block);
+            CTxOut popOut = VeriBlock::addPopDataRootIntoCoinbaseCommitment(block);
             tx.vout.push_back(popOut);
             block.vtx[0] = MakeTransactionRef(std::move(tx));
         }
@@ -3541,13 +3562,6 @@ bool ContextualCheckBlock(const CBlock& block, BlockValidationState& state, cons
         return false;
     }
 
-    // do not do stateful validation until the actual fork resolution
-
-//    // VeriBlock: stateful block validation
-//    if (!VeriBlock::getService<VeriBlock::PopService>()(block, *pindexPrev, consensusParams, state)) {
-//        return false;
-//    }
-
     int64_t nLockTimeCutoff = (nLockTimeFlags & LOCKTIME_MEDIAN_TIME_PAST) ? pindexPrev->GetMedianTimePast() : block.GetBlockTime();
 
     // Check that all transactions are finalized
@@ -3611,6 +3625,17 @@ bool ContextualCheckBlock(const CBlock& block, BlockValidationState& state, cons
     // failed).
     if (GetBlockWeight(block) > MAX_BLOCK_WEIGHT) {
         return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-blk-weight", strprintf("%s : weight limit failed", __func__));
+    }
+
+    {
+        LOCK(cs_main);
+        auto& pop = VeriBlock::getService<VeriBlock::PopService>();
+        if (!pop.addAllBlockPayloads(pindexPrev, block, state)) {
+            return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-block-pop-payloads",
+                strprintf("Can not add POP payloads to block height: %d , hash: %s: %s",
+                    (pindexPrev->nHeight + 1), block.GetHash().ToString(),
+                    FormatStateMessage(state)));
+        }
     }
 
     return true;
@@ -3700,7 +3725,11 @@ bool BlockManager::AcceptBlockHeader(const CBlockHeader& block, BlockValidationS
         *ppindex = pindex;
 
     auto& pop = VeriBlock::getService<VeriBlock::PopService>();
-    return pop.acceptBlock(*pindex, state);
+    if(!pop.acceptBlock(*pindex, state)) {
+        return error("%s: ALT tree could not accept block ALT:%d:%s, reason: %s", __func__, pindex->nHeight, pindex->GetBlockHash().ToString(), state.ToString());
+    }
+
+    return true;
 }
 
 // Exposed wrapper for AcceptBlockHeader
@@ -3786,9 +3815,9 @@ bool CChainState::AcceptBlock(const std::shared_ptr<const CBlock>& pblock, Block
     // TODO: deal better with return value and error conditions for duplicate
     // and unrequested blocks.
     if (fAlreadyHave) return true;
-    if (!fRequested) {                        // If we didn't ask for it:
-        if (pindex->nTx != 0) return true;    // This is a previously-processed block that was pruned
-        if (fTooFarAhead) return true;        // Block height is too high
+    if (!fRequested) {                     // If we didn't ask for it:
+        if (pindex->nTx != 0) return true; // This is a previously-processed block that was pruned
+        if (fTooFarAhead) return true;     // Block height is too high
 
         // Protect against DoS attacks from low-work chains.
         // If our tip is behind, a peer could try to send us
@@ -3801,16 +3830,10 @@ bool CChainState::AcceptBlock(const std::shared_ptr<const CBlock>& pblock, Block
         !ContextualCheckBlock(block, state, chainparams.GetConsensus(), pindex->pprev)) {
         if (state.IsInvalid() && state.GetResult() != BlockValidationResult::BLOCK_MUTATED) {
             pindex->nStatus |= BLOCK_FAILED_VALID;
-            VeriBlock::getService<VeriBlock::PopService>().invalidateBlockByHash(pindex->GetBlockHash());
             setDirtyBlockIndex.insert(pindex);
         }
         return error("%s: %s", __func__, FormatStateMessage(state));
     }
-
-//    int popComparison = 0;
-//    if(m_chain.Tip()) {
-//        popComparison = VeriBlock::getService<VeriBlock::PopService>().compareForks(*m_chain.Tip(), *pindex);
-//    }
 
     // Header is valid/has work, merkle tree and segwit merkle tree are good...RELAY NOW
     // (but if it does not build on our best tip, let the SendMessages loop relay it)
@@ -3864,7 +3887,6 @@ bool ProcessNewBlock(const CChainParams& chainparams, const std::shared_ptr<cons
     }
 
     NotifyHeaderTip();
-
     BlockValidationState state; // Only used to report errors, not invalidity - ignore it
     if (!::ChainstateActive().ActivateBestChain(state, chainparams, pblock))
         return error("%s: ActivateBestChain failed (%s)", __func__, FormatStateMessage(state));
@@ -3902,9 +3924,9 @@ bool TestBlockValidity(BlockValidationState& state, const CChainParams& chainpar
     }
 
     auto _f = altintegration::Finalizer([shouldRemove, _hash, &tree]() {
-      if (shouldRemove) {
-          tree.removeSubtree(_hash);
-      }
+        if (shouldRemove) {
+            tree.removeSubtree(_hash);
+        }
     });
 
     if (!::ChainstateActive().ConnectBlock(block, state, &indexDummy, viewNew, chainparams, true))
@@ -4175,7 +4197,7 @@ bool BlockManager::LoadBlockIndex(
             pindexBestHeader = pindex;
 
         BlockValidationState state;
-        if(!VeriBlock::getService<VeriBlock::PopService>().acceptBlock(*pindex, state)){
+        if (!VeriBlock::getService<VeriBlock::PopService>().acceptBlock(*pindex, state)) {
             return false;
         }
     }
@@ -4694,7 +4716,7 @@ bool CChainState::LoadGenesisBlock(const CChainParams& chainparams)
         CBlockIndex* pindex = m_blockman.AddToBlockIndex(block);
         auto& pop = VeriBlock::getService<VeriBlock::PopService>();
         BlockValidationState state;
-        if(!pop.acceptBlock(*pindex, state)){
+        if (!pop.acceptBlock(*pindex, state)) {
             return false;
         }
         ReceivedBlockTransactions(block, pindex, blockPos, chainparams.GetConsensus());
@@ -4914,6 +4936,7 @@ void CChainState::CheckBlockIndex(const Consensus::Params& consensusParams)
             // Checks for not-invalid blocks.
             assert((pindex->nStatus & BLOCK_FAILED_MASK) == 0); // The failed mask cannot be set for blocks without invalid parents.
         }
+        /*
         if (!CBlockIndexWorkComparator()(pindex, m_chain.Tip()) && pindexFirstNeverProcessed == nullptr) {
             if (pindexFirstInvalid == nullptr) {
                 // If this block sorts at least as good as the current tip and
@@ -4928,8 +4951,8 @@ void CChainState::CheckBlockIndex(const Consensus::Params& consensusParams)
                 // In this case it must be in m_blocks_unlinked -- see test below.
             }
         } else { // If this block sorts worse than the current tip or some ancestor's block has never been seen, it cannot be in setBlockIndexCandidates.
-            assert(setBlockIndexCandidates.count(pindex) == 0);
-        }
+            assert(setBlockIndexCandidates.count(pindex->pprev) == 0);
+        }*/
         // Check whether this block is in m_blocks_unlinked.
         std::pair<std::multimap<CBlockIndex*, CBlockIndex*>::iterator, std::multimap<CBlockIndex*, CBlockIndex*>::iterator> rangeUnlinked = m_blockman.m_blocks_unlinked.equal_range(pindex->pprev);
         bool foundInUnlinked = false;

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2019 The Bitcoin Core developers
+# Copyright (c) 2014-2019 The Placeholders Core developers
 # Copyright (c) 2019-2020 Xenios SEZC
 # https://www.veriblock.org
 # Distributed under the MIT software license, see the accompanying
@@ -15,14 +15,14 @@ Expect that PHL/VBK tree state on nodes[0,1] is same as before shutdown (test ag
 """
 
 from test_framework.pop import endorse_block, create_endorsed_chain
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import PlaceholdersTestFramework
 from test_framework.util import (
     connect_nodes,
     disconnect_nodes, assert_equal,
 )
 
 
-class PopInit(BitcoinTestFramework):
+class PopInit(PlaceholdersTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 3
@@ -74,6 +74,8 @@ class PopInit(BitcoinTestFramework):
         assert_equal(popdata[0], popdata[2])
         assert_equal(popdata[1], popdata[2])
 
+        self.log.warning("success! _restart_init_test()")
+
     def run_test(self):
         """Main test logic"""
 
@@ -83,7 +85,6 @@ class PopInit(BitcoinTestFramework):
         self.apm = MockMiner()
 
         self._restart_init_test()
-
 
 if __name__ == '__main__':
     PopInit().main()

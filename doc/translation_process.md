@@ -1,12 +1,12 @@
 Translations
 ============
 
-The Bitcoin-Core project has been designed to support multiple localisations. This makes adding new phrases, and completely new languages easily achievable. For managing all application translations, Bitcoin-Core makes use of the Transifex online translation management tool.
+The Placeholders-Core project has been designed to support multiple localisations. This makes adding new phrases, and completely new languages easily achievable. For managing all application translations, Placeholders-Core makes use of the Transifex online translation management tool.
 
 ### Helping to translate (using Transifex)
 Transifex is setup to monitor the GitHub repo for updates, and when code containing new translations is found, Transifex will process any changes. It may take several hours after a pull-request has been merged, to appear in the Transifex web interface.
 
-Multiple language support is critical in assisting Bitcoin’s global adoption, and growth. One of Bitcoin’s greatest strengths is cross-border money transfers, any help making that easier is greatly appreciated.
+Multiple language support is critical in assisting Placeholders’s global adoption, and growth. One of Placeholders’s greatest strengths is cross-border money transfers, any help making that easier is greatly appreciated.
 
 
 ### Writing code with translations
@@ -42,7 +42,7 @@ git commit
 ### Creating a Transifex account
 Visit the [Transifex Signup](https://www.transifex.com/signup/) page to create an account. Take note of your username and password, as they will be required to configure the command-line tool.
 
-You can find the Bitcoin translation project at [https://www.transifex.com/placeh/placeh/](https://www.transifex.com/placeh/placeh/).
+You can find the Placeholders translation project at [https://www.transifex.com/placeh/placeh/](https://www.transifex.com/placeh/placeh/).
 
 ### Installing the Transifex client command-line tool
 The client is used to fetch updated translations. If you are having problems, or need more details, see [https://docs.transifex.com/client/installing-the-client](https://docs.transifex.com/client/installing-the-client)
@@ -60,7 +60,7 @@ token =
 username = USERNAME
 ```
 
-The Transifex Bitcoin project config file is included as part of the repo. It can be found at `.tx/config`, however you shouldn’t need to change anything.
+The Transifex Placeholders project config file is included as part of the repo. It can be found at `.tx/config`, however you shouldn’t need to change anything.
 
 ### Synchronising translations
 To assist in updating translations, a helper script is available in the [maintainer-tools repo](https://github.com/placeh-core/placeh-maintainer-tools).
@@ -102,6 +102,6 @@ To create a new language template, you will need to edit the languages manifest 
 **Note:** that the language translation file **must end in `.qm`** (the compiled extension), and not `.ts`.
 
 ### Questions and general assistance
-The Bitcoin-Core translation maintainers include *tcatm, seone, Diapolo, wumpus and luke-jr*. You can find them, and others, in the Freenode IRC chatroom - `irc.freenode.net #placeh-core-dev`.
+The Placeholders-Core translation maintainers include *tcatm, seone, Diapolo, wumpus and luke-jr*. You can find them, and others, in the Freenode IRC chatroom - `irc.freenode.net #placeh-core-dev`.
 
 If you are a translator, you should also subscribe to the mailing list, https://groups.google.com/forum/#!forum/placeh-translators. Announcements will be posted during application pre-releases to notify translators to check for updates.

@@ -1,6 +1,7 @@
 *.tar.gz
 .vscode
 
+vbtc_state_test
 src/vbk/grpc_integration/*.pb.cc
 src/vbk/grpc_integration/*.pb.h
 
@@ -14,6 +15,9 @@ src/placeh-wallet
 src/test/test_placeh
 src/test/test_placeh_fuzzy
 src/qt/test/test_placeh-qt
+
+# functional tests
+test/functional/temp
 
 # autoreconf
 Makefile.in

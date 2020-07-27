@@ -95,7 +95,7 @@ for normal IPv4/IPv6 communication, use:
 
 Starting with Tor version 0.2.7.1 it is possible, through Tor's control socket
 API, to create and destroy 'ephemeral' hidden services programmatically.
-Bitcoin Core has been updated to make use of this.
+Placeholders Core has been updated to make use of this.
 
 This means that if Tor is running (and proper authentication has been configured),
 Placeholders Core automatically creates a hidden service to listen on. This will positively

@@ -212,7 +212,7 @@
     </message>
 </context>
 <context>
-    <name>BitcoinGUI</name>
+    <name>PlaceholdersGUI</name>
     <message>
         <source>Sign &amp;message...</source>
         <translation>Arwyddo &amp;neges...</translation>
@@ -311,7 +311,7 @@
     </message>
     <message>
         <source>Send coins to a Placeholders address</source>
-        <translation>Anfon arian i gyfeiriad Bitcoin</translation>
+        <translation>Anfon arian i gyfeiriad Placeholders</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -387,7 +387,7 @@
     </message>
     <message>
         <source>Open a placeh: URI or payment request</source>
-        <translation>Agor Bitcoin: URI neu ofyn taliad</translation>
+        <translation>Agor Placeholders: URI neu ofyn taliad</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -629,8 +629,8 @@
         <translation>Croeso</translation>
     </message>
     <message>
-        <source>Bitcoin</source>
-        <translation>Bitcoin</translation>
+        <source>Placeholders</source>
+        <translation>Placeholders</translation>
     </message>
     <message>
         <source>Error</source>

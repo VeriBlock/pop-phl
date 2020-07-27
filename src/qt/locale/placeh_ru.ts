@@ -224,7 +224,7 @@
     </message>
 </context>
 <context>
-    <name>BitcoinGUI</name>
+    <name>PlaceholdersGUI</name>
     <message>
         <source>Sign &amp;message...</source>
         <translation>Подписать &amp;сообщение...</translation>
@@ -415,7 +415,7 @@
     </message>
     <message numerus="yes">
         <source>%n active connection(s) to Placeholders network</source>
-        <translation><numerusform>%n активное подключение к сети Bitcoin</numerusform><numerusform>%n активных подключения к сети Bitcoin</numerusform><numerusform>%n активных подключений к сети Bitcoin</numerusform><numerusform>%n активных подключений к сети Bitcoin</numerusform></translation>
+        <translation><numerusform>%n активное подключение к сети Placeholders</numerusform><numerusform>%n активных подключения к сети Placeholders</numerusform><numerusform>%n активных подключений к сети Placeholders</numerusform><numerusform>%n активных подключений к сети Placeholders</numerusform></translation>
     </message>
     <message>
         <source>Indexing blocks on disk...</source>
@@ -791,7 +791,7 @@
     </message>
     <message>
         <source>The entered address "%1" is not a valid Placeholders address.</source>
-        <translation>Введенный адрес "%1" не является действительным адресом Bitcoin.</translation>
+        <translation>Введенный адрес "%1" не является действительным адресом Placeholders.</translation>
     </message>
     <message>
         <source>Address "%1" already exists as a receiving address with label "%2" and so cannot be added as a sending address.</source>
@@ -887,8 +887,8 @@
         <translation>Использовать пользовательскую директорию данных</translation>
     </message>
     <message>
-        <source>Bitcoin</source>
-        <translation>Bitcoin Core</translation>
+        <source>Placeholders</source>
+        <translation>Placeholders Core</translation>
     </message>
     <message>
         <source>At least %1 GB of data will be stored in this directory, and it will grow over time.</source>
@@ -1128,7 +1128,7 @@
     </message>
     <message>
         <source>Automatically open the Placeholders client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Автоматически открыть порт для Bitcoin-клиента на маршрутизаторе. Работает только если Ваш маршрутизатор поддерживает UPnP, и данная функция включена.</translation>
+        <translation>Автоматически открыть порт для Placeholders-клиента на маршрутизаторе. Работает только если Ваш маршрутизатор поддерживает UPnP, и данная функция включена.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
@@ -1394,7 +1394,7 @@
     </message>
     <message>
         <source>URI cannot be parsed! This can be caused by an invalid Placeholders address or malformed URI parameters.</source>
-        <translation>Не удалось обработать идентификатор! Это может быть связано с неверным Bitcoin-адресом или неправильными параметрами идентификатора.</translation>
+        <translation>Не удалось обработать идентификатор! Это может быть связано с неверным Placeholders-адресом или неправильными параметрами идентификатора.</translation>
     </message>
     <message>
         <source>Payment request file handling</source>
@@ -1957,7 +1957,7 @@
     </message>
     <message>
         <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Placeholders network.</source>
-        <translation>Необязательное сообщение для запроса платежа, которое будет показано при открытии запроса. Заметьте: сообщение не будет отправлено вместе с платежом через сеть Bitcoin.</translation>
+        <translation>Необязательное сообщение для запроса платежа, которое будет показано при открытии запроса. Заметьте: сообщение не будет отправлено вместе с платежом через сеть Placeholders.</translation>
     </message>
     <message>
         <source>An optional label to associate with the new receiving address.</source>
@@ -2421,7 +2421,7 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
     </message>
     <message>
         <source>The Placeholders address to send the payment to</source>
-        <translation>Bitcoin-адрес, на который отправить платёж</translation>
+        <translation>Placeholders-адрес, на который отправить платёж</translation>
     </message>
     <message>
         <source>Alt+A</source>
@@ -2469,7 +2469,7 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
     </message>
     <message>
         <source>A message that was attached to the placeh: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Placeholders network.</source>
-        <translation>Сообщение прикрепленное к placeh идентификатору будет сохранено вместе с транзакцией для вашего сведения. Заметьте: сообщение не будет отправлено через сеть Bitcoin.</translation>
+        <translation>Сообщение прикрепленное к placeh идентификатору будет сохранено вместе с транзакцией для вашего сведения. Заметьте: сообщение не будет отправлено через сеть Placeholders.</translation>
     </message>
     <message>
         <source>Pay To:</source>
@@ -2518,7 +2518,7 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
     </message>
     <message>
         <source>The Placeholders address to sign the message with</source>
-        <translation>Bitcoin-адрес, которым подписать сообщение</translation>
+        <translation>Placeholders-адрес, которым подписать сообщение</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -2550,7 +2550,7 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
     </message>
     <message>
         <source>Sign the message to prove you own this Placeholders address</source>
-        <translation>Подписать сообщение, чтобы доказать владение Bitcoin-адресом</translation>
+        <translation>Подписать сообщение, чтобы доказать владение Placeholders-адресом</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -2574,11 +2574,11 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
     </message>
     <message>
         <source>The Placeholders address the message was signed with</source>
-        <translation>Bitcoin-адрес, которым было подписано сообщение</translation>
+        <translation>Placeholders-адрес, которым было подписано сообщение</translation>
     </message>
     <message>
         <source>Verify the message to ensure it was signed with the specified Placeholders address</source>
-        <translation>Проверить сообщение, чтобы убедиться, что оно было подписано указанным Bitcoin-адресом</translation>
+        <translation>Проверить сообщение, чтобы убедиться, что оно было подписано указанным Placeholders-адресом</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>

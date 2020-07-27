@@ -44,7 +44,7 @@ Compatibility
 
 Placeholders Core is supported and extensively tested on operating systems using
 the Linux kernel, macOS 10.12+, and Windows 7 and newer. It is not recommended
-to use Bitcoin Core on unsupported systems.
+to use Placeholders Core on unsupported systems.
 
 Placeholders Core should also work on most other Unix-like systems but is not
 as frequently tested on them.
@@ -90,7 +90,7 @@ Low-level Changes section below.
 GUI changes
 -----------
 
-- The "Start Bitcoin Core on system login" option has been removed on macOS.
+- The "Start Placeholders Core on system login" option has been removed on macOS.
 
 Wallet
 ------

@@ -1,5 +1,5 @@
 // Copyright (c) 2010 Satoshi Nakamoto
-// Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2009-2018 The Placeholders Core developers
 // Copyright (c) 2019-2020 Xenios SEZC
 // https://www.veriblock.org
 // Distributed under the MIT software license, see the accompanying
@@ -720,7 +720,7 @@ static UniValue getblocktemplate(const JSONRPCRequest& request)
         keystoneArray.push_back(keystone.GetHex());
     }
 
-    CTxOut popCoinbaseCommitment = VeriBlock::addPopTransactionRootIntoCoinbaseCommitment(*pblock);
+    CTxOut popCoinbaseCommitment = VeriBlock::addPopDataRootIntoCoinbaseCommitment(*pblock);
 
     result.pushKV("keystone_hashes", keystoneArray);
     result.pushKV("pop_witness_commitment", HexStr(popCoinbaseCommitment.scriptPubKey.begin(), popCoinbaseCommitment.scriptPubKey.end()));

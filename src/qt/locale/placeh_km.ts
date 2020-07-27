@@ -145,7 +145,7 @@
     </message>
 </context>
 <context>
-    <name>BitcoinGUI</name>
+    <name>PlaceholdersGUI</name>
     <message>
         <source>Send coins to a Placeholders address</source>
         <translation>ផ្ញើកាក់ទៅកាន់ អាសយដ្ឋាន Placeholders មួយ</translation>

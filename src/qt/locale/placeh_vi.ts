@@ -224,7 +224,7 @@
     </message>
 </context>
 <context>
-    <name>BitcoinGUI</name>
+    <name>PlaceholdersGUI</name>
     <message>
         <source>Sign &amp;message...</source>
         <translation>Chữ ký &amp;lời nhắn...</translation>
@@ -327,7 +327,7 @@
     </message>
     <message>
         <source>Send coins to a Placeholders address</source>
-        <translation>Gửi coin đến một địa chỉ Bitcoin</translation>
+        <translation>Gửi coin đến một địa chỉ Placeholders</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -887,8 +887,8 @@
         <translation>Sử dụng custom danh mục data:</translation>
     </message>
     <message>
-        <source>Bitcoin</source>
-        <translation>Bitcoin</translation>
+        <source>Placeholders</source>
+        <translation>Placeholders</translation>
     </message>
     <message>
         <source>At least %1 GB of data will be stored in this directory, and it will grow over time.</source>

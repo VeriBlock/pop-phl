@@ -3,7 +3,7 @@ Shared Libraries
 
 ## placehconsensus
 
-The purpose of this library is to make the verification functionality that is critical to Bitcoin's consensus available to other applications, e.g. to language bindings.
+The purpose of this library is to make the verification functionality that is critical to Placeholders's consensus available to other applications, e.g. to language bindings.
 
 ### API
 
@@ -43,7 +43,7 @@ The interface is defined in the C header `placehconsensus.h` located in `src/scr
 - `placehconsensus_ERR_AMOUNT_REQUIRED` - Input amount is required if WITNESS is used
 
 ### Example Implementations
-- [NBitcoin](https://github.com/NicolasDorier/NBitcoin/blob/master/NBitcoin/Script.cs#L814) (.NET Bindings)
+- [NPlaceholders](https://github.com/NicolasDorier/NPlaceholders/blob/master/NPlaceholders/Script.cs#L814) (.NET Bindings)
 - [node-libplacehconsensus](https://github.com/bitpay/node-libplacehconsensus) (Node.js Bindings)
 - [java-libplacehconsensus](https://github.com/dexX7/java-libplacehconsensus) (Java Bindings)
 - [placehconsensus-php](https://github.com/Bit-Wasp/placehconsensus-php) (PHP Bindings)

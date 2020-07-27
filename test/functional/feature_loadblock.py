@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2017-2019 The Bitcoin Core developers
+# Copyright (c) 2017-2019 The Placeholders Core developers
 # Copyright (c) 2019-2020 Xenios SEZC
 # https://www.veriblock.org
 # Distributed under the MIT software license, see the accompanying
@@ -18,13 +18,14 @@ import sys
 import tempfile
 import urllib
 
+from test_framework.mininode import calculate_network_magic
 from test_framework.test_framework import (
-    BitcoinTestFramework,
+    PlaceholdersTestFramework,
 )
 from test_framework.util import assert_equal, wait_until
 
 
-class LoadblockTest(BitcoinTestFramework):
+class LoadblockTest(PlaceholdersTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 2
@@ -55,7 +56,7 @@ class LoadblockTest(BitcoinTestFramework):
             cfg.write("host={}\n".format(node_url.hostname))
             cfg.write("output_file={}\n".format(bootstrap_file))
             cfg.write("max_height=100\n")
-            cfg.write("netmagic=03030307\n")
+            cfg.write("netmagic={}\n".format(calculate_network_magic(3).hex()))
             cfg.write("input={}\n".format(blocks_dir))
             cfg.write("genesis={}\n".format(genesis_block))
             cfg.write("hashlist={}\n".format(hash_list.name))

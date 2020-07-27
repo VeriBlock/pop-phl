@@ -36,15 +36,12 @@ inline int GetPopMerkleRootCommitmentIndex(const CBlock& block)
     return commitpos;
 }
 
-inline uint256 BlockPopTxMerkleRoot(const CBlock& block)
+inline uint256 BlockPopDataMerkleRoot(const CBlock& block)
 {
     std::vector<uint256> leaves;
-    leaves.resize(block.vtx.size());
-    for (size_t s = 0; s < block.vtx.size(); s++) {
-        if (isPopTx(*block.vtx[s])) {
-            leaves[s] = block.vtx[s]->GetWitnessHash();
-        }
-    }
+    auto bytes = block.popData.toVbkEncoding();
+    leaves.push_back(Hash(bytes.begin(), bytes.end()));
+
     return ComputeMerkleRoot(std::move(leaves), nullptr);
 }
 
@@ -126,7 +123,7 @@ inline bool VerifyTopLevelMerkleRoot(const CBlock& block, BlockValidationState& 
     // Add PopMerkleRoot commitment validation
     int commitpos = GetPopMerkleRootCommitmentIndex(block);
     if (commitpos != -1) {
-        uint256 popMerkleRoot = BlockPopTxMerkleRoot(block);
+        uint256 popMerkleRoot = BlockPopDataMerkleRoot(block);
         if (!memcpy(popMerkleRoot.begin(), &block.vtx[0]->vout[commitpos].scriptPubKey[4], 32)) {
             return state.Invalid(BlockValidationResult::BLOCK_MUTATED, "bad-pop-tx-root-commitment", "pop merkle root mismatch");
         }
@@ -140,7 +137,7 @@ inline bool VerifyTopLevelMerkleRoot(const CBlock& block, BlockValidationState& 
     return true;
 }
 
-inline CTxOut addPopTransactionRootIntoCoinbaseCommitment(const CBlock& block)
+inline CTxOut addPopDataRootIntoCoinbaseCommitment(const CBlock& block)
 {
     CTxOut out;
     out.nValue = 0;
@@ -151,7 +148,7 @@ inline CTxOut addPopTransactionRootIntoCoinbaseCommitment(const CBlock& block)
     out.scriptPubKey[3] = 0xe6;
     out.scriptPubKey[4] = 0xca;
 
-    uint256 popMerkleRoot = BlockPopTxMerkleRoot(block);
+    uint256 popMerkleRoot = BlockPopDataMerkleRoot(block);
     memcpy(&out.scriptPubKey[5], popMerkleRoot.begin(), 32);
 
     return out;

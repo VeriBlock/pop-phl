@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2009-2018 The Placeholders Core developers
 // Copyright (c) 2019-2020 Xenios SEZC
 // https://www.veriblock.org
 // Distributed under the MIT software license, see the accompanying
@@ -735,7 +735,7 @@ static void ThreadImport(std::vector<fs::path> vImportFiles)
 }
 
 /** Sanity checks
- *  Ensure that Bitcoin is running in a usable environment with all
+ *  Ensure that Placeholders is running in a usable environment with all
  *  necessary library support.
  */
 static bool InitSanityCheck()
@@ -1162,7 +1162,7 @@ bool AppInitParameterInteraction()
 
 static bool LockDataDirectory(bool probeOnly)
 {
-    // Make sure only a single Bitcoin process is using the data directory.
+    // Make sure only a single Placeholders process is using the data directory.
     fs::path datadir = GetDataDir();
     if (!DirIsWritable(datadir)) {
         return InitError(strprintf(_("Cannot write to data directory '%s'; check permissions.").translated, datadir.string()));
@@ -1209,7 +1209,6 @@ bool AppInitLockDataDirectory()
 bool AppInitMain(NodeContext& node)
 {
     const CChainParams& chainparams = Params();
-    VeriBlock::InitPopService();
 
     // ********************************************************* Step 4a: application initialization
     if (!CreatePidFile()) {
@@ -1255,6 +1254,8 @@ bool AppInitMain(NodeContext& node)
                   "also be data loss if placeh is started while in a temporary directory.\n",
             gArgs.GetArg("-datadir", ""), fs::current_path().string());
     }
+
+    VeriBlock::InitPopService(GetDataDir(true) / "pop");
 
     InitSignatureCache();
     InitScriptExecutionCache();

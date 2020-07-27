@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2015-2018 The Bitcoin Core developers
+# Copyright (c) 2015-2018 The Placeholders Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test node responses to invalid blocks.
@@ -15,10 +15,10 @@ import copy
 from test_framework.blocktools import create_block, create_coinbase, create_tx_with_script
 from test_framework.messages import COIN
 from test_framework.mininode import P2PDataStore
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import PlaceholdersTestFramework
 from test_framework.util import assert_equal
 
-class InvalidBlockRequestTest(BitcoinTestFramework):
+class InvalidBlockRequestTest(PlaceholdersTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
         self.setup_clean_chain = True
@@ -37,7 +37,7 @@ class InvalidBlockRequestTest(BitcoinTestFramework):
         self.log.info("Create a new block with an anyone-can-spend coinbase")
 
         height = 1
-        block = create_block(tip, create_coinbase(height), block_time)
+        block = create_block(self.nodes[0], tip, create_coinbase(height), block_time)
         block.solve()
         # Save the coinbase for later
         block1 = block
@@ -60,7 +60,7 @@ class InvalidBlockRequestTest(BitcoinTestFramework):
         # For more information on merkle-root malleability see src/consensus/merkle.cpp.
         self.log.info("Test merkle root malleability.")
 
-        block2 = create_block(tip, create_coinbase(height), block_time)
+        block2 = create_block(self.nodes[0], tip, create_coinbase(height), block_time)
         block_time += 1
 
         # b'0x51' is OP_TRUE
@@ -95,7 +95,7 @@ class InvalidBlockRequestTest(BitcoinTestFramework):
 
         self.log.info("Test very broken block.")
 
-        block3 = create_block(tip, create_coinbase(height), block_time)
+        block3 = create_block(self.nodes[0], tip, create_coinbase(height), block_time)
         block_time += 1
         block3.vtx[0].vout[0].nValue = 100 * COIN  # Too high!
         block3.vtx[0].sha256 = None
@@ -120,7 +120,7 @@ class InvalidBlockRequestTest(BitcoinTestFramework):
 
         # Complete testing of CVE-2018-17144, by checking for the inflation bug.
         # Create a block that spends the output of a tx in a previous block.
-        block4 = create_block(tip, create_coinbase(height), block_time)
+        block4 = create_block(self.nodes[0], tip, create_coinbase(height), block_time)
         tx3 = create_tx_with_script(tx2, 0, script_sig=b'\x51', amount=50 * COIN)
 
         # Duplicates input

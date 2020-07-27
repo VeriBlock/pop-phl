@@ -1,9 +1,7 @@
 # Build stage for BerkeleyDB
 FROM alpine as berkeleydb
 
-RUN apk --no-cache add autoconf
-RUN apk --no-cache add automake
-RUN apk --no-cache add build-base
+RUN apk --no-cache add autoconf git automake build-base
 
 ENV BERKELEYDB_VERSION=db-4.8.30.NC
 ENV BERKELEYDB_PREFIX=/opt/${BERKELEYDB_VERSION}
@@ -38,6 +36,7 @@ RUN apk --no-cache add linux-headers
 RUN apk --no-cache add protobuf-dev
 RUN apk --no-cache add zeromq-dev
 RUN apk --no-cache add cmake
+RUN apk --no-cache add git
 
 RUN set -ex \
   && for key in \
@@ -70,10 +69,9 @@ RUN export VERIBLOCK_POP_CPP_VERSION=$(awk -F '=' '/\$\(package\)_version/{print
     )
 
 RUN ./autogen.sh
-RUN ./configure LDFLAGS=-L`ls -d /opt/db*`/lib/ CPPFLAGS=-I`ls -d /opt/db*`/include/ \
+RUN ./configure LDFLAGS=-L`ls -d /opt/db-*`/lib/ CPPFLAGS=-I`ls -d /opt/db-*`/include/ \
     --disable-tests \
     --disable-bench \
-    --disable-gmock \
     --disable-ccache \
     --disable-man \
     --without-gui \
@@ -96,7 +94,8 @@ RUN apk --no-cache add \
   boost-program_options \
   libevent \
   libzmq \
-  su-exec
+  su-exec \
+  git
 
 ENV DATA_DIR=/home/placeh/.placeh
 ENV VPLACEH_PREFIX=/opt/placeh

@@ -225,7 +225,7 @@
     </message>
 </context>
 <context>
-    <name>BitcoinGUI</name>
+    <name>PlaceholdersGUI</name>
     <message>
         <source>Sign &amp;message...</source>
         <translation>ثبت &amp;پیام</translation>
@@ -820,7 +820,7 @@
         <translation>استفاده کردن از پوشه داده مخصوص:</translation>
     </message>
     <message>
-        <source>Bitcoin</source>
+        <source>Placeholders</source>
         <translation>بیت کوین</translation>
     </message>
     <message>

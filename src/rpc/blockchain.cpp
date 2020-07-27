@@ -1,5 +1,5 @@
 // Copyright (c) 2010 Satoshi Nakamoto
-// Copyright (c) 2009-2019 The Bitcoin Core developers
+// Copyright (c) 2009-2019 The Placeholders Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -43,6 +43,9 @@
 #include <condition_variable>
 #include <memory>
 #include <mutex>
+
+#include <vbk/pop_service_impl.hpp>
+#include <vbk/adaptors/univalue_json.hpp>
 
 struct CUpdatedBlock
 {
@@ -917,7 +920,21 @@ static UniValue getblock(const JSONRPCRequest& request)
         return strHex;
     }
 
-    return blockToJSON(block, tip, pblockindex, verbosity >= 2);
+    UniValue json = blockToJSON(block, tip, pblockindex, verbosity >= 2);
+
+    {
+        auto& pop = VeriBlock::getService<VeriBlock::PopService>();
+        LOCK(cs_main);
+        auto index = pop.getAltTree().getBlockIndex(block.GetHash().asVector());
+        VBK_ASSERT(index);
+        UniValue obj(UniValue::VOBJ);
+
+        obj.pushKV("state", altintegration::ToJSON<UniValue>(*index));
+        obj.pushKV("data", altintegration::ToJSON<UniValue>(block.popData, verbosity >= 2));
+        json.pushKV("pop", obj);
+    }
+
+    return json;
 }
 
 static UniValue pruneblockchain(const JSONRPCRequest& request)

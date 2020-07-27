@@ -56,7 +56,7 @@
     <name>BanTableModel</name>
     </context>
 <context>
-    <name>BitcoinGUI</name>
+    <name>PlaceholdersGUI</name>
     <message>
         <source>Sign &amp;message...</source>
         <translation>Signa &amp;nuntium...</translation>
@@ -119,7 +119,7 @@
     </message>
     <message>
         <source>Send coins to a Placeholders address</source>
-        <translation>Mitte nummos ad inscriptionem Bitcoin</translation>
+        <translation>Mitte nummos ad inscriptionem Placeholders</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -167,7 +167,7 @@
     </message>
     <message>
         <source>Verify messages to ensure they were signed with specified Placeholders addresses</source>
-        <translation>Verifica nuntios ut certus sis eos signatos esse cum specificatis inscriptionibus Bitcoin</translation>
+        <translation>Verifica nuntios ut certus sis eos signatos esse cum specificatis inscriptionibus Placeholders</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -299,8 +299,8 @@
 <context>
     <name>Intro</name>
     <message>
-        <source>Bitcoin</source>
-        <translation>Bitcoin</translation>
+        <source>Placeholders</source>
+        <translation>Placeholders</translation>
     </message>
     <message>
         <source>Error</source>
@@ -718,7 +718,7 @@
     </message>
     <message>
         <source>Verify the message to ensure it was signed with the specified Placeholders address</source>
-        <translation>Verifica nuntium ut cures signatum esse cum specifica inscriptione Bitcoin</translation>
+        <translation>Verifica nuntium ut cures signatum esse cum specifica inscriptione Placeholders</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>

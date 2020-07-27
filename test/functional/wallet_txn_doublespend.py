@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2019 The Bitcoin Core developers
+# Copyright (c) 2014-2019 The Placeholders Core developers
 # Copyright (c) 2019-2020 Xenios SEZC
 # https://www.veriblock.org
 # Distributed under the MIT software license, see the accompanying
@@ -7,7 +7,7 @@
 """Test the wallet accounts properly when there is a double-spend conflict."""
 from decimal import Decimal
 
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import PlaceholdersTestFramework
 from test_framework.util import (
     assert_equal,
     connect_nodes,
@@ -15,7 +15,7 @@ from test_framework.util import (
     find_output,
 )
 
-class TxnMallTest(BitcoinTestFramework):
+class TxnMallTest(PlaceholdersTestFramework):
     def set_test_params(self):
         self.num_nodes = 4
         self.supports_cli = False

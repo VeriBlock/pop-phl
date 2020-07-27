@@ -12,12 +12,12 @@
 #include <chain.h>
 #include <test/util/setup_common.h>
 #include <validation.h>
+#include <vbk/log.hpp>
 #include <vbk/util.hpp>
 #include <veriblock/alt-util.hpp>
+#include <veriblock/mempool.hpp>
 #include <veriblock/mock_miner.hpp>
-#include <vbk/log.hpp>
 
-using altintegration::AltPayloads;
 using altintegration::ATV;
 using altintegration::BtcBlock;
 using altintegration::MockMiner;
@@ -28,7 +28,8 @@ using altintegration::VTB;
 struct TestLogger : public altintegration::Logger {
     ~TestLogger() override = default;
 
-    void log(altintegration::LogLevel lvl, const std::string& msg) override {
+    void log(altintegration::LogLevel lvl, const std::string& msg) override
+    {
         fmt::printf("[pop] [%s]\t%s\n", altintegration::LevelToString(lvl), msg);
     }
 };
@@ -43,8 +44,27 @@ struct E2eFixture : public TestChain100Setup {
     E2eFixture()
     {
         altintegration::SetLogger<TestLogger>();
-        altintegration::GetLogger().level = altintegration::LogLevel::debug;
+        altintegration::GetLogger().level = altintegration::LogLevel::off;
         pop = &VeriBlock::getService<VeriBlock::PopService>();
+    }
+
+    void InvalidateTestBlock(CBlockIndex* pblock)
+    {
+        BlockValidationState state;
+        InvalidateBlock(state, Params(), pblock);
+        ActivateBestChain(state, Params());
+        mempool.clear();
+    }
+
+    void ReconsiderTestBlock(CBlockIndex* pblock)
+    {
+        BlockValidationState state;
+
+        {
+            LOCK(cs_main);
+            ResetBlockFailureFlags(pblock);
+        }
+        ActivateBestChain(state, Params(), std::shared_ptr<const CBlock>());
     }
 
     ATV endorseAltBlock(uint256 hash, const std::vector<VTB>& vtbs, const std::vector<uint8_t>& payoutInfo)
@@ -68,29 +88,52 @@ struct E2eFixture : public TestChain100Setup {
         return endorseAltBlock(hash, vtbs, defaultPayoutInfo);
     }
 
-    CBlock endorseAltBlockAndMine(uint256 hash, size_t generateVtbs = 0)
+    CBlock endorseAltBlockAndMine(const std::vector<uint256>& hashes, size_t generateVtbs = 0)
     {
-        return endorseAltBlockAndMine(hash, ChainActive().Tip()->GetBlockHash(), generateVtbs);
+        return endorseAltBlockAndMine(hashes, ChainActive().Tip()->GetBlockHash(), generateVtbs);
     }
 
-    CBlock endorseAltBlockAndMine(uint256 hash, uint256 prevBlock, const std::vector<uint8_t>& payoutInfo, size_t generateVtbs = 0)
+    CBlock endorseAltBlockAndMine(const std::vector<uint256>& hashes, uint256 prevBlock, size_t generateVtbs = 0)
+    {
+        return endorseAltBlockAndMine(hashes, prevBlock, defaultPayoutInfo, generateVtbs);
+    }
+
+    CBlock endorseAltBlockAndMine(const std::vector<uint256>& hashes, uint256 prevBlock, const std::vector<uint8_t>& payoutInfo, size_t generateVtbs = 0)
     {
         std::vector<VTB> vtbs;
         vtbs.reserve(generateVtbs);
         std::generate_n(std::back_inserter(vtbs), generateVtbs, [&]() {
             return endorseVbkTip();
         });
-        auto atv = endorseAltBlock(hash, vtbs, payoutInfo);
-        CScript sig;
-        sig << atv.toVbkEncoding() << OP_CHECKATV;
-        for (const auto& v : vtbs) {
-            sig << v.toVbkEncoding() << OP_CHECKVTB;
-        }
-        sig << OP_CHECKPOP;
 
-        auto tx = VeriBlock::MakePopTx(sig);
+        std::vector<ATV> atvs;
+        atvs.reserve(hashes.size());
+        std::transform(hashes.begin(), hashes.end(), std::back_inserter(atvs), [&](const uint256& hash) -> ATV {
+            return endorseAltBlock(hash, {}, payoutInfo);
+        });
+
+        auto& pop_mempool = pop->getMemPool();
+        altintegration::ValidationState state;
+        for (const auto& atv : atvs) {
+            pop_mempool.submit(atv, state);
+        }
+
+        for (const auto& vtb : vtbs) {
+            pop_mempool.submit(vtb, state);
+        }
+
         bool isValid = false;
-        return CreateAndProcessBlock({tx}, prevBlock, cbKey, &isValid);
+        return CreateAndProcessBlock({}, prevBlock, cbKey, &isValid);
+    }
+
+    CBlock endorseAltBlockAndMine(uint256 hash, uint256 prevBlock, const std::vector<uint8_t>& payoutInfo, size_t generateVtbs = 0)
+    {
+        return endorseAltBlockAndMine(std::vector<uint256>{hash}, prevBlock, payoutInfo, generateVtbs);
+    }
+
+    CBlock endorseAltBlockAndMine(uint256 hash, size_t generateVtbs = 0)
+    {
+        return endorseAltBlockAndMine(hash, ChainActive().Tip()->GetBlockHash(), generateVtbs);
     }
 
     CBlock endorseAltBlockAndMine(uint256 hash, uint256 prevBlock, size_t generateVtbs = 0)
@@ -103,7 +146,7 @@ struct E2eFixture : public TestChain100Setup {
         auto best = popminer.vbk().getBestChain();
         auto tip = best.tip();
         BOOST_CHECK(tip != nullptr);
-        return endorseVbkBlock(tip->height);
+        return endorseVbkBlock(tip->getHeight());
     }
 
     VTB endorseVbkBlock(int height)
@@ -114,9 +157,9 @@ struct E2eFixture : public TestChain100Setup {
             throw std::logic_error("can not find VBK block at height " + std::to_string(height));
         }
 
-        auto btctx = popminer.createBtcTxEndorsingVbkBlock(*endorsed->header);
+        auto btctx = popminer.createBtcTxEndorsingVbkBlock(endorsed->getHeader());
         auto* btccontaining = popminer.mineBtcBlocks(1);
-        auto vbktx = popminer.createVbkPopTxEndorsingVbkBlock(*btccontaining->header, btctx, *endorsed->header, getLastKnownPHLblock());
+        auto vbktx = popminer.createVbkPopTxEndorsingVbkBlock(btccontaining->getHeader(), btctx, endorsed->getHeader(), getLastKnownPHLblock());
         auto* vbkcontaining = popminer.mineVbkBlocks(1);
 
         auto vtbs = popminer.vbkPayloads[vbkcontaining->getHash()];
@@ -127,7 +170,7 @@ struct E2eFixture : public TestChain100Setup {
         auto* current = vbkcontaining;
         auto lastKnownVbk = getLastKnownVBKblock();
         while (current != nullptr && current->getHash() != lastKnownVbk) {
-            vtb.context.push_back(*current->header);
+            vtb.context.push_back(current->getHeader());
             current = current->pprev;
         }
         std::reverse(vtb.context.begin(), vtb.context.end());

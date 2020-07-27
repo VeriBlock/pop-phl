@@ -61,8 +61,9 @@ QT_TRANSLATE_NOOP("placeh-core", ""
 QT_TRANSLATE_NOOP("placeh-core", ""
 "The transaction amount is too small to send after the fee has been deducted"),
 QT_TRANSLATE_NOOP("placeh-core", ""
-"This is a pre-release test build - use at your own risk - do not use for "
-"mining or merchant applications"),
+"This is a reference implementation for Placeholders based coins utilizing VeriBlock's "
+"Proof-of-Proof (PoP) technology. \nCoins associated with this blockchain have no value "
+"and are for testing purposes only."),
 QT_TRANSLATE_NOOP("placeh-core", ""
 "This is the transaction fee you may discard if change is smaller than dust "
 "at this level"),

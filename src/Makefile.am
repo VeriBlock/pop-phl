@@ -213,6 +213,8 @@ PLACEH_CORE_H = \
   rpc/server.h \
   rpc/util.h \
   scheduler.h \
+  script/placehconsensus.h \
+  script/placehconsensus.cpp \
   script/descriptor.h \
   script/keyorigin.h \
   script/sigcache.h \

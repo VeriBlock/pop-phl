@@ -469,6 +469,7 @@ libplaceh_consensus_a_SOURCES = \
   primitives/transaction.h \
   pubkey.cpp \
   pubkey.h \
+  script/placehconsensus.h \
   script/placehconsensus.cpp \
   script/interpreter.cpp \
   script/interpreter.h \

@@ -7,14 +7,8 @@
         <file alias="da">locale/placeh_da.qm</file>
         <file alias="de">locale/placeh_de.qm</file>
         <file alias="el">locale/placeh_el.qm</file>
-        <file alias="en_GB">locale/placeh_en_GB.qm</file>
         <file alias="eo">locale/placeh_eo.qm</file>
         <file alias="es">locale/placeh_es.qm</file>
-        <file alias="es_CL">locale/placeh_es_CL.qm</file>
-        <file alias="es_CO">locale/placeh_es_CO.qm</file>
-        <file alias="es_DO">locale/placeh_es_DO.qm</file>
-        <file alias="es_MX">locale/placeh_es_MX.qm</file>
-        <file alias="es_VE">locale/placeh_es_VE.qm</file>
         <file alias="et">locale/placeh_et.qm</file>
         <file alias="eu">locale/placeh_eu.qm</file>
         <file alias="fa">locale/placeh_fa.qm</file>

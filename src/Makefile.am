@@ -340,8 +340,6 @@ libplaceh_server_a_SOURCES = \
   rpc/net.cpp \
   rpc/rawtransaction.cpp \
   rpc/server.cpp \
-  script/placehconsensus.h \
-  script/placehconsensus.cpp \
   script/sigcache.cpp \
   shutdown.cpp \
   timedata.cpp \

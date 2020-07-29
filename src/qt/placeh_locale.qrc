@@ -60,11 +60,7 @@
         <file alias="ur">locale/placeh_ur.qm</file>
         <file alias="uz@Cyrl">locale/placeh_uz@Cyrl.qm</file>
         <file alias="vi">locale/placeh_vi.qm</file>
-        <file alias="vi_VN">locale/placeh_vi_VN.qm</file>
         <file alias="yo">locale/placeh_yo.qm</file>
-        <file alias="zh-Hans">locale/placeh_zh-Hans.qm</file>
-        <file alias="zh_CN">locale/placeh_zh_CN.qm</file>
-        <file alias="zh_HK">locale/placeh_zh_HK.qm</file>
-        <file alias="zh_TW">locale/placeh_zh_TW.qm</file>
+
     </qresource>
 </RCC>

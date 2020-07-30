@@ -68,15 +68,16 @@
 #define MICRO 0.000001
 #define MILLI 0.001
 
+// Adust these heights for VBK hard fork.
 uint64_t PIP89_ACTIVATION_BLOCK_HEIGHT = 1;
 uint64_t THE_SHIGGIDY_DROP = 4;
 uint64_t THE_BULLISH_DPMIDD_PLATEAU = 3;
-uint64_t THE_BREWHAUS_BREAKAWAY = 129600;
-uint64_t THE_CRUNCHYCAT = 259200;
-uint64_t THE_SILVER_SLOPE = 425815;
-uint64_t THE_LAST_DECLINE = 518400;
-
-uint64_t THE_TAIL_EMISSION = 1036800;
+uint64_t THE_BREWHAUS_BREAKAWAY = 4;
+uint64_t THE_CRUNCHYCAT = 5;
+uint64_t THE_SILVER_SLOPE = 6;
+uint64_t THE_LAST_DECLINE = 7;
+uint64_t THE_TAIL_EMISSION = 336800; 
+// Adust these heights for VBK hard fork.
 
 uint64_t THE_XAGAU_END = 48592440; // ~90 years from 2019-01-24
 
@@ -86,7 +87,10 @@ uint64_t THE_XAGAU_END = 48592440; // ~90 years from 2019-01-24
 //Total:10500000.03815850
 
 CAmount __SNAPSHOT_HEIGHT = 75000;
-CAmount __SNAPSHOT_COIN   = 3500000 * (COIN);
+
+
+// HARD FORK AMOUNT To be Adjusted at time of hard fork.
+CAmount __SNAPSHOT_COIN   = 4500000 * (COIN);
 
 bool CBlockIndexWorkComparator::operator()(const CBlockIndex* pa, const CBlockIndex* pb) const
 {
@@ -1280,7 +1284,7 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
    	
 	if( nHeight >= 2 ) { // reduce down to the expected block reward. 
 		nSubsidy = 5 * COIN;
-	}
+	}   
 
 	if( nHeight >= THE_BULLISH_DPMIDD_PLATEAU ) { // Bullish DPMidd Plateau
         	nSubsidy = 4.5 * COIN;
@@ -1309,6 +1313,10 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
 	if( nHeight >= (THE_TAIL_EMISSION) ) { 
 		nSubsidy = 0.1235  * COIN;
 	}
+    
+    // VBK
+    //nSubsidy = VeriBlock::getCoinbaseSubsidy(nSubsidy);
+    
 	
 	if( nHeight > THE_XAGAU_END ) {
 		nSubsidy = 0;

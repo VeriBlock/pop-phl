@@ -68,6 +68,26 @@
 #define MICRO 0.000001
 #define MILLI 0.001
 
+uint64_t PIP89_ACTIVATION_BLOCK_HEIGHT = 1;
+uint64_t THE_SHIGGIDY_DROP = 4;
+uint64_t THE_BULLISH_DPMIDD_PLATEAU = 3;
+uint64_t THE_BREWHAUS_BREAKAWAY = 129600;
+uint64_t THE_CRUNCHYCAT = 259200;
+uint64_t THE_SILVER_SLOPE = 425815;
+uint64_t THE_LAST_DECLINE = 518400;
+
+uint64_t THE_TAIL_EMISSION = 1036800;
+
+uint64_t THE_XAGAU_END = 48592440; // ~90 years from 2019-01-24
+
+//Date:[92] years from now:0.12350000
+//Height:[48592440]
+//Subsidy:0.12350000
+//Total:10500000.03815850
+
+CAmount __SNAPSHOT_HEIGHT = 75000;
+CAmount __SNAPSHOT_COIN   = 3500000 * (COIN);
+
 bool CBlockIndexWorkComparator::operator()(const CBlockIndex* pa, const CBlockIndex* pb) const
 {
     // First sort by most total work, ...
@@ -1208,6 +1228,7 @@ bool ReadRawBlockFromDisk(std::vector<uint8_t>& block, const CBlockIndex* pindex
     return ReadRawBlockFromDisk(block, block_pos, message_start);
 }
 
+/*
 CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
 {
     int halvings = nHeight / consensusParams.nSubsidyHalvingInterval;
@@ -1220,6 +1241,79 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
     nSubsidy = VeriBlock::getCoinbaseSubsidy(nSubsidy);
 
     nSubsidy >>= halvings;
+    return nSubsidy;
+}
+*/
+
+
+CAmount GetLegacySubsidy()
+{	
+	CAmount nSubsidy = 50 * COIN; // Maintain VBK consistency for genesis block	
+	return nSubsidy;
+}
+
+CAmount GetLegacySnapshot(int nHeight)
+{	
+	if( nHeight >= 1 ) { 
+		CAmount nSubsidy = __SNAPSHOT_COIN ; 
+		return nSubsidy;
+	}
+	else {
+		return GetLegacySubsidy();	
+	}	
+}
+
+
+CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
+{		
+    std::cout << nHeight << std::endl;		
+	CAmount nSubsidy = GetLegacySnapshot(nHeight); // capture legacy coinbase: 
+												   // (pre-DGW) 
+												   // ~42000 * 50 + 
+												   // Implement DGW + PIP88
+												   // ~33000 * 5 (SHA256) + burn contingency
+												   // Burn contigency is to cover: 
+												   // -Moving coins to X16R, 
+												   // -risk of coins being trapped on the exchange.
+												   // -Lost coins 
+												   // -unredeemable wallets potentially.
+   	
+	if( nHeight >= 2 ) { // reduce down to the expected block reward. 
+		nSubsidy = 5 * COIN;
+	}
+
+	if( nHeight >= THE_BULLISH_DPMIDD_PLATEAU ) { // Bullish DPMidd Plateau
+        	nSubsidy = 4.5 * COIN;
+	}
+	
+	if( nHeight >= THE_SHIGGIDY_DROP ) { // Shiggidy drop
+        	nSubsidy = 2.5 * COIN;
+	}
+
+	if( nHeight >= THE_BREWHAUS_BREAKAWAY ) { 
+		nSubsidy = 1.8 * COIN;
+	}		
+
+	if( nHeight >= THE_CRUNCHYCAT ) { 
+		nSubsidy = 1 * COIN;
+	}
+	
+	if( nHeight >= THE_SILVER_SLOPE ) { 
+		nSubsidy = 0.6 * COIN;
+	}
+	
+	if( nHeight >= THE_LAST_DECLINE ) { 
+		nSubsidy = 0.3 * COIN;
+	}
+	
+	if( nHeight >= (THE_TAIL_EMISSION) ) { 
+		nSubsidy = 0.1235  * COIN;
+	}
+	
+	if( nHeight > THE_XAGAU_END ) {
+		nSubsidy = 0;
+	}	
+
     return nSubsidy;
 }
 

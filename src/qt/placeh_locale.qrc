@@ -61,6 +61,5 @@
         <file alias="uz@Cyrl">locale/placeh_uz@Cyrl.qm</file>
         <file alias="vi">locale/placeh_vi.qm</file>
         <file alias="yo">locale/placeh_yo.qm</file>
-
     </qresource>
 </RCC>

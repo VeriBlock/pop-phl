@@ -1315,12 +1315,13 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
 	}
     
     // VBK
-    //nSubsidy = VeriBlock::getCoinbaseSubsidy(nSubsidy);
+    nSubsidy = VeriBlock::getCoinbaseSubsidy(nSubsidy);
     
 	
-	if( nHeight > THE_XAGAU_END ) {
-		nSubsidy = 0;
-	}	
+    // XAGAU end breaks PoP potentially so lets remove it.
+	//if( nHeight > THE_XAGAU_END ) { 
+	//	nSubsidy = 0;
+	//}	
 
     return nSubsidy;
 }

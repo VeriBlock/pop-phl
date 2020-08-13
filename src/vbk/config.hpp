@@ -25,7 +25,7 @@ const static int32_t POP_BLOCK_VERSION_BIT = 0x80000UL;
 
 struct Config {
     // unique index to this chain; network id across chains
-    uint32_t index = 0x3ae6ca;
+    uint32_t index = 0xFEEDC0DE;
 
     uint32_t btc_header_size = 80;
     uint32_t vbk_header_size = 64;
@@ -39,8 +39,8 @@ struct Config {
     altintegration::Config popconfig;
 
     /////// Pop Rewards section start
-    uint32_t POP_REWARD_PERCENTAGE = 40;
-    int32_t POP_REWARD_COEFFICIENT = 20;
+    uint32_t POP_REWARD_PERCENTAGE = 50;
+    int32_t POP_REWARD_COEFFICIENT = 50;
 };
 
 } // namespace VeriBlock

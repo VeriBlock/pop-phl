@@ -49,7 +49,7 @@ RUN set -ex \
     gpg --batch --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys "$key" ; \
   done
 
-ENV PLACEH_PREFIX=/opt/placeh
+ENV VPLACEH_PREFIX=/opt/placeh
 
 COPY . /placeh
 
@@ -77,14 +77,14 @@ RUN ./configure LDFLAGS=-L`ls -d /opt/db-*`/lib/ CPPFLAGS=-I`ls -d /opt/db-*`/in
     --without-gui \
     --with-libs=no \
     --with-daemon \
-    --prefix=${PLACEH_PREFIX}
+    --prefix=${VPLACEH_PREFIX}
 
 RUN make -j$(nproc) install
 
-RUN strip ${PLACEH_PREFIX}/bin/placeh-cli
-RUN strip ${PLACEH_PREFIX}/bin/placehd
-RUN strip ${PLACEH_PREFIX}/bin/placeh-tx
-RUN strip ${PLACEH_PREFIX}/bin/placeh-wallet
+RUN strip ${VPLACEH_PREFIX}/bin/placeh-cli
+RUN strip ${VPLACEH_PREFIX}/bin/placehd
+RUN strip ${VPLACEH_PREFIX}/bin/placeh-tx
+RUN strip ${VPLACEH_PREFIX}/bin/placeh-wallet
 
 # Build stage for compiled artifacts
 FROM alpine
@@ -98,8 +98,8 @@ RUN apk --no-cache add \
   git
 
 ENV DATA_DIR=/home/placeh/.placeh
-ENV PLACEH_PREFIX=/opt/placeh
-ENV PATH=${PLACEH_PREFIX}/bin:$PATH
+ENV VPLACEH_PREFIX=/opt/placeh
+ENV PATH=${VPLACEH_PREFIX}/bin:$PATH
 
 COPY --from=placeh-core /opt /opt
 

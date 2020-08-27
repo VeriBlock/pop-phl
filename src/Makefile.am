@@ -105,18 +105,19 @@ endif
 ### VeriBlock section start
 VBK_H = \
   vbk/entity/context_info_container.hpp \
-  vbk/init.hpp \
-  vbk/service_locator.hpp \
   vbk/pop_service.hpp \
-  vbk/pop_service_impl.hpp \
-  vbk/config.hpp \
-  vbk/typed_wrapper.hpp \
+  vbk/vbk.hpp \
   vbk/merkle.hpp \
   vbk/genesis.hpp \
   vbk/altchainparam.hpp \
   vbk/p2p_sync.hpp \
   vbk/util.hpp \
-  vbk/adaptors/univalue_json.hpp
+  vbk/adaptors/univalue_json.hpp \
+  vbk/adaptors/batch_adapter.hpp \
+  vbk/adaptors/batch.hpp \
+  vbk/adaptors/repository.hpp \
+  vbk/adaptors/cursor.hpp
+
 ### VeriBlock section end
 
 
@@ -213,8 +214,6 @@ PLACEH_CORE_H = \
   rpc/server.h \
   rpc/util.h \
   scheduler.h \
-  script/placehconsensus.h \
-  script/placehconsensus.cpp \
   script/descriptor.h \
   script/keyorigin.h \
   script/sigcache.h \
@@ -297,13 +296,15 @@ libplaceh_util_a-clientversion.$(OBJEXT): obj/build.h
 libplaceh_server_a_CPPFLAGS = $(AM_CPPFLAGS) $(PLACEH_INCLUDES) $(MINIUPNPC_CPPFLAGS) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS)
 libplaceh_server_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libplaceh_server_a_SOURCES = \
-  vbk/pop_service_impl.cpp \
-  vbk/pop_service_impl.hpp \
+  vbk/pop_service.hpp \
+  vbk/pop_service.cpp \
   addrdb.cpp \
   addrman.cpp \
   banman.cpp \
   blockencodings.cpp \
   blockfilter.cpp \
+  bootstraps.cpp \
+  chainparams.cpp \
   chain.cpp \
   consensus/tx_verify.cpp \
   flatfile.cpp \
@@ -330,6 +331,10 @@ libplaceh_server_a_SOURCES = \
   policy/settings.cpp \
   pow.cpp \
   rest.cpp \
+  vbk/merkle.hpp \
+  vbk/merkle.cpp \
+  vbk/genesis.hpp \
+  vbk/genesis.cpp \
   vbk/rpc_register.hpp \
   vbk/rpc_register.cpp \
   vbk/p2p_sync.hpp \
@@ -471,7 +476,6 @@ libplaceh_consensus_a_SOURCES = \
   primitives/transaction.h \
   pubkey.cpp \
   pubkey.h \
-  script/placehconsensus.h \
   script/placehconsensus.cpp \
   script/interpreter.cpp \
   script/interpreter.h \
@@ -495,8 +499,6 @@ libplaceh_common_a_SOURCES = \
   base58.cpp \
   bech32.cpp \
   bloom.cpp \
-  bootstraps.cpp \
-  chainparams.cpp \
   coins.cpp \
   compressor.cpp \
   core_read.cpp \
@@ -626,7 +628,6 @@ placeh_cli_LDADD = \
   $(VERIBLOCK_POP_CPP_LIBS)
 
 placeh_cli_LDADD += $(BOOST_LIBS) $(EVENT_LIBS)
-#
 
 # placeh-tx binary #
 placeh_tx_SOURCES = placeh-tx.cpp
@@ -640,14 +641,19 @@ endif
 
 placeh_tx_LDADD = \
   $(LIBUNIVALUE) \
+  $(MINIUPNPC_LIBS) \
+  $(VERIBLOCK_POP_CPP_LIBS) \
+  $(LIBPLACEH_SERVER) \
   $(LIBPLACEH_COMMON) \
   $(LIBPLACEH_UTIL) \
   $(LIBPLACEH_CONSENSUS) \
   $(LIBPLACEH_CRYPTO) \
+  $(LIBLEVELDB) \
+  $(LIBLEVELDB_SSE42) \
+  $(LIBMEMENV) \
   $(LIBSECP256K1)
 
-placeh_tx_LDADD += $(BOOST_LIBS) $(VERIBLOCK_POP_CPP_LIBS)
-#
+placeh_tx_LDADD += $(BOOST_LIBS) $(VERIBLOCK_POP_CPP_LIBS) $(MINIUPNPC_LIBS)
 
 # placeh-wallet binary #
 placeh_wallet_SOURCES = placeh-wallet.cpp
@@ -660,6 +666,8 @@ placeh_wallet_SOURCES += placeh-wallet-res.rc
 endif
 
 placeh_wallet_LDADD = \
+  $(VERIBLOCK_POP_CPP_LIBS) \
+  $(LIBPLACEH_SERVER) \
   $(LIBPLACEH_WALLET_TOOL) \
   $(LIBPLACEH_WALLET) \
   $(LIBPLACEH_COMMON) \
@@ -674,7 +682,7 @@ placeh_wallet_LDADD = \
   $(LIBUNIVALUE) \
   $(VERIBLOCK_POP_CPP_LIBS)
 
-placeh_wallet_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(MINIUPNPC_LIBS) $(ZMQ_LIBS)
+placeh_wallet_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(MINIUPNPC_LIBS) $(ZMQ_LIBS) $(VERIBLOCK_POP_CPP_LIBS) $(MINIUPNPC_LIBS)
 #
 
 # placehconsensus library #

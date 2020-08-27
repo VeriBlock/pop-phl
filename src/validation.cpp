@@ -51,12 +51,11 @@
 #include <warnings.h>
 
 #include <vbk/pop_service.hpp>
-#include <vbk/pop_service_impl.hpp>
-#include <vbk/service_locator.hpp>
 #include <vbk/util.hpp>
 
 #include <string>
 
+#include "vbk/adaptors/batch_adapter.hpp"
 #include "vbk/merkle.hpp"
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/thread.hpp>
@@ -70,12 +69,13 @@
 
 // Adust these heights for VBK hard fork.
 uint64_t PIP89_ACTIVATION_BLOCK_HEIGHT = 1;
-uint64_t THE_SHIGGIDY_DROP = 4;
-uint64_t THE_BULLISH_DPMIDD_PLATEAU = 3;
-uint64_t THE_BREWHAUS_BREAKAWAY = 4;
-uint64_t THE_CRUNCHYCAT = 5;
-uint64_t THE_SILVER_SLOPE = 6;
-uint64_t THE_LAST_DECLINE = 7;
+
+uint64_t THE_BULLISH_DPMIDD_PLATEAU = 503;
+uint64_t THE_SHIGGIDY_DROP = 504;
+uint64_t THE_BREWHAUS_BREAKAWAY = 505;
+uint64_t THE_CRUNCHYCAT = 506;
+uint64_t THE_SILVER_SLOPE = 507;
+uint64_t THE_LAST_DECLINE = 508;
 uint64_t THE_TAIL_EMISSION = 336800; 
 // Adust these heights for VBK hard fork.
 
@@ -86,11 +86,11 @@ uint64_t THE_XAGAU_END = 48592440; // ~90 years from 2019-01-24
 //Subsidy:0.12350000
 //Total:10500000.03815850
 
-CAmount __SNAPSHOT_HEIGHT = 75000;
+
 
 
 // HARD FORK AMOUNT To be Adjusted at time of hard fork.
-CAmount __SNAPSHOT_COIN   = 4500000 * (COIN);
+//CAmount __SNAPSHOT_COIN   = 4500000 * (COIN);
 
 bool CBlockIndexWorkComparator::operator()(const CBlockIndex* pa, const CBlockIndex* pb) const
 {
@@ -388,7 +388,7 @@ static void UpdateMempoolForReorg(DisconnectedBlockTransactions& disconnectpool,
     AssertLockHeld(cs_main);
 
     // VeriBlock
-    VeriBlock::getService<VeriBlock::PopService>().updatePopMempoolForReorg();
+    VeriBlock::updatePopMempoolForReorg();
 
     std::vector<uint256> vHashUpdate;
     // disconnectpool's insertion_order index sorts the entries from
@@ -1256,22 +1256,12 @@ CAmount GetLegacySubsidy()
 	return nSubsidy;
 }
 
-CAmount GetLegacySnapshot(int nHeight)
-{	
-	if( nHeight >= 1 ) { 
-		CAmount nSubsidy = __SNAPSHOT_COIN ; 
-		return nSubsidy;
-	}
-	else {
-		return GetLegacySubsidy();	
-	}	
-}
 
 
 CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
 {		
     std::cout << nHeight << std::endl;		
-	CAmount nSubsidy = GetLegacySnapshot(nHeight); // capture legacy coinbase: 
+	CAmount nSubsidy = GetLegacySubsidy();         // capture legacy coinbase: 
 												   // (pre-DGW) 
 												   // ~42000 * 50 + 
 												   // Implement DGW + PIP88
@@ -1283,7 +1273,7 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
 												   // -unredeemable wallets potentially.
    	
 	if( nHeight >= 2 ) { // reduce down to the expected block reward. 
-		nSubsidy = 5 * COIN;
+		nSubsidy = 9000 * COIN;
 	}   
 
 	if( nHeight >= THE_BULLISH_DPMIDD_PLATEAU ) { // Bullish DPMidd Plateau
@@ -1316,12 +1306,7 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
     
     // VBK
     nSubsidy = VeriBlock::getCoinbaseSubsidy(nSubsidy);
-    
-	
-    // XAGAU end breaks PoP potentially so lets remove it.
-	//if( nHeight > THE_XAGAU_END ) { 
-	//	nSubsidy = 0;
-	//}	
+
 
     return nSubsidy;
 }
@@ -1498,6 +1483,11 @@ void CChainState::InvalidBlockFound(CBlockIndex* pindex, const BlockValidationSt
 {
     if (state.GetResult() != BlockValidationResult::BLOCK_MUTATED) {
         pindex->nStatus |= BLOCK_FAILED_VALID;
+
+        VeriBlock::GetPop()
+            .altTree
+            ->invalidateSubtree(pindex->GetBlockHash().asVector(), altintegration::BLOCK_FAILED_BLOCK);
+
         m_blockman.m_failed_blocks.insert(pindex);
         setDirtyBlockIndex.insert(pindex);
         setBlockIndexCandidates.erase(pindex);
@@ -1813,7 +1803,7 @@ DisconnectResult CChainState::DisconnectBlock(const CBlock& block, const CBlockI
 
     auto prevHash = pindex->pprev->GetBlockHash();
     altintegration::ValidationState state;
-    VeriBlock::getService<VeriBlock::PopService>().setState(prevHash, state);
+    VeriBlock::setState(prevHash, state);
 
     // move best block pointer to prevout block
     view.SetBestBlock(prevHash);
@@ -2240,9 +2230,8 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
         UpdateCoins(tx, view, i == 0 ? undoDummy : blockundo.vtxundo.back(), pindex->nHeight);
     }
 
-    auto& pop = VeriBlock::getService<VeriBlock::PopService>();
     altintegration::ValidationState _state;
-    if (!pop.setState(pindex->GetBlockHash(), _state)) {
+    if (!VeriBlock::setState(pindex->GetBlockHash(), _state)) {
         return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-block-pop", strprintf("Block %s is POP invalid: %s", pindex->GetBlockHash().ToString(), _state.toString()));
     }
 
@@ -2251,14 +2240,14 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
     LogPrint(BCLog::BENCH, "      - Connect %u transactions: %.2fms (%.3fms/tx, %.3fms/txin) [%.2fs (%.2fms/blk)]\n", (unsigned)block.vtx.size(), MILLI * (nTime3 - nTime2), MILLI * (nTime3 - nTime2) / block.vtx.size(), nInputs <= 1 ? 0 : MILLI * (nTime3 - nTime2) / (nInputs - 1), nTimeConnect * MICRO, nTimeConnect * MILLI / nBlocksTotal);
 
     CAmount PoPrewards = 0;
-    for (const auto& it : pop.getPopRewards(*pindex->pprev, chainparams.GetConsensus())) {
+    for (const auto& it : VeriBlock::getPopRewards(*pindex->pprev, chainparams.GetConsensus())) {
         PoPrewards += it.second;
     }
     assert(PoPrewards >= 0);
 
     CAmount blockReward = nFees + GetBlockSubsidy(pindex->nHeight, chainparams.GetConsensus()) + PoPrewards;
     assert(pindex->pprev && "previous block ptr is nullptr");
-    if (!pop.checkCoinbaseTxWithPopRewards(*block.vtx[0], blockReward, *pindex->pprev, chainparams.GetConsensus(), state)) {
+    if (!VeriBlock::checkCoinbaseTxWithPopRewards(*block.vtx[0], blockReward, *pindex->pprev, chainparams.GetConsensus(), state)) {
         return false;
     }
 
@@ -2483,9 +2472,8 @@ void static UpdateTip(const CBlockIndex* pindexNew, const CChainParams& chainPar
         g_best_block = pindexNew->GetBlockHash();
         g_best_block_cv.notify_all();
     }
-    auto& pop = VeriBlock::getService<VeriBlock::PopService>();
     altintegration::ValidationState state;
-    bool ret = pop.setState(pindexNew->GetBlockHash(), state);
+    bool ret = VeriBlock::setState(pindexNew->GetBlockHash(), state);
     assert(ret && "block has been checked previously and should be valid");
 
     std::string warningMessages;
@@ -2507,7 +2495,9 @@ void static UpdateTip(const CBlockIndex* pindexNew, const CChainParams& chainPar
         // Check the version of the last 100 blocks to see if we need to upgrade:
         for (int i = 0; i < 100 && pindex != nullptr; i++) {
             int32_t nExpectedVersion = ComputeBlockVersion(pindex->pprev, chainParams.GetConsensus());
-            if (pindex->nVersion > VERSIONBITS_LAST_OLD_BLOCK_VERSION && ((pindex->nVersion ^ VeriBlock::POP_BLOCK_VERSION_BIT) & ~nExpectedVersion) != 0)
+            // do not expect this flag to be set
+            auto version = pindex->nVersion & (~VeriBlock::POP_BLOCK_VERSION_BIT);
+            if (pindex->nVersion > VERSIONBITS_LAST_OLD_BLOCK_VERSION && (version & ~nExpectedVersion) != 0)
                 ++nUpgraded;
             pindex = pindex->pprev;
         }
@@ -2515,11 +2505,12 @@ void static UpdateTip(const CBlockIndex* pindexNew, const CChainParams& chainPar
             AppendWarning(warningMessages, strprintf(_("%d of last 100 blocks have unexpected version").translated, nUpgraded));
     }
 
-    auto* vbktip = pop.getAltTree().vbk().getBestChain().tip();
-    auto* btctip = pop.getAltTree().btc().getBestChain().tip();
+    auto& pop = VeriBlock::GetPop();
+    auto* vbktip = pop.altTree->vbk().getBestChain().tip();
+    auto* btctip = pop.altTree->btc().getBestChain().tip();
     LogPrintf("%s: new best=ALT:%d:%s %s %s version=0x%08x log2_work=%.8g tx=%lu date='%s' progress=%f cache=%.1fMiB(%utxo)%s\n", __func__,
         pindexNew->nHeight,
-        pindexNew->GetBlockHash().ToString(),
+        pindexNew->GetBlockHash().GetHex(),
         (vbktip ? vbktip->toShortPrettyString() : "VBK:nullptr"),
         (btctip ? btctip->toShortPrettyString() : "PHL:nullptr"),
         pindexNew->nVersion,
@@ -2577,7 +2568,7 @@ bool CChainState::DisconnectTip(BlockValidationState& state, const CChainParams&
     }
 
     // VeriBlock
-    VeriBlock::getService<VeriBlock::PopService>().addDisconnectedPopdata(block.popData);
+    VeriBlock::addDisconnectedPopdata(block.popData);
 
     m_chain.SetTip(pindexDelete->pprev);
 
@@ -2717,7 +2708,7 @@ bool CChainState::ConnectTip(BlockValidationState& state, const CChainParams& ch
 
 
     // VeriBlock: remove from pop_mempool
-    VeriBlock::getService<VeriBlock::PopService>().removePayloadsFromMempool(blockConnecting.popData);
+    VeriBlock::removePayloadsFromMempool(blockConnecting.popData);
 
 
     // Update m_chain & related variables.
@@ -2741,7 +2732,6 @@ bool CChainState::ConnectTip(BlockValidationState& state, const CChainParams& ch
 CBlockIndex* CChainState::FindBestChain()
 {
     AssertLockHeld(cs_main);
-    auto& pop_service = VeriBlock::getService<VeriBlock::PopService>();
     CBlockIndex* bestCandidate = m_chain.Tip();
 
     // return early
@@ -2760,7 +2750,7 @@ CBlockIndex* CChainState::FindBestChain()
             continue;
         }
 
-        int popComparisonResult = pop_service.compareForks(*bestCandidate, *pindexNew);
+        int popComparisonResult = VeriBlock::compareForks(*bestCandidate, *pindexNew);
         // even if next candidate is pop equal to current pindexNew, it is likely to have higher work
         if (popComparisonResult <= 0) {
             // candidate is either has POP or WORK better
@@ -3252,9 +3242,8 @@ void CChainState::ResetBlockFailureFlags(CBlockIndex* pindex)
     AssertLockHeld(cs_main);
 
     int nHeight = pindex->nHeight;
-
-    auto& pop = VeriBlock::getService<VeriBlock::PopService>();
-    pop.getAltTree().revalidateSubtree(pindex->GetBlockHash().asVector(), altintegration::BLOCK_FAILED_MASK, true);
+    auto blockHash = pindex->GetBlockHash().asVector();
+    VeriBlock::GetPop().altTree->revalidateSubtree(blockHash, altintegration::BLOCK_FAILED_BLOCK, true);
 
     // Remove the invalidity flag from this block and all its descendants.
     BlockMap::iterator it = m_blockman.m_block_index.begin();
@@ -3473,6 +3462,12 @@ bool CheckBlock(const CBlock& block, BlockValidationState& state, const Consensu
         return false;
 
     // VeriBlock: merkle root verification currently depends on a context, so it has been moved to ContextualCheckBlock
+    if(block.nVersion & VeriBlock::POP_BLOCK_VERSION_BIT && block.popData.empty()) {
+        return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-block-pop-version", "POP bit is set, but pop data is empty");
+    }
+    if(!(block.nVersion & VeriBlock::POP_BLOCK_VERSION_BIT) && !block.popData.empty()) {
+        return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-block-pop-version", "POP bit is NOT set, and pop data is NOT empty");
+    }
 
     // All potential-corruption validation must be done before we do any
     // transaction validation, as otherwise we may mark the header as invalid
@@ -3631,11 +3626,8 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, BlockValidatio
         return state.Invalid(BlockValidationResult::BLOCK_INVALID_HEADER, "time-too-old", "block's timestamp is too early");
 
     // Check timestamp
-    if (block.GetBlockTime() > nAdjustedTime + MAX_FUTURE_BLOCK_TIME)
+    if (block.GetBlockTime() > nAdjustedTime + VeriBlock::GetPop().config->alt->maxFutureBlockTime())
         return state.Invalid(BlockValidationResult::BLOCK_TIME_FUTURE, "time-too-new", "block timestamp too far in the future");
-
-    if (block.GetBlockTime() > nAdjustedTime + VeriBlock::getService<VeriBlock::Config>().max_future_block_time)
-        return state.Invalid(BlockValidationResult::BLOCK_TIME_FUTURE, "time-too-new", "block timestamp too far in the future for the VeriBlock security");
 
     // Reject outdated version blocks when 95% (75% on testnet) of the network has upgraded:
     // check for version 2, 3 and 4 upgrades
@@ -3730,17 +3722,6 @@ bool ContextualCheckBlock(const CBlock& block, BlockValidationState& state, cons
         return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-blk-weight", strprintf("%s : weight limit failed", __func__));
     }
 
-    {
-        LOCK(cs_main);
-        auto& pop = VeriBlock::getService<VeriBlock::PopService>();
-        if (!pop.addAllBlockPayloads(pindexPrev, block, state)) {
-            return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-block-pop-payloads",
-                strprintf("Can not add POP payloads to block height: %d , hash: %s: %s",
-                    (pindexPrev->nHeight + 1), block.GetHash().ToString(),
-                    FormatStateMessage(state)));
-        }
-    }
-
     return true;
 }
 
@@ -3827,11 +3808,9 @@ bool BlockManager::AcceptBlockHeader(const CBlockHeader& block, BlockValidationS
     if (ppindex)
         *ppindex = pindex;
 
-    auto& pop = VeriBlock::getService<VeriBlock::PopService>();
-    if(!pop.acceptBlock(*pindex, state)) {
+    if (!VeriBlock::acceptBlock(*pindex, state)) {
         return error("%s: ALT tree could not accept block ALT:%d:%s, reason: %s", __func__, pindex->nHeight, pindex->GetBlockHash().ToString(), state.ToString());
     }
-
     return true;
 }
 
@@ -3938,6 +3917,15 @@ bool CChainState::AcceptBlock(const std::shared_ptr<const CBlock>& pblock, Block
         return error("%s: %s", __func__, FormatStateMessage(state));
     }
 
+    {
+        if (!VeriBlock::addAllBlockPayloads(block, state)) {
+            return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-block-pop-payloads",
+                                 strprintf("Can not add POP payloads to block height: %d , hash: %s: %s",
+                                           pindex->nHeight, block.GetHash().ToString(),
+                                           FormatStateMessage(state)));
+        }
+    }
+
     // Header is valid/has work, merkle tree and segwit merkle tree are good...RELAY NOW
     // (but if it does not build on our best tip, let the SendMessages loop relay it)
     if (!IsInitialBlockDownload() && m_chain.Tip() == pindex->pprev)
@@ -4018,12 +4006,15 @@ bool TestBlockValidity(BlockValidationState& state, const CChainParams& chainpar
 
     // VeriBlock: Block that have been passed to TestBlockValidity may not exist in alt tree, because technically it was not created ("mined").
     // in this case, add it and then remove
-    auto& tree = VeriBlock::getService<VeriBlock::PopService>().getAltTree();
-    auto _hash = block.GetHash().asVector();
-    auto* _index = tree.getBlockIndex(_hash);
+    auto& tree = *VeriBlock::GetPop().altTree;
+    auto _hash = block_hash.asVector();
     bool shouldRemove = false;
-    if (!_index) {
+    if (!tree.getBlockIndex(_hash)) {
         shouldRemove = true;
+        auto containing = VeriBlock::blockToAltBlock(indexDummy);
+        altintegration::ValidationState _state;
+        bool ret = tree.acceptBlockHeader(containing, _state);
+        assert(ret && "alt tree can not accept alt block");
     }
 
     auto _f = altintegration::Finalizer([shouldRemove, _hash, &tree]() {
@@ -4258,6 +4249,13 @@ bool BlockManager::LoadBlockIndex(
     if (!blocktree.LoadBlockIndexGuts(consensus_params, [this](const uint256& hash) EXCLUSIVE_LOCKS_REQUIRED(cs_main) { return this->InsertBlockIndex(hash); }))
         return false;
 
+    bool hasPopData = VeriBlock::hasPopData(blocktree);
+
+    if(!hasPopData) {
+        LogPrintf("PHL/VBK/ALT tips not found... skipping block index loading\n");
+        return true;
+    }
+
     // Calculate nChainWork
     std::vector<std::pair<int, CBlockIndex*>> vSortedByHeight;
     vSortedByHeight.reserve(m_block_index.size());
@@ -4296,11 +4294,29 @@ bool BlockManager::LoadBlockIndex(
             pindexBestInvalid = pindex;
         if (pindex->pprev)
             pindex->BuildSkip();
-        if (pindex->IsValid(BLOCK_VALID_TREE) && (pindexBestHeader == nullptr || CBlockIndexWorkComparator()(pindexBestHeader, pindex)))
-            pindexBestHeader = pindex;
+        // do not set best chain here
+    }
 
-        BlockValidationState state;
-        if (!VeriBlock::getService<VeriBlock::PopService>().acceptBlock(*pindex, state)) {
+    // get best chain from ALT tree and update vPHL's best chain
+    {
+        AssertLockHeld(cs_main);
+
+        // load blocks
+        std::unique_ptr<CDBIterator> pcursor(blocktree.NewIterator());
+        if (!VeriBlock::loadTrees(*pcursor)) {
+            return false;
+        }
+
+        // ALT tree tip should be set - this is our last best tip
+        auto* tip = VeriBlock::GetPop().altTree->getBestChain().tip();
+        assert(tip && "we could not load tip of alt block");
+        uint256 hash(tip->getHash());
+
+        CBlockIndex* index = LookupBlockIndex(hash);
+        assert(index);
+        if (index->IsValid(BLOCK_VALID_TREE)) {
+            pindexBestHeader = index;
+        } else {
             return false;
         }
     }
@@ -4817,9 +4833,8 @@ bool CChainState::LoadGenesisBlock(const CChainParams& chainparams)
         if (blockPos.IsNull())
             return error("%s: writing genesis block to disk failed", __func__);
         CBlockIndex* pindex = m_blockman.AddToBlockIndex(block);
-        auto& pop = VeriBlock::getService<VeriBlock::PopService>();
         BlockValidationState state;
-        if (!pop.acceptBlock(*pindex, state)) {
+        if (!VeriBlock::acceptBlock(*pindex, state)) {
             return false;
         }
         ReceivedBlockTransactions(block, pindex, blockPos, chainparams.GetConsensus());

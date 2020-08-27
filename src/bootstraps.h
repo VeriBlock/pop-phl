@@ -9,18 +9,15 @@
 #include <string>
 #include <vector>
 
-#include "chainparams.h"
 #include <primitives/block.h>
 #include <util/system.h> // for gArgs
 #include <veriblock/config.hpp>
 
-#include "vbk/util.hpp"
+extern const int testnetVBKstartHeight;
+extern const std::vector<std::string> testnetVBKblocks;
 
-extern int testnetVBKstartHeight;
-extern std::vector<std::string> testnetVBKblocks;
-
-extern int testnetBTCstartHeight;
-extern std::vector<std::string> testnetBTCblocks;
+extern const int testnetBTCstartHeight;
+extern const std::vector<std::string> testnetBTCblocks;
 
 struct AltChainParamsPHL : public altintegration::AltChainParams {
     ~AltChainParamsPHL() override = default;
@@ -38,15 +35,12 @@ struct AltChainParamsPHL : public altintegration::AltChainParams {
         return bootstrap;
     }
 
-    uint32_t getIdentifier() const noexcept override
+    int64_t getIdentifier() const noexcept override
     {
-        return 0xdeadbeef;
+        return 0xFEEDC0DE;
     }
 
-    std::vector<uint8_t> getHash(const std::vector<uint8_t>& bytes) const noexcept override
-    {
-        return VeriBlock::headerFromBytes(bytes).GetHash().asVector();
-    }
+    std::vector<uint8_t> getHash(const std::vector<uint8_t>& bytes) const noexcept override;
 
     altintegration::AltBlock bootstrap;
 };
@@ -61,4 +55,5 @@ void selectPopConfig(
     const std::string& btcblocks = {},
     int vbkstart = 0,
     const std::string& vbkblocks = {});
-#endif
+
+#endif //__BOOTSTRAPS_PHL_VBK

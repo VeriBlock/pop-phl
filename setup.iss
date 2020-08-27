@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Placeholders"
-#define MyAppVersion "2.1.0"
+#define MyAppVersion "0.0.3"
 #define MyAppPublisher "Placeholder Team"
 #define MyAppURL "https://www.placeh.io"
 #define MyAppExeName "placeh-qt.exe"
@@ -11,7 +11,7 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{6182a389-fd45-4d5b-9990-290189971034}}
+AppId={{aa436eb0-20e3-487e-a2cb-8e49bc4ef5fc}}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
@@ -21,7 +21,7 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DisableProgramGroupPage=yes
-OutputBaseFilename=setup-placeh-2.1.0
+OutputBaseFilename=setup-placeh-0.0.3
 Compression=lzma
 SolidCompression=yes
 
@@ -35,12 +35,12 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\git\repo\pop-phl\src\qt\placeh-qt.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\git\repo\pop-phl\placeh.conf"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\git\repo\pop-phl\placeh.conf"; DestDir: "{userappdata}\placeh\"; Flags: ignoreversion
-Source: "C:\git\repo\pop-phl\src\placeh-cli.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\git\repo\pop-phl\src\placehd.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\git\repo\pop-phl\README.md"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\git\repo\vbk-ri-btc\src\qt\placeh-qt.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\git\repo\vbk-ri-btc\placeh.conf"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\git\repo\vbk-ri-btc\placeh.conf"; DestDir: "{userappdata}\placeh\"; Flags: ignoreversion
+Source: "C:\git\repo\vbk-ri-btc\src\placeh-cli.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\git\repo\vbk-ri-btc\src\placehd.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\git\repo\vbk-ri-btc\README.md"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

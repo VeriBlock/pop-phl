@@ -1,45 +1,49 @@
-Placeholder Core integration/staging tree
+VeriBlock
+=========
+
+Fork created at [8830cb58abc888144a1edb9b2fba427716cc45d8](https://github.com/placeh/placeh/commit/8830cb58abc888144a1edb9b2fba427716cc45d8).
+
+VeriBlock Placeholders Core integration/staging tree
 =====================================
 
-https://www.placeh.io
- 
+https://veriblock.org
+
 What is Placeholders?
 ----------------
 
-Placeholders is an experimental digital currency and cloud platform that enables instant payments to anyone, and virtual machine procurement anywhere in the world. Placeholders uses peer-to-peer technology to operate with no central authority: managing transactions and issuing money and virtual machines are carried out collectively by the network. 
+Placeholders is an experimental digital currency that enables instant payments to
+anyone, anywhere in the world. Placeholders uses peer-to-peer technology to operate
+with no central authority: managing transactions and issuing money are carried
+out collectively by the network. Placeholders Core is the name of open source
+software which enables the use of this currency.
+
+For more information, as well as an immediately usable, binary version of
+the Placeholders Core software, see https://placehcore.org/en/download/, or read the
+[original whitepaper](https://placehcore.org/placeh.pdf).
 
 License
 -------
 
-Placeholder Core is released under the terms of the MIT license. See [COPYING](COPYING) for more
+Placeholders Core is released under the terms of the MIT license. See [COPYING](COPYING) for more
 information or see https://opensource.org/licenses/MIT.
-
-Placeholders Core contains Patent Pending technology.
 
 Development Process
 -------------------
 
 The `master` branch is regularly built and tested, but is not guaranteed to be
-completely stable. [Tags](https://github.com/xagau/Placeholders-X16R/tags) are created
-regularly to indicate new official, stable release versions of Placeholder Core.
+completely stable. [Tags](https://github.com/placeh/placeh/tags) are created
+regularly to indicate new official, stable release versions of Placeholders Core.
 
-The contribution workflow is described in [CONTRIBUTING.md](CONTRIBUTING.md).
-
-Developer Discord can be found on Discord at #placeholders.
-https://discord.gg/qMkfbxG
+The contribution workflow is described in [CONTRIBUTING.md](CONTRIBUTING.md)
+and useful hints for developers can be found in [doc/developer-notes.md](doc/developer-notes.md).
 
 Testing
 -------
+
 Testing and code review is the bottleneck for development; we get more pull
 requests than we can review and test on short notice. Please be patient and help out by testing
 other people's pull requests, and remember this is a security-critical project where any mistake might cost people
-lots of placeholders.
-
-Testnet is now up and running and available to use during development. There is an issue when connecting to the testnet that requires the use of the -maxtipage parameter in order to connect to the test network initially. 
-
-After the initial launch the -maxtipage parameter is not required.
-
-Use this command to initially start placehd on the testnet. <code>./placehd -testnet -maxtipage=259200</code>
+lots of money.
 
 ### Automated Testing
 
@@ -52,18 +56,7 @@ There are also [regression and integration tests](/test), written
 in Python, that are run automatically on the build server.
 These tests can be run (if the [test dependencies](/test) are installed) with: `test/functional/test_runner.py`
 
-
-### Windows Dependencies
-
-For Tapestry products, you are required to use the following console programs:
--mktorrent.exe
--aria2c.exe
--cygcrypto-1.0.0.dll
--cygwin1.dll
--cygz.dll
--prefix.exe
-
-All of these projects are open source and can be found as forked sub-projects in the xagau workspace.
+The Travis CI system makes sure that every pull request is built for Windows, Linux, and macOS, and that unit/sanity tests are run automatically.
 
 ### Manual Quality Assurance (QA) Testing
 
@@ -72,30 +65,16 @@ code. This is especially important for large or high-risk changes. It is useful
 to add a test plan to the pull request description if testing the changes is
 not straightforward.
 
+Translations
+------------
 
-About Placeholders
-----------------
-A digital peer to peer network for the facilitation of decentralized compute platform transfer and operation.
+Changes to translations as well as new translations can be submitted to
+[Placeholders Core's Transifex page](https://www.transifex.com/placeh/placeh/).
 
-Placeholders are typically used as a place to put something until you decide what is required.
+Translations are periodically pulled from Transifex and merged into the git repository. See the
+[translation process](doc/translation_process.md) for details on how this works.
 
-Thank you to the Bitcoin developers. 
-Thank you to the Raven developers. 
+**Important**: We do not accept translation changes as GitHub pull requests because the next
+pull from Transifex would automatically overwrite them again.
 
-The Placeholders project is launched based on the hard work and continuous effort of over 400 Bitcoin developers who made over 14,000 commits over the life to date of the Bitcoin project. We are eternally grateful to you for your efforts and diligence in making a secure network and for their support of free and open source software development.  The Placeholders experiment is made on the foundation you built.
-
-
-Abstract
-----------------
-Placeholders aims to implement a blockchain which is optimized specifically for the use case of transferring any electronic data, including entire Virtual Machines from one holder to another. Based on the extensive development and testing of Bitcoin, Placeholders is built on a fork of the Raven code. Key changes include decline curve for coin emission, smaller block reward (10.5M vs 21B). Placeholders is free and open source and will be issued and mined transparently with no pre-mine, developer allocation or any other similar set aside. Placeholders is intended to prioritize user control, privacy and censorship resistance and be jurisdiction agnostic while allowing simple optional additional features for users based on need.
-
-To influence the direction or contribute to the project it is recommended to join our discord group and become active.
-
-Placeholders is designed to be a use case specific blockchain designed to efficiently handle one specific function: a decentralized cloud platform.
-
-Bitcoin is and always should be focused on its goals of being a better form of money. Bitcoin developers will unlikely prioritize improvements or features which are specifically beneficial to the facilitation of token transfers.  One goal of the Placeholders project is to see if a use case specific blockchain and development effort can create code which can add advantages for specific use cases.
-
-In the new global economy, borders and jurisdictions will be less relevant as more assets are tradable and trade across borders is increasingly frictionless. In an age where people can move significant amounts of wealth instantly using Bitcoin, global consumers will likely demand the same efficiency for their securities and similar asset holdings. Computer scientists, political writers and the like will demand to have an affordable, censorship resistant way to publish content.
-
-Placeholders contains [Patent Pending] technology.
-
+Translators should also subscribe to the [mailing list](https://groups.google.com/forum/#!forum/placeh-translators).

@@ -531,7 +531,7 @@ void CoinControlDialog::updateLabels(WalletModel *model, QDialog* dialog)
     }
 
     // actually update labels
-    int nDisplayUnit = PlaceholdersUnits::vPHL;
+    int nDisplayUnit = PlaceholdersUnits::PHL;
     if (model && model->getOptionsModel())
         nDisplayUnit = model->getOptionsModel()->getDisplayUnit();
 

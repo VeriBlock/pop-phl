@@ -28,6 +28,7 @@ struct AltChainParamsPHL : public altintegration::AltChainParams {
         bootstrap.hash = std::vector<uint8_t>{hash.begin(), hash.end()};
         bootstrap.height = 0; // pop is enabled starting at genesis
         bootstrap.timestamp = genesis.GetBlockTime();
+        mMaxFutureBlockTime = 2 * 60;
     }
 
     altintegration::AltBlock getBootstrapBlock() const noexcept override

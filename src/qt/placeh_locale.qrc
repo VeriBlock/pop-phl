@@ -15,7 +15,6 @@
         <file alias="fi">locale/placeh_fi.qm</file>
         <file alias="fil">locale/placeh_fil.qm</file>
         <file alias="fr">locale/placeh_fr.qm</file>
-        <file alias="gl">locale/placeh_gl.qm</file>
         <file alias="he">locale/placeh_he.qm</file>
         <file alias="hi">locale/placeh_hi.qm</file>
         <file alias="hr">locale/placeh_hr.qm</file>

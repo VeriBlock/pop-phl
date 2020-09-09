@@ -33,7 +33,7 @@ void printConfig(const altintegration::Config& config)
     assert(config.alt);
 
     LogPrintf(R"(Applied POP config:
- PHL:
+ BTC:
   network     : %s
   startHeight : %d
   total blocks: %d

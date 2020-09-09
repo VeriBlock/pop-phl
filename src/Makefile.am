@@ -1,4 +1,5 @@
-# Copyright (c) 2013-2016 The Placeholders Core developers
+# Copyright (c) 2013-2016 The Placeholder Team developers
+# Copyright (c) 2013-2016 The Bitcoin Core developers
 # Copyright (c) 2019-2020 Xenios SEZC
 # https://www.veriblock.org
 # Distributed under the MIT software license, see the accompanying
@@ -779,3 +780,5 @@ endif
 if ENABLE_QT_TESTS
 include Makefile.qttest.include
 endif
+
+

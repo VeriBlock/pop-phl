@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2019 The Placeholders Core developers
+// Copyright (c) 2011-2019 The Bitcoin Core developers
 // Copyright (c) 2019-2020 Xenios SEZC
 // https://www.veriblock.org
 // Distributed under the MIT software license, see the accompanying
@@ -258,4 +258,5 @@ CBlock getBlock13b8a()
     stream >> block;
     return block;
 }
+
 

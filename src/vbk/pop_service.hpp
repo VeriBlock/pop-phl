@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_SRC_VBK_POP_SERVICE_HPP
-#define PLACEH_SRC_VBK_POP_SERVICE_HPP
+#ifndef BITCOIN_SRC_VBK_POP_SERVICE_HPP
+#define BITCOIN_SRC_VBK_POP_SERVICE_HPP
 
 #include <veriblock/altintegration.hpp>
 #include <veriblock/storage/batch_adaptor.hpp>
@@ -30,6 +30,7 @@ void SetPopConfig(const altintegration::Config& config);
 void SetPop(CDBWrapper& db);
 std::string toPrettyString(const altintegration::Altintegration& pop);
 
+CBlockIndex* compareTipToBlock(CBlockIndex* candidate);
 bool acceptBlock(const CBlockIndex& indexNew, BlockValidationState& state);
 bool checkPopDataSize(const altintegration::PopData& popData, altintegration::ValidationState& state);
 bool popdataStatelessValidation(const altintegration::PopData& popData, altintegration::ValidationState& state);
@@ -61,4 +62,4 @@ CAmount getCoinbaseSubsidy(const CAmount& subsidy);
 
 } // namespace VeriBlock
 
-#endif //PLACEH_SRC_VBK_POP_SERVICE_HPP
+#endif //BITCOIN_SRC_VBK_POP_SERVICE_HPP

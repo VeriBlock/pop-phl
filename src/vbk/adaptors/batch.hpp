@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file LICENSE or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef INTEGRATION_REFERENCE_PHL_BATCH_HPP
-#define INTEGRATION_REFERENCE_PHL_BATCH_HPP
+#ifndef INTEGRATION_REFERENCE_BTC_BATCH_HPP
+#define INTEGRATION_REFERENCE_BTC_BATCH_HPP
 
 #include "dbwrapper.h"
 #include <veriblock/storage/batch.hpp>
@@ -43,4 +43,4 @@ private:
 
 } // namespace VeriBlock
 
-#endif //INTEGRATION_REFERENCE_PHL_BATCH_HPP
+#endif //INTEGRATION_REFERENCE_BTC_BATCH_HPP

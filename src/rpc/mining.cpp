@@ -1,5 +1,5 @@
 // Copyright (c) 2010 Satoshi Nakamoto
-// Copyright (c) 2009-2018 The Placeholders Core developers
+// Copyright (c) 2009-2018 The Bitcoin Core developers
 // Copyright (c) 2019-2020 Xenios SEZC
 // https://www.veriblock.org
 // Distributed under the MIT software license, see the accompanying
@@ -155,7 +155,7 @@ static UniValue generatetodescriptor(const JSONRPCRequest& request)
         "\nMine blocks immediately to a specified descriptor (before the RPC call returns)\n",
         {
             {"num_blocks", RPCArg::Type::NUM, RPCArg::Optional::NO, "How many blocks are generated immediately."},
-            {"descriptor", RPCArg::Type::STR, RPCArg::Optional::NO, "The descriptor to send the newly generated placeh to."},
+            {"descriptor", RPCArg::Type::STR, RPCArg::Optional::NO, "The descriptor to send the newly generated bitcoin to."},
             {"maxtries", RPCArg::Type::NUM, /* default */ "1000000", "How many iterations to try."},
         },
         RPCResult{
@@ -195,7 +195,7 @@ static UniValue generatetoaddress(const JSONRPCRequest& request)
                 "\nMine blocks immediately to a specified address (before the RPC call returns)\n",
                 {
                     {"nblocks", RPCArg::Type::NUM, RPCArg::Optional::NO, "How many blocks are generated immediately."},
-                    {"address", RPCArg::Type::STR, RPCArg::Optional::NO, "The address to send the newly generated placeh to."},
+                    {"address", RPCArg::Type::STR, RPCArg::Optional::NO, "The address to send the newly generated bitcoin to."},
                     {"maxtries", RPCArg::Type::NUM, /* default */ "1000000", "How many iterations to try."},
                 },
                 RPCResult{
@@ -204,7 +204,7 @@ static UniValue generatetoaddress(const JSONRPCRequest& request)
                 RPCExamples{
             "\nGenerate 11 blocks to myaddress\n"
             + HelpExampleCli("generatetoaddress", "11 \"myaddress\"")
-            + "If you are running the placeh core wallet, you can get a new address to send the newly generated placeh to with:\n"
+            + "If you are running the bitcoin core wallet, you can get a new address to send the newly generated bitcoin to with:\n"
             + HelpExampleCli("getnewaddress", "")
                 },
             }.Check(request);
@@ -264,7 +264,7 @@ static UniValue getmininginfo(const JSONRPCRequest& request)
 }
 
 
-// NOTE: Unlike wallet RPC (which use vPHL values), mining RPCs follow GBT (BIP 22) in using satoshi amounts
+// NOTE: Unlike wallet RPC (which use vBTC values), mining RPCs follow GBT (BIP 22) in using satoshi amounts
 static UniValue prioritisetransaction(const JSONRPCRequest& request)
 {
             RPCHelpMan{"prioritisetransaction",
@@ -335,10 +335,10 @@ static UniValue getblocktemplate(const JSONRPCRequest& request)
                 "\nIf the request parameters include a 'mode' key, that is used to explicitly select between the default 'template' request or a 'proposal'.\n"
                 "It returns data needed to construct a block to work on.\n"
                 "For full specification, see BIPs 22, 23, 9, and 145:\n"
-                "    https://github.com/placeh/bips/blob/master/bip-0022.mediawiki\n"
-                "    https://github.com/placeh/bips/blob/master/bip-0023.mediawiki\n"
-                "    https://github.com/placeh/bips/blob/master/bip-0009.mediawiki#getblocktemplate_changes\n"
-                "    https://github.com/placeh/bips/blob/master/bip-0145.mediawiki\n",
+                "    https://github.com/bitcoin/bips/blob/master/bip-0022.mediawiki\n"
+                "    https://github.com/bitcoin/bips/blob/master/bip-0023.mediawiki\n"
+                "    https://github.com/bitcoin/bips/blob/master/bip-0009.mediawiki#getblocktemplate_changes\n"
+                "    https://github.com/bitcoin/bips/blob/master/bip-0145.mediawiki\n",
                 {
                     {"template_request", RPCArg::Type::OBJ, "{}", "A json object in the following spec",
                         {
@@ -761,7 +761,7 @@ static UniValue submitblock(const JSONRPCRequest& request)
     // We allow 2 arguments for compliance with BIP22. Argument 2 is ignored.
             RPCHelpMan{"submitblock",
                 "\nAttempts to submit new block to network.\n"
-                "See https://en.placeh.it/wiki/BIP_0022 for full specification.\n",
+                "See https://en.bitcoin.it/wiki/BIP_0022 for full specification.\n",
                 {
                     {"hexdata", RPCArg::Type::STR_HEX, RPCArg::Optional::NO, "the hex-encoded block data to submit"},
                     {"dummy", RPCArg::Type::STR, /* default */ "ignored", "dummy value, for compatibility with BIP22. This value is ignored."},
@@ -1049,3 +1049,4 @@ void RegisterMiningRPCCommands(CRPCTable &t)
     for (unsigned int vcidx = 0; vcidx < ARRAYLEN(commands); vcidx++)
         t.appendCommand(commands[vcidx].name, &commands[vcidx]);
 }
+© 2020 GitHub, Inc.

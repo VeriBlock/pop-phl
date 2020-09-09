@@ -850,7 +850,7 @@ void InitLogging()
     LogInstance().EnableCategory(BCLog::POP);
 
     std::string poplogverbosity = gArgs.GetArg("-poplogverbosity", "warn");
-    altintegration::SetLogger<VeriBlock::VPHLLogger>();
+    altintegration::SetLogger<VeriBlock::PHLLogger>();
     altintegration::GetLogger().level = altintegration::StringToLevel(poplogverbosity);
 
     fLogIPs = gArgs.GetBoolArg("-logips", DEFAULT_LOGIPS);

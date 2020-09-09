@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_SRC_VBK_TEST_UTIL_E2E_FIXTURE_HPP
-#define PLACEH_SRC_VBK_TEST_UTIL_E2E_FIXTURE_HPP
+#ifndef BITCOIN_SRC_VBK_TEST_UTIL_E2E_FIXTURE_HPP
+#define BITCOIN_SRC_VBK_TEST_UTIL_E2E_FIXTURE_HPP
 
 #include <boost/test/unit_test.hpp>
 
@@ -216,4 +216,4 @@ struct E2eFixture : public TestChain100Setup {
     }
 };
 
-#endif //PLACEH_SRC_VBK_TEST_UTIL_E2E_FIXTURE_HPP
+#endif //BITCOIN_SRC_VBK_TEST_UTIL_E2E_FIXTURE_HPP

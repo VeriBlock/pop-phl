@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_SRC_VBK_P2P_SYNC_HPP
-#define PLACEH_SRC_VBK_P2P_SYNC_HPP
+#ifndef BITCOIN_SRC_VBK_P2P_SYNC_HPP
+#define BITCOIN_SRC_VBK_P2P_SYNC_HPP
 
 #include <chainparams.h>
 #include <map>

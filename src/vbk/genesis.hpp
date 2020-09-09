@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_SRC_VBK_GENESIS_HPP
-#define PLACEH_SRC_VBK_GENESIS_HPP
+#ifndef BITCOIN_SRC_VBK_GENESIS_HPP
+#define BITCOIN_SRC_VBK_GENESIS_HPP
 
 #include <primitives/block.h>
 #include <script/script.h>
@@ -42,4 +42,4 @@ CBlock MineGenesisBlock(
 
 } // namespace VeriBlock
 
-#endif //PLACEH_SRC_VBK_GENESIS_HPP
+#endif //BITCOIN_SRC_VBK_GENESIS_HPP

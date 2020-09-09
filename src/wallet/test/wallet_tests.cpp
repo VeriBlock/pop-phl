@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2019 The Placeholders Core developers
+// Copyright (c) 2012-2019 The Bitcoin Core developers
 // Copyright (c) 2019-2020 Xenios SEZC
 // https://www.veriblock.org
 // Distributed under the MIT software license, see the accompanying
@@ -35,13 +35,6 @@ static void AddKey(CWallet& wallet, const CKey& key)
     LOCK(wallet.cs_wallet);
     AssertLockHeld(spk_man->cs_wallet);
     spk_man->AddKeyPubKey(key, key.GetPubKey());
-}
-
-static void setConfig()
-{
-    auto config = VeriBlock::Config();
-    config.POP_REWARD_PERCENTAGE = 0;
-    SelectPopConfig(config);
 }
 
 BOOST_FIXTURE_TEST_CASE(scan_for_wallet_transactions, TestChain100Setup)
@@ -189,7 +182,7 @@ BOOST_FIXTURE_TEST_CASE(importmulti_rescan, TestChain100Setup)
                       "timestamp %d. There was an error reading a block from time %d, which is after or within %d "
                       "seconds of key creation, and could contain transactions pertaining to the key. As a result, "
                       "transactions and coins using this key may not appear in the wallet. This error could be caused "
-                      "by pruning or data corruption (see placehd log for details) and could be dealt with by "
+                      "by pruning or data corruption (see bitcoind log for details) and could be dealt with by "
                       "downloading and rescanning the relevant blocks (see -reindex and -rescan "
                       "options).\"}},{\"success\":true}]",
                               0, oldTip->GetBlockTimeMax(), TIMESTAMP_WINDOW));
@@ -273,8 +266,6 @@ BOOST_FIXTURE_TEST_CASE(importwallet_rescan, TestChain100Setup)
 // debit functions.
 BOOST_FIXTURE_TEST_CASE(coin_mark_dirty_immature_credit, TestChain100Setup)
 {
-    setConfig();
-
     NodeContext node;
     auto chain = interfaces::MakeChain(node);
 
@@ -645,3 +636,4 @@ BOOST_FIXTURE_TEST_CASE(dummy_input_size_test, TestChain100Setup)
 }
 
 BOOST_AUTO_TEST_SUITE_END()
+

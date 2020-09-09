@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_SRC_VBK_MERKLE_HPP
-#define PLACEH_SRC_VBK_MERKLE_HPP
+#ifndef BITCOIN_SRC_VBK_MERKLE_HPP
+#define BITCOIN_SRC_VBK_MERKLE_HPP
 
 #include <chain.h>
 #include <chainparams.h>
@@ -33,4 +33,4 @@ bool isKeystone(const CBlockIndex& block);
 
 } // namespace VeriBlock
 
-#endif //PLACEH_SRC_VBK_MERKLE_HPP
+#endif //BITCOIN_SRC_VBK_MERKLE_HPP

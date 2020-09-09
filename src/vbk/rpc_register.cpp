@@ -68,11 +68,11 @@ UniValue getpopdata(const JSONRPCRequest& request)
             "{\n"
             "    \"block_header\" : \"block_header_hex\",  (string) Hex-encoded block header\n"
             "    \"raw_contextinfocontainer\" : \"contextinfocontainer\",  (string) Hex-encoded raw authenticated ContextInfoContainer structure\n"
-            "    \"last_known_veriblock_blocks\" : [ (array) last known VeriBlock blocks at the given Placeholders block\n"
+            "    \"last_known_veriblock_blocks\" : [ (array) last known VeriBlock blocks at the given Bitcoin block\n"
             "        \"blockhash\",                (string) VeriBlock block hash\n"
             "       ... ]\n"
-            "    \"last_known_placeh_blocks\" : [ (array) last known Placeholders blocks at the given Placeholders block\n"
-            "        \"blockhash\",                (string) Placeholders block hash\n"
+            "    \"last_known_bitcoin_blocks\" : [ (array) last known Bitcoin blocks at the given Bitcoin block\n"
+            "        \"blockhash\",                (string) Bitcoin block hash\n"
             "       ... ]\n"
             "}\n"
             "\nExamples:\n" +
@@ -134,7 +134,7 @@ UniValue getpopdata(const JSONRPCRequest& request)
 }
 
 template <typename pop_t>
-std::vector<pop_t> parsePayloads(const UniValue& array)
+bool parsePayloads(const UniValue& array, std::vector<pop_t>& out, altintegration::ValidationState& state)
 {
     std::vector<pop_t> payloads;
     LogPrint(BCLog::POP, "VeriBlock-PoP: submitpop RPC called with %s, amount %d \n", pop_t::name(), array.size());
@@ -143,11 +143,15 @@ std::vector<pop_t> parsePayloads(const UniValue& array)
 
         auto payloads_bytes = ParseHexV(payloads_hex, strprintf("%s[%d]", pop_t::name(), idx));
 
-        altintegration::ReadStream stream(payloads_bytes);
-        payloads.push_back(pop_t::fromVbkEncoding(stream));
+        pop_t data;
+        if (!altintegration::Deserialize(payloads_bytes, data, state)) {
+            return state.Invalid("bad-payloads");
+        }
+        payloads.push_back(data);
     }
 
-    return payloads;
+    out = payloads;
+    return true;
 }
 
 UniValue submitpop(const JSONRPCRequest& request)
@@ -168,9 +172,15 @@ UniValue submitpop(const JSONRPCRequest& request)
     RPCTypeCheck(request.params, {UniValue::VARR, UniValue::VARR, UniValue::VARR});
 
     altintegration::PopData popData;
-    popData.context = parsePayloads<altintegration::VbkBlock>(request.params[0].get_array());
-    popData.vtbs = parsePayloads<altintegration::VTB>(request.params[1].get_array());
-    popData.atvs = parsePayloads<altintegration::ATV>(request.params[2].get_array());
+    altintegration::ValidationState state;
+    bool ret = true;
+    ret = ret && parsePayloads<altintegration::VbkBlock>(request.params[0].get_array(), popData.context, state);
+    ret = ret && parsePayloads<altintegration::VTB>(request.params[1].get_array(), popData.vtbs, state);
+    ret = ret && parsePayloads<altintegration::ATV>(request.params[2].get_array(), popData.atvs, state);
+
+    if (!ret) {
+        throw JSONRPCError(RPC_DESERIALIZATION_ERROR, state.GetPath());
+    }
 
     {
         LOCK(cs_main);

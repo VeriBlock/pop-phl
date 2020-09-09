@@ -2,8 +2,8 @@
 // https://www.veriblock.org
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
-#ifndef PLACEH_SRC_VBK_ENTITY_CONTEXT_INFO_CONTAINER_HPP
-#define PLACEH_SRC_VBK_ENTITY_CONTEXT_INFO_CONTAINER_HPP
+#ifndef BITCOIN_SRC_VBK_ENTITY_CONTEXT_INFO_CONTAINER_HPP
+#define BITCOIN_SRC_VBK_ENTITY_CONTEXT_INFO_CONTAINER_HPP
 
 #include <hash.h>
 #include <uint256.h>
@@ -67,4 +67,4 @@ struct ContextInfoContainer {
 
 } // namespace VeriBlock
 
-#endif //PLACEH_SRC_VBK_ENTITY_CONTEXT_INFO_CONTAINER_HPP
+#endif //BITCOIN_SRC_VBK_ENTITY_CONTEXT_INFO_CONTAINER_HPP

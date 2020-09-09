@@ -1,11 +1,11 @@
-// Copyright (c) 2015-2019 The Placeholders Core developers
+// Copyright (c) 2015-2019 The Bitcoin Core developers
 // Copyright (c) 2019-2020 Xenios SEZC
 // https://www.veriblock.org
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PLACEH_TEST_UTIL_SETUP_COMMON_H
-#define PLACEH_TEST_UTIL_SETUP_COMMON_H
+#ifndef BITCOIN_TEST_UTIL_SETUP_COMMON_H
+#define BITCOIN_TEST_UTIL_SETUP_COMMON_H
 
 #include <chainparamsbase.h>
 #include <fs.h>

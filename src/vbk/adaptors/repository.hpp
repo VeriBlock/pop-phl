@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file LICENSE or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef INTEGRATION_REFERENCE_PHL_REPOSITORY_HPP
-#define INTEGRATION_REFERENCE_PHL_REPOSITORY_HPP
+#ifndef INTEGRATION_REFERENCE_BTC_REPOSITORY_HPP
+#define INTEGRATION_REFERENCE_BTC_REPOSITORY_HPP
 
 #include <veriblock/storage/repository.hpp>
 
@@ -59,4 +59,4 @@ private:
 
 } // namespace VeriBlock
 
-#endif //INTEGRATION_REFERENCE_PHL_REPOSITORY_HPP
+#endif //INTEGRATION_REFERENCE_BTC_REPOSITORY_HPP

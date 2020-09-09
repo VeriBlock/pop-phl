@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file LICENSE or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef INTEGRATION_REFERENCE_PHL_JSON_HPP
-#define INTEGRATION_REFERENCE_PHL_JSON_HPP
+#ifndef INTEGRATION_REFERENCE_BTC_JSON_HPP
+#define INTEGRATION_REFERENCE_BTC_JSON_HPP
 
 #include <univalue.h>
 #include <veriblock/json.hpp>
@@ -81,4 +81,4 @@ inline void putBoolKV(UniValue& object,
 } // namespace json
 } // namespace altintegration
 
-#endif //INTEGRATION_REFERENCE_PHL_JSON_HPP
+#endif //INTEGRATION_REFERENCE_BTC_JSON_HPP

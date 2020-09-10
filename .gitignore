@@ -156,3 +156,5 @@ compile_commands.json
 configure.lineno
 *.pb.*
 placeh*
+
+./test/config.ini

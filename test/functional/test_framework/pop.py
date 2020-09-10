@@ -79,7 +79,7 @@ def endorse_block(node, apm, height: int, addr: str, vtbs: Optional[int] = None)
     payoutInfo = script.hex()
 
     popdata = node.getpopdata(height)
-    last_btc = popdata['last_known_placeh_blocks'][0]
+    last_btc = popdata['last_known_bitcoin_blocks'][0]
     last_vbk = popdata['last_known_veriblock_blocks'][0]
     header = popdata['block_header']
     pub = PublicationData()

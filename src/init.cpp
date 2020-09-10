@@ -1860,7 +1860,7 @@ bool AppInitMain(NodeContext& node)
 
         LogPrintf("ALT tree best height = %d\n", pop.altTree->getBestChain().tip()->getHeight());
         LogPrintf("VBK tree best height = %d\n", pop.altTree->vbk().getBestChain().tip()->getHeight());
-        LogPrintf("PHL tree best height = %d\n", pop.altTree->btc().getBestChain().tip()->getHeight());
+        LogPrintf("BTC tree best height = %d\n", pop.altTree->btc().getBestChain().tip()->getHeight());
     }
 
     return true;

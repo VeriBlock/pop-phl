@@ -47,7 +47,7 @@ void printConfig(const altintegration::Config& config)
   first       : %s
   last        : %s
 
- ALT:
+ PHL:
   network     : %s
   block height: %d
   block hash  : %s

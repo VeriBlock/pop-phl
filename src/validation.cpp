@@ -1272,8 +1272,9 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
 												   // -Lost coins 
 												   // -unredeemable wallets potentially.
    	
+
 	if( nHeight >= 2 ) { // reduce down to the expected block reward. 
-		nSubsidy = 9000 * COIN;
+		nSubsidy = 10000 * COIN;
 	}   
 
 	if( nHeight >= THE_BULLISH_DPMIDD_PLATEAU ) { // Bullish DPMidd Plateau
@@ -1299,14 +1300,10 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
 	if( nHeight >= THE_LAST_DECLINE ) { 
 		nSubsidy = 0.3 * COIN;
 	}
-	
-	if( nHeight >= (THE_TAIL_EMISSION) ) { 
-		nSubsidy = 0.1235  * COIN;
-	}
-    
+   
     // VBK
     nSubsidy = VeriBlock::getCoinbaseSubsidy(nSubsidy);
-
+    
 
     return nSubsidy;
 }

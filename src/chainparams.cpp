@@ -73,7 +73,7 @@ public:
         pchMessageStart[2] = 1;
         pchMessageStart[3] = 1 + VBK_VERSION;
         nDefaultPort = 6609;
-        nPruneAfterHeight = 100000;
+        nPruneAfterHeight = 10000;
         m_assumed_blockchain_size = 280;
         m_assumed_chain_state_size = 4;
 
@@ -127,7 +127,7 @@ public:
     CTestNetParams()
     {
         strNetworkID = CBaseChainParams::TESTNET;
-        consensus.nSubsidyHalvingInterval = 210000;
+        consensus.nSubsidyHalvingInterval = 210000; // NA
         consensus.BIP16Exception = uint256S("0x00000000dd30457c001f4095d208cc1296b0eed002427aa599874af7a432b105");
         consensus.BIP34Height = 1;
         consensus.BIP34Hash = uint256S("0x0000000023b3a96d3484e5abb3755c413e7d41500f8e2a5c3f0dd01299cd8ef8");

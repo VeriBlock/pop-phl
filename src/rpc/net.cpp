@@ -232,8 +232,8 @@ static UniValue addnode(const JSONRPCRequest& request)
                 },
                 RPCResults{},
                 RPCExamples{
-                    HelpExampleCli("addnode", "\"192.168.0.6:8333\" \"onetry\"")
-            + HelpExampleRpc("addnode", "\"192.168.0.6:8333\", \"onetry\"")
+                    HelpExampleCli("addnode", "\"192.168.0.6:6609\" \"onetry\"")
+            + HelpExampleRpc("addnode", "\"192.168.0.6:6609\", \"onetry\"")
                 },
             }.ToString());
 
@@ -275,10 +275,10 @@ static UniValue disconnectnode(const JSONRPCRequest& request)
                 },
                 RPCResults{},
                 RPCExamples{
-                    HelpExampleCli("disconnectnode", "\"192.168.0.6:8333\"")
-            + HelpExampleCli("disconnectnode", "\"\" 1")
-            + HelpExampleRpc("disconnectnode", "\"192.168.0.6:8333\"")
-            + HelpExampleRpc("disconnectnode", "\"\", 1")
+                    HelpExampleCli("disconnectnode", "\"192.168.0.6:6609\"")
+                    + HelpExampleCli("disconnectnode", "\"\" 1")
+                    + HelpExampleRpc("disconnectnode", "\"192.168.0.6:6609\"")
+                    + HelpExampleRpc("disconnectnode", "\"\", 1")
                 },
             }.Check(request);
 
@@ -322,7 +322,7 @@ static UniValue getaddednodeinfo(const JSONRPCRequest& request)
             "    \"connected\" : true|false,          (boolean) If connected\n"
             "    \"addresses\" : [                    (list of objects) Only when connected = true\n"
             "       {\n"
-            "         \"address\" : \"192.168.0.201:8333\",  (string) The placeh server IP and port we're connected to\n"
+            "         \"address\" : \"192.168.0.201:6609\",  (string) The placeh server IP and port we're connected to\n"
             "         \"connected\" : \"outbound\"           (string) connection, inbound or outbound\n"
             "       }\n"
             "     ]\n"
@@ -450,7 +450,7 @@ static UniValue getnetworkinfo(const JSONRPCRequest& request)
                 RPCResult{
             "{\n"
             "  \"version\": xxxxx,                      (numeric) the server version\n"
-            "  \"subversion\": \"/Satoshi:x.x.x/\",     (string) the server subversion string\n"
+            "  \"subversion\": \"/Placeholders:x.x.x/\",     (string) the server subversion string\n"
             "  \"protocolversion\": xxxxx,              (numeric) the protocol version\n"
             "  \"localservices\": \"xxxxxxxxxxxxxxxx\", (string) the services we offer to the network\n"
             "  \"localservicesnames\": [                (array) the services we offer to the network, in human-readable form\n"

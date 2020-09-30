@@ -1,4 +1,4 @@
-// Copyright (c) 2017-2018 The Bitcoin Core developers
+// Copyright (c) 2017-2018 The Placeholders Core developers
 // Copyright (c) 2019-2020 Xenios SEZC
 // https://www.veriblock.org
 // Distributed under the MIT software license, see the accompanying
@@ -9,7 +9,7 @@
 #include <consensus/validation.h>
 #include <primitives/transaction.h>
 #include <vbk/util.hpp>
-#include <vbk/pop_service.hpp>
+#include <vbk/pop_common.hpp>
 
 bool CheckTransaction(const CTransaction& tx, TxValidationState& state)
 {

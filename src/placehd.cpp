@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2019 The Bitcoin Core developers
+// Copyright (c) 2009-2019 The Placeholders Core developers
 // Copyright (c) 2019-2020 Xenios SEZC
 // https://www.veriblock.org
 // Distributed under the MIT software license, see the accompanying
@@ -71,7 +71,7 @@ static bool AppInit(int argc, char* argv[])
         }
         else
         {
-            strUsage += "\nUsage:  vbitcoind [options]                     Start " PACKAGE_NAME "\n";
+            strUsage += "\nUsage:  placehd [options]                     Start " PACKAGE_NAME "\n";
             strUsage += "\n" + gArgs.GetHelpMessage();
         }
 
@@ -101,11 +101,11 @@ static bool AppInit(int argc, char* argv[])
         // Error out when loose non-argument tokens are encountered on command line
         for (int i = 1; i < argc; i++) {
             if (!IsSwitchChar(argv[i][0])) {
-                return InitError(strprintf("Command line contains unexpected token '%s', see vbitcoind -h for a list of options.\n", argv[i]));
+                return InitError(strprintf("Command line contains unexpected token '%s', see placehd -h for a list of options.\n", argv[i]));
             }
         }
 
-        // -server defaults to true for bitcoind but not for the GUI so do this here
+        // -server defaults to true for placehd but not for the GUI so do this here
         gArgs.SoftSetBoolArg("-server", true);
         // Set this early so that parameter interactions go to console
         InitLogging();
@@ -179,7 +179,7 @@ int main(int argc, char* argv[])
 #endif
     SetupEnvironment();
 
-    // Connect bitcoind signal handlers
+    // Connect placehd signal handlers
     noui_connect();
 
     return (AppInit(argc, argv) ? EXIT_SUCCESS : EXIT_FAILURE);

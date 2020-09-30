@@ -79,7 +79,7 @@ def endorse_block(node, apm, height: int, addr: str, vtbs: Optional[int] = None)
     payoutInfo = script.hex()
 
     popdata = node.getpopdata(height)
-    last_btc = popdata['last_known_bitcoin_blocks'][0]
+    last_btc = popdata['last_known_placeh_blocks'][0]
     last_vbk = popdata['last_known_veriblock_blocks'][0]
     header = popdata['block_header']
     pub = PublicationData()
@@ -167,7 +167,7 @@ class ContextInfoContainer:
 
 def sync_pop_tips(rpc_connections, *, wait=1, timeout=10, flush_scheduler=True):
     """
-    Wait until everybody has the same POP TIPS (BTC tip and VBK tip)
+    Wait until everybody has the same POP TIPS (PHL tip and VBK tip)
     """
 
     def test(s):
@@ -200,7 +200,7 @@ def assert_pop_state_equal(nodes):
             "".join("\n  {!r}".format(m) for m in s)
         ))
 
-    is_same(lambda x: x.getbtcblock(x.getbtcbestblockhash()), "BTC tips")
+    is_same(lambda x: x.getbtcblock(x.getbtcbestblockhash()), "PHL tips")
     is_same(lambda x: x.getvbkblock(x.getvbkbestblockhash()), "VBK tips")
     is_same(lambda x: x.getblock(x.getbestblockhash()), "ALT tips")
 

@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2019 The Bitcoin Core developers
+// Copyright (c) 2014-2019 The Placeholders Core developers
 // Copyright (c) 2019-2020 Xenios SEZC
 // https://www.veriblock.org
 // Distributed under the MIT software license, see the accompanying
@@ -57,9 +57,9 @@ BOOST_AUTO_TEST_CASE(subsidy_limit_test)
         nSum += nSubsidy * 1000;
         BOOST_CHECK(MoneyRange(nSum));
     }
-    // with 50 vBTC payout:
+    // with 50 vPHL payout:
 //    BOOST_CHECK_EQUAL(nSum, CAmount{2099999997690000});
-    // with 50*60% vBTC payout:
+    // with 50*60% vPHL payout:
     BOOST_CHECK_EQUAL(nSum, CAmount{1259999997480000});
 }
 

@@ -1,5 +1,3 @@
-
-
 // Copyright (c) 2011-2019 The Placeholders Core developers
 // Copyright (c) 2019-2020 Xenios SEZC
 // https://www.veriblock.org

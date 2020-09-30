@@ -1,5 +1,4 @@
-# Copyright (c) 2013-2016 The Placeholder Team developers
-# Copyright (c) 2013-2016 The Bitcoin Core developers
+# Copyright (c) 2013-2016 The Placeholders Core developers
 # Copyright (c) 2019-2020 Xenios SEZC
 # https://www.veriblock.org
 # Distributed under the MIT software license, see the accompanying
@@ -106,18 +105,18 @@ endif
 ### VeriBlock section start
 VBK_H = \
   vbk/entity/context_info_container.hpp \
+  vbk/pop_common.hpp \
   vbk/pop_service.hpp \
   vbk/vbk.hpp \
   vbk/merkle.hpp \
   vbk/genesis.hpp \
+  vbk/genesis_common.hpp \
   vbk/altchainparam.hpp \
   vbk/p2p_sync.hpp \
   vbk/util.hpp \
   vbk/adaptors/univalue_json.hpp \
-  vbk/adaptors/batch_adapter.hpp \
-  vbk/adaptors/batch.hpp \
-  vbk/adaptors/repository.hpp \
-  vbk/adaptors/cursor.hpp
+  vbk/adaptors/block_batch_adaptor.hpp \
+  vbk/adaptors/payloads_provider.hpp
 
 ### VeriBlock section end
 
@@ -304,8 +303,6 @@ libplaceh_server_a_SOURCES = \
   banman.cpp \
   blockencodings.cpp \
   blockfilter.cpp \
-  bootstraps.cpp \
-  chainparams.cpp \
   chain.cpp \
   consensus/tx_verify.cpp \
   flatfile.cpp \
@@ -332,8 +329,6 @@ libplaceh_server_a_SOURCES = \
   policy/settings.cpp \
   pow.cpp \
   rest.cpp \
-  vbk/merkle.hpp \
-  vbk/merkle.cpp \
   vbk/genesis.hpp \
   vbk/genesis.cpp \
   vbk/rpc_register.hpp \
@@ -497,9 +492,13 @@ libplaceh_consensus_a_SOURCES = \
 libplaceh_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(PLACEH_INCLUDES)
 libplaceh_common_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libplaceh_common_a_SOURCES = \
+  vbk/pop_common.hpp \
+  vbk/pop_common.cpp \
   base58.cpp \
   bech32.cpp \
   bloom.cpp \
+  bootstraps.cpp \
+  chainparams.cpp \
   coins.cpp \
   compressor.cpp \
   core_read.cpp \
@@ -522,6 +521,10 @@ libplaceh_common_a_SOURCES = \
   script/sign.cpp \
   script/signingprovider.cpp \
   script/standard.cpp \
+  vbk/genesis_common.hpp \
+  vbk/genesis_common.cpp \
+  vbk/merkle.hpp \
+  vbk/merkle.cpp \
   versionbitsinfo.cpp \
   warnings.cpp \
   $(PLACEH_CORE_H)
@@ -641,20 +644,15 @@ placeh_tx_SOURCES += placeh-tx-res.rc
 endif
 
 placeh_tx_LDADD = \
-  $(LIBUNIVALUE) \
-  $(MINIUPNPC_LIBS) \
   $(VERIBLOCK_POP_CPP_LIBS) \
-  $(LIBPLACEH_SERVER) \
+  $(LIBUNIVALUE) \
   $(LIBPLACEH_COMMON) \
   $(LIBPLACEH_UTIL) \
   $(LIBPLACEH_CONSENSUS) \
   $(LIBPLACEH_CRYPTO) \
-  $(LIBLEVELDB) \
-  $(LIBLEVELDB_SSE42) \
-  $(LIBMEMENV) \
   $(LIBSECP256K1)
 
-placeh_tx_LDADD += $(BOOST_LIBS) $(VERIBLOCK_POP_CPP_LIBS) $(MINIUPNPC_LIBS)
+placeh_tx_LDADD += $(BOOST_LIBS) $(VERIBLOCK_POP_CPP_LIBS)
 
 # placeh-wallet binary #
 placeh_wallet_SOURCES = placeh-wallet.cpp
@@ -667,8 +665,6 @@ placeh_wallet_SOURCES += placeh-wallet-res.rc
 endif
 
 placeh_wallet_LDADD = \
-  $(VERIBLOCK_POP_CPP_LIBS) \
-  $(LIBPLACEH_SERVER) \
   $(LIBPLACEH_WALLET_TOOL) \
   $(LIBPLACEH_WALLET) \
   $(LIBPLACEH_COMMON) \
@@ -683,7 +679,7 @@ placeh_wallet_LDADD = \
   $(LIBUNIVALUE) \
   $(VERIBLOCK_POP_CPP_LIBS)
 
-placeh_wallet_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(MINIUPNPC_LIBS) $(ZMQ_LIBS) $(VERIBLOCK_POP_CPP_LIBS) $(MINIUPNPC_LIBS)
+placeh_wallet_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(MINIUPNPC_LIBS) $(ZMQ_LIBS)
 #
 
 # placehconsensus library #
@@ -696,8 +692,8 @@ if GLIBC_BACK_COMPAT
 endif
 
 libplacehconsensus_la_LDFLAGS = $(AM_LDFLAGS) -no-undefined $(RELDFLAGS)
-libplacehconsensus_la_LIBADD = $(LIBSECP256K1)
-libplacehconsensus_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(builddir)/obj -I$(srcdir)/secp256k1/include -DBUILD_PLACEH_INTERNAL
+libplacehconsensus_la_LIBADD = $(LIBSECP256K1) $(LIBUNIVALUE)
+libplacehconsensus_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(builddir)/obj -I$(srcdir)/secp256k1/include -I$(srcdir)/univalue/include -DBUILD_PLACEH_INTERNAL
 libplacehconsensus_la_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 
 endif
@@ -780,5 +776,3 @@ endif
 if ENABLE_QT_TESTS
 include Makefile.qttest.include
 endif
-
-

@@ -850,7 +850,7 @@ void InitLogging()
     LogInstance().EnableCategory(BCLog::POP);
 
     std::string poplogverbosity = gArgs.GetArg("-poplogverbosity", "warn");
-    altintegration::SetLogger<VeriBlock::PHLLogger>();
+    altintegration::SetLogger<VeriBlock::VPHLLogger>();
     altintegration::GetLogger().level = altintegration::StringToLevel(poplogverbosity);
 
     fLogIPs = gArgs.GetBoolArg("-logips", DEFAULT_LOGIPS);
@@ -1860,7 +1860,7 @@ bool AppInitMain(NodeContext& node)
 
         LogPrintf("ALT tree best height = %d\n", pop.altTree->getBestChain().tip()->getHeight());
         LogPrintf("VBK tree best height = %d\n", pop.altTree->vbk().getBestChain().tip()->getHeight());
-        LogPrintf("BTC tree best height = %d\n", pop.altTree->btc().getBestChain().tip()->getHeight());
+        LogPrintf("PHL tree best height = %d\n", pop.altTree->btc().getBestChain().tip()->getHeight());
     }
 
     return true;

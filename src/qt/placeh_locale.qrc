@@ -57,7 +57,6 @@
         <file alias="tr">locale/placeh_tr.qm</file>
         <file alias="uk">locale/placeh_uk.qm</file>
         <file alias="ur">locale/placeh_ur.qm</file>
-        <file alias="uz@Cyrl">locale/placeh_uz@Cyrl.qm</file>
         <file alias="vi">locale/placeh_vi.qm</file>
         <file alias="yo">locale/placeh_yo.qm</file>
         

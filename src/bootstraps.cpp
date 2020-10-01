@@ -77,7 +77,7 @@ void selectPopConfig(
     if (btcnet == "test") {
         auto param = std::make_shared<altintegration::BtcChainParamsTest>();
         if (popautoconfig) {
-            popconfig.setBTC(testnetPHLstartHeight, testnetPHLblocks, param);
+            popconfig.setBTC(testnetBTCstartHeight, testnetBTCblocks, param);
         } else {
             popconfig.setBTC(btcstart, parseBlocks(btcblocks), param);
         }

@@ -16,7 +16,7 @@
 extern const int testnetVBKstartHeight;
 extern const std::vector<std::string> testnetVBKblocks;
 
-extern const int testnetPHLstartHeight;
+extern const int testnetBTCstartHeight;
 extern const std::vector<std::string> testnetBTCblocks;
 
 struct AltChainParamsPHL : public altintegration::AltChainParams {

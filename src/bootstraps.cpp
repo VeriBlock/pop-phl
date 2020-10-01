@@ -11,7 +11,7 @@
 #include <vbk/util.hpp>
 #include <veriblock/bootstraps.hpp>
 
-std::vector<uint8_t> AltChainParamsVPHL::getHash(const std::vector<uint8_t>& bytes) const noexcept
+std::vector<uint8_t> AltChainParamsPHL::getHash(const std::vector<uint8_t>& bytes) const noexcept
 {
     return VeriBlock::headerFromBytes(bytes).GetHash().asVector();
 }
@@ -34,7 +34,7 @@ void printConfig(const altintegration::Config& config)
     assert(config.alt);
 
     LogPrintf(R"(Applied POP config:
- PHL:
+ BTC:
   network     : %s
   startHeight : %d
   total blocks: %d
@@ -77,16 +77,16 @@ void selectPopConfig(
     if (btcnet == "test") {
         auto param = std::make_shared<altintegration::BtcChainParamsTest>();
         if (popautoconfig) {
-            popconfig.setPHL(testnetPHLstartHeight, testnetPHLblocks, param);
+            popconfig.setBTC(testnetPHLstartHeight, testnetPHLblocks, param);
         } else {
-            popconfig.setPHL(btcstart, parseBlocks(btcblocks), param);
+            popconfig.setBTC(btcstart, parseBlocks(btcblocks), param);
         }
     } else if (btcnet == "regtest") {
         auto param = std::make_shared<altintegration::BtcChainParamsRegTest>();
         if (popautoconfig) {
-            popconfig.setPHL(0, {}, param);
+            popconfig.setBTC(0, {}, param);
         } else {
-            popconfig.setPHL(btcstart, parseBlocks(btcblocks), param);
+            popconfig.setBTC(btcstart, parseBlocks(btcblocks), param);
         }
     } else {
         throw std::invalid_argument("btcnet currently only supports test/regtest");
@@ -111,7 +111,7 @@ void selectPopConfig(
         throw std::invalid_argument("vbknet currently only supports test/regtest");
     }
 
-    auto altparams = std::make_shared<AltChainParamsVPHL>(Params().GenesisBlock());
+    auto altparams = std::make_shared<AltChainParamsPHL>(Params().GenesisBlock());
     popconfig.alt = altparams;
     VeriBlock::SetPopConfig(popconfig);
     printConfig(popconfig);
@@ -127,9 +127,9 @@ void selectPopConfig(const ArgsManager& args)
 
 
 const int testnetVBKstartHeight=898639;
-const int testnetPHLstartHeight=1834674;
+const int testnetBTCstartHeight=1834674;
 
-const std::vector<std::string> testnetPHLblocks = {
+const std::vector<std::string> testnetBTCblocks = {
 
 "0000002087760D017622F08C0CACEB682945955E326EEB6673D62E77A200000000000000321C87A325AD10CA6BE6DBA769E0D8D2A374DC7C2673FF1BF96F19B2849EC976B5D0605FFFFF001DAC78AB75",
 "00000020E5B73054D245155445C78E316236C099D53155210ABE19D08B22AE32000000008D4230D1BC3FBB072013BB9BC0174C06A92ECAA0769BFEDB50DE34D32B3412F666D5605FFFFF001D1F19F823",

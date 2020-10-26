@@ -73,7 +73,7 @@ void selectPopConfig(
 {
     altintegration::Config popconfig;
 
-    //! SET PHL
+    //! SET BTC
     if (btcnet == "test") {
         auto param = std::make_shared<altintegration::BtcChainParamsTest>();
         if (popautoconfig) {
@@ -121,7 +121,13 @@ void selectPopConfig(const ArgsManager& args)
 {
     std::string btcnet = args.GetArg("-popbtcnetwork", "regtest");
     std::string vbknet = args.GetArg("-popvbknetwork", "regtest");
-    selectPopConfig(btcnet, vbknet);
+    bool popautoconfig = args.GetBoolArg("-popautoconfig", true);
+    int btcstart = args.GetArg("-popbtcstartheight", 0);
+    std::string btcblocks = args.GetArg("-popbtcblocks", "");
+    int vbkstart = args.GetArg("-popvbkstartheight", 0);
+    std::string vbkblocks = args.GetArg("-popvbkblocks", "");
+
+    selectPopConfig(btcnet, vbknet, popautoconfig, btcstart, btcblocks, vbkstart, vbkblocks);
 }
 
 

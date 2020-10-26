@@ -37,7 +37,7 @@ struct AltChainParamsPHL : public altintegration::AltChainParams {
 
     int64_t getIdentifier() const noexcept override
     {
-        return 0xFEEDC0DE;
+        return 0x3ae6ca;
     }
 
     std::vector<uint8_t> getHash(const std::vector<uint8_t>& bytes) const noexcept override;

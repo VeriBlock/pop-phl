@@ -35,7 +35,7 @@ from .util import (
     EncodeDecimal,
 )
 
-PLACEHD_PROC_WAIT_TIMEOUT = 60
+PLACEHD_PROC_WAIT_TIMEOUT = 60 * 5
 
 
 class FailedToStartError(Exception):

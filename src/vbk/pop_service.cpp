@@ -185,18 +185,23 @@ PoPRewards getPopRewards(const CBlockIndex& pindexPrev, const Consensus::Params&
 
     auto blockHash = pindexPrev.GetBlockHash();
     auto rewards = pop.altTree->getPopPayout(blockHash.asVector());
-    int halvings = (pindexPrev.nHeight + 1) / consensusParams.nSubsidyHalvingInterval;
+    //int halvings = (pindexPrev.nHeight + 1) / consensusParams.nSubsidyHalvingInterval;
     PoPRewards btcRewards{};
     auto& param = Params();
     //erase rewards, that pay 0 satoshis and halve rewards
-    for (const auto& r : rewards) {
-        auto rewardValue = r.second;
-        rewardValue >>= halvings;
-        if ((rewardValue != 0) && (halvings < 64)) {
+    
+    // PHL Maintain Legacy coin base
+    if( pindexPrev.nHeight <= 50 ) { 
+        return {};
+    } else {
+ 
+        for (const auto& r : rewards) {
+            auto rewardValue = r.second;
             CScript key = CScript(r.first.begin(), r.first.end());
             btcRewards[key] = param.PopRewardCoefficient() * rewardValue;
         }
     }
+    // PHL
 
     return btcRewards;
 }
@@ -267,7 +272,10 @@ bool checkCoinbaseTxWithPopRewards(const CTransaction& tx, const CAmount& nFees,
 
     CAmount PoWBlockReward =
         GetBlockSubsidy(pindexPrev.nHeight, consensusParams);
-
+    if( pindexPrev.nHeight <= 50 ) {
+        return true; // 
+    }
+    
     if (tx.GetValueOut() > nTotalPopReward + PoWBlockReward + nFees) {
         return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS,
             "bad-cb-pop-amount",

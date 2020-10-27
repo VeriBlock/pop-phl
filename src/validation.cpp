@@ -39,6 +39,7 @@
 #include <txdb.h>
 #include <txmempool.h>
 #include <ui_interface.h>
+#include <ui_interface.h>
 #include <uint256.h>
 #include <undo.h>
 #include <util/moneystr.h>
@@ -69,15 +70,14 @@
 // Adust these heights for VBK hard fork.
 uint64_t PIP89_ACTIVATION_BLOCK_HEIGHT = 1;
 
-uint64_t THE_LAST_DECLINE = 500;
-
+uint64_t THE_LAST_DECLINE = 50;
+uint64_t LEGACY_COINBASE = 100000;
 // Adust these heights for VBK hard fork.
 
-uint64_t THE_XAGAU_END = 48592440; // ~90 years from 2019-01-24
+uint64_t THE_XAGAU_END = 48592440; // ~90 years from 2019-01-24 - who cares?
 
 //Date:[92] years from now:0.12350000
 //Height:[48592440]
-//Subsidy:0.12350000
 //Total:10500000.03815850
 
 
@@ -1252,8 +1252,9 @@ CAmount GetLegacySubsidy()
 
 CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
 {		
-    CAmount nSubsidy = GetLegacySubsidy();         /* capture legacy coinbase - 10K for first 500 of solo mining blocks:  
-                                                      (pre-DGW) 
+    CAmount nSubsidy = GetLegacySubsidy();         
+                            /* capture legacy coinbase - 10K for first 500 of solo mining blocks:  
+                               (pre-DGW) 
 						       ~42000 * 50 + 
 						       Implement DGW + PIP88
 						       ~33000 * 5 (SHA256) + burn contingency
@@ -1261,18 +1262,16 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
 						       -Moving coins to X16R, 
 						       -risk of coins being trapped on the exchange.
 						       -Includes lost coins 
-					               -unredeemable wallets potentially.
+					           -unredeemable wallets potentially.
 						    */   	
 
-     if( nHeight >= 2 ) { // reduce down to the expected block reward. 
-          nSubsidy = 10000 * COIN;
-     }   
+    if( nHeight >= 2 ) {  
+        nSubsidy = LEGACY_COINBASE * COIN;
+    }   
 	
+    // reduce down to the expected block reward.
     if( nHeight >= THE_LAST_DECLINE ) { 
-         nSubsidy = 0.3 * COIN;
-    }
-
-    if( nHeight > 500 ) { 
+        nSubsidy = 0.3 * COIN;
         // VBK
         nSubsidy = VeriBlock::getCoinbaseSubsidy(nSubsidy);
     }
@@ -4089,7 +4088,7 @@ static void FindFilesToPruneManual(std::set<int>& setFilesToPrune, int nManualPr
     LOCK2(cs_main, cs_LastBlockFile);
     if (::ChainActive().Tip() == nullptr)
         return;
-11:27 AM 2020-10-27
+
     // last block to prune is the lesser of (user-specified height, MIN_BLOCKS_TO_KEEP from the tip)
     unsigned int nLastBlockWeCanPrune = std::min((unsigned)nManualPruneHeight, ::ChainActive().Tip()->nHeight - MIN_BLOCKS_TO_KEEP);
     int count = 0;
@@ -4242,7 +4241,7 @@ bool BlockManager::LoadBlockIndex(
     bool hasPopData = VeriBlock::hasPopData(blocktree);
 
     if(!hasPopData) {
-        LogPrintf("PHL/VBK/ALT tips not found... skipping block index loading\n");
+        LogPrintf("BTC/VBK/ALT tips not found... skipping block index loading\n");
         return true;
     }
 

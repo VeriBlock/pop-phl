@@ -1224,6 +1224,7 @@ bool ReadRawBlockFromDisk(std::vector<uint8_t>& block, const CBlockIndex* pindex
 }
 
 /*
+Satoshi's Subsidy Formula
 CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
 {
     int halvings = nHeight / consensusParams.nSubsidyHalvingInterval;
@@ -1251,31 +1252,32 @@ CAmount GetLegacySubsidy()
 
 CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
 {		
-    std::cout << nHeight << std::endl;		
-	CAmount nSubsidy = GetLegacySubsidy();         // capture legacy coinbase: 
-												   // (pre-DGW) 
-												   // ~42000 * 50 + 
-												   // Implement DGW + PIP88
-												   // ~33000 * 5 (SHA256) + burn contingency
-												   // Burn contigency is to cover: 
-												   // -Moving coins to X16R, 
-												   // -risk of coins being trapped on the exchange.
-												   // -Lost coins 
-												   // -unredeemable wallets potentially.
-   	
+    CAmount nSubsidy = GetLegacySubsidy();         /* capture legacy coinbase - 10K for first 500 of solo mining blocks:  
+                                                      (pre-DGW) 
+						       ~42000 * 50 + 
+						       Implement DGW + PIP88
+						       ~33000 * 5 (SHA256) + burn contingency
+						       Burn contigency is to cover: 
+						       -Moving coins to X16R, 
+						       -risk of coins being trapped on the exchange.
+						       -Includes lost coins 
+					               -unredeemable wallets potentially.
+						    */   	
 
-	if( nHeight >= 2 ) { // reduce down to the expected block reward. 
-		nSubsidy = 10000 * COIN;
-	}   
-
+     if( nHeight >= 2 ) { // reduce down to the expected block reward. 
+          nSubsidy = 10000 * COIN;
+     }   
 	
-	if( nHeight >= THE_LAST_DECLINE ) { 
-		nSubsidy = 0.3 * COIN;
-	}
-   
-    	// VBK
-    	nSubsidy = VeriBlock::getCoinbaseSubsidy(nSubsidy);
-    
+    if( nHeight >= THE_LAST_DECLINE ) { 
+         nSubsidy = 0.3 * COIN;
+    }
+
+    if( nHeight > 500 ) { 
+        // VBK
+        nSubsidy = VeriBlock::getCoinbaseSubsidy(nSubsidy);
+    }
+
+    std::cout << nHeight << ":" << nSubsidy << std::endl;		
 
     return nSubsidy;
 }
@@ -4087,7 +4089,7 @@ static void FindFilesToPruneManual(std::set<int>& setFilesToPrune, int nManualPr
     LOCK2(cs_main, cs_LastBlockFile);
     if (::ChainActive().Tip() == nullptr)
         return;
-
+11:27 AM 2020-10-27
     // last block to prune is the lesser of (user-specified height, MIN_BLOCKS_TO_KEEP from the tip)
     unsigned int nLastBlockWeCanPrune = std::min((unsigned)nManualPruneHeight, ::ChainActive().Tip()->nHeight - MIN_BLOCKS_TO_KEEP);
     int count = 0;

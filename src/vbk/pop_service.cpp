@@ -191,7 +191,7 @@ PoPRewards getPopRewards(const CBlockIndex& pindexPrev, const Consensus::Params&
     //erase rewards, that pay 0 satoshis and halve rewards
     
     // PHL Maintain Legacy coin base
-    if( pindexPrev.nHeight <= 50 ) { 
+    if( pindexPrev.nHeight < 5 ) { 
         return {};
     } else {
  

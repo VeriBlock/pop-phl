@@ -26,7 +26,7 @@ struct AltChainParamsPHL : public altintegration::AltChainParams {
     {
         auto hash = genesis.GetHash();
         bootstrap.hash = std::vector<uint8_t>{hash.begin(), hash.end()};
-        bootstrap.height = 50; // pop is enabled starting at block 50
+        bootstrap.height = 5; // pop is enabled starting at block 5
         bootstrap.timestamp = genesis.GetBlockTime();
     }
 

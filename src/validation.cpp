@@ -70,8 +70,8 @@
 // Adust these heights for VBK hard fork.
 uint64_t PIP89_ACTIVATION_BLOCK_HEIGHT = 1;
 
-uint64_t THE_LAST_DECLINE = 50;
-uint64_t LEGACY_COINBASE = 100000;
+uint64_t THE_LAST_DECLINE = 5;
+uint64_t LEGACY_COINBASE = 1000000;
 // Adust these heights for VBK hard fork.
 
 uint64_t THE_XAGAU_END = 48592440; // ~90 years from 2019-01-24 - who cares?

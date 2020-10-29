@@ -1235,7 +1235,7 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
     //    return 0;
 
     CAmount nSubsidy = 50 * COIN;
-    // Subsidy is cut in half every 3 blocks which will occur approximately every 3 minutes.
+    // Subsidy is cut in half every 3 blocks which will occur approximately every 3 minutes. Until 7 halvings at which point it should remain.
     nSubsidy = VeriBlock::getCoinbaseSubsidy(nSubsidy);
 
     nSubsidy >>= halvings;

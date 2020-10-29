@@ -1223,14 +1223,16 @@ bool ReadRawBlockFromDisk(std::vector<uint8_t>& block, const CBlockIndex* pindex
     return ReadRawBlockFromDisk(block, block_pos, message_start);
 }
 
-/*
-Satoshi's Subsidy Formula
+
 CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
 {
     int halvings = nHeight / consensusParams.nSubsidyHalvingInterval;
+    if( halvings >= 5 ) { 
+        halvings = 5;
+    }
     // Force block reward to zero when right shift is undefined.
-    if (halvings >= 64)
-        return 0;
+    //if (halvings >= 64)
+    //    return 0;
 
     CAmount nSubsidy = 50 * COIN;
     // Subsidy is cut in half every 210,000 blocks which will occur approximately every 4 years.
@@ -1239,8 +1241,8 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
     nSubsidy >>= halvings;
     return nSubsidy;
 }
-*/
 
+/*
 
 CAmount GetLegacySubsidy()
 {	
@@ -1248,11 +1250,8 @@ CAmount GetLegacySubsidy()
 	return nSubsidy;
 }
 
+*/
 
-
-CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
-{		
-    CAmount nSubsidy = GetLegacySubsidy();         
                             /* capture legacy coinbase - 10K for first 500 of solo mining blocks:  
                                (pre-DGW) 
 						       ~42000 * 50 + 
@@ -1264,6 +1263,12 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
 						       -Includes lost coins 
 					           -unredeemable wallets potentially.
 						    */   	
+
+/*
+
+CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
+{		
+    CAmount nSubsidy = GetLegacySubsidy();         
 
     if( nHeight >= 2 ) {  
         nSubsidy = LEGACY_COINBASE * COIN;
@@ -1280,6 +1285,8 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
 
     return nSubsidy;
 }
+
+*/
 
 CoinsViews::CoinsViews(
     std::string ldb_name,

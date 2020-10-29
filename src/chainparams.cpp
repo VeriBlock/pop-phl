@@ -125,7 +125,7 @@ public:
     CTestNetParams()
     {
         strNetworkID = CBaseChainParams::TESTNET;
-        consensus.nSubsidyHalvingInterval = 210000; // NA
+        consensus.nSubsidyHalvingInterval = 3; // NA
         consensus.BIP16Exception = uint256S("0x00000000dd30457c001f4095d208cc1296b0eed002427aa599874af7a432b105");
         consensus.BIP34Height = 1;
         consensus.BIP34Hash = uint256S("0x0000000023b3a96d3484e5abb3755c413e7d41500f8e2a5c3f0dd01299cd8ef8");
@@ -166,7 +166,7 @@ public:
         //     CScriptWitness()
         //     CTxOut(nValue=50.00000000, scriptPubKey=41047c62bbf7f5aa4dd5c16bad99ac)
         genesis = VeriBlock::CreateGenesisBlock(
-            1340, 3768745, 0x1d0fffff, 1, 50 * COIN,
+            1340, 3768745, 0x1d0fffff, 1, 5000000 * COIN,
             "047c62bbf7f5aa4dd5c16bad99ac621b857fac4e93de86e45f5ada73404eeb44dedcf377b03c14a24e9d51605d9dd2d8ddaef58760d9c4bb82d9c8f06d96e79488",
             "VeriBlock");
         consensus.hashGenesisBlock = genesis.GetHash();

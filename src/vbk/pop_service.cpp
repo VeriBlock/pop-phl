@@ -185,23 +185,18 @@ PoPRewards getPopRewards(const CBlockIndex& pindexPrev, const Consensus::Params&
 
     auto blockHash = pindexPrev.GetBlockHash();
     auto rewards = pop.altTree->getPopPayout(blockHash.asVector());
-    //int halvings = (pindexPrev.nHeight + 1) / consensusParams.nSubsidyHalvingInterval;
+    int halvings = (pindexPrev.nHeight + 1) / consensusParams.nSubsidyHalvingInterval;
     PoPRewards btcRewards{};
     auto& param = Params();
     //erase rewards, that pay 0 satoshis and halve rewards
-    
-    // PHL Maintain Legacy coin base
-    if( pindexPrev.nHeight < 5 ) { 
-        return {};
-    } else {
- 
-        for (const auto& r : rewards) {
-            auto rewardValue = r.second;
+    for (const auto& r : rewards) {
+        auto rewardValue = r.second;
+        rewardValue >>= halvings;
+        if ((rewardValue != 0) && (halvings < 640000000)) {
             CScript key = CScript(r.first.begin(), r.first.end());
             btcRewards[key] = param.PopRewardCoefficient() * rewardValue;
         }
     }
-    // PHL
 
     return btcRewards;
 }

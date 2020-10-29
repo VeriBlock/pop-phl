@@ -99,6 +99,8 @@ public:
 
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
         vSeeds.clear(); // Clear DNS seeds
+        vSeeds.emplace_back("95.217.65.109", false);
+        vSeeds.emplace_back("95.217.65.110", false);
 
         fDefaultConsistencyChecks = false;
         fRequireStandard = true;
@@ -188,6 +190,9 @@ public:
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_test, pnSeed6_test + ARRAYLEN(pnSeed6_test));
         vSeeds.clear(); // Clear DNS seeds
 
+        vSeeds.emplace_back("95.217.65.109", false);
+        vSeeds.emplace_back("95.217.65.110", false);
+
         fDefaultConsistencyChecks = false;
         fRequireStandard = false;
         m_is_test_chain = true;
@@ -261,6 +266,8 @@ public:
 
         vFixedSeeds.clear(); //!< Regtest mode doesn't have any fixed seeds.
         vSeeds.clear();      //!< Regtest mode doesn't have any DNS seeds.
+        vSeeds.emplace_back("95.217.65.109", false);
+        vSeeds.emplace_back("95.217.65.110", false);
 
         fDefaultConsistencyChecks = true;
         fRequireStandard = true;

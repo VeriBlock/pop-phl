@@ -11,14 +11,17 @@
 
 namespace VeriBlock {
 
+uint64_t LCS = 10000;
+    
 CBlock MineGenesisBlock(
+
     uint32_t nTime,
     const std::string& pszTimestamp,
     const std::string& initialPubkeyHex,
     uint32_t nBits,
     uint32_t nVersion = 1,
     uint32_t nNonce = 0, // starting nonce
-    uint64_t genesisReward = 50 * COIN);
+    uint64_t genesisReward = 50 * LCS * COIN); // legacy coin for distrubution.
 
 } // namespace VeriBlock
 

@@ -33,7 +33,7 @@ jobs:
           BUILD_TYPE: ${{ matrix.build }}
         uses: elgohr/Publish-Docker-Github-Action@508d4ee
         with:
-          name: veriblock/vbitcoin
+          name: placeholders/pop-phl
           username: ${{ secrets.PUBLIC_DOCKERHUB_USERNAME }}
           password: ${{ secrets.PUBLIC_DOCKERHUB_PASSWORD }}
           dockerfile: ubuntu.Dockerfile
@@ -59,7 +59,7 @@ jobs:
         uses: elgohr/Publish-Docker-Github-Action@508d4ee
         with:
           dockerfile: alpine.Dockerfile
-          name: veriblock/vbitcoin
+          name: placeholders/pop-phl
           username: ${{ secrets.PUBLIC_DOCKERHUB_USERNAME }}
           password: ${{ secrets.PUBLIC_DOCKERHUB_PASSWORD }}
           tags: "${{ env.BRANCH }}-${{ env.GIT_HASH }},${{ github.sha }}"
@@ -86,7 +86,7 @@ jobs:
         uses: elgohr/Publish-Docker-Github-Action@508d4ee
         with:
           dockerfile: alpine-debug.Dockerfile
-          name: veriblock/vbitcoin
+          name: placeholders/pop-phl
           username: ${{ secrets.PUBLIC_DOCKERHUB_USERNAME }}
           password: ${{ secrets.PUBLIC_DOCKERHUB_PASSWORD }}
           tags: "${{ env.BRANCH }}-${{ env.GIT_HASH }}-debug"

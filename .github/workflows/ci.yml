@@ -75,21 +75,6 @@ jobs:
           --disable-bench
       - name: make
         run: make -j2 deploy
-      - name: create artifacts
-        if: success()
-        run: |
-          mv ./release vBitcoin-${{ steps.extract_branch.outputs.branch }}-${{ steps.extract_branch.outputs.git_hash }}
-          tar czvf vBitcoin-${{ steps.extract_branch.outputs.branch }}-${{ steps.extract_branch.outputs.git_hash }}-linux-x64.tar.gz vBitcoin-${{ steps.extract_branch.outputs.branch }}-${{ steps.extract_branch.outputs.git_hash }}/
-      - name: upload artifacts
-        if: success()
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.ARTIFACT_HOST }}
-          username: ${{ secrets.ARTIFACT_USER }}
-          key: ${{ secrets.ARTIFACT_KEY }}
-          passphrase: ${{ secrets.ARTIFACT_KEY_PASSPHRASE }}
-          source: vBitcoin-${{ steps.extract_branch.outputs.branch }}-${{ steps.extract_branch.outputs.git_hash }}-linux-x64.tar.gz
-          target: ${{ secrets.ARTIFACT_PATH }}
       - name: make check
         timeout-minutes: 60
         run: make check
@@ -160,22 +145,6 @@ jobs:
       - name: make deploy
         if: success()
         run: make deploy
-      - name: create artifacts
-        if: success()
-        run: |
-          mv ./vbitcoin-0.19.99-win64-setup-unsigned.exe release/
-          mv ./release vBitcoin-${{ steps.extract_branch.outputs.branch }}-${{ steps.extract_branch.outputs.git_hash }}
-          zip -r9 vBitcoin-${{ steps.extract_branch.outputs.branch }}-${{ steps.extract_branch.outputs.git_hash }}-win64-qt.zip vBitcoin-${{ steps.extract_branch.outputs.branch }}-${{ steps.extract_branch.outputs.git_hash }}
-      - name: upload artifacts
-        if: success()
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.ARTIFACT_HOST }}
-          username: ${{ secrets.ARTIFACT_USER }}
-          key: ${{ secrets.ARTIFACT_KEY }}
-          passphrase: ${{ secrets.ARTIFACT_KEY_PASSPHRASE }}
-          source: vBitcoin-${{ steps.extract_branch.outputs.branch }}-${{ steps.extract_branch.outputs.git_hash }}-win64-qt.zip
-          target: ${{ secrets.ARTIFACT_PATH }}
 
   x86_64-apple-darwin16:
     runs-on: ubuntu-latest
@@ -233,23 +202,6 @@ jobs:
           --without-qtdbus
       - name: make
         run: make -j2 deploy
-      - name: create artifacts
-        if: success()
-        run: |
-          mv ./vBitcoin-Qt.app release/
-          mv ./vBitcoin-Core.dmg release/
-          mv ./release vBitcoin-${{ steps.extract_branch.outputs.branch }}-${{ steps.extract_branch.outputs.git_hash }}
-          zip -r9 vBitcoin-${{ steps.extract_branch.outputs.branch }}-${{ steps.extract_branch.outputs.git_hash }}-macos-qt.zip vBitcoin-${{ steps.extract_branch.outputs.branch }}-${{ steps.extract_branch.outputs.git_hash }}
-      - name: upload artifacts
-        if: success()
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.ARTIFACT_HOST }}
-          username: ${{ secrets.ARTIFACT_USER }}
-          key: ${{ secrets.ARTIFACT_KEY }}
-          passphrase: ${{ secrets.ARTIFACT_KEY_PASSPHRASE }}
-          source: vBitcoin-${{ steps.extract_branch.outputs.branch }}-${{ steps.extract_branch.outputs.git_hash }}-macos-qt.zip
-          target: ${{ secrets.ARTIFACT_PATH }}
 
   macos-native:
     runs-on: macos-latest

@@ -11,7 +11,7 @@ RUN apt-get update && \
         python3-pip \
         python3-setuptools \
     && \
-    apt-add-repository -y ppa:placeh/placeh
+    apt-add-repository -y ppa:bitcoin/bitcoin
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
     libzmq3-dev \

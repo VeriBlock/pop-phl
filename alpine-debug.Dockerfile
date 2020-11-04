@@ -21,8 +21,8 @@ RUN make -j$(nproc)
 RUN make install
 RUN rm -rf ${BERKELEYDB_PREFIX}/docs
 
-# Build stage for vBitcoin Core
-FROM alpine as vbitcoin-core
+# Build stage for Placeholders Core
+FROM alpine as placeh-core
 
 COPY --from=berkeleydb /opt /opt
 
@@ -52,11 +52,11 @@ RUN set -ex \
     gpg --batch --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys "$key" ; \
   done
 
-ENV VBITCOIN_PREFIX=/opt/vbitcoin
+ENV VPLACEH_PREFIX=/opt/placeh
 
-COPY . /vbitcoin
+COPY . /placeh
 
-WORKDIR /vbitcoin
+WORKDIR /placeh
 
 # Install alt-integration-cpp
 RUN export VERIBLOCK_POP_CPP_VERSION=$(awk -F '=' '/\$\(package\)_version/{print $NF}' $PWD/depends/packages/veriblock-pop-cpp.mk | head -n1); \
@@ -81,7 +81,7 @@ RUN ./configure LDFLAGS=-L`ls -d /opt/db-*`/lib/ CPPFLAGS=-I`ls -d /opt/db-*`/in
     --without-gui \
     --with-libs=no \
     --with-daemon \
-    --prefix=${VBITCOIN_PREFIX}
+    --prefix=${VPLACEH_PREFIX}
 
 RUN make -j$(nproc) install
 
@@ -96,16 +96,16 @@ RUN apk --no-cache add \
   su-exec \
   git
 
-ENV DATA_DIR=/home/vbitcoin/.vbitcoin
-ENV VBITCOIN_PREFIX=/opt/vbitcoin
-ENV PATH=${VBITCOIN_PREFIX}/bin:$PATH
+ENV DATA_DIR=/home/placeh/.placeh
+ENV VPLACEH_PREFIX=/opt/placeh
+ENV PATH=${VPLACEH_PREFIX}/bin:$PATH
 
-COPY --from=vbitcoin-core /opt /opt
+COPY --from=placeh-core /opt /opt
 
 RUN mkdir -p ${DATA_DIR}
 RUN set -x \
-    && addgroup -g 1001 -S vbitcoin \
-    && adduser -u 1001 -D -S -G vbitcoin vbitcoin
+    && addgroup -g 1001 -S placeh \
+    && adduser -u 1001 -D -S -G placeh placeh
 RUN chown -R 1001:1001 ${DATA_DIR}
-USER vbitcoin
+USER placeh
 WORKDIR $DATA_DIR

@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2009-2018 The Placeholders Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -48,8 +48,8 @@ std::string GetWarnings(bool verbose)
 
     // Pre-release build warning
     if (!CLIENT_VERSION_IS_RELEASE) {
-        warnings_concise = "This is a reference implementation for Bitcoin based coins utilizing VeriBlock's Proof-of-Proof (PoP) technology. \nCoins associated with this blockchain have no value and are for testing purposes only.";
-        warnings_verbose = _("This is a reference implementation for Bitcoin based coins utilizing VeriBlock's Proof-of-Proof (PoP) technology. \nCoins associated with this blockchain have no value and are for testing purposes only.").translated;
+        warnings_concise = "This is a reference implementation for Placeholders based coins utilizing VeriBlock's Proof-of-Proof (PoP) technology. \nCoins associated with this blockchain have no value and are for testing purposes only.";
+        warnings_verbose = _("This is a reference implementation for Placeholders based coins utilizing VeriBlock's Proof-of-Proof (PoP) technology. \nCoins associated with this blockchain have no value and are for testing purposes only.").translated;
     }
 
     // Misc warnings like out of disk space and clock is wrong

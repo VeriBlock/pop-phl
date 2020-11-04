@@ -42,17 +42,17 @@ from the root of the repository.
 
 **Note**: You only need Berkeley DB if the wallet is enabled (see [*Disable-wallet mode*](/doc/build-osx.md#disable-wallet-mode)).
 
-## Build vBitcoin Core
+## Build Placeholders Core
 
-1. Clone the vBitcoin Core source code:
+1. Clone the Placeholders Core source code:
     ```shell
     git clone https://github.com/VeriBlock/vbk-ri-btc
     cd vbk-ri-btc
     ```
 
-2.  Build vBitcoin Core:
+2.  Build Placeholders Core:
 
-    Configure and build the headless vBitcoin Core binaries as well as the GUI (if Qt is found).
+    Configure and build the headless Placeholders Core binaries as well as the GUI (if Qt is found).
 
     You can disable the GUI build by passing `--without-gui` to configure.
     ```shell
@@ -72,7 +72,7 @@ from the root of the repository.
     ```
 
 ## `disable-wallet` mode
-When the intention is to run only a P2P node without a wallet, vBitcoin Core may be
+When the intention is to run only a P2P node without a wallet, Placeholders Core may be
 compiled in `disable-wallet` mode with:
 ```shell
 ./configure --disable-wallet
@@ -83,30 +83,30 @@ In this case there is no dependency on Berkeley DB 4.8.
 Mining is also possible in disable-wallet mode using the `getblocktemplate` RPC call.
 
 ## Running
-vBitcoin Core is now available at `./src/vbitcoind`
+Placeholders Core is now available at `./src/placehd`
 
 Before running, you may create an empty configuration file:
 ```shell
-mkdir -p "/Users/${USER}/Library/Application Support/vBitcoin"
+mkdir -p "/Users/${USER}/Library/Application Support/Placeholders"
 
-touch "/Users/${USER}/Library/Application Support/vBitcoin/vbitcoin.conf"
+touch "/Users/${USER}/Library/Application Support/Placeholders/placeh.conf"
 
-chmod 600 "/Users/${USER}/Library/Application Support/vBitcoin/vbitcoin.conf"
+chmod 600 "/Users/${USER}/Library/Application Support/Placeholders/placeh.conf"
 ```
 
-The first time you run vbitcoind, it will start downloading the blockchain. This process could
+The first time you run placehd, it will start downloading the blockchain. This process could
 take many hours, or even days on slower than average systems.
 
 You can monitor the download process by looking at the debug.log file:
 ```shell
-tail -f $HOME/Library/Application\ Support/vBitcoin/debug.log
+tail -f $HOME/Library/Application\ Support/Placeholders/debug.log
 ```
 
 ## Other commands:
 ```shell
-./src/vbitcoind -daemon      # Starts the vbitcoin daemon.
-./src/vbitcoin-cli --help    # Outputs a list of command-line options.
-./src/vbitcoin-cli help      # Outputs a list of RPC commands when the daemon is running.
+./src/placehd -daemon      # Starts the placeh daemon.
+./src/placeh-cli --help    # Outputs a list of command-line options.
+./src/placeh-cli help      # Outputs a list of RPC commands when the daemon is running.
 ```
 
 ## Notes

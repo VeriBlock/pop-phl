@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2019 The Bitcoin Core developers
+# Copyright (c) 2014-2019 The Placeholders Core developers
 # Copyright (c) 2019-2020 Xenios SEZC
 # https://www.veriblock.org
 # Distributed under the MIT software license, see the accompanying
 # file LICENSE or http://www.opensource.org/licenses/mit-license.php.
 
 from test_framework.pop import mine_vbk_blocks
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import PlaceholdersTestFramework
 from test_framework.util import (
     connect_nodes,
     disconnect_nodes,
     assert_equal,
 )
 
-class PopPayouts(BitcoinTestFramework):
+class PopPayouts(PlaceholdersTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 2

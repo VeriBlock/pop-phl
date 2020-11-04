@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2019 The Bitcoin Core developers
+# Copyright (c) 2014-2019 The Placeholders Core developers
 # Copyright (c) 2019-2020 Xenios SEZC
 # https://www.veriblock.org
 # Distributed under the MIT software license, see the accompanying
@@ -11,18 +11,18 @@ Create a chain of 20 blocks, where every next block contains 1 pop tx that endor
 Restart nodes[0,1] without -reindex.
 Node[2] is a control node.
 
-Expect that BTC/VBK tree state on nodes[0,1] is same as before shutdown (test against control node).
+Expect that PHL/VBK tree state on nodes[0,1] is same as before shutdown (test against control node).
 """
 
 from test_framework.pop import endorse_block, create_endorsed_chain
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import PlaceholdersTestFramework
 from test_framework.util import (
     connect_nodes,
     disconnect_nodes, assert_equal,
 )
 
 
-class PopInit(BitcoinTestFramework):
+class PopInit(PlaceholdersTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 3
@@ -69,8 +69,8 @@ class PopInit(BitcoinTestFramework):
         bestblocks = [self.get_best_block(x) for x in self.nodes]
         popdata = [x.getpopdata(bestblocks[0]['height']) for x in self.nodes]
 
-        # when node0 stops, its VBK/BTC trees get cleared. When we start it again, it MUST load payloads into trees.
-        # if this assert fails, it means that node restarted, but NOT loaded its VBK/BTC state into memory.
+        # when node0 stops, its VBK/PHL trees get cleared. When we start it again, it MUST load payloads into trees.
+        # if this assert fails, it means that node restarted, but NOT loaded its VBK/PHL state into memory.
         # node[2] is a control node that has never been shut down.
         assert_equal(popdata[0], popdata[2])
         assert_equal(popdata[1], popdata[2])

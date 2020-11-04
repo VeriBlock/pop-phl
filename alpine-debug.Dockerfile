@@ -52,7 +52,7 @@ RUN set -ex \
     gpg --batch --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys "$key" ; \
   done
 
-ENV VPLACEH_PREFIX=/opt/placeh
+ENV PLACEH_PREFIX=/opt/placeh
 
 COPY . /placeh
 
@@ -81,7 +81,7 @@ RUN ./configure LDFLAGS=-L`ls -d /opt/db-*`/lib/ CPPFLAGS=-I`ls -d /opt/db-*`/in
     --without-gui \
     --with-libs=no \
     --with-daemon \
-    --prefix=${VPLACEH_PREFIX}
+    --prefix=${PLACEH_PREFIX}
 
 RUN make -j$(nproc) install
 
@@ -97,8 +97,8 @@ RUN apk --no-cache add \
   git
 
 ENV DATA_DIR=/home/placeh/.placeh
-ENV VPLACEH_PREFIX=/opt/placeh
-ENV PATH=${VPLACEH_PREFIX}/bin:$PATH
+ENV PLACEH_PREFIX=/opt/placeh
+ENV PATH=${PLACEH_PREFIX}/bin:$PATH
 
 COPY --from=placeh-core /opt /opt
 

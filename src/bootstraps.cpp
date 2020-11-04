@@ -34,7 +34,7 @@ void printConfig(const altintegration::Config& config)
     assert(config.alt);
 
     LogPrintf(R"(Applied POP config:
- PHL:
+ BTC:
   network     : %s
   startHeight : %d
   total blocks: %d
@@ -77,7 +77,7 @@ void selectPopConfig(
     if (btcnet == "test") {
         auto param = std::make_shared<altintegration::BtcChainParamsTest>();
         if (popautoconfig) {
-            popconfig.setBTC(testnetPHLstartHeight, testnetPHLblocks, param);
+            popconfig.setBTC(testnetBTCstartHeight, testnetBTCblocks, param);
         } else {
             popconfig.setBTC(btcstart, parseBlocks(btcblocks), param);
         }

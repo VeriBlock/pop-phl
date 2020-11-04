@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
-# Copyright (c) 2018 The Bitcoin Core developers
+# Copyright (c) 2018 The Placeholders Core developers
 # Copyright (c) 2019-2020 Xenios SEZC
 # https://www.veriblock.org
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test RPC help output."""
 
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import PlaceholdersTestFramework
 from test_framework.util import assert_equal, assert_raises_rpc_error
 
 import os
 
 
-class HelpRpcTest(BitcoinTestFramework):
+class HelpRpcTest(PlaceholdersTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
         self.supports_cli = False

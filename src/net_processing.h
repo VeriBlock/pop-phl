@@ -1,10 +1,10 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2009-2018 The Placeholders Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_NET_PROCESSING_H
-#define BITCOIN_NET_PROCESSING_H
+#ifndef PLACEH_NET_PROCESSING_H
+#define PLACEH_NET_PROCESSING_H
 
 #include <net.h>
 #include <validationinterface.h>
@@ -92,4 +92,4 @@ void Misbehaving(NodeId nodeid, int howmuch, const std::string& message="") EXCL
 /** Relay transaction to every node */
 void RelayTransaction(const uint256&, const CConnman& connman);
 
-#endif // BITCOIN_NET_PROCESSING_H
+#endif // PLACEH_NET_PROCESSING_H

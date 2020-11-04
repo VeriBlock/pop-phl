@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2019 The Bitcoin Core developers
+# Copyright (c) 2014-2019 The Placeholders Core developers
 # Copyright (c) 2019-2020 Xenios SEZC
 # https://www.veriblock.org
 # Distributed under the MIT software license, see the accompanying
@@ -22,14 +22,14 @@ After sync has been completed, expect all nodes to be on same height (fork A, bl
 """
 
 from test_framework.pop import endorse_block, create_endorsed_chain
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import PlaceholdersTestFramework
 from test_framework.util import (
     connect_nodes,
     disconnect_nodes, assert_equal,
 )
 
 
-class PopFr(BitcoinTestFramework):
+class PopFr(PlaceholdersTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 4

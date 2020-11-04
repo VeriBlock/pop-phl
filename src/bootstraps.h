@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef __BOOTSTRAPS_BTC_VBK
-#define __BOOTSTRAPS_BTC_VBK
+#ifndef __BOOTSTRAPS_PHL_VBK
+#define __BOOTSTRAPS_PHL_VBK
 
 #include <string>
 #include <vector>
@@ -16,13 +16,13 @@
 extern const int testnetVBKstartHeight;
 extern const std::vector<std::string> testnetVBKblocks;
 
-extern const int testnetBTCstartHeight;
-extern const std::vector<std::string> testnetBTCblocks;
+extern const int testnetPHLstartHeight;
+extern const std::vector<std::string> testnetPHLblocks;
 
-struct AltChainParamsVBTC : public altintegration::AltChainParams {
-    ~AltChainParamsVBTC() override = default;
+struct AltChainParamsPHL : public altintegration::AltChainParams {
+    ~AltChainParamsPHL() override = default;
 
-    AltChainParamsVBTC(const CBlock& genesis)
+    AltChainParamsPHL(const CBlock& genesis)
     {
         auto hash = genesis.GetHash();
         bootstrap.hash = std::vector<uint8_t>{hash.begin(), hash.end()};
@@ -56,4 +56,4 @@ void selectPopConfig(
     int vbkstart = 0,
     const std::string& vbkblocks = {});
 
-#endif //__BOOTSTRAPS_BTC_VBK
+#endif //__BOOTSTRAPS_PHL_VBK

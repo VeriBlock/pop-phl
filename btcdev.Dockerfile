@@ -11,7 +11,7 @@ RUN apt-get update && \
         python3-setuptools \
     && wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
     add-apt-repository -y "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-9 main" && \
-    apt-add-repository -y ppa:bitcoin/bitcoin && \
+    apt-add-repository -y ppa:placeh/placeh && \
     add-apt-repository -y ppa:ubuntu-toolchain-r/test
 
 # install dependencies

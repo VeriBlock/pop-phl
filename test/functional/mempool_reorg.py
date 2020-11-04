@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2018 The Bitcoin Core developers
+# Copyright (c) 2014-2018 The Placeholders Core developers
 # Copyright (c) 2019-2020 Xenios SEZC
 # https://www.veriblock.org
 # Distributed under the MIT software license, see the accompanying
@@ -11,12 +11,12 @@ that spend (directly or indirectly) coinbase transactions.
 """
 
 from test_framework.blocktools import create_raw_transaction
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import PlaceholdersTestFramework
 from test_framework.util import assert_equal, assert_raises_rpc_error
 from test_framework.pop_const import POW_PAYOUT
 
 
-class MempoolCoinbaseTest(BitcoinTestFramework):
+class MempoolCoinbaseTest(PlaceholdersTestFramework):
     def set_test_params(self):
         self.num_nodes = 2
 

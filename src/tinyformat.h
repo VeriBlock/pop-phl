@@ -146,7 +146,7 @@ namespace tfm = tinyformat;
 #include <algorithm>
 #include <iostream>
 #include <sstream>
-#include <stdexcept> // Added for Bitcoin Core
+#include <stdexcept> // Added for Placeholders Core
 
 #ifndef TINYFORMAT_ASSERT
 #   include <cassert>
@@ -180,7 +180,7 @@ namespace tfm = tinyformat;
 
 namespace tinyformat {
 
-// Added for Bitcoin Core
+// Added for Placeholders Core
 class format_error: public std::runtime_error
 {
 public:
@@ -1159,7 +1159,7 @@ TINYFORMAT_FOREACH_ARGNUM(TINYFORMAT_MAKE_FORMAT_FUNCS)
 
 namespace tinyformat {
 
-// Added for Bitcoin Core
+// Added for Placeholders Core
 template<typename... Args>
 std::string format(const std::string &fmt, const Args&... args)
 {
@@ -1168,7 +1168,7 @@ std::string format(const std::string &fmt, const Args&... args)
     return oss.str();
 }
 
-// Added for Bitcoin Core:
+// Added for Placeholders Core:
 /** Format arguments and return the string or write to given std::ostream (see tinyformat::format doc for details) */
 #define strprintf tfm::format
 

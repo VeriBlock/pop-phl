@@ -1,5 +1,5 @@
-Building vBitcoin
+Building Placeholders
 ================
 
 See doc/build-*.md for instructions on building the various
-elements of the vBitcoin Core reference implementation of vBitcoin.
+elements of the Placeholders Core reference implementation of Placeholders.

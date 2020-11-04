@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2016 The Bitcoin Core developers
+# Copyright (c) 2013-2016 The Placeholders Core developers
 # Copyright (c) 2019-2020 Xenios SEZC
 # https://www.veriblock.org
 # Distributed under the MIT software license, see the accompanying
@@ -23,43 +23,43 @@ else
 LIBUNIVALUE = $(UNIVALUE_LIBS)
 endif
 
-BITCOIN_INCLUDES=-I$(builddir) $(BDB_CPPFLAGS) $(BOOST_CPPFLAGS) $(LEVELDB_CPPFLAGS)
+PLACEH_INCLUDES=-I$(builddir) $(BDB_CPPFLAGS) $(BOOST_CPPFLAGS) $(LEVELDB_CPPFLAGS)
 
-BITCOIN_INCLUDES += -I$(srcdir)/secp256k1/include
-BITCOIN_INCLUDES += $(UNIVALUE_CFLAGS)
+PLACEH_INCLUDES += -I$(srcdir)/secp256k1/include
+PLACEH_INCLUDES += $(UNIVALUE_CFLAGS)
 
-LIBBITCOIN_SERVER=libbitcoin_server.a
-LIBBITCOIN_COMMON=libbitcoin_common.a
-LIBBITCOIN_CONSENSUS=libbitcoin_consensus.a
-LIBBITCOIN_CLI=libbitcoin_cli.a
-LIBBITCOIN_UTIL=libbitcoin_util.a
-LIBBITCOIN_CRYPTO_BASE=crypto/libbitcoin_crypto_base.a
-LIBBITCOINQT=qt/libbitcoinqt.a
+LIBPLACEH_SERVER=libplaceh_server.a
+LIBPLACEH_COMMON=libplaceh_common.a
+LIBPLACEH_CONSENSUS=libplaceh_consensus.a
+LIBPLACEH_CLI=libplaceh_cli.a
+LIBPLACEH_UTIL=libplaceh_util.a
+LIBPLACEH_CRYPTO_BASE=crypto/libplaceh_crypto_base.a
+LIBPLACEHQT=qt/libplacehqt.a
 LIBSECP256K1=secp256k1/libsecp256k1.la
 
 if ENABLE_ZMQ
-LIBBITCOIN_ZMQ=libbitcoin_zmq.a
+LIBPLACEH_ZMQ=libplaceh_zmq.a
 endif
-if BUILD_BITCOIN_LIBS
-LIBBITCOINCONSENSUS=libbitcoinconsensus.la
+if BUILD_PLACEH_LIBS
+LIBPLACEHCONSENSUS=libplacehconsensus.la
 endif
 if ENABLE_WALLET
-LIBBITCOIN_WALLET=libbitcoin_wallet.a
-LIBBITCOIN_WALLET_TOOL=libbitcoin_wallet_tool.a
+LIBPLACEH_WALLET=libplaceh_wallet.a
+LIBPLACEH_WALLET_TOOL=libplaceh_wallet_tool.a
 endif
 
-LIBBITCOIN_CRYPTO= $(LIBBITCOIN_CRYPTO_BASE)
+LIBPLACEH_CRYPTO= $(LIBPLACEH_CRYPTO_BASE)
 if ENABLE_SSE41
-LIBBITCOIN_CRYPTO_SSE41 = crypto/libbitcoin_crypto_sse41.a
-LIBBITCOIN_CRYPTO += $(LIBBITCOIN_CRYPTO_SSE41)
+LIBPLACEH_CRYPTO_SSE41 = crypto/libplaceh_crypto_sse41.a
+LIBPLACEH_CRYPTO += $(LIBPLACEH_CRYPTO_SSE41)
 endif
 if ENABLE_AVX2
-LIBBITCOIN_CRYPTO_AVX2 = crypto/libbitcoin_crypto_avx2.a
-LIBBITCOIN_CRYPTO += $(LIBBITCOIN_CRYPTO_AVX2)
+LIBPLACEH_CRYPTO_AVX2 = crypto/libplaceh_crypto_avx2.a
+LIBPLACEH_CRYPTO += $(LIBPLACEH_CRYPTO_AVX2)
 endif
 if ENABLE_SHANI
-LIBBITCOIN_CRYPTO_SHANI = crypto/libbitcoin_crypto_shani.a
-LIBBITCOIN_CRYPTO += $(LIBBITCOIN_CRYPTO_SHANI)
+LIBPLACEH_CRYPTO_SHANI = crypto/libplaceh_crypto_shani.a
+LIBPLACEH_CRYPTO += $(LIBPLACEH_CRYPTO_SHANI)
 endif
 
 $(LIBSECP256K1): $(wildcard secp256k1/src/*.h) $(wildcard secp256k1/src/*.c) $(wildcard secp256k1/include/*)
@@ -68,36 +68,36 @@ $(LIBSECP256K1): $(wildcard secp256k1/src/*.h) $(wildcard secp256k1/src/*.c) $(w
 # Make is not made aware of per-object dependencies to avoid limiting building parallelization
 # But to build the less dependent modules first, we manually select their order here:
 EXTRA_LIBRARIES += \
-  $(LIBBITCOIN_CRYPTO) \
-  $(LIBBITCOIN_UTIL) \
-  $(LIBBITCOIN_COMMON) \
-  $(LIBBITCOIN_CONSENSUS) \
-  $(LIBBITCOIN_SERVER) \
-  $(LIBBITCOIN_CLI) \
-  $(LIBBITCOIN_WALLET) \
-  $(LIBBITCOIN_WALLET_TOOL) \
-  $(LIBBITCOIN_ZMQ)
+  $(LIBPLACEH_CRYPTO) \
+  $(LIBPLACEH_UTIL) \
+  $(LIBPLACEH_COMMON) \
+  $(LIBPLACEH_CONSENSUS) \
+  $(LIBPLACEH_SERVER) \
+  $(LIBPLACEH_CLI) \
+  $(LIBPLACEH_WALLET) \
+  $(LIBPLACEH_WALLET_TOOL) \
+  $(LIBPLACEH_ZMQ)
 
-lib_LTLIBRARIES = $(LIBBITCOINCONSENSUS)
+lib_LTLIBRARIES = $(LIBPLACEHCONSENSUS)
 
 bin_PROGRAMS =
 noinst_PROGRAMS =
 TESTS =
 BENCHMARKS =
 
-if BUILD_BITCOIND
-  bin_PROGRAMS += vbitcoind
+if BUILD_PLACEHD
+  bin_PROGRAMS += placehd
 endif
 
-if BUILD_BITCOIN_CLI
-  bin_PROGRAMS += vbitcoin-cli
+if BUILD_PLACEH_CLI
+  bin_PROGRAMS += placeh-cli
 endif
-if BUILD_BITCOIN_TX
-  bin_PROGRAMS += vbitcoin-tx
+if BUILD_PLACEH_TX
+  bin_PROGRAMS += placeh-tx
 endif
 if ENABLE_WALLET
-if BUILD_BITCOIN_WALLET
-  bin_PROGRAMS += vbitcoin-wallet
+if BUILD_PLACEH_WALLET
+  bin_PROGRAMS += placeh-wallet
 endif
 endif
 
@@ -122,8 +122,8 @@ VBK_H = \
 
 
 .PHONY: FORCE check-symbols check-security
-# bitcoin core #
-BITCOIN_CORE_H = \
+# placeh core #
+PLACEH_CORE_H = \
   $(VBK_H) \
   addrdb.h \
   addrman.h \
@@ -286,16 +286,16 @@ obj/build.h: FORCE
 	@$(MKDIR_P) $(builddir)/obj
 	@$(top_srcdir)/share/genbuild.sh "$(abs_top_builddir)/src/obj/build.h" \
 	  "$(abs_top_srcdir)"
-libbitcoin_util_a-clientversion.$(OBJEXT): obj/build.h
+libplaceh_util_a-clientversion.$(OBJEXT): obj/build.h
 
 
-# server: shared between vbitcoind and vbitcoin-qt
+# server: shared between placehd and placeh-qt
 # Contains code accessing mempool and chain state that is meant to be separated
 # from wallet and gui code (see node/README.md). Shared code should go in
-# libbitcoin_common or libbitcoin_util libraries, instead.
-libbitcoin_server_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(MINIUPNPC_CPPFLAGS) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS)
-libbitcoin_server_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libbitcoin_server_a_SOURCES = \
+# libplaceh_common or libplaceh_util libraries, instead.
+libplaceh_server_a_CPPFLAGS = $(AM_CPPFLAGS) $(PLACEH_INCLUDES) $(MINIUPNPC_CPPFLAGS) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS)
+libplaceh_server_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libplaceh_server_a_SOURCES = \
   vbk/pop_service.hpp \
   vbk/pop_service.cpp \
   addrdb.cpp \
@@ -351,19 +351,19 @@ libbitcoin_server_a_SOURCES = \
   validation.cpp \
   validationinterface.cpp \
   versionbits.cpp \
-  $(BITCOIN_CORE_H)
+  $(PLACEH_CORE_H)
 
 if ENABLE_WALLET
-libbitcoin_server_a_SOURCES += wallet/init.cpp
+libplaceh_server_a_SOURCES += wallet/init.cpp
 endif
 if !ENABLE_WALLET
-libbitcoin_server_a_SOURCES += dummywallet.cpp
+libplaceh_server_a_SOURCES += dummywallet.cpp
 endif
 
 if ENABLE_ZMQ
-libbitcoin_zmq_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(ZMQ_CFLAGS)
-libbitcoin_zmq_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libbitcoin_zmq_a_SOURCES = \
+libplaceh_zmq_a_CPPFLAGS = $(AM_CPPFLAGS) $(PLACEH_INCLUDES) $(ZMQ_CFLAGS)
+libplaceh_zmq_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libplaceh_zmq_a_SOURCES = \
   zmq/zmqabstractnotifier.cpp \
   zmq/zmqnotificationinterface.cpp \
   zmq/zmqpublishnotifier.cpp \
@@ -371,11 +371,11 @@ libbitcoin_zmq_a_SOURCES = \
 endif
 
 
-# wallet: shared between vbitcoind and vbitcoin-qt, but only linked
+# wallet: shared between placehd and placeh-qt, but only linked
 # when wallet enabled
-libbitcoin_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-libbitcoin_wallet_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libbitcoin_wallet_a_SOURCES = \
+libplaceh_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(PLACEH_INCLUDES)
+libplaceh_wallet_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libplaceh_wallet_a_SOURCES = \
   interfaces/wallet.cpp \
   wallet/coincontrol.cpp \
   wallet/crypter.cpp \
@@ -391,18 +391,18 @@ libbitcoin_wallet_a_SOURCES = \
   wallet/walletdb.cpp \
   wallet/walletutil.cpp \
   wallet/coinselection.cpp \
-  $(BITCOIN_CORE_H)
+  $(PLACEH_CORE_H)
 
-libbitcoin_wallet_tool_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-libbitcoin_wallet_tool_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libbitcoin_wallet_tool_a_SOURCES = \
+libplaceh_wallet_tool_a_CPPFLAGS = $(AM_CPPFLAGS) $(PLACEH_INCLUDES)
+libplaceh_wallet_tool_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libplaceh_wallet_tool_a_SOURCES = \
   wallet/wallettool.cpp \
-  $(BITCOIN_CORE_H)
+  $(PLACEH_CORE_H)
 
 # crypto primitives library
-crypto_libbitcoin_crypto_base_a_CPPFLAGS = $(AM_CPPFLAGS)
-crypto_libbitcoin_crypto_base_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-crypto_libbitcoin_crypto_base_a_SOURCES = \
+crypto_libplaceh_crypto_base_a_CPPFLAGS = $(AM_CPPFLAGS)
+crypto_libplaceh_crypto_base_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+crypto_libplaceh_crypto_base_a_SOURCES = \
   crypto/aes.cpp \
   crypto/aes.h \
   crypto/chacha_poly_aead.h \
@@ -430,31 +430,31 @@ crypto_libbitcoin_crypto_base_a_SOURCES = \
   crypto/siphash.h
 
 if USE_ASM
-crypto_libbitcoin_crypto_base_a_SOURCES += crypto/sha256_sse4.cpp
+crypto_libplaceh_crypto_base_a_SOURCES += crypto/sha256_sse4.cpp
 endif
 
-crypto_libbitcoin_crypto_sse41_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-crypto_libbitcoin_crypto_sse41_a_CPPFLAGS = $(AM_CPPFLAGS)
-crypto_libbitcoin_crypto_sse41_a_CXXFLAGS += $(SSE41_CXXFLAGS)
-crypto_libbitcoin_crypto_sse41_a_CPPFLAGS += -DENABLE_SSE41
-crypto_libbitcoin_crypto_sse41_a_SOURCES = crypto/sha256_sse41.cpp
+crypto_libplaceh_crypto_sse41_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+crypto_libplaceh_crypto_sse41_a_CPPFLAGS = $(AM_CPPFLAGS)
+crypto_libplaceh_crypto_sse41_a_CXXFLAGS += $(SSE41_CXXFLAGS)
+crypto_libplaceh_crypto_sse41_a_CPPFLAGS += -DENABLE_SSE41
+crypto_libplaceh_crypto_sse41_a_SOURCES = crypto/sha256_sse41.cpp
 
-crypto_libbitcoin_crypto_avx2_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-crypto_libbitcoin_crypto_avx2_a_CPPFLAGS = $(AM_CPPFLAGS)
-crypto_libbitcoin_crypto_avx2_a_CXXFLAGS += $(AVX2_CXXFLAGS)
-crypto_libbitcoin_crypto_avx2_a_CPPFLAGS += -DENABLE_AVX2
-crypto_libbitcoin_crypto_avx2_a_SOURCES = crypto/sha256_avx2.cpp
+crypto_libplaceh_crypto_avx2_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+crypto_libplaceh_crypto_avx2_a_CPPFLAGS = $(AM_CPPFLAGS)
+crypto_libplaceh_crypto_avx2_a_CXXFLAGS += $(AVX2_CXXFLAGS)
+crypto_libplaceh_crypto_avx2_a_CPPFLAGS += -DENABLE_AVX2
+crypto_libplaceh_crypto_avx2_a_SOURCES = crypto/sha256_avx2.cpp
 
-crypto_libbitcoin_crypto_shani_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-crypto_libbitcoin_crypto_shani_a_CPPFLAGS = $(AM_CPPFLAGS)
-crypto_libbitcoin_crypto_shani_a_CXXFLAGS += $(SHANI_CXXFLAGS)
-crypto_libbitcoin_crypto_shani_a_CPPFLAGS += -DENABLE_SHANI
-crypto_libbitcoin_crypto_shani_a_SOURCES = crypto/sha256_shani.cpp
+crypto_libplaceh_crypto_shani_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+crypto_libplaceh_crypto_shani_a_CPPFLAGS = $(AM_CPPFLAGS)
+crypto_libplaceh_crypto_shani_a_CXXFLAGS += $(SHANI_CXXFLAGS)
+crypto_libplaceh_crypto_shani_a_CPPFLAGS += -DENABLE_SHANI
+crypto_libplaceh_crypto_shani_a_SOURCES = crypto/sha256_shani.cpp
 
 # consensus: shared between all executables that validate any consensus rules.
-libbitcoin_consensus_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-libbitcoin_consensus_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libbitcoin_consensus_a_SOURCES = \
+libplaceh_consensus_a_CPPFLAGS = $(AM_CPPFLAGS) $(PLACEH_INCLUDES)
+libplaceh_consensus_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libplaceh_consensus_a_SOURCES = \
   amount.h \
   arith_uint256.cpp \
   arith_uint256.h \
@@ -472,7 +472,7 @@ libbitcoin_consensus_a_SOURCES = \
   primitives/transaction.h \
   pubkey.cpp \
   pubkey.h \
-  script/bitcoinconsensus.cpp \
+  script/placehconsensus.cpp \
   script/interpreter.cpp \
   script/interpreter.h \
   script/script.cpp \
@@ -488,10 +488,10 @@ libbitcoin_consensus_a_SOURCES = \
   util/strencodings.h \
   version.h
 
-# common: shared between vbitcoind, and vbitcoin-qt and non-server tools
-libbitcoin_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-libbitcoin_common_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libbitcoin_common_a_SOURCES = \
+# common: shared between placehd, and placeh-qt and non-server tools
+libplaceh_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(PLACEH_INCLUDES)
+libplaceh_common_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libplaceh_common_a_SOURCES = \
   vbk/pop_common.hpp \
   vbk/pop_common.cpp \
   base58.cpp \
@@ -527,14 +527,14 @@ libbitcoin_common_a_SOURCES = \
   vbk/merkle.cpp \
   versionbitsinfo.cpp \
   warnings.cpp \
-  $(BITCOIN_CORE_H)
+  $(PLACEH_CORE_H)
 
 # util: shared between all executables.
 # This library *must* be included to make sure that the glibc
 # backward-compatibility objects and their sanity checks are linked.
-libbitcoin_util_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-libbitcoin_util_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libbitcoin_util_a_SOURCES = \
+libplaceh_util_a_CPPFLAGS = $(AM_CPPFLAGS) $(PLACEH_INCLUDES)
+libplaceh_util_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libplaceh_util_a_SOURCES = \
   support/lockedpool.cpp \
   chainparamsbase.cpp \
   clientversion.cpp \
@@ -566,112 +566,112 @@ libbitcoin_util_a_SOURCES = \
   util/time.cpp \
   util/url.cpp \
   util/validation.cpp \
-  $(BITCOIN_CORE_H)
+  $(PLACEH_CORE_H)
 
 if GLIBC_BACK_COMPAT
-libbitcoin_util_a_SOURCES += compat/glibc_compat.cpp
+libplaceh_util_a_SOURCES += compat/glibc_compat.cpp
 AM_LDFLAGS += $(COMPAT_LDFLAGS)
 endif
 
-# cli: shared between bitcoin-cli and bitcoin-qt
-libbitcoin_cli_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-libbitcoin_cli_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libbitcoin_cli_a_SOURCES = \
+# cli: shared between placeh-cli and placeh-qt
+libplaceh_cli_a_CPPFLAGS = $(AM_CPPFLAGS) $(PLACEH_INCLUDES)
+libplaceh_cli_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libplaceh_cli_a_SOURCES = \
   compat/stdin.h \
   compat/stdin.cpp \
   rpc/client.cpp \
-  $(BITCOIN_CORE_H)
+  $(PLACEH_CORE_H)
 
-nodist_libbitcoin_util_a_SOURCES = $(srcdir)/obj/build.h
+nodist_libplaceh_util_a_SOURCES = $(srcdir)/obj/build.h
 #
 
-# vbitcoind binary #
-vbitcoind_SOURCES = bitcoind.cpp
-vbitcoind_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-vbitcoind_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-vbitcoind_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+# placehd binary #
+placehd_SOURCES = placehd.cpp
+placehd_CPPFLAGS = $(AM_CPPFLAGS) $(PLACEH_INCLUDES)
+placehd_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+placehd_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-vbitcoind_SOURCES += bitcoind-res.rc
+placehd_SOURCES += placehd-res.rc
 endif
 
 # Libraries below may be listed more than once to resolve circular dependencies (see
 # https://eli.thegreenplace.net/2013/07/09/library-order-in-static-linking#circular-dependency)
-vbitcoind_LDADD = \
+placehd_LDADD = \
   $(VERIBLOCK_POP_CPP_LIBS) \
-  $(LIBBITCOIN_SERVER) \
-  $(LIBBITCOIN_WALLET) \
-  $(LIBBITCOIN_COMMON) \
+  $(LIBPLACEH_SERVER) \
+  $(LIBPLACEH_WALLET) \
+  $(LIBPLACEH_COMMON) \
   $(LIBUNIVALUE) \
-  $(LIBBITCOIN_UTIL) \
-  $(LIBBITCOIN_ZMQ) \
-  $(LIBBITCOIN_CONSENSUS) \
-  $(LIBBITCOIN_CRYPTO) \
+  $(LIBPLACEH_UTIL) \
+  $(LIBPLACEH_ZMQ) \
+  $(LIBPLACEH_CONSENSUS) \
+  $(LIBPLACEH_CRYPTO) \
   $(LIBLEVELDB) \
   $(LIBLEVELDB_SSE42) \
   $(LIBMEMENV) \
   $(LIBSECP256K1)
 
-vbitcoind_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS) $(VERIBLOCK_POP_CPP_LIBS)
+placehd_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS) $(VERIBLOCK_POP_CPP_LIBS)
 
-# bitcoin-cli binary #
-vbitcoin_cli_SOURCES = bitcoin-cli.cpp
-vbitcoin_cli_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CFLAGS)
-vbitcoin_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-vbitcoin_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+# placeh-cli binary #
+placeh_cli_SOURCES = placeh-cli.cpp
+placeh_cli_CPPFLAGS = $(AM_CPPFLAGS) $(PLACEH_INCLUDES) $(EVENT_CFLAGS)
+placeh_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+placeh_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-vbitcoin_cli_SOURCES += bitcoin-cli-res.rc
+placeh_cli_SOURCES += placeh-cli-res.rc
 endif
 
-vbitcoin_cli_LDADD = \
-  $(LIBBITCOIN_CLI) \
+placeh_cli_LDADD = \
+  $(LIBPLACEH_CLI) \
   $(LIBUNIVALUE) \
-  $(LIBBITCOIN_UTIL) \
-  $(LIBBITCOIN_CRYPTO) \
+  $(LIBPLACEH_UTIL) \
+  $(LIBPLACEH_CRYPTO) \
   $(VERIBLOCK_POP_CPP_LIBS)
 
-vbitcoin_cli_LDADD += $(BOOST_LIBS) $(EVENT_LIBS)
+placeh_cli_LDADD += $(BOOST_LIBS) $(EVENT_LIBS)
 
-# vbitcoin-tx binary #
-vbitcoin_tx_SOURCES = bitcoin-tx.cpp
-vbitcoin_tx_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-vbitcoin_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-vbitcoin_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+# placeh-tx binary #
+placeh_tx_SOURCES = placeh-tx.cpp
+placeh_tx_CPPFLAGS = $(AM_CPPFLAGS) $(PLACEH_INCLUDES)
+placeh_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+placeh_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-vbitcoin_tx_SOURCES += bitcoin-tx-res.rc
+placeh_tx_SOURCES += placeh-tx-res.rc
 endif
 
-vbitcoin_tx_LDADD = \
+placeh_tx_LDADD = \
   $(VERIBLOCK_POP_CPP_LIBS) \
   $(LIBUNIVALUE) \
-  $(LIBBITCOIN_COMMON) \
-  $(LIBBITCOIN_UTIL) \
-  $(LIBBITCOIN_CONSENSUS) \
-  $(LIBBITCOIN_CRYPTO) \
+  $(LIBPLACEH_COMMON) \
+  $(LIBPLACEH_UTIL) \
+  $(LIBPLACEH_CONSENSUS) \
+  $(LIBPLACEH_CRYPTO) \
   $(LIBSECP256K1)
 
-vbitcoin_tx_LDADD += $(BOOST_LIBS) $(VERIBLOCK_POP_CPP_LIBS)
+placeh_tx_LDADD += $(BOOST_LIBS) $(VERIBLOCK_POP_CPP_LIBS)
 
-# vbitcoin-wallet binary #
-vbitcoin_wallet_SOURCES = bitcoin-wallet.cpp
-vbitcoin_wallet_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-vbitcoin_wallet_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-vbitcoin_wallet_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+# placeh-wallet binary #
+placeh_wallet_SOURCES = placeh-wallet.cpp
+placeh_wallet_CPPFLAGS = $(AM_CPPFLAGS) $(PLACEH_INCLUDES)
+placeh_wallet_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+placeh_wallet_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-vbitcoin_wallet_SOURCES += bitcoin-wallet-res.rc
+placeh_wallet_SOURCES += placeh-wallet-res.rc
 endif
 
-vbitcoin_wallet_LDADD = \
-  $(LIBBITCOIN_WALLET_TOOL) \
-  $(LIBBITCOIN_WALLET) \
-  $(LIBBITCOIN_COMMON) \
-  $(LIBBITCOIN_CONSENSUS) \
-  $(LIBBITCOIN_UTIL) \
-  $(LIBBITCOIN_CRYPTO) \
-  $(LIBBITCOIN_ZMQ) \
+placeh_wallet_LDADD = \
+  $(LIBPLACEH_WALLET_TOOL) \
+  $(LIBPLACEH_WALLET) \
+  $(LIBPLACEH_COMMON) \
+  $(LIBPLACEH_CONSENSUS) \
+  $(LIBPLACEH_UTIL) \
+  $(LIBPLACEH_CRYPTO) \
+  $(LIBPLACEH_ZMQ) \
   $(LIBLEVELDB) \
   $(LIBLEVELDB_SSE42) \
   $(LIBMEMENV) \
@@ -679,22 +679,22 @@ vbitcoin_wallet_LDADD = \
   $(LIBUNIVALUE) \
   $(VERIBLOCK_POP_CPP_LIBS)
 
-vbitcoin_wallet_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(MINIUPNPC_LIBS) $(ZMQ_LIBS)
+placeh_wallet_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(MINIUPNPC_LIBS) $(ZMQ_LIBS)
 #
 
-# bitcoinconsensus library #
-if BUILD_BITCOIN_LIBS
-include_HEADERS = script/bitcoinconsensus.h
-libbitcoinconsensus_la_SOURCES = support/cleanse.cpp $(crypto_libbitcoin_crypto_base_a_SOURCES) $(libbitcoin_consensus_a_SOURCES) $(VBK_H)
+# placehconsensus library #
+if BUILD_PLACEH_LIBS
+include_HEADERS = script/placehconsensus.h
+libplacehconsensus_la_SOURCES = support/cleanse.cpp $(crypto_libplaceh_crypto_base_a_SOURCES) $(libplaceh_consensus_a_SOURCES) $(VBK_H)
 
 if GLIBC_BACK_COMPAT
-  libbitcoinconsensus_la_SOURCES += compat/glibc_compat.cpp
+  libplacehconsensus_la_SOURCES += compat/glibc_compat.cpp
 endif
 
-libbitcoinconsensus_la_LDFLAGS = $(AM_LDFLAGS) -no-undefined $(RELDFLAGS)
-libbitcoinconsensus_la_LIBADD = $(LIBSECP256K1) $(LIBUNIVALUE)
-libbitcoinconsensus_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(builddir)/obj -I$(srcdir)/secp256k1/include -I$(srcdir)/univalue/include -DBUILD_BITCOIN_INTERNAL
-libbitcoinconsensus_la_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libplacehconsensus_la_LDFLAGS = $(AM_LDFLAGS) -no-undefined $(RELDFLAGS)
+libplacehconsensus_la_LIBADD = $(LIBSECP256K1) $(LIBUNIVALUE)
+libplacehconsensus_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(builddir)/obj -I$(srcdir)/secp256k1/include -I$(srcdir)/univalue/include -DBUILD_PLACEH_INTERNAL
+libplacehconsensus_la_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 
 endif
 #
@@ -724,12 +724,12 @@ CLEANFILES += obj/build.h
 EXTRA_DIST = $(CTAES_DIST)
 
 
-config/bitcoin-config.h: config/stamp-h1
+config/placeh-config.h: config/stamp-h1
 	@$(MAKE) -C $(top_builddir) $(subdir)/$(@)
-config/stamp-h1: $(top_srcdir)/$(subdir)/config/bitcoin-config.h.in $(top_builddir)/config.status
+config/stamp-h1: $(top_srcdir)/$(subdir)/config/placeh-config.h.in $(top_builddir)/config.status
 	$(AM_V_at)$(MAKE) -C $(top_builddir) $(subdir)/$(@)
-$(top_srcdir)/$(subdir)/config/bitcoin-config.h.in:  $(am__configure_deps)
-	$(AM_V_at)$(MAKE) -C $(top_srcdir) $(subdir)/config/bitcoin-config.h.in
+$(top_srcdir)/$(subdir)/config/placeh-config.h.in:  $(am__configure_deps)
+	$(AM_V_at)$(MAKE) -C $(top_srcdir) $(subdir)/config/placeh-config.h.in
 
 clean-local:
 	-$(MAKE) -C secp256k1 clean

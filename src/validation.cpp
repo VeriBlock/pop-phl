@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2009-2018 The Placeholders Core developers
 // Copyright (c) 2019-2020 Xenios SEZC
 // https://www.veriblock.org
 // Distributed under the MIT software license, see the accompanying
@@ -60,7 +60,7 @@
 #include <boost/thread.hpp>
 
 #if defined(NDEBUG)
-#error "Bitcoin cannot be compiled without assertions."
+#error "Placeholders cannot be compiled without assertions."
 #endif
 
 #define MICRO 0.000001
@@ -766,7 +766,7 @@ bool MemPoolAccept::PreChecks(ATMPArgs& args, Workspace& ws)
         // being able to broadcast descendants of an unconfirmed transaction
         // to be secure by simply only having two immediately-spendable
         // outputs - one for each counterparty. For more info on the uses for
-        // this, see https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2018-November/016518.html
+        // this, see https://lists.linuxfoundation.org/pipermail/placeh-dev/2018-November/016518.html
         if (nSize > EXTRA_DESCENDANT_TX_SIZE_LIMIT ||
             !m_pool.CalculateMemPoolAncestors(*entry, setAncestors, 2, m_limit_ancestor_size, m_limit_descendants + 1, m_limit_descendant_size + EXTRA_DESCENDANT_TX_SIZE_LIMIT, dummy_err_string)) {
             return state.Invalid(TxValidationResult::TX_MEMPOOL_POLICY, "too-long-mempool-chain", errString);
@@ -973,7 +973,7 @@ bool MemPoolAccept::Finalize(ATMPArgs& args, Workspace& ws)
 
     // Remove conflicting transactions from the mempool
     for (CTxMemPool::txiter it : allConflicting) {
-        LogPrint(BCLog::MEMPOOL, "replacing tx %s with %s for %s vBTC additional fees, %d delta bytes\n",
+        LogPrint(BCLog::MEMPOOL, "replacing tx %s with %s for %s vPHL additional fees, %d delta bytes\n",
             it->GetTx().GetHash().ToString(),
             hash.ToString(),
             FormatMoney(nModifiedFees - nConflictingFees),
@@ -2410,7 +2410,7 @@ void static UpdateTip(const CBlockIndex* pindexNew, const CChainParams& chainPar
         pindexNew->nHeight,
         pindexNew->GetBlockHash().GetHex(),
         (vbktip ? vbktip->toShortPrettyString() : "VBK:nullptr"),
-        (btctip ? btctip->toShortPrettyString() : "BTC:nullptr"),
+        (btctip ? btctip->toShortPrettyString() : "PHL:nullptr"),
         pindexNew->nVersion,
         log(pindexNew->nChainWork.getdouble()) / log(2.0), (unsigned long)pindexNew->nChainTx,
         FormatISO8601DateTime(pindexNew->GetBlockTime()),
@@ -4173,7 +4173,7 @@ bool BlockManager::LoadBlockIndex(
     bool hasPopData = VeriBlock::hasPopData(blocktree);
 
     if(!hasPopData) {
-        LogPrintf("BTC/VBK/ALT tips not found... skipping block index loading\n");
+        LogPrintf("PHL/VBK/ALT tips not found... skipping block index loading\n");
         return true;
     }
 
@@ -4218,7 +4218,7 @@ bool BlockManager::LoadBlockIndex(
         // do not set best chain here
     }
 
-    // get best chain from ALT tree and update vBTC's best chain
+    // get best chain from ALT tree and update vPHL's best chain
     {
         AssertLockHeld(cs_main);
 

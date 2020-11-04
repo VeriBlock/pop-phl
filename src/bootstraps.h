@@ -16,8 +16,8 @@
 extern const int testnetVBKstartHeight;
 extern const std::vector<std::string> testnetVBKblocks;
 
-extern const int testnetPHLstartHeight;
-extern const std::vector<std::string> testnetPHLblocks;
+extern const int testnetBTCstartHeight;
+extern const std::vector<std::string> testnetBTCblocks;
 
 struct AltChainParamsPHL : public altintegration::AltChainParams {
     ~AltChainParamsPHL() override = default;
@@ -37,7 +37,7 @@ struct AltChainParamsPHL : public altintegration::AltChainParams {
 
     int64_t getIdentifier() const noexcept override
     {
-        return 0x3ae6ca;
+        return 0xFEEDC0DE;
     }
 
     std::vector<uint8_t> getHash(const std::vector<uint8_t>& bytes) const noexcept override;

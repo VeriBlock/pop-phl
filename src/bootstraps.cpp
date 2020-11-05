@@ -11,7 +11,7 @@
 #include <vbk/util.hpp>
 #include <veriblock/bootstraps.hpp>
 
-std::vector<uint8_t> AltChainParamsVBTC::getHash(const std::vector<uint8_t>& bytes) const noexcept
+std::vector<uint8_t> AltChainParamsPHL::getHash(const std::vector<uint8_t>& bytes) const noexcept
 {
     return VeriBlock::headerFromBytes(bytes).GetHash().asVector();
 }
@@ -73,7 +73,7 @@ void selectPopConfig(
 {
     altintegration::Config popconfig;
 
-    //! SET BTC
+    //! SET PHL
     if (btcnet == "test") {
         auto param = std::make_shared<altintegration::BtcChainParamsTest>();
         if (popautoconfig) {
@@ -111,7 +111,7 @@ void selectPopConfig(
         throw std::invalid_argument("vbknet currently only supports test/regtest");
     }
 
-    auto altparams = std::make_shared<AltChainParamsVBTC>(Params().GenesisBlock());
+    auto altparams = std::make_shared<AltChainParamsPHL>(Params().GenesisBlock());
     popconfig.alt = altparams;
     VeriBlock::SetPopConfig(popconfig);
     printConfig(popconfig);

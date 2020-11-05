@@ -1,9 +1,9 @@
-// Copyright (c) 2012-2018 The Bitcoin Core developers
+// Copyright (c) 2012-2018 The Placeholders Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_VERSION_H
-#define BITCOIN_VERSION_H
+#ifndef PLACEH_VERSION_H
+#define PLACEH_VERSION_H
 
 /**
  * network protocol versioning
@@ -45,4 +45,4 @@ static const int INVALID_CB_NO_BAN_VERSION = 70015;
 //! ping p2p msg contains 'best chain'
 static const int PING_BESTCHAIN_VERSION = 80000;
 
-#endif // BITCOIN_VERSION_H
+#endif // PLACEH_VERSION_H

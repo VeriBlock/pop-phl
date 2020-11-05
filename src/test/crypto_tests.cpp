@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2019 The Bitcoin Core developers
+// Copyright (c) 2014-2019 The Placeholders Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -681,7 +681,7 @@ static void TestChaCha20Poly1305AEAD(bool must_succeed, unsigned int expected_aa
 
 BOOST_AUTO_TEST_CASE(chacha20_poly1305_aead_testvector)
 {
-    /* test chacha20poly1305@bitcoin AEAD */
+    /* test chacha20poly1305@placeh AEAD */
 
     // must fail with no message
     TestChaCha20Poly1305AEAD(false, 0,

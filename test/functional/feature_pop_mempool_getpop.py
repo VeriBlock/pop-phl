@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2019 The Bitcoin Core developers
+# Copyright (c) 2014-2019 The Placeholders Core developers
 # Copyright (c) 2019-2020 Xenios SEZC
 # https://www.veriblock.org
 # Distributed under the MIT software license, see the accompanying
@@ -10,12 +10,12 @@ Feature POP popdata max size test
 
 """
 from test_framework.pop import mine_vbk_blocks, endorse_block
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import PlaceholdersTestFramework
 from test_framework.util import (
     connect_nodes,
 )
 
-class PopPayouts(BitcoinTestFramework):
+class PopMempoolGetpop(PlaceholdersTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 2
@@ -57,7 +57,9 @@ class PopPayouts(BitcoinTestFramework):
         containingblockhash = self.nodes[0].generate(nblocks=1)[0]
         containingblock = self.nodes[0].getblock(containingblockhash)
 
-        assert len(containingblock['pop']['data']['atvs']) == payloads_amount
+        assert len(
+            containingblock['pop']['data']['atvs']) == payloads_amount, "Expected: {}\n Containing block: \n{}".format(
+            payloads_amount, containingblock)
 
         self.log.info("success! _test_case_atv()")
 
@@ -70,13 +72,14 @@ class PopPayouts(BitcoinTestFramework):
         from pypopminer import MockMiner
         self.apm = MockMiner()
 
-        self._test_case_vbk(113)
-        self._test_case_vbk(236)
-        self._test_case_vbk(75)
+        self._test_case_vbk(2)
+        self._test_case_vbk(25)
+        self._test_case_vbk(45)
 
-        self._test_case_atv(42)
-        self._test_case_atv(135)
+        self._test_case_atv(3)
+        self._test_case_atv(11)
         self._test_case_atv(25)
 
+
 if __name__ == '__main__':
-    PopPayouts().main()
+    PopMempoolGetpop().main()

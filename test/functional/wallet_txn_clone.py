@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2019 The Bitcoin Core developers
+# Copyright (c) 2014-2019 The Placeholders Core developers
 # Copyright (c) 2019-2020 Xenios SEZC
 # https://www.veriblock.org
 # Distributed under the MIT software license, see the accompanying
@@ -7,7 +7,7 @@
 """Test the wallet accounts properly when there are cloned transactions with malleated scriptsigs."""
 
 import io
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import PlaceholdersTestFramework
 from test_framework.util import (
     assert_equal,
     connect_nodes,
@@ -16,7 +16,7 @@ from test_framework.util import (
 from test_framework.messages import CTransaction, COIN
 from test_framework.pop_const import POW_PAYOUT
 
-class TxnMallTest(BitcoinTestFramework):
+class TxnMallTest(PlaceholdersTestFramework):
     def set_test_params(self):
         self.num_nodes = 4
         self.supports_cli = False
@@ -42,7 +42,7 @@ class TxnMallTest(BitcoinTestFramework):
         else:
             output_type = "legacy"
 
-        # All nodes should start with 750 vBTC:
+        # All nodes should start with 750 vPHL:
         starting_balance = (POW_PAYOUT*25)
         for i in range(4):
             assert_equal(self.nodes[i].getbalance(), starting_balance)
@@ -95,7 +95,7 @@ class TxnMallTest(BitcoinTestFramework):
         tx1 = self.nodes[0].gettransaction(txid1)
         tx2 = self.nodes[0].gettransaction(txid2)
 
-        # Node0's balance should be starting balance, plus 30 vBTC for another
+        # Node0's balance should be starting balance, plus 30 vPHL for another
         # matured block, minus tx1 and tx2 amounts, and minus transaction fees:
         expected = starting_balance + node0_tx1["fee"] + node0_tx2["fee"]
         if self.options.mine_block:
@@ -138,7 +138,7 @@ class TxnMallTest(BitcoinTestFramework):
         assert_equal(tx1_clone["confirmations"], 2)
         assert_equal(tx2["confirmations"], 1)
 
-        # Check node0's total balance; should be same as before the clone, + 60 vBTC for 2 matured,
+        # Check node0's total balance; should be same as before the clone, + 60 vPHL for 2 matured,
         # less possible orphaned matured subsidy
         expected += (POW_PAYOUT * 2)
         if (self.options.mine_block):

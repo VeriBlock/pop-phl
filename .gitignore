@@ -7,14 +7,14 @@ src/vbk/grpc_integration/*.pb.h
 
 *.exe
 *.pdb
-src/vbitcoin
-src/vbitcoind
-src/vbitcoin-cli
-src/vbitcoin-tx
-src/vbitcoin-wallet
-src/test/test_bitcoin
-src/test/test_bitcoin_fuzzy
-src/qt/test/test_bitcoin-qt
+src/placeh
+src/placehd
+src/placeh-cli
+src/placeh-tx
+src/placeh-wallet
+src/test/test_placeh
+src/test/test_placeh_fuzzy
+src/qt/test/test_placeh-qt
 
 # functional tests
 test/functional/temp
@@ -40,8 +40,8 @@ config.log
 config.status
 configure
 libtool
-src/config/bitcoin-config.h
-src/config/bitcoin-config.h.in
+src/config/placeh-config.h
+src/config/placeh-config.h.in
 src/config/stamp-h1
 src/obj
 share/setup.nsi
@@ -55,11 +55,11 @@ src/qt/forms/ui_*.h
 
 src/qt/test/moc*.cpp
 
-src/qt/vbitcoin-qt.config
-src/qt/vbitcoin-qt.creator
-src/qt/vbitcoin-qt.creator.user
-src/qt/vbitcoin-qt.files
-src/qt/vbitcoin-qt.includes
+src/qt/placeh-qt.config
+src/qt/placeh-qt.creator
+src/qt/placeh-qt.creator.user
+src/qt/placeh-qt.files
+src/qt/placeh-qt.includes
 
 .deps
 .dirstamp
@@ -96,8 +96,8 @@ src/qt/vbitcoin-qt.includes
 *.qm
 Makefile
 !depends/Makefile
-vbitcoin-qt
-vBitcoin-Qt.app
+placeh-qt
+Placeholders-Qt.app
 background.tiff*
 
 # Qt Creator
@@ -105,7 +105,7 @@ Makefile.am.user
 
 # Unit-tests
 Makefile.test
-bitcoin-qt_test
+placeh-qt_test
 
 # Resources cpp
 qrc_*.cpp
@@ -118,7 +118,7 @@ build
 *.gcno
 *.gcda
 /*.info
-test_bitcoin.coverage/
+test_placeh.coverage/
 total.coverage/
 coverage_percent.txt
 
@@ -133,7 +133,7 @@ test/cache/*
 
 /doc/doxygen/
 
-libbitcoinconsensus.pc
+libplacehconsensus.pc
 contrib/devtools/split-debug.sh
 
 # Output from running db4 installation
@@ -155,4 +155,4 @@ compile_commands.json
 .settings
 configure.lineno
 *.pb.*
-vbitcoin*
+

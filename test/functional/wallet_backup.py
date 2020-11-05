@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2019 The Bitcoin Core developers
+# Copyright (c) 2014-2019 The Placeholders Core developers
 # Copyright (c) 2019-2020 Xenios SEZC
 # https://www.veriblock.org
 # Distributed under the MIT software license, see the accompanying
@@ -37,7 +37,7 @@ import os
 from random import randint
 import shutil
 
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import PlaceholdersTestFramework
 from test_framework.util import (
     assert_equal,
     assert_raises_rpc_error,
@@ -46,7 +46,7 @@ from test_framework.util import (
 from test_framework.pop_const import POW_PAYOUT
 
 
-class WalletBackupTest(BitcoinTestFramework):
+class WalletBackupTest(PlaceholdersTestFramework):
     def set_test_params(self):
         self.num_nodes = 4
         self.setup_clean_chain = True

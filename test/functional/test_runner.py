@@ -88,6 +88,7 @@ BASE_SCRIPTS = [
     # 'p2p_compactblocks.py',
     'feature_segwit.py',
     # vv Tests less than 2m vv
+    'feature_pop_mempool_getpop.py',
     'wallet_basic.py',
     'wallet_labels.py',
     # 'p2p_segwit.py',
@@ -124,7 +125,6 @@ BASE_SCRIPTS = [
     'feature_pop_p2p.py',
     'feature_pop_p2p_ddos.py',
     'feature_pop_mempool_reorg.py',
-    'feature_pop_mempool_getpop.py',
     'feature_pop_e2e.py',
     ## end VeriBlock tests
     'wallet_keypool_topup.py',

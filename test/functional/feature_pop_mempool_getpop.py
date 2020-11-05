@@ -72,12 +72,12 @@ class PopMempoolGetpop(PlaceholdersTestFramework):
         from pypopminer import MockMiner
         self.apm = MockMiner()
 
-        self._test_case_vbk(113)
-        self._test_case_vbk(236)
-        self._test_case_vbk(75)
+        self._test_case_vbk(2)
+        self._test_case_vbk(25)
+        self._test_case_vbk(45)
 
-        self._test_case_atv(42)
-        self._test_case_atv(135)
+        self._test_case_atv(3)
+        self._test_case_atv(11)
         self._test_case_atv(25)
 
 

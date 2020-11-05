@@ -155,7 +155,7 @@ BASE_SCRIPTS = [
     'rpc_psbt.py',
     'rpc_users.py',
     'rpc_whitelist.py',
-    'feature_proxy.py',
+    # 'feature_proxy.py',
     'rpc_signrawtransaction.py',
     'wallet_groups.py',
     'p2p_disconnect_ban.py',

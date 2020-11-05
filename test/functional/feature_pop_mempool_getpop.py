@@ -15,7 +15,7 @@ from test_framework.util import (
     connect_nodes,
 )
 
-class PopPayouts(PlaceholdersTestFramework):
+class PopMempoolGetpop(PlaceholdersTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 2
@@ -57,7 +57,9 @@ class PopPayouts(PlaceholdersTestFramework):
         containingblockhash = self.nodes[0].generate(nblocks=1)[0]
         containingblock = self.nodes[0].getblock(containingblockhash)
 
-        assert len(containingblock['pop']['data']['atvs']) == payloads_amount
+        assert len(
+            containingblock['pop']['data']['atvs']) == payloads_amount, "Expected: {}\n Containing block: \n{}".format(
+            payloads_amount, containingblock)
 
         self.log.info("success! _test_case_atv()")
 
@@ -78,5 +80,6 @@ class PopPayouts(PlaceholdersTestFramework):
         self._test_case_atv(135)
         self._test_case_atv(25)
 
+
 if __name__ == '__main__':
-    PopPayouts().main()
+    PopMempoolGetpop().main()

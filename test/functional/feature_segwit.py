@@ -139,8 +139,8 @@ class SegWitTest(PlaceholdersTestFramework):
         for i in range(5):
             for n in range(3):
                 for v in range(2):
-                    wit_ids[n][v].append(send_to_witness(v, self.nodes[0], find_spendable_utxo(self.nodes[0], POW_PAYOUT), self.pubkey[n], False, Decimal(str(POW_PAYOUT-0.001))))
-                    p2sh_ids[n][v].append(send_to_witness(v, self.nodes[0], find_spendable_utxo(self.nodes[0], POW_PAYOUT), self.pubkey[n], True, Decimal(str(POW_PAYOUT-0.001))))
+                    wit_ids[n][v].append(send_to_witness(v, self.nodes[0], find_spendable_utxo(self.nodes[0], 7.5), self.pubkey[n], False, Decimal(str(7.5-0.001))))
+                    p2sh_ids[n][v].append(send_to_witness(v, self.nodes[0], find_spendable_utxo(self.nodes[0], 7.5), self.pubkey[n], True, Decimal(str(7.5-0.001))))
 
         self.nodes[0].generate(1)  # block 163
         self.sync_blocks()

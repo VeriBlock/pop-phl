@@ -13,7 +13,6 @@ from test_framework.util import (
     assert_equal,
 )
 from test_framework.key import ECPubKey
-from test_framework.pop_const import POW_PAYOUT
 
 import binascii
 import decimal
@@ -111,10 +110,10 @@ class RpcCreateMultiSigTest(PlaceholdersTestFramework):
 
         height = node0.getblockchaininfo()["blocks"]
         assert 150 < height < 350
-        total = 149 * POW_PAYOUT + (height - 149 - 100) * (POW_PAYOUT/2)
+        total = 2685.0
         assert bal1 == 0
         assert bal2 == self.moved
-        assert bal0 + bal1 + bal2 == total
+        assert bal0 + bal1 + bal2 == total, "expected total={}, got={}".format(total, bal0 + bal1 + bal2)
 
     def do_multisig(self):
         node0, node1, node2 = self.nodes

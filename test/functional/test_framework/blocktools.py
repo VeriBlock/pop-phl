@@ -28,7 +28,7 @@ from .messages import (
     sha256,
     uint256_from_str,
 )
-from .pop import ContextInfoContainer
+from .pop import ContextInfoContainer, get_pop_coinbase_subsidy
 from .script import (
     CScript,
     CScriptNum,
@@ -44,7 +44,6 @@ from .script import (
 from .test_node import TestNode
 from .util import assert_equal
 from io import BytesIO
-from .pop_const import POW_PAYOUT
 
 MAX_BLOCK_SIGOPS = 20000
 
@@ -116,9 +115,12 @@ def create_coinbase(height, pubkey=None):
     coinbase = CTransaction()
     coinbase.vin.append(CTxIn(COutPoint(0, 0xffffffff), script_BIP34_coinbase_height(height), 0xffffffff))
     coinbaseoutput = CTxOut()
-    coinbaseoutput.nValue = POW_PAYOUT * COIN
-    halvings = int(height / 150)  # regtest
+    coinbaseoutput.nValue = 50 * COIN
+    halvingInterval = 50
+    halvings = int(height / halvingInterval)  # regtest
+    halvings = min(halvings, 7)
     coinbaseoutput.nValue >>= halvings
+    coinbaseoutput.nValue = get_pop_coinbase_subsidy(coinbaseoutput.nValue)
     if (pubkey is not None):
         coinbaseoutput.scriptPubKey = CScript([pubkey, OP_CHECKSIG])
     else:

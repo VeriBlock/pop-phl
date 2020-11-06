@@ -7,6 +7,8 @@
 """Test the wallet accounts properly when there are cloned transactions with malleated scriptsigs."""
 
 import io
+from decimal import Decimal
+
 from test_framework.test_framework import PlaceholdersTestFramework
 from test_framework.util import (
     assert_equal,
@@ -37,6 +39,8 @@ class TxnMallTest(PlaceholdersTestFramework):
         disconnect_nodes(self.nodes[2], 1)
 
     def run_test(self):
+        self.balance_delta = Decimal('0')
+
         if self.options.segwit:
             output_type = "p2sh-segwit"
         else:
@@ -93,6 +97,7 @@ class TxnMallTest(PlaceholdersTestFramework):
 
         # Have node0 mine a block, if requested:
         if (self.options.mine_block):
+            self.balance_delta = Decimal('22.5')
             self.nodes[0].generate(1)
             self.sync_blocks(self.nodes[0:2])
 
@@ -106,7 +111,7 @@ class TxnMallTest(PlaceholdersTestFramework):
             expected += POW_PAYOUT
         expected += tx1["amount"] + tx1["fee"]
         expected += tx2["amount"] + tx2["fee"]
-        assert_equal(self.nodes[0].getbalance(), expected)
+        assert_equal(self.nodes[0].getbalance(), expected - self.balance_delta)
 
         if self.options.mine_block:
             assert_equal(tx1["confirmations"], 1)

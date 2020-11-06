@@ -17,7 +17,7 @@ BOOST_FIXTURE_TEST_SUITE(validation_tests, TestingSetup)
 
 static void TestBlockSubsidyHalvings(const Consensus::Params& consensusParams)
 {
-    int maxHalvings = 64;
+    int maxHalvings = 7;
     CAmount nInitialSubsidy = VeriBlock::getCoinbaseSubsidy(50 * COIN);
 
     CAmount nPreviousSubsidy = nInitialSubsidy * 2; // for height == 0
@@ -29,7 +29,7 @@ static void TestBlockSubsidyHalvings(const Consensus::Params& consensusParams)
         BOOST_CHECK_EQUAL(nSubsidy, nPreviousSubsidy / 2);
         nPreviousSubsidy = nSubsidy;
     }
-    BOOST_CHECK_EQUAL(GetBlockSubsidy(maxHalvings * consensusParams.nSubsidyHalvingInterval, consensusParams), 0);
+    BOOST_CHECK_EQUAL(GetBlockSubsidy(maxHalvings * consensusParams.nSubsidyHalvingInterval, consensusParams), 23437500);
 }
 
 static void TestBlockSubsidyHalvings(int nSubsidyHalvingInterval)
@@ -44,7 +44,7 @@ BOOST_AUTO_TEST_CASE(block_subsidy_test)
     const auto chainParams = CreateChainParams(CBaseChainParams::MAIN);
     TestBlockSubsidyHalvings(chainParams->GetConsensus()); // As in main
     TestBlockSubsidyHalvings(150); // As in regtest
-    TestBlockSubsidyHalvings(1000); // Just another interval
+    TestBlockSubsidyHalvings(48); // Just another interval
 }
 
 BOOST_AUTO_TEST_CASE(subsidy_limit_test)
@@ -57,10 +57,10 @@ BOOST_AUTO_TEST_CASE(subsidy_limit_test)
         nSum += nSubsidy * 1000;
         BOOST_CHECK(MoneyRange(nSum));
     }
-    // with 50 vPHL payout:
+    // with 50 PHL payout:
 //    BOOST_CHECK_EQUAL(nSum, CAmount{2099999997690000});
-    // with 50*60% vPHL payout:
-    BOOST_CHECK_EQUAL(nSum, CAmount{1259999997480000});
+    // with 50*60% PHL payout:
+    BOOST_CHECK_EQUAL(nSum, CAmount{331101562500000});
 }
 
 static bool ReturnFalse() { return false; }

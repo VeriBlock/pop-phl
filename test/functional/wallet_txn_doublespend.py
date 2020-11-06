@@ -34,7 +34,9 @@ class TxnMallTest(PlaceholdersTestFramework):
         disconnect_nodes(self.nodes[2], 1)
 
     def run_test(self):
-        # All nodes should start with 750 vPHL:
+        self.balance_delta1 = Decimal('0')
+        self.balance_delta2 = Decimal('0')
+        # All nodes should start with 750 PHL:
         starting_balance = 750
 
         # All nodes should be out of IBD.
@@ -44,8 +46,12 @@ class TxnMallTest(PlaceholdersTestFramework):
         for n in self.nodes:
             assert n.getblockchaininfo()["initialblockdownload"] == False
 
+        assert_equal(self.nodes[0].getbalance(), starting_balance)
+        assert_equal(self.nodes[1].getbalance(), 735)
+        assert_equal(self.nodes[2].getbalance(), 375)
+        assert_equal(self.nodes[3].getbalance(), 367.5)
+
         for i in range(4):
-            assert_equal(self.nodes[i].getbalance(), starting_balance)
             self.nodes[i].getnewaddress("")  # bug workaround, coins generated assigned to first getnewaddress!
 
         # Assign coins to foo and bar addresses:
@@ -87,6 +93,8 @@ class TxnMallTest(PlaceholdersTestFramework):
 
         # Have node0 mine a block:
         if (self.options.mine_block):
+            self.balance_delta1 = Decimal('22.5')
+            self.balance_delta2 = Decimal('15')
             self.nodes[0].generate(1)
             self.sync_blocks(self.nodes[0:2])
 
@@ -100,13 +108,13 @@ class TxnMallTest(PlaceholdersTestFramework):
             expected += 30
         expected += tx1["amount"] + tx1["fee"]
         expected += tx2["amount"] + tx2["fee"]
-        assert_equal(self.nodes[0].getbalance(), expected)
+        assert_equal(self.nodes[0].getbalance(), expected - self.balance_delta1)
 
         if self.options.mine_block:
             assert_equal(tx1["confirmations"], 1)
             assert_equal(tx2["confirmations"], 1)
             # Node1's balance should be both transaction amounts:
-            assert_equal(self.nodes[1].getbalance(), starting_balance - tx1["amount"] - tx2["amount"])
+            assert_equal(self.nodes[1].getbalance(), starting_balance - tx1["amount"] - tx2["amount"] - self.balance_delta2)
         else:
             assert_equal(tx1["confirmations"], 0)
             assert_equal(tx2["confirmations"], 0)
@@ -135,11 +143,11 @@ class TxnMallTest(PlaceholdersTestFramework):
         # Node0's total balance should be starting balance, plus 60 vPHL for
         # two more matured blocks, minus 740 for the double-spend, plus fees (which are
         # negative):
-        expected = starting_balance + 60 - 740 + fund_foo_tx["fee"] + fund_bar_tx["fee"] + doublespend_fee
+        expected = starting_balance + 60 - 740 - 45 + fund_foo_tx["fee"] + fund_bar_tx["fee"] + doublespend_fee
         assert_equal(self.nodes[0].getbalance(), expected)
 
         # Node1's balance should be its initial balance (750 for 25 block rewards) plus the doublespend:
-        assert_equal(self.nodes[1].getbalance(), 750 + 740)
+        assert_equal(self.nodes[1].getbalance(), 750 + 740 - 15)
 
 if __name__ == '__main__':
     TxnMallTest().main()

@@ -34,7 +34,7 @@ class ReorgsRestoreTest(PlaceholdersTestFramework):
     def run_test(self):
         # Send a tx from which to conflict outputs later
         txid_conflict_from = self.nodes[0].sendtoaddress(self.nodes[0].getnewaddress(), Decimal("10"))
-        self.nodes[0].generate(1)
+        self.nodes[0].generate(10)
         self.sync_blocks()
 
         # Disconnect node1 from others to reorg its chain later

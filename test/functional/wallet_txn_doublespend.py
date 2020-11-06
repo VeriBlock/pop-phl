@@ -34,6 +34,8 @@ class TxnMallTest(PlaceholdersTestFramework):
         disconnect_nodes(self.nodes[2], 1)
 
     def run_test(self):
+        self.balance_delta1 = Decimal('0')
+        self.balance_delta2 = Decimal('0')
         # All nodes should start with 750 PHL:
         starting_balance = 750
 
@@ -91,6 +93,8 @@ class TxnMallTest(PlaceholdersTestFramework):
 
         # Have node0 mine a block:
         if (self.options.mine_block):
+            self.balance_delta1 = Decimal('22.5')
+            self.balance_delta2 = Decimal('15')
             self.nodes[0].generate(1)
             self.sync_blocks(self.nodes[0:2])
 
@@ -104,13 +108,13 @@ class TxnMallTest(PlaceholdersTestFramework):
             expected += 30
         expected += tx1["amount"] + tx1["fee"]
         expected += tx2["amount"] + tx2["fee"]
-        assert_equal(self.nodes[0].getbalance(), expected)
+        assert_equal(self.nodes[0].getbalance(), expected - self.balance_delta1)
 
         if self.options.mine_block:
             assert_equal(tx1["confirmations"], 1)
             assert_equal(tx2["confirmations"], 1)
             # Node1's balance should be both transaction amounts:
-            assert_equal(self.nodes[1].getbalance(), starting_balance - tx1["amount"] - tx2["amount"])
+            assert_equal(self.nodes[1].getbalance(), starting_balance - tx1["amount"] - tx2["amount"] - self.balance_delta2)
         else:
             assert_equal(tx1["confirmations"], 0)
             assert_equal(tx2["confirmations"], 0)

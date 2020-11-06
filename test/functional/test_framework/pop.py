@@ -9,11 +9,10 @@ import time
 from typing import Optional
 
 from .messages import ser_uint256, hash256, uint256_from_str
-from .pop_const import KEYSTONE_INTERVAL, NETWORK_ID
+from .pop_const import KEYSTONE_INTERVAL, NETWORK_ID, POP_REWARD_PERCENTAGE
 from .script import hash160, CScript, OP_DUP, OP_HASH160, OP_EQUALVERIFY, OP_CHECKSIG
 from .test_node import TestNode
 from .util import hex_str_to_bytes
-
 
 
 def isKeystone(height):
@@ -67,6 +66,10 @@ def create_endorsed_chain(node, apm, size: int, addr: str) -> None:
         height += 1
 
     node.waitforblockheight(initial_height + size)
+
+
+def get_pop_coinbase_subsidy(subsidy):
+    return int(subsidy * (100 - POP_REWARD_PERCENTAGE) / 100)
 
 
 def endorse_block(node, apm, height: int, addr: str, vtbs: Optional[int] = None) -> str:
@@ -188,6 +191,7 @@ def sync_pop_tips(rpc_connections, *, wait=1, timeout=10, flush_scheduler=True):
         "".join("\n  {!r}".format(m) for m in btc),
         "".join("\n  {!r}".format(m) for m in vbk),
     ))
+
 
 def assert_pop_state_equal(nodes):
     def is_same(func, msg):

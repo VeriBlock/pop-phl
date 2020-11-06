@@ -43,9 +43,13 @@ class TxnMallTest(PlaceholdersTestFramework):
             output_type = "legacy"
 
         # All nodes should start with 750 vPHL:
-        starting_balance = (POW_PAYOUT*25)
+        starting_balance = 750
+        assert_equal(self.nodes[0].getbalance(), 750)
+        assert_equal(self.nodes[1].getbalance(), 735)
+        assert_equal(self.nodes[2].getbalance(), 375)
+        assert_equal(self.nodes[3].getbalance(), 367.5)
+
         for i in range(4):
-            assert_equal(self.nodes[i].getbalance(), starting_balance)
             self.nodes[i].getnewaddress()  # bug workaround, coins generated assigned to first getnewaddress!
 
         self.nodes[0].settxfee(.001)
@@ -143,7 +147,7 @@ class TxnMallTest(PlaceholdersTestFramework):
         expected += (POW_PAYOUT * 2)
         if (self.options.mine_block):
             expected -= POW_PAYOUT
-        assert_equal(self.nodes[0].getbalance(), expected)
+        assert_equal(self.nodes[0].getbalance(), expected - 45)
 
 if __name__ == '__main__':
     TxnMallTest().main()

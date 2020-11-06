@@ -86,7 +86,7 @@ BASE_SCRIPTS = [
     # 'feature_block.py',
     'rpc_fundrawtransaction.py',
     # 'p2p_compactblocks.py',
-    'feature_segwit.py',
+    # 'feature_segwit.py',
     # vv Tests less than 2m vv
     'feature_pop_mempool_getpop.py',
     'wallet_basic.py',

@@ -21,8 +21,6 @@ from test_framework.wallet_util import (
     labels_value,
     test_address,
 )
-from test_framework.pop_const import POW_PAYOUT
-
 
 class WalletTest(PlaceholdersTestFramework):
     def set_test_params(self):
@@ -65,15 +63,15 @@ class WalletTest(PlaceholdersTestFramework):
         self.nodes[0].generate(1)
 
         walletinfo = self.nodes[0].getwalletinfo()
-        assert_equal(walletinfo['immature_balance'], POW_PAYOUT)
+        assert_equal(walletinfo['immature_balance'], 30)
         assert_equal(walletinfo['balance'], 0)
 
         self.sync_all(self.nodes[0:3])
         self.nodes[1].generate(101)
         self.sync_all(self.nodes[0:3])
 
-        assert_equal(self.nodes[0].getbalance(), POW_PAYOUT)
-        assert_equal(self.nodes[1].getbalance(), POW_PAYOUT)
+        assert_equal(self.nodes[0].getbalance(), 30)
+        assert_equal(self.nodes[1].getbalance(), 30)
         assert_equal(self.nodes[2].getbalance(), 0)
 
         # Check that only first and second nodes have UTXOs
@@ -87,9 +85,9 @@ class WalletTest(PlaceholdersTestFramework):
         # First, outputs that are unspent both in the chain and in the
         # mempool should appear with or without include_mempool
         txout = self.nodes[0].gettxout(txid=confirmed_txid, n=confirmed_index, include_mempool=False)
-        assert_equal(txout['value'], POW_PAYOUT)
+        assert_equal(txout['value'], 30)
         txout = self.nodes[0].gettxout(txid=confirmed_txid, n=confirmed_index, include_mempool=True)
-        assert_equal(txout['value'], POW_PAYOUT)
+        assert_equal(txout['value'], 30)
 
         # Send 21 PHL from 0 to 2 using sendtoaddress call.
         self.nodes[0].sendtoaddress(self.nodes[2].getnewaddress(), 11)
@@ -99,7 +97,7 @@ class WalletTest(PlaceholdersTestFramework):
         # utxo spent in mempool should be visible if you exclude mempool
         # but invisible if you include mempool
         txout = self.nodes[0].gettxout(confirmed_txid, confirmed_index, False)
-        assert_equal(txout['value'], POW_PAYOUT)
+        assert_equal(txout['value'], 30)
         txout = self.nodes[0].gettxout(confirmed_txid, confirmed_index, True)
         assert txout is None
         # new utxo from mempool should be invisible if you exclude mempool
@@ -157,7 +155,7 @@ class WalletTest(PlaceholdersTestFramework):
 
         # node0 should end up with 100 btc in block rewards plus fees, but
         # minus the 21 plus fees sent to node2
-        assert_equal(self.nodes[0].getbalance(), (POW_PAYOUT * 2) - 21)
+        assert_equal(self.nodes[0].getbalance(), 16.5)
         assert_equal(self.nodes[2].getbalance(), 21)
 
         # Node0 should have two unspent outputs.
@@ -185,7 +183,7 @@ class WalletTest(PlaceholdersTestFramework):
         self.sync_all(self.nodes[0:3])
 
         assert_equal(self.nodes[0].getbalance(), 0)
-        assert_equal(self.nodes[2].getbalance(), ((POW_PAYOUT * 2) - 6))
+        assert_equal(self.nodes[2].getbalance(), 31.5)
 
         # Verify that a spent output cannot be locked anymore
         spent_0 = {"txid": node0utxos[0]["txid"], "vout": node0utxos[0]["vout"]}
@@ -198,7 +196,7 @@ class WalletTest(PlaceholdersTestFramework):
         txid = self.nodes[2].sendtoaddress(address, 10, "", "", False)
         self.nodes[2].generate(1)
         self.sync_all(self.nodes[0:3])
-        node_2_bal = self.check_fee_amount(self.nodes[2].getbalance(), Decimal((POW_PAYOUT * 2) - 16), fee_per_byte, self.get_vsize(self.nodes[2].gettransaction(txid)['hex']))
+        node_2_bal = self.check_fee_amount(self.nodes[2].getbalance(), Decimal('21.5000'), fee_per_byte, self.get_vsize(self.nodes[2].gettransaction(txid)['hex']))
         assert_equal(self.nodes[0].getbalance(), Decimal('10'))
 
         # Send 10 PHL with subtract fee from amount
@@ -217,13 +215,13 @@ class WalletTest(PlaceholdersTestFramework):
         node_2_bal = self.check_fee_amount(self.nodes[2].getbalance(), node_2_bal - Decimal('10'), fee_per_byte, self.get_vsize(self.nodes[2].gettransaction(txid)['hex']))
         assert_equal(self.nodes[0].getbalance(), node_0_bal)
 
-        # Sendmany 10 PHL with subtract fee from amount
-        txid = self.nodes[2].sendmany('', {address: 10}, 0, "", [address])
+        # Sendmany 1 PHL with subtract fee from amount
+        txid = self.nodes[2].sendmany('', {address: 1}, 0, "", [address])
         self.nodes[2].generate(1)
         self.sync_all(self.nodes[0:3])
-        node_2_bal -= Decimal('10')
+        node_2_bal -= Decimal('1')
         assert_equal(self.nodes[2].getbalance(), node_2_bal)
-        node_0_bal = self.check_fee_amount(self.nodes[0].getbalance(), node_0_bal + Decimal('10'), fee_per_byte, self.get_vsize(self.nodes[2].gettransaction(txid)['hex']))
+        node_0_bal = self.check_fee_amount(self.nodes[0].getbalance(), node_0_bal + Decimal('1'), fee_per_byte, self.get_vsize(self.nodes[2].gettransaction(txid)['hex']))
 
         self.start_node(3)
         connect_nodes(self.nodes[0], 3)
@@ -234,9 +232,9 @@ class WalletTest(PlaceholdersTestFramework):
         # 2. hex-changed one output to 0.0
         # 3. sign and send
         # 4. check if recipient (node0) can list the zero value tx
-        usp = self.nodes[1].listunspent(query_options={'minimumAmount': '' + str(POW_PAYOUT - 0.002) + ''})[0]
+        usp = self.nodes[1].listunspent(query_options={'minimumAmount': '' + str(30 - 0.002) + ''})[0]
         inputs = [{"txid": usp['txid'], "vout": usp['vout']}]
-        outputs = {self.nodes[1].getnewaddress(): (POW_PAYOUT - 0.002), self.nodes[0].getnewaddress(): 11.11}
+        outputs = {self.nodes[1].getnewaddress(): (30 - 0.002), self.nodes[0].getnewaddress(): 11.11}
 
         raw_tx = self.nodes[1].createrawtransaction(inputs, outputs).replace("c0833842", "00000000")  # replace 11.11 with 0.0 (int32)
         signed_raw_tx = self.nodes[1].signrawtransactionwithwallet(raw_tx)

@@ -16,8 +16,6 @@ from test_framework.util import (
     connect_nodes,
     sync_blocks,
 )
-from test_framework.pop_const import POW_PAYOUT
-
 
 def create_transactions(node, address, amt, fees):
     # Create and sign raw transactions from node to address for amt.
@@ -78,23 +76,23 @@ class WalletTest(PlaceholdersTestFramework):
         self.nodes[1].generatetoaddress(101, ADDRESS_WATCHONLY)
         self.sync_all()
 
-        assert_equal(self.nodes[0].getbalances()['mine']['trusted'], POW_PAYOUT)
-        assert_equal(self.nodes[0].getwalletinfo()['balance'], POW_PAYOUT)
-        assert_equal(self.nodes[1].getbalances()['mine']['trusted'], POW_PAYOUT)
+        assert_equal(self.nodes[0].getbalances()['mine']['trusted'], 30)
+        assert_equal(self.nodes[0].getwalletinfo()['balance'], 30)
+        assert_equal(self.nodes[1].getbalances()['mine']['trusted'], 30)
 
-        assert_equal(self.nodes[0].getbalances()['watchonly']['immature'], POW_PAYOUT * 100)
+        assert_equal(self.nodes[0].getbalances()['watchonly']['immature'], 2160)
         assert 'watchonly' not in self.nodes[1].getbalances()
 
-        assert_equal(self.nodes[0].getbalance(), POW_PAYOUT)
-        assert_equal(self.nodes[1].getbalance(), POW_PAYOUT)
+        assert_equal(self.nodes[0].getbalance(), 30)
+        assert_equal(self.nodes[1].getbalance(), 30)
 
         self.log.info("Test getbalance with different arguments")
-        assert_equal(self.nodes[0].getbalance("*"), POW_PAYOUT)
-        assert_equal(self.nodes[0].getbalance("*", 1), POW_PAYOUT)
-        assert_equal(self.nodes[0].getbalance("*", 1, True), POW_PAYOUT * 2)
-        assert_equal(self.nodes[0].getbalance(minconf=1), POW_PAYOUT)
-        assert_equal(self.nodes[0].getbalance(minconf=0, include_watchonly=True), POW_PAYOUT * 2)
-        assert_equal(self.nodes[1].getbalance(minconf=0, include_watchonly=True), POW_PAYOUT)
+        assert_equal(self.nodes[0].getbalance("*"), 30)
+        assert_equal(self.nodes[0].getbalance("*", 1), 30)
+        assert_equal(self.nodes[0].getbalance("*", 1, True), 30 * 2)
+        assert_equal(self.nodes[0].getbalance(minconf=1), 30)
+        assert_equal(self.nodes[0].getbalance(minconf=0, include_watchonly=True), 30 * 2)
+        assert_equal(self.nodes[1].getbalance(minconf=0, include_watchonly=True), 30)
 
         # Send 40 PHL from 0 to 1 and 60 PHL from 1 to 0.
         txs = create_transactions(self.nodes[0], self.nodes[1].getnewaddress(), 20, [Decimal('0.01')])
@@ -216,7 +214,7 @@ class WalletTest(PlaceholdersTestFramework):
         # mempool because it is the third descendant of the tx above
         for _ in range(3):
             # Set amount high enough such that all coins are spent by each tx
-            txid = self.nodes[0].sendtoaddress(self.nodes[0].getnewaddress(), POW_PAYOUT * 2 - 1)
+            txid = self.nodes[0].sendtoaddress(self.nodes[0].getnewaddress(), 30 * 2 - 1)
 
         self.log.info('Check that wallet txs not in the mempool are untrusted')
         assert txid not in self.nodes[0].getrawmempool()

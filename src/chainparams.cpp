@@ -77,6 +77,9 @@ public:
         m_assumed_blockchain_size = 280;
         m_assumed_chain_state_size = 4;
 
+        /// PHL:
+        mDgwActivationBlock = 120;
+
         // same as test
         // CBlock(hash=00000006cf4c4e6177695242a1347023b7b1bdef8119237a11511b9e490bf8d9, ver=0x00000001, hashPrevBlock=0000000000000000000000000000000000000000000000000000000000000000, hashMerkleRoot=06c6c7131bc50a1fcab02107d0f24bcfe22c1808080074dcedf5fea412a0fe1c, nTime=1340, nBits=1d0fffff, nNonce=3768745, vtx=1)
         //   CTransaction(hash=e494ea0589, ver=1, vin.size=1, vout.size=1, nLockTime=0)
@@ -161,6 +164,9 @@ public:
         nPruneAfterHeight = 1000;
         m_assumed_blockchain_size = 30;
         m_assumed_chain_state_size = 2;
+
+        /// PHL:
+        mDgwActivationBlock = 200;
 
         // CBlock(hash=00000006cf4c4e6177695242a1347023b7b1bdef8119237a11511b9e490bf8d9, ver=0x00000001, hashPrevBlock=0000000000000000000000000000000000000000000000000000000000000000, hashMerkleRoot=06c6c7131bc50a1fcab02107d0f24bcfe22c1808080074dcedf5fea412a0fe1c, nTime=1340, nBits=1d0fffff, nNonce=3768745, vtx=1)
         //   CTransaction(hash=e494ea0589, ver=1, vin.size=1, vout.size=1, nLockTime=0)
@@ -249,6 +255,9 @@ public:
         nPruneAfterHeight = 1000;
         m_assumed_blockchain_size = 0;
         m_assumed_chain_state_size = 0;
+
+        /// PHL:
+        mDgwActivationBlock = 200;
 
         UpdateActivationParametersFromArgs(args);
 

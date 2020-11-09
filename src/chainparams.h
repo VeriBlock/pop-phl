@@ -89,6 +89,10 @@ public:
     const ChainTxData& TxData() const { return chainTxData; }
     uint32_t PopRewardPercentage() const {return mPopRewardPercentage;}
     int32_t PopRewardCoefficient() const {return mPopRewardCoefficient;}
+    int DGWActivationBlock() const {return mDgwActivationBlock;}
+    bool IsDGWActive(int nBlockNumber) const {
+        return nBlockNumber >= DGWActivationBlock();
+    }
 
 protected:
     CChainParams() {}
@@ -110,6 +114,7 @@ protected:
     bool m_is_test_chain;
     CCheckpointData checkpointData;
     ChainTxData chainTxData;
+    int mDgwActivationBlock;
 
     // VeriBlock:
     // cut this % from coinbase subsidy

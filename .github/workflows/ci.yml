@@ -84,6 +84,12 @@ jobs:
         with:
           name: test-suite
           path: src/test-suite.log
+      - uses: actions/upload-artifact@v2
+        if: success()
+        with:
+          name: phl-linux
+          path: release
+          if-no-files-found: error
       - name: run functional tests
         if: always()
         timeout-minutes: 600
@@ -145,6 +151,12 @@ jobs:
       - name: make deploy
         if: success()
         run: make deploy
+      - uses: actions/upload-artifact@v2
+        if: success()
+        with:
+          name: phl-windows
+          path: release
+          if-no-files-found: error
 
 # TODO: enable macos build
 #  x86_64-apple-darwin16:

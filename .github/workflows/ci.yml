@@ -75,7 +75,7 @@ jobs:
           --disable-bench
       - name: make
         run: make -j2 deploy
-     - name: Post status to Discord
+      - name: Post status to Discord
         uses: sarisia/actions-status-discord@v1
         if: always()
         with:

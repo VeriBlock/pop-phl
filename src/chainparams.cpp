@@ -24,10 +24,6 @@
 #include "bootstraps.h"
 #include <veriblock/blockchain/alt_chain_params.hpp>
 
-#define VBK_GAMMA  0xb1
-#define VBK_1  0xc0
-#define VBK_VERSION (VBK_GAMMA + 0x1)
-
 /**
  * Main network
  */
@@ -68,10 +64,10 @@ public:
          * The characters are rarely used upper ASCII, not valid as UTF-8, and produce
          * a large 32-bit integer with any alignment.
          */
-        pchMessageStart[0] = 1;
-        pchMessageStart[1] = 1;
-        pchMessageStart[2] = 1;
-        pchMessageStart[3] = 1 + VBK_VERSION;
+        pchMessageStart[0] = 0x50;//P
+        pchMessageStart[1] = 0x48;//H
+        pchMessageStart[2] = 0x4c;//L
+        pchMessageStart[3] = 1;
         nDefaultPort = 6609;
         nPruneAfterHeight = 100000;
         m_assumed_blockchain_size = 280;
@@ -156,10 +152,10 @@ public:
         // By default assume that the signatures in ancestors of this block are valid.
         consensus.defaultAssumeValid = uint256S("0x00000000000000b7ab6ce61eb6d571003fbe5fe892da4c9b740c49a07542462d"); // 1580000
 
-        pchMessageStart[0] = 2;
-        pchMessageStart[1] = 2;
-        pchMessageStart[2] = 2;
-        pchMessageStart[3] = 2 + VBK_VERSION;
+        pchMessageStart[0] = 0x50;//P
+        pchMessageStart[1] = 0x48;//H
+        pchMessageStart[2] = 0x4c;//L
+        pchMessageStart[3] = 2;
         nDefaultPort = 16609;
         nPruneAfterHeight = 1000;
         m_assumed_blockchain_size = 30;
@@ -232,7 +228,7 @@ public:
         consensus.MinBIP9WarningHeight = 0;
         consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks
-        consensus.nPowTargetSpacing = 10 * 60;
+        consensus.nPowTargetSpacing = 10 * 60; // should be 1 block each 2 minutes
         consensus.fPowAllowMinDifficultyBlocks = true;
         consensus.fPowNoRetargeting = true;
         consensus.nRuleChangeActivationThreshold = 108; // 75% for testchains
@@ -247,10 +243,10 @@ public:
         // By default assume that the signatures in ancestors of this block are valid.
         consensus.defaultAssumeValid = uint256S("0x00");
 
-        pchMessageStart[0] = 3;
-        pchMessageStart[1] = 3;
-        pchMessageStart[2] = 3;
-        pchMessageStart[3] = 3 + VBK_VERSION;
+        pchMessageStart[0] = 0x50;//P
+        pchMessageStart[1] = 0x48;//H
+        pchMessageStart[2] = 0x4c;//L
+        pchMessageStart[3] = 3;
         nDefaultPort = 16603;
         nPruneAfterHeight = 1000;
         m_assumed_blockchain_size = 0;
@@ -290,7 +286,7 @@ public:
         base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x35, 0x87, 0xCF};
         base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x35, 0x83, 0x94};
 
-        bech32_hrp = "bcrt";
+        bech32_hrp = "bcrt"; // leave as is
     }
 
     /**

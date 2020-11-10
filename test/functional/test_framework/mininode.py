@@ -103,13 +103,9 @@ MESSAGEMAP = {
 }
 
 # Edit these parameters to match src/chainparams.cpp
-VBK_GAMMA = 0xb1
-VBK_1 = 0xc0
-VBK_NETWORK = (VBK_GAMMA + 0x1)
-
 
 def calculate_network_magic(index):
-    return bytes([index, index, index, index + VBK_NETWORK])
+    return bytes([0x50, 0x48, 0x4c, index])
 
 
 MAGIC_BYTES = {

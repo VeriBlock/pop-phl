@@ -75,6 +75,30 @@ jobs:
           --disable-bench
       - name: make
         run: make -j2 deploy
+      - name: Post status to Discord
+        uses: sarisia/actions-status-discord@v1
+        if: always()
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          status: ${{ job.status }}
+          job: linux build
+          description: native ubuntu 18.04 build
+          nofail: true
+      - name: create artifacts
+        if: success()
+        run: |
+          mv ./release Placeholders-${{ steps.extract_branch.outputs.branch }}-${{ steps.extract_branch.outputs.git_hash }}
+          tar czvf Placeholders-${{ steps.extract_branch.outputs.branch }}-${{ steps.extract_branch.outputs.git_hash }}-linux-x64.tar.gz Placeholders-${{ steps.extract_branch.outputs.branch }}-${{ steps.extract_branch.outputs.git_hash }}/
+      - name: upload artifacts
+        if: success()
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.ARTIFACT_HOST }}
+          username: ${{ secrets.ARTIFACT_USER }}
+          key: ${{ secrets.ARTIFACT_KEY }}
+          passphrase: ${{ secrets.ARTIFACT_KEY_PASSPHRASE }}
+          source: Placeholders-${{ steps.extract_branch.outputs.branch }}-${{ steps.extract_branch.outputs.git_hash }}-linux-x64.tar.gz
+          target: ${{ secrets.ARTIFACT_PATH }}
       - name: make check
         timeout-minutes: 600
         run: make check
@@ -84,12 +108,6 @@ jobs:
         with:
           name: test-suite
           path: src/test-suite.log
-      - uses: actions/upload-artifact@v2
-        if: success()
-        with:
-          name: phl-linux
-          path: release
-          if-no-files-found: error
       - name: run functional tests
         if: always()
         timeout-minutes: 600
@@ -151,13 +169,30 @@ jobs:
       - name: make deploy
         if: success()
         run: make deploy
-      - uses: actions/upload-artifact@v2
-        if: success()
+      - name: Post status to Discord
+        uses: sarisia/actions-status-discord@v1
+        if: always()
         with:
-          name: phl-windows
-          path: release
-          if-no-files-found: error
-
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          status: ${{ job.status }}
+          job: win64 build
+          description: mingw32 x86_64 windows build
+          nofail: true
+      - name: create artifacts
+        if: success()
+        run: |
+          mv ./release Placeholders-${{ steps.extract_branch.outputs.branch }}-${{ steps.extract_branch.outputs.git_hash }}
+          zip -r9 Placeholders-${{ steps.extract_branch.outputs.branch }}-${{ steps.extract_branch.outputs.git_hash }}-win64-qt.zip Placeholders-${{ steps.extract_branch.outputs.branch }}-${{ steps.extract_branch.outputs.git_hash }}
+      - name: upload artifacts
+        if: success()
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.ARTIFACT_HOST }}
+          username: ${{ secrets.ARTIFACT_USER }}
+          key: ${{ secrets.ARTIFACT_KEY }}
+          passphrase: ${{ secrets.ARTIFACT_KEY_PASSPHRASE }}
+          source: Placeholders-${{ steps.extract_branch.outputs.branch }}-${{ steps.extract_branch.outputs.git_hash }}-win64-qt.zip
+          target: ${{ secrets.ARTIFACT_PATH }}
 # TODO: enable macos build
 #  x86_64-apple-darwin16:
 #    runs-on: ubuntu-latest

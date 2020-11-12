@@ -75,6 +75,12 @@ jobs:
           --disable-bench
       - name: make
         run: make -j2 deploy
+      - uses: actions/upload-artifact@v2
+        if: success()
+        with:
+          name: phl-linux
+          path: release
+          if-no-files-found: error
       - name: Post status to Discord
         uses: sarisia/actions-status-discord@v1
         if: always()
@@ -169,6 +175,12 @@ jobs:
       - name: make deploy
         if: success()
         run: make deploy
+      - uses: actions/upload-artifact@v2
+        if: success()
+        with:
+          name: phl-windows
+          path: release
+          if-no-files-found: error
       - name: Post status to Discord
         uses: sarisia/actions-status-discord@v1
         if: always()

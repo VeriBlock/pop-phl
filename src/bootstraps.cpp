@@ -119,8 +119,8 @@ void selectPopConfig(
 
 void selectPopConfig(const ArgsManager& args)
 {
-    std::string btcnet = args.GetArg("-popbtcnetwork", "regtest");
-    std::string vbknet = args.GetArg("-popvbknetwork", "regtest");
+    std::string btcnet = args.GetArg("-popbtcnetwork", "test");
+    std::string vbknet = args.GetArg("-popvbknetwork", "test");
     int popautoconfig = args.GetArg("-popautoconfig", 1);
     int btcstart = args.GetArg("-popbtcstartheight", 0);
     std::string btcblocks = args.GetArg("-popbtcblocks", "");

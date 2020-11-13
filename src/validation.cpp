@@ -3527,8 +3527,9 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, BlockValidatio
 
     // Check proof of work
     const Consensus::Params& consensusParams = params.GetConsensus();
-    if (block.nBits != GetNextWorkRequired(pindexPrev, &block, consensusParams))
-        return state.Invalid(BlockValidationResult::BLOCK_INVALID_HEADER, "bad-diffbits", "incorrect proof of work");
+    auto expectedWork = GetNextWorkRequired(pindexPrev, &block, consensusParams);
+    if (block.nBits != expectedWork)
+        return state.Invalid(BlockValidationResult::BLOCK_INVALID_HEADER, "bad-diffbits", strprintf("incorrect proof of work. Expected %x, got %x.", expectedWork, block.nBits));
 
     // Check against checkpoints
     if (fCheckpointsEnabled) {

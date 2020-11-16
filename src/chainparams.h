@@ -114,7 +114,7 @@ protected:
     bool m_is_test_chain;
     CCheckpointData checkpointData;
     ChainTxData chainTxData;
-    int mDgwActivationBlock;
+    int mDgwActivationBlock = 200;
 
     // VeriBlock:
     // cut this % from coinbase subsidy

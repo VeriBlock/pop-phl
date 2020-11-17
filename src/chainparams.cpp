@@ -24,6 +24,8 @@
 #include "bootstraps.h"
 #include <veriblock/blockchain/alt_chain_params.hpp>
 
+#define NETWORK_OFFSET 0x10
+
 /**
  * Main network
  */
@@ -67,7 +69,7 @@ public:
         pchMessageStart[0] = 0x50;//P
         pchMessageStart[1] = 0x48;//H
         pchMessageStart[2] = 0x4c;//L
-        pchMessageStart[3] = 1;
+        pchMessageStart[3] = 1 + NETWORK_OFFSET;
         nDefaultPort = 6609;
         nPruneAfterHeight = 100000;
         m_assumed_blockchain_size = 280;
@@ -158,7 +160,7 @@ public:
         pchMessageStart[0] = 0x50;//P
         pchMessageStart[1] = 0x48;//H
         pchMessageStart[2] = 0x4c;//L
-        pchMessageStart[3] = 2;
+        pchMessageStart[3] = 2 + NETWORK_OFFSET;
         nDefaultPort = 16609;
         nPruneAfterHeight = 1000;
         m_assumed_blockchain_size = 30;
@@ -251,7 +253,7 @@ public:
         pchMessageStart[0] = 0x50;//P
         pchMessageStart[1] = 0x48;//H
         pchMessageStart[2] = 0x4c;//L
-        pchMessageStart[3] = 3;
+        pchMessageStart[3] = 3 + NETWORK_OFFSET;
         nDefaultPort = 16603;
         nPruneAfterHeight = 1000;
         m_assumed_blockchain_size = 0;

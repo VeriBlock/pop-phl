@@ -73,12 +73,12 @@ jobs:
       - name: autogen
         run: ./autogen.sh
       - name: configure
-        if: matrix.build = "release"
+        if:${{ matrix.build }} == "release"
         run: ./configure
           --enable-werror
           --disable-bench
       - name: configure
-        if: matrix.build = "debug"
+        if:${{ matrix.build }} == "debug"
         run: ./configure
           --enable-debug
           --enable-werror
@@ -182,12 +182,12 @@ jobs:
       - name: autogen
         run: ./autogen.sh
       - name: configure ${{ matrix.build }}
-        if: matrix.build = "release"
+        if:${{ matrix.build }} == "release"
         run: CONFIG_SITE=$PWD/depends/x86_64-w64-mingw32/share/config.site ./configure --prefix=/
           --enable-werror
           --disable-bench
       - name: configure ${{ matrix.build }}
-        if: matrix.build = "debug"
+        if:${{ matrix.build }} == "debug"
         run: CONFIG_SITE=$PWD/depends/x86_64-w64-mingw32/share/config.site ./configure --prefix=/
           --enable-werror
           --disable-bench

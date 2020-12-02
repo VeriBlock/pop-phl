@@ -64,9 +64,9 @@ QString PlaceholdersUnits::description(int unit)
 {
     switch(unit)
     {
-    case vPHL: return QString("Placeholderss");
-    case mvPHL: return QString("Milli-Placeholderss (1 / 1" THIN_SP_UTF8 "000)");
-    case uvPHL: return QString("Micro-Placeholderss (bits) (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+    case vPHL: return QString("Placeholders");
+    case mvPHL: return QString("Milli-Placeholders (1 / 1" THIN_SP_UTF8 "000)");
+    case uvPHL: return QString("Micro-Placeholders (bits) (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
     case SAT: return QString("Satoshi (sat) (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
     default: return QString("???");
     }

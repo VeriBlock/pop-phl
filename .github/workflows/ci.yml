@@ -44,7 +44,7 @@ jobs:
           restore-keys: |
             linux-ccache-${{matrix.build}}-
       - name: prepare build type
-        run: echo "BUILD_TYPE=$(python -c "print(\"${{matrix.build}}\".capitalize())") >> $GITHUB_ENV
+        run: echo "BUILD_TYPE=$(python -c \"print(\"${{matrix.build}}\".capitalize())\")" >> $GITHUB_ENV
       - name: get version for veriblock-pop-cpp
         run: echo "VERIBLOCK_POP_CPP_VERSION=$(awk -F '=' '/\$\(package\)_version/{print $NF}' $PWD/depends/packages/veriblock-pop-cpp.mk | head -n1)" >> $GITHUB_ENV
       - name: veriblock-pop-cpp release version
@@ -173,7 +173,7 @@ jobs:
       - name: strip out problematic Windows %PATH% imported var
         run: PATH=$(echo "$PATH" | sed -e 's/:\/mnt.*//g')
       - name: prepare build type
-        run: echo "BUILD_TYPE=$(python -c "print(\"${{matrix.build}}\".capitalize())") >> $GITHUB_ENV
+        run: echo "BUILD_TYPE=$(python -c \"print(\"${{matrix.build}}\".capitalize())\")" >> $GITHUB_ENV
       - name: set variables and build dependencies for x86_64-w64 ${{ matrix.build }}
         env:
           HOST: x86_64-w64-mingw32

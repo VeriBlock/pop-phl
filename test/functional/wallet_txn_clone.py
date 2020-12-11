@@ -46,7 +46,7 @@ class TxnMallTest(PlaceholdersTestFramework):
         else:
             output_type = "legacy"
 
-        # All nodes should start with 750 vPHL:
+        # All nodes should start with 750 PHL:
         starting_balance = 750
         assert_equal(self.nodes[0].getbalance(), 750)
         assert_equal(self.nodes[1].getbalance(), 735)
@@ -104,7 +104,7 @@ class TxnMallTest(PlaceholdersTestFramework):
         tx1 = self.nodes[0].gettransaction(txid1)
         tx2 = self.nodes[0].gettransaction(txid2)
 
-        # Node0's balance should be starting balance, plus 30 vPHL for another
+        # Node0's balance should be starting balance, plus 30 PHL for another
         # matured block, minus tx1 and tx2 amounts, and minus transaction fees:
         expected = starting_balance + node0_tx1["fee"] + node0_tx2["fee"]
         if self.options.mine_block:
@@ -147,7 +147,7 @@ class TxnMallTest(PlaceholdersTestFramework):
         assert_equal(tx1_clone["confirmations"], 2)
         assert_equal(tx2["confirmations"], 1)
 
-        # Check node0's total balance; should be same as before the clone, + 60 vPHL for 2 matured,
+        # Check node0's total balance; should be same as before the clone, + 60 PHL for 2 matured,
         # less possible orphaned matured subsidy
         expected += (POW_PAYOUT * 2)
         if (self.options.mine_block):

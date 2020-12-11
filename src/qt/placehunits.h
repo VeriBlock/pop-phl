@@ -58,9 +58,9 @@ public:
      */
     enum Unit
     {
-        vPHL,
-        mvPHL,
-        uvPHL,
+        PHL,
+        mPHL,
+        uPHL,
         SAT
     };
 

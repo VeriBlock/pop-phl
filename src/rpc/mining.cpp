@@ -264,7 +264,7 @@ static UniValue getmininginfo(const JSONRPCRequest& request)
 }
 
 
-// NOTE: Unlike wallet RPC (which use vPHL values), mining RPCs follow GBT (BIP 22) in using satoshi amounts
+// NOTE: Unlike wallet RPC (which use PHL values), mining RPCs follow GBT (BIP 22) in using satoshi amounts
 static UniValue prioritisetransaction(const JSONRPCRequest& request)
 {
             RPCHelpMan{"prioritisetransaction",

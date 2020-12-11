@@ -60,7 +60,7 @@ Represents the view to a single wallet.
 
 * UI elements like PlaceholdersAmountField, which inherit from QWidget.
 * `placehstrings.cpp`: automatically generated
-* `placehunits.(h/cpp)`: vPHL / mvPHL / etc handling
+* `placehunits.(h/cpp)`: PHL / mPHL / etc handling
 * `callback.h`
 * `guiconstants.h`: UI colors, app name, etc
 * `guiutil.h`: several helper functions

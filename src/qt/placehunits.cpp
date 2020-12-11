@@ -17,9 +17,9 @@ PlaceholdersUnits::PlaceholdersUnits(QObject *parent):
 QList<PlaceholdersUnits::Unit> PlaceholdersUnits::availableUnits()
 {
     QList<PlaceholdersUnits::Unit> unitlist;
-    unitlist.append(vPHL);
-    unitlist.append(mvPHL);
-    unitlist.append(uvPHL);
+    unitlist.append(PHL);
+    unitlist.append(mPHL);
+    unitlist.append(uPHL);
     unitlist.append(SAT);
     return unitlist;
 }
@@ -28,9 +28,9 @@ bool PlaceholdersUnits::valid(int unit)
 {
     switch(unit)
     {
-    case vPHL:
-    case mvPHL:
-    case uvPHL:
+    case PHL:
+    case mPHL:
+    case uPHL:
     case SAT:
         return true;
     default:
@@ -42,9 +42,9 @@ QString PlaceholdersUnits::longName(int unit)
 {
     switch(unit)
     {
-    case vPHL: return QString("vPHL");
-    case mvPHL: return QString("mvPHL");
-    case uvPHL: return QString::fromUtf8("µvPHL (bits)");
+    case PHL: return QString("PHL");
+    case mPHL: return QString("mPHL");
+    case uPHL: return QString::fromUtf8("µPHL (bits)");
     case SAT: return QString("Satoshi (sat)");
     default: return QString("???");
     }
@@ -54,7 +54,7 @@ QString PlaceholdersUnits::shortName(int unit)
 {
     switch(unit)
     {
-    case uvPHL: return QString::fromUtf8("bits");
+    case uPHL: return QString::fromUtf8("bits");
     case SAT: return QString("sat");
     default: return longName(unit);
     }
@@ -64,9 +64,9 @@ QString PlaceholdersUnits::description(int unit)
 {
     switch(unit)
     {
-    case vPHL: return QString("Placeholders");
-    case mvPHL: return QString("Milli-Placeholders (1 / 1" THIN_SP_UTF8 "000)");
-    case uvPHL: return QString("Micro-Placeholders (bits) (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+    case PHL: return QString("Placeholders");
+    case mPHL: return QString("Milli-Placeholders (1 / 1" THIN_SP_UTF8 "000)");
+    case uPHL: return QString("Micro-Placeholders (bits) (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
     case SAT: return QString("Satoshi (sat) (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
     default: return QString("???");
     }
@@ -76,9 +76,9 @@ qint64 PlaceholdersUnits::factor(int unit)
 {
     switch(unit)
     {
-    case vPHL: return 100000000;
-    case mvPHL: return 100000;
-    case uvPHL: return 100;
+    case PHL: return 100000000;
+    case mPHL: return 100000;
+    case uPHL: return 100;
     case SAT: return 1;
     default: return 100000000;
     }
@@ -88,9 +88,9 @@ int PlaceholdersUnits::decimals(int unit)
 {
     switch(unit)
     {
-    case vPHL: return 8;
-    case mvPHL: return 5;
-    case uvPHL: return 2;
+    case PHL: return 8;
+    case mPHL: return 5;
+    case uPHL: return 2;
     case SAT: return 0;
     default: return 0;
     }

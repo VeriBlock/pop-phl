@@ -69,7 +69,7 @@ class TxnMallTest(PlaceholdersTestFramework):
         # Coins are sent to node1_address
         node1_address = self.nodes[1].getnewaddress()
 
-        # First: use raw transaction API to send 740 vPHL to node1_address,
+        # First: use raw transaction API to send 740 PHL to node1_address,
         # but don't broadcast:
         doublespend_fee = Decimal('-.02')
         rawtx_input_0 = {}
@@ -87,7 +87,7 @@ class TxnMallTest(PlaceholdersTestFramework):
         doublespend = self.nodes[0].signrawtransactionwithwallet(rawtx)
         assert_equal(doublespend["complete"], True)
 
-        # Create two spends using 1 30 vPHL coin each
+        # Create two spends using 1 30 PHL coin each
         txid1 = self.nodes[0].sendtoaddress(node1_address, 40)
         txid2 = self.nodes[0].sendtoaddress(node1_address, 20)
 
@@ -101,7 +101,7 @@ class TxnMallTest(PlaceholdersTestFramework):
         tx1 = self.nodes[0].gettransaction(txid1)
         tx2 = self.nodes[0].gettransaction(txid2)
 
-        # Node0's balance should be starting balance, plus 30 vPHL for another
+        # Node0's balance should be starting balance, plus 30 PHL for another
         # matured block, minus 40, minus 20, and minus transaction fees:
         expected = starting_balance + fund_foo_tx["fee"] + fund_bar_tx["fee"]
         if self.options.mine_block:
@@ -140,7 +140,7 @@ class TxnMallTest(PlaceholdersTestFramework):
         assert_equal(tx1["confirmations"], -2)
         assert_equal(tx2["confirmations"], -2)
 
-        # Node0's total balance should be starting balance, plus 60 vPHL for
+        # Node0's total balance should be starting balance, plus 60 PHL for
         # two more matured blocks, minus 740 for the double-spend, plus fees (which are
         # negative):
         expected = starting_balance + 60 - 740 - 45 + fund_foo_tx["fee"] + fund_bar_tx["fee"] + doublespend_fee

@@ -104,7 +104,7 @@ MESSAGEMAP = {
 
 # Edit these parameters to match src/chainparams.cpp
 
-NETWORK_OFFSET = 0x10
+NETWORK_OFFSET = 0x20
 
 def calculate_network_magic(index):
     return bytes([0x50, 0x48, 0x4c, index + NETWORK_OFFSET])

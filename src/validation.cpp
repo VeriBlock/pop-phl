@@ -973,7 +973,7 @@ bool MemPoolAccept::Finalize(ATMPArgs& args, Workspace& ws)
 
     // Remove conflicting transactions from the mempool
     for (CTxMemPool::txiter it : allConflicting) {
-        LogPrint(BCLog::MEMPOOL, "replacing tx %s with %s for %s vPHL additional fees, %d delta bytes\n",
+        LogPrint(BCLog::MEMPOOL, "replacing tx %s with %s for %s PHL additional fees, %d delta bytes\n",
             it->GetTx().GetHash().ToString(),
             hash.ToString(),
             FormatMoney(nModifiedFees - nConflictingFees),
@@ -4221,7 +4221,7 @@ bool BlockManager::LoadBlockIndex(
         // do not set best chain here
     }
 
-    // get best chain from ALT tree and update vPHL's best chain
+    // get best chain from ALT tree and update PHL's best chain
     {
         AssertLockHeld(cs_main);
 

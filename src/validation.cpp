@@ -1206,13 +1206,18 @@ bool ReadRawBlockFromDisk(std::vector<uint8_t>& block, const CBlockIndex* pindex
     return ReadRawBlockFromDisk(block, block_pos, message_start);
 }
 
-CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
-{
+int GetHalvings(int nHeight, const Consensus::Params& consensusParams) {
     int halvings = nHeight / consensusParams.nSubsidyHalvingInterval;
-    // Force block reward to halvings @7 when havlings reach 7, and stay there.
+    // Force block reward to halvings @7 when halvings reach 7, and stay there.
     if (halvings >= 7){
         halvings = 7;
     }
+    return halvings;
+}
+
+CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
+{
+    int halvings = GetHalvings(nHeight, consensusParams);
 
     CAmount nSubsidy = 50 * COIN;
     nSubsidy >>= halvings;

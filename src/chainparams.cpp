@@ -24,7 +24,7 @@
 #include "bootstraps.h"
 #include <veriblock/blockchain/alt_chain_params.hpp>
 
-#define NETWORK_OFFSET 0x30
+#define NETWORK_OFFSET 0x40
 
 /**
  * Main network
